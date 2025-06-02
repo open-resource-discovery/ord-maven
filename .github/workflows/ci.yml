@@ -77,13 +77,15 @@ jobs:
       - name: List generated annotation files
         run: ls -R java/annotations/target/generated-sources
 
-      - name: Where Are Annotation Files?
+      - name: List annotation directories
         run: |
-          echo “Listing everything under java/annotations:”
-          ls -R java/annotations
-          echo
-          echo “Listing everything under ord-spec/java/annotations:”
-          ls -R ord-spec/java/annotations || echo “(none)”
+          echo "Listing everything under java/annotations/target:"
+          ls -R java/annotations/target || echo "(java/annotations does not exist or is empty)"
+
+          echo ""
+          echo "Listing everything under ord-spec/java/annotations:"
+          ls -R ord-spec/java/annotations || echo "(ord-spec/java/annotations does not exist or is empty)"
+
 
       - name: List generated model files
         run: ls -R java/models/src/main/java
