@@ -40,14 +40,12 @@ jobs:
         working-directory: ord-spec
 
       - name: Generate Java Annotation Interfaces
-        working-directory: ord-spec
         run: |
           mkdir -p java/annotations/target/generated-sources
-          npx ts-node src/helper/generateJavaAnnotations.ts \
+          npx ts-node ord-spec/src/helper/generateJavaAnnotations.ts \
             --outDir java/annotations/target/generated-sources
 
       - name: List generated annotation files
-        working-directory: ord-spec
         run: ls -R java/annotations/target/generated-sources
 
       - name: Set up JDK 17
@@ -87,9 +85,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Add and commit generated annotations
+      - name: Add and commit generated annotations and models
         run: |
-          git add .
+          git add java/annotations/target/generated-sources
+          git add java/models/src/main/java
           if ! git diff --cached --quiet; then
             git commit -m "chore(ci): add generated annotations and models"
           else
