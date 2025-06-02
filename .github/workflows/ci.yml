@@ -80,14 +80,26 @@ jobs:
       - name: List generated model files
         run: ls -R java/models/src/main/java
 
-      - name: Commit & Push generated sources (only on push event)
+      - name: Copy annotations into repo root
         run: |
-          git add ord-spec/java/annotations/target/generated-sources
-          git add java/models/src/main/java
+          mkdir -p java/annotations/target/generated-sources
+          cp -R ord-spec/java/annotations/target/generated-sources/* java/annotations/target/generated-sources/
 
-          if ! git diff --cached --quiet; then
-            git commit -m "chore(ci): add generated annotations & models"
-            git push origin main
-          else
-            echo "No new changes to commit."
-          fi
+      - name: Remove ord-spec folder
+        run: rm -rf ord-spec
+
+      - name: Create new branch for generated files
+        run: |
+          git checkout -b feat/add-generated-sources
+
+      - name: Commit all generated annotations and models
+        run: |
+          git add java/annotations/target/generated-sources
+          git add java/models/src/main/java
+          git add .
+          git commit -m "chore(ci): add generated annotations & models, remove ord-spec"
+
+      - name: Push new branch to origin
+        run: git push -u origin feat/add-generated-sources
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
