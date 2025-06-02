@@ -77,6 +77,14 @@ jobs:
       - name: List generated annotation files
         run: ls -R java/annotations/target/generated-sources
 
+      - name: Where Are Annotation Files?
+        run: |
+          echo “Listing everything under java/annotations:”
+          ls -R java/annotations
+          echo
+          echo “Listing everything under ord-spec/java/annotations:”
+          ls -R ord-spec/java/annotations || echo “(none)”
+
       - name: List generated model files
         run: ls -R java/models/src/main/java
 
@@ -87,7 +95,7 @@ jobs:
 
           if ! git diff --cached --quiet; then
             git commit -m "chore(ci): add generated annotations & models"
-            git push --set-upstream origin feat/ci-autocommit-gen-source
+            git push origin main
           else
             echo "No new changes to commit."
           fi
