@@ -75,14 +75,14 @@ jobs:
             --generate-builders
 
       - name: List generated annotation files
-        run: ls -R ../java/annotations/target/generated-sources
+        run: ls -R java/annotations/target/generated-sources
 
       - name: List generated model files
         run: ls -R java/models/src/main/java
 
       - name: Commit & Push generated sources (only on push event)
         run: |
-          git add ../java/annotations/target/generated-sources
+          git add java/annotations/target/generated-sources
           git add java/models/src/main/java
 
           if ! git diff --cached --quiet; then
