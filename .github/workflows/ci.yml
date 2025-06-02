@@ -1,0 +1,83 @@
+name: CI – Generate Models & Annotations, Build ORD-Java
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Generate & Build ORD-Java
+    runs-on: [self-hosted, solinas]
+
+    steps:
+      - name: Checkout ord-maven repo
+        uses: actions/checkout@v3
+
+      - name: Checkout ORD-Spec repo
+        uses: actions/checkout@v3
+        with:
+          repository: CentralEngineering/open-resource-discovery-specification
+          ref: main
+          path: ord-spec
+
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install ORD-Spec npm dependencies
+        run: npm ci
+        working-directory: ord-spec
+
+      - name: Generate ORD schemas
+        run: npm run generate
+        working-directory: ord-spec
+
+      - name: Create annotation output directory
+        run: mkdir -p java/annotations/target/generated-sources
+
+      - name: Generate Java Annotation Interfaces
+        run: |
+          cd ord-spec
+          npx ts-node src/helper/generateJavaAnnotations.ts \
+            --outDir ../java/annotations/target/generated-sources
+        working-directory: ord-spec
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Download jsonschema2pojo CLI
+        run: |
+          curl -L -o jsonschema2pojo.zip \
+            https://github.com/joelittlejohn/jsonschema2pojo/releases/download/jsonschema2pojo-1.2.2/jsonschema2pojo-1.2.2.zip
+          unzip jsonschema2pojo.zip -d jsonschema2pojo
+
+      - name: Create model output directory
+        run: mkdir -p java/models/src/main/java
+
+      - name: Generate Java POJOs from JSON Schemas
+        run: |
+          java -jar jsonschema2pojo/jsonschema2pojo-1.2.2/lib/jsonschema2pojo-cli-1.2.2.jar \
+            --source ord-spec/static/spec-v1/interfaces \
+            --target java/models/src/main/java \
+            --package com.github.openresourcediscovery.model \
+            --generate-constructors \
+            --generate-builders
+
+      - name: Verify Maven installation
+        run: mvn -v
+
+      - name: Build & Install ORD-Java modules
+        run: |
+          mvn clean install -B \
+            -Dmaven.compiler.source=17 \
+            -Dmaven.compiler.target=17
