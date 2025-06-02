@@ -42,13 +42,13 @@ jobs:
       - name: Generate Java Annotation Interfaces
         working-directory: ord-spec
         run: |
-          mkdir -p java/annotations/target/generated-sources
+          mkdir -p annotations/target/generated-sources
           npx ts-node src/helper/generateJavaAnnotations.ts \
-            --outDir java/annotations/target/generated-sources
+            --outDir annotations/target/generated-sources
 
       - name: List generated annotation files
         working-directory: ord-spec
-        run: ls -R java/annotations/target/generated-sources
+        run: ls -R annotations/target/generated-sources
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -65,13 +65,49 @@ jobs:
 
       - name: Generate Java POJOs from JSON Schema
         run: |
-          mkdir -p java/models/src/main/java
+          mkdir -p models/src/main/java
           java -jar jsonschema2pojo/jsonschema2pojo-1.2.2/lib/jsonschema2pojo-cli-1.2.2.jar \
             --source ord-spec/static/spec-v1/interfaces/Document.schema.json \
-            --target java/models/src/main/java \
+            --target models/src/main/java \
             --package com.github.openresourcediscovery.model \
             --generate-constructors \
             --generate-builders
 
       - name: List generated model files
-        run: ls -R java/models/src/main/java
+        run: ls -R models/src/main/java
+
+      - name: Checkout ord-maven repo with write permissions
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+
+      - name: Configure Git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add and commit generated annotations
+        working-directory: ord-spec
+        run: |
+          git add annotations
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(ci): add generated annotations"
+          else
+            echo "No changes in generated annotations; skipping commit."
+          fi
+
+      - name: Add and commit generated models
+        run: |
+          git add models
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(ci): add generated models"
+          else
+            echo "No changes in generated models; skipping commit."
+          fi
+
+      - name: Push changes back to main
+        run: |
+          git push origin HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW_TOKEN }}
