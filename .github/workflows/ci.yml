@@ -75,3 +75,29 @@ jobs:
 
       - name: List generated model files
         run: ls -R java/models/src/main/java
+
+      - name: Checkout ord-maven repo with write permissions
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+
+      - name: Configure Git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add and commit generated annotations
+        run: |
+          git add .
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(ci): add generated annotations and models"
+          else
+            echo "No changes in generated annotations and models; skipping commit."
+          fi
+
+      - name: Push changes back to main
+        run: |
+          git push origin HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW_TOKEN }}
