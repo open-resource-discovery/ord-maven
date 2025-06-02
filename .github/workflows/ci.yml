@@ -47,7 +47,7 @@ jobs:
             --outDir annotations/target/generated-sources
 
       - name: List generated annotation files
-        run: ls -R annotations/target/generated-sources
+        run: ls -R ord-spec/annotations/target/generated-sources
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
