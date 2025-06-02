@@ -89,20 +89,11 @@ jobs:
 
       - name: Add and commit generated annotations
         run: |
-          git add java/annotations/target/generated-sources
+          git add .
           if ! git diff --cached --quiet; then
-            git commit -m "chore(ci): add generated annotations"
+            git commit -m "chore(ci): add generated annotations and models"
           else
-            echo "No changes in generated annotations; skipping commit."
-          fi
-
-      - name: Add and commit generated models
-        run: |
-          git add java/models/src/main/java
-          if ! git diff --cached --quiet; then
-            git commit -m "chore(ci): add generated models"
-          else
-            echo "No changes in generated models; skipping commit."
+            echo "No changes in generated annotations and models; skipping commit."
           fi
 
       - name: Push changes back to main
