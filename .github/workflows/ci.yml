@@ -61,11 +61,11 @@ jobs:
             https://github.com/joelittlejohn/jsonschema2pojo/releases/download/jsonschema2pojo-1.2.2/jsonschema2pojo-1.2.2.zip
           unzip jsonschema2pojo.zip -d jsonschema2pojo
 
-      - name: Generate Java POJOs from JSON Schemas
+      - name: Generate Java POJOs from JSON Schema
         run: |
           mkdir -p java/models/src/main/java
           java -jar jsonschema2pojo/jsonschema2pojo-1.2.2/lib/jsonschema2pojo-cli-1.2.2.jar \
-            --source static/spec-v1/interfaces/Document.schema.json \
+            --source ord-spec/static/spec-v1/interfaces/Document.schema.json \
             --target java/models/src/main/java \
             --package com.github.openresourcediscovery.model \
             --generate-constructors \
