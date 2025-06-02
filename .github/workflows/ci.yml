@@ -29,6 +29,7 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
+          cache-dependency-path: ord-spec/package-lock.json
 
       - name: Install ORD-Spec npm dependencies
         run: npm ci
