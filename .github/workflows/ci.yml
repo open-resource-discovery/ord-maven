@@ -40,10 +40,11 @@ jobs:
         working-directory: ord-spec
 
       - name: Generate Java Annotation Interfaces
+        working-directory: ord-spec
         run: |
-          mkdir -p java/annotations/target/generated-sources
-          npx ts-node ord-spec/src/helper/generateJavaAnnotations.ts \
-            --outDir java/annotations/target/generated-sources
+          mkdir -p ../java/annotations/target/generated-sources
+          npx ts-node src/helper/generateJavaAnnotations.ts \
+            --outDir ../java/annotations/target/generated-sources
 
       - name: List generated annotation files
         run: ls -R java/annotations/target/generated-sources
