@@ -39,14 +39,15 @@ jobs:
         run: npm run generate
         working-directory: ord-spec
 
-      - name: Create annotation output directory
-        run: mkdir -p java/annotations/target/generated-sources
-
       - name: Generate Java Annotation Interfaces
         working-directory: ord-spec
         run: |
+          mkdir -p ../java/annotations/target/generated-sources
           npx ts-node src/helper/generateJavaAnnotations.ts \
             --outDir ../java/annotations/target/generated-sources
+
+      - name: List generated annotation files
+        run: ls -R java/annotations/target/generated-sources
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -70,9 +71,6 @@ jobs:
             --package com.github.openresourcediscovery.model \
             --generate-constructors \
             --generate-builders
-
-      - name: List generated annotation files
-        run: ls -R java/annotations/target/generated-sources
 
       - name: List generated model files
         run: ls -R java/models/src/main/java
