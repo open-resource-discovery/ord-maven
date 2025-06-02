@@ -43,11 +43,10 @@ jobs:
         run: mkdir -p java/annotations/target/generated-sources
 
       - name: Generate Java Annotation Interfaces
+        working-directory: ord-spec
         run: |
-          cd ord-spec
           npx ts-node src/helper/generateJavaAnnotations.ts \
             --outDir ../java/annotations/target/generated-sources
-        working-directory: ord-spec
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
