@@ -61,23 +61,18 @@ jobs:
             https://github.com/joelittlejohn/jsonschema2pojo/releases/download/jsonschema2pojo-1.2.2/jsonschema2pojo-1.2.2.zip
           unzip jsonschema2pojo.zip -d jsonschema2pojo
 
-      - name: Create model output directory
-        run: mkdir -p java/models/src/main/java
-
       - name: Generate Java POJOs from JSON Schemas
         run: |
+          mkdir -p java/models/src/main/java
           java -jar jsonschema2pojo/jsonschema2pojo-1.2.2/lib/jsonschema2pojo-cli-1.2.2.jar \
-            --source ord-spec/static/spec-v1/interfaces \
+            --source static/spec-v1/interfaces/Document.schema.json \
             --target java/models/src/main/java \
             --package com.github.openresourcediscovery.model \
             --generate-constructors \
             --generate-builders
 
-      - name: Verify Maven installation
-        run: mvn -v
+      - name: List generated annotation files
+        run: ls -R java/annotations/target/generated-sources
 
-      - name: Build & Install ORD-Java modules
-        run: |
-          mvn clean install -B \
-            -Dmaven.compiler.source=17 \
-            -Dmaven.compiler.target=17
+      - name: List generated model files
+        run: ls -R java/models/src/main/java
