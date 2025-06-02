@@ -94,9 +94,7 @@ jobs:
 
       - name: Commit all generated annotations and models
         run: |
-          git add java/annotations/target/generated-sources
-          git add java/models/src/main/java
-          git add .
+          git add java/
           git commit -m "chore(ci): add generated annotations & models, remove ord-spec"
 
       - name: Push new branch to origin
