@@ -12,10 +12,15 @@ jobs:
   build:
     name: Generate & Build ORD-Java
     runs-on: [self-hosted, solinas]
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout ord-maven repo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: true
 
       - name: Checkout ORD-Spec repo
         uses: actions/checkout@v3
@@ -40,15 +45,10 @@ jobs:
         working-directory: ord-spec
 
       - name: Generate Java Annotation Interfaces
-        working-directory: ord-spec
         run: |
           mkdir -p java/annotations/target/generated-sources
-          npx ts-node src/helper/generateJavaAnnotations.ts \
+          npx ts-node ord-spec/src/helper/generateJavaAnnotations.ts \
             --outDir java/annotations/target/generated-sources
-
-      - name: List generated annotation files
-        working-directory: ord-spec
-        run: ls -R java/annotations/target/generated-sources
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -73,27 +73,21 @@ jobs:
             --generate-constructors \
             --generate-builders
 
+      - name: List generated annotation files
+        run: ls -R java/annotations/target/generated-sources
+
       - name: List generated model files
         run: ls -R java/models/src/main/java
 
-      - name: Checkout ord-maven repo with write permissions
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
-
-      - name: Configure Git user
+      - name: Commit & Push generated sources (only on push event)
+        if: github.event_name == 'push'
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add java/annotations/target/generated-sources
+          git add java/models/src/main/java
 
-      - name: Add and commit generated annotations and models
-        run: |
-          git add .
-          git commit -m "chore(ci): add generated annotations and models"
-
-      - name: Push changes back to main
-        run: |
-          git push origin HEAD:main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(ci): add generated annotations & models"
+            git push origin main
+          else
+            echo "No new changes to commit."
+          fi
