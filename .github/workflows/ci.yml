@@ -47,6 +47,7 @@ jobs:
             --outDir java/annotations/target/generated-sources
 
       - name: List generated annotation files
+        working-directory: ord-spec
         run: ls -R java/annotations/target/generated-sources
 
       - name: Set up JDK 17
@@ -88,13 +89,8 @@ jobs:
 
       - name: Add and commit generated annotations and models
         run: |
-          git add java/annotations/target/generated-sources
-          git add java/models/src/main/java
-          if ! git diff --cached --quiet; then
-            git commit -m "chore(ci): add generated annotations and models"
-          else
-            echo "No changes in generated annotations and models; skipping commit."
-          fi
+          git add .
+          git commit -m "chore(ci): add generated annotations and models"
 
       - name: Push changes back to main
         run: |
