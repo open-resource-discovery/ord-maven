@@ -82,8 +82,8 @@ jobs:
 
       - name: Copy annotations into root-level annotations folder
         run: |
-          mkdir -p annotations/target/generated-sources
-          cp -R ord-spec/java/annotations/target/generated-sources/* annotations/target/generated-sources/
+          mkdir -p annotations/src/main/java
+          cp -R ord-spec/java/annotations/target/generated-sources/* annotations/src/main/java
 
       - name: Copy models into root-level models folder
         run: |
