@@ -199,15 +199,16 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           branch: generated-sources
-          commit-message: "chore(ci): update generated annotations & models"
-          title: "chore(ci): update generated annotations & models"
+          commit-message: update generated annotations & models
+          title: update generated annotations & models
           body: |
             This PR automatically updates the generated annotations and models in the folders:
             - annotations/src/main/java
             - models/src/main/java
 
-            Changes are automatically pushed to 'generated sources' by the CI workflow on main.
+            Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
           base: main
           path: |
             annotations/src/main/java/**
             models/src/main/java/**
+          token: ${{ secrets.GITHUB_TOKEN }}
