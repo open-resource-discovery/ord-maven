@@ -208,5 +208,7 @@ jobs:
 
             Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
           base: main
-          paths: 'annotations/src/main/java/**''models/src/main/java/**'
+          add-paths: |
+            annotations/src/main/java/**
+            models/src/main/java/**
           token: ${{ secrets.GH_WORKFLOW_TOKEN }}
