@@ -1,12 +1,7 @@
 name: CI – Generate Models & Annotations, Build ORD-Java
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -82,8 +77,8 @@ jobs:
 
       - name: Copy annotations into root-level annotations folder
         run: |
-          mkdir -p annotations/target/generated-sources
-          cp -R ord-spec/java/annotations/target/generated-sources/* annotations/target/generated-sources/
+          mkdir -p annotations/src/main/java
+          cp -R ord-spec/java/annotations/target/generated-sources/* annotations/src/main/java
 
       - name: Copy models into root-level models folder
         run: |
@@ -95,16 +90,120 @@ jobs:
           rm -rf ord-spec
           rm -rf java
 
-      - name: Create new branch for generated files
+      - name: Create annotations/pom.xml
         run: |
-          git checkout -b feat/add-generated-sources
+          cat > annotations/pom.xml << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <project xmlns="http://maven.apache.org/POM/4.0.0"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+            <modelVersion>4.0.0</modelVersion>
 
-      - name: Commit all generated annotations and models
+            <parent>
+              <groupId>com.github.openresourcediscovery</groupId>
+              <artifactId>ord-java</artifactId>
+              <version>1.0.0</version>
+            </parent>
+
+            <artifactId>ord-annotations</artifactId>
+            <name>ORD Annotations</name>
+
+            <build>
+              <sourceDirectory>src/main/java</sourceDirectory>
+
+              <plugins>
+               <plugin>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>build-helper-maven-plugin</artifactId>
+                  <version>3.4.0</version>
+                  <executions>
+                    <execution>
+                      <id>add-generated-sources</id>
+                      <phase>generate-sources</phase>
+                      <goals>
+                        <goal>add-source</goal>
+                      </goals>
+                      <configuration>
+                        <sources>
+                          <source>${project.basedir}/target/generated-sources</source>
+                        </sources>
+                      </configuration>
+                    </execution>
+                  </executions>
+                </plugin>
+              </plugins>
+            </build>
+          </project>
+          EOF
+
+      - name: Create models/pom.xml
         run: |
-          git add annotations/ models/
-          git commit -m "chore(ci): add generated annotations & models, remove ord-spec and java folder"
+          cat > models/pom.xml << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <project xmlns="http://maven.apache.org/POM/4.0.0"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+            <modelVersion>4.0.0</modelVersion>
 
-      - name: Push new branch to origin
-        run: git push -u origin feat/add-generated-sources
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            <parent>
+              <groupId>com.github.openresourcediscovery</groupId>
+              <artifactId>ord-java</artifactId>
+              <version>1.0.0</version>
+            </parent>
+
+            <artifactId>ord-models</artifactId>
+            <name>ORD Java Models</name>
+
+            <dependencies>
+              <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>2.17.0</version>
+              </dependency>
+            </dependencies>
+
+            <build>
+              <plugins>
+               <plugin>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>build-helper-maven-plugin</artifactId>
+                  <version>3.4.0</version>
+                  <executions>
+                    <execution>
+                      <id>add-generated-sources</id>
+                      <phase>generate-sources</phase>
+                      <goals>
+                        <goal>add-source</goal>
+                      </goals>
+                      <configuration>
+                        <sources>
+                          <source>${project.build.directory}/generated-sources</source>
+                        </sources>
+                      </configuration>
+                    </execution>
+                  </executions>
+                </plugin>
+              </plugins>
+            </build>
+          </project>
+          EOF
+
+      - name: Create or update pull request for generated sources
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: generated-sources
+          commit-message: update generated annotations & models
+          title: update generated annotations & models
+          body: |
+            This PR automatically updates the generated annotations and models in the folders:
+            - annotations/src/main/java
+            - models/src/main/java
+
+            Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
+          base: main
+          add-paths: |
+            annotations/**
+            models/**
+          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
