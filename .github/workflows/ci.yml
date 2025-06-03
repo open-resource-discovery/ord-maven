@@ -195,16 +195,19 @@ jobs:
           </project>
           EOF
 
-      - name: Create new branch for generated files
-        run: |
-          git checkout -b feat/add-generated-sources
+      - name: Create or update pull request for generated sources
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: generated-sources
+          commit-message: "chore(ci): update generated annotations & models"
+          title: "chore(ci): update generated annotations & models"
+          body: |
+            This PR automatically updates the generated annotations and models in the folders:
+            - annotations/src/main/java
+            - models/src/main/java
 
-      - name: Commit all generated annotations and models
-        run: |
-          git add annotations/ models/
-          git commit -m "chore(ci): add generated annotations & models, remove ord-spec and java folder"
-
-      - name: Push new branch to origin
-        run: git push -u origin feat/add-generated-sources
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            Changes are automatically pushed to 'generated sources' by the CI workflow on main.
+          base: main
+          path: |
+            annotations/src/main/java/**
+            models/src/main/java/**

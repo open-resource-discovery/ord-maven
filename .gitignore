@@ -1,0 +1,23 @@
+# Java build
+*.class
+
+# Maven
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Backup files
+*.swp123
+*.swo
+*~
+
+# Generated sources
+generated-sources/
+generated-annotations/
