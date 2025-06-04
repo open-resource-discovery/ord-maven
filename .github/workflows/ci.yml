@@ -116,24 +116,6 @@ jobs:
           </project>
           EOF
 
-      - name: Verify schema file location for models
-        working-directory: ord-spec
-        run: |
-          echo "Current directory (should be ord-spec):"
-          pwd
-          echo ""
-
-          echo "Listing static/spec-v1/interfaces:"
-          ls -R static/spec-v1/interfaces || echo "(folder not found)"
-
-          echo ""
-          echo "Check specifically for Document.schema.json:"
-          if [ -f static/spec-v1/interfaces/Document.schema.json ]; then
-            echo "FOUND Document.schema.json"
-          else
-            echo "MISSING Document.schema.json"
-          fi
-
       - name: Copy Document.schema.json into models folder
         run: |
           mkdir -p models/static/spec-v1/interfaces
