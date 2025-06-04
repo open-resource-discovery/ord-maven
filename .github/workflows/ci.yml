@@ -138,23 +138,26 @@ jobs:
           EOF
 
       - name: Verify schema file location for models
+        working-directory: ord-spec
         run: |
-          echo "Current directory:"
+          echo "Current directory (should be ord-spec):"
           pwd
           echo ""
 
-          echo "Listing ord-spec/static/spec-v1/interfaces:"
-          ls -R ord-spec/static/spec-v1/interfaces || echo "(folder not found)"
+          echo "Listing static/spec-v1/interfaces:"
+          ls -R static/spec-v1/interfaces || echo "(folder not found)"
 
           echo ""
           echo "Check specifically for Document.schema.json:"
-          if [ -f ord-spec/static/spec-v1/interfaces/Document.schema.json ]; then
+          if [ -f static/spec-v1/interfaces/Document.schema.json ]; then
             echo "FOUND Document.schema.json"
           else
             echo "MISSING Document.schema.json"
           fi
 
+
       - name: Create models/pom.xml
+        working-directory: ord-spec
         run: |
           cat > models/pom.xml << 'EOF'
           <?xml version="1.0" encoding="UTF-8"?>
@@ -184,7 +187,7 @@ jobs:
              <build>
               <resources>
                 <resource>
-                  <directory>${project.basedir}/../ord-spec/static/spec-v1/interfaces</directory>
+                  <directory>${project.basedir}/../../static/spec-v1/interfaces</directory>
                   <includes>
                     <include>Document.schema.json</include>
                   </includes>
