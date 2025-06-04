@@ -137,6 +137,23 @@ jobs:
           </project>
           EOF
 
+      - name: Verify schema file location for models
+        run: |
+          echo "Current directory:"
+          pwd
+          echo ""
+
+          echo "Listing ord-spec/static/spec-v1/interfaces:"
+          ls -R ord-spec/static/spec-v1/interfaces || echo "(folder not found)"
+
+          echo ""
+          echo "Check specifically for Document.schema.json:"
+          if [ -f ord-spec/static/spec-v1/interfaces/Document.schema.json ]; then
+            echo "FOUND Document.schema.json"
+          else
+            echo "MISSING Document.schema.json"
+          fi
+
       - name: Create models/pom.xml
         run: |
           cat > models/pom.xml << 'EOF'
@@ -164,9 +181,19 @@ jobs:
               </dependency>
             </dependencies>
 
-            <build>
+             <build>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/../ord-spec/static/spec-v1/interfaces</directory>
+                  <includes>
+                    <include>Document.schema.json</include>
+                  </includes>
+                  <targetPath>schemas</targetPath>
+                </resource>
+              </resources>
+
               <plugins>
-               <plugin>
+                <plugin>
                   <groupId>org.codehaus.mojo</groupId>
                   <artifactId>build-helper-maven-plugin</artifactId>
                   <version>3.4.0</version>
