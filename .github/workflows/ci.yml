@@ -80,9 +80,9 @@ jobs:
             <modelVersion>4.0.0</modelVersion>
 
             <parent>
-              <groupId>com.github.openresourcediscovery</groupId>
-              <artifactId>ord-java</artifactId>
-              <version>1.0.0</version>
+               <groupId>com.sap.ord</groupId>
+               <artifactId>annotations</artifactId>
+               <version>1.0.0-SNAPSHOT</version>
             </parent>
 
             <artifactId>ord-annotations</artifactId>
@@ -132,9 +132,9 @@ jobs:
             <modelVersion>4.0.0</modelVersion>
 
             <parent>
-              <groupId>com.github.openresourcediscovery</groupId>
-              <artifactId>ord-java</artifactId>
-              <version>1.0.0</version>
+              <groupId>com.sap.ord</groupId>
+              <artifactId>annotations</artifactId>
+              <version>1.0.0-SNAPSHOT</version>
             </parent>
 
             <artifactId>ord-models</artifactId>
