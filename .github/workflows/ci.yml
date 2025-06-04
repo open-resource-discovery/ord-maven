@@ -69,27 +69,6 @@ jobs:
             --generate-constructors \
             --generate-builders
 
-      - name: List generated annotation files
-        run: ls -R ord-spec/java/annotations/target/generated-sources
-
-      - name: List generated model files
-        run: ls -R java/models/src/main/java
-
-      - name: Copy annotations into root-level annotations folder
-        run: |
-          mkdir -p annotations/src/main/java
-          cp -R ord-spec/java/annotations/target/generated-sources/* annotations/src/main/java
-
-      - name: Copy models into root-level models folder
-        run: |
-          mkdir -p models/src/main/java
-          cp -R java/models/src/main/java/* models/src/main/java/
-
-      - name: Remove ord-spec and existing java folder
-        run: |
-          rm -rf ord-spec
-          rm -rf java
-
       - name: Create annotations/pom.xml
         run: |
           cat > annotations/pom.xml << 'EOF'
@@ -219,6 +198,27 @@ jobs:
             </build>
           </project>
           EOF
+
+      - name: List generated annotation files
+        run: ls -R ord-spec/java/annotations/target/generated-sources
+
+      - name: List generated model files
+        run: ls -R java/models/src/main/java
+
+      - name: Copy annotations into root-level annotations folder
+        run: |
+          mkdir -p annotations/src/main/java
+          cp -R ord-spec/java/annotations/target/generated-sources/* annotations/src/main/java
+
+      - name: Copy models into root-level models folder
+        run: |
+          mkdir -p models/src/main/java
+          cp -R java/models/src/main/java/* models/src/main/java/
+
+      - name: Remove ord-spec and existing java folder
+        run: |
+          rm -rf ord-spec
+          rm -rf java
 
       - name: Create or update pull request for generated sources
         uses: peter-evans/create-pull-request@v5
