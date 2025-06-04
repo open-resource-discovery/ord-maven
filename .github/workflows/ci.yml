@@ -135,10 +135,9 @@ jobs:
           fi
 
       - name: Copy Document.schema.json into models folder
-        working-directory: ord-spec
         run: |
           mkdir -p models/static/spec-v1/interfaces
-          cp static/spec-v1/interfaces/Document.schema.json models/static/spec-v1/interfaces/
+          cp ord-spec/static/spec-v1/interfaces/Document.schema.json models/static/spec-v1/interfaces/
 
       - name: Create models/pom.xml
         run: |
