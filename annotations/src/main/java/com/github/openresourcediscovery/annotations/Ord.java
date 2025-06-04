@@ -617,7 +617,7 @@ public interface Ord {
     /** Full description of the custom implementation standard, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  MUST only be provided if `implementationStandard` is set to `custom`.  SHOULD contain documentation and links that describe the used standard. */
     String customImplementationStandardDescription() default "";
 
-    /** Declares this API is a compatible implementation of the referenced API contract(s). This is also sometimes known as [Service Provider Interface](https://en.wikipedia.org/wiki/Service_provider_interface).  MUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID.  All APIs that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client. */
+    /** A reference to the interface (API contract) that this API implements. Serves as a declaration of compatible implementation of API contract, effectively functioning as an "implementationOf" relationship.  MUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID.  All APIs that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client. */
     String[] compatibleWith() default {};
 
     /** Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components. */
