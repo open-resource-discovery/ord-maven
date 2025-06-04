@@ -426,8 +426,8 @@ public class ApiResource {
     @JsonPropertyDescription("Full description of the custom implementation standard, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nMUST only be provided if `implementationStandard` is set to `custom`.\n\nSHOULD contain documentation and links that describe the used standard.")
     private String customImplementationStandardDescription;
     /**
-     * Declares this API is a compatible implementation of the referenced API contract(s).
-     * This is also sometimes known as [Service Provider Interface](https://en.wikipedia.org/wiki/Service_provider_interface).
+     * A reference to the interface (API contract) that this API implements.
+     * Serves as a declaration of compatible implementation of API contract, effectively functioning as an "implementationOf" relationship.
      * 
      * MUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID.
      * 
@@ -435,7 +435,7 @@ public class ApiResource {
      * 
      */
     @JsonProperty("compatibleWith")
-    @JsonPropertyDescription("Declares this API is a compatible implementation of the referenced API contract(s).\nThis is also sometimes known as [Service Provider Interface](https://en.wikipedia.org/wiki/Service_provider_interface).\n\nMUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID.\n\nAll APIs that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.")
+    @JsonPropertyDescription("A reference to the interface (API contract) that this API implements.\nServes as a declaration of compatible implementation of API contract, effectively functioning as an \"implementationOf\" relationship.\n\nMUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID.\n\nAll APIs that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.")
     private List<String> compatibleWith = new ArrayList<String>();
     /**
      * Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components.
@@ -820,8 +820,8 @@ public class ApiResource {
      * @param visibility
      *     The visibility states who is allowed to "see" the described resource or capability.
      * @param compatibleWith
-     *     Declares this API is a compatible implementation of the referenced API contract(s).
-     *     This is also sometimes known as [Service Provider Interface](https://en.wikipedia.org/wiki/Service_provider_interface).
+     *     A reference to the interface (API contract) that this API implements.
+     *     Serves as a declaration of compatible implementation of API contract, effectively functioning as an "implementationOf" relationship.
      *     
      *     MUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID.
      *     
@@ -1924,8 +1924,8 @@ public class ApiResource {
     }
 
     /**
-     * Declares this API is a compatible implementation of the referenced API contract(s).
-     * This is also sometimes known as [Service Provider Interface](https://en.wikipedia.org/wiki/Service_provider_interface).
+     * A reference to the interface (API contract) that this API implements.
+     * Serves as a declaration of compatible implementation of API contract, effectively functioning as an "implementationOf" relationship.
      * 
      * MUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID.
      * 
@@ -1938,8 +1938,8 @@ public class ApiResource {
     }
 
     /**
-     * Declares this API is a compatible implementation of the referenced API contract(s).
-     * This is also sometimes known as [Service Provider Interface](https://en.wikipedia.org/wiki/Service_provider_interface).
+     * A reference to the interface (API contract) that this API implements.
+     * Serves as a declaration of compatible implementation of API contract, effectively functioning as an "implementationOf" relationship.
      * 
      * MUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID.
      * 
