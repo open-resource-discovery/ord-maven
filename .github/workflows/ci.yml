@@ -90,6 +90,11 @@ jobs:
             <artifactId>ord-annotations</artifactId>
             <name>ORD Annotations</name>
 
+            <properties>
+              <maven.compiler.source>17</maven.compiler.source>
+              <maven.compiler.target>17</maven.compiler.target>
+            </properties>
+
             <build>
               <sourceDirectory>src/main/java</sourceDirectory>
 
@@ -141,6 +146,11 @@ jobs:
 
             <artifactId>ord-models</artifactId>
             <name>ORD Java Models</name>
+
+             <properties>
+              <maven.compiler.source>17</maven.compiler.source>
+              <maven.compiler.target>17</maven.compiler.target>
+            </properties>
 
             <dependencies>
               <dependency>
