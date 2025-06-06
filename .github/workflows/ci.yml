@@ -2,6 +2,8 @@ name: CI – Generate Models & Annotations, Build ORD-Java
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   build:
@@ -222,3 +224,5 @@ jobs:
             annotations/**
             models/**
           token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          auto-merge: true
+          auto-merge-method: squash
