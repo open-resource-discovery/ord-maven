@@ -923,7 +923,7 @@
         "customImplementationStandard": {
           "type": "string",
           "description": "If the fixed `implementationStandard` values need to be extended, an arbitrary `customImplementationStandard` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `implementationStandard` is set to `custom`.",
-          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):v([0-9]+)$",
+          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
           "maxLength": 255,
           "examples": [
             "sap.xref:some-api-contract:v1"
@@ -1588,7 +1588,7 @@
         "customImplementationStandard": {
           "type": "string",
           "description": "If the fixed `implementationStandard` values need to be extended, an arbitrary `customImplementationStandard` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `implementationStandard` is set to `custom`.",
-          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):v([0-9]+)$",
+          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
           "maxLength": 255,
           "examples": [
             "sap.xref:some-event-contract:v1"
@@ -3039,7 +3039,7 @@
         "customType": {
           "type": "string",
           "description": "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.",
-          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):v([0-9]+)$",
+          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
           "maxLength": 255,
           "examples": [
             "sap:custom-definition-format:v1"
@@ -3137,7 +3137,7 @@
         "customType": {
           "type": "string",
           "description": "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.",
-          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):v([0-9]+)$",
+          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
           "maxLength": 255,
           "examples": [
             "sap:custom-definition-format:v1"
@@ -3363,7 +3363,7 @@
         "customType": {
           "type": "string",
           "description": "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.",
-          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):v([0-9]+)$",
+          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
           "maxLength": 255,
           "examples": [
             "sap:custom-definition-format:v1"
@@ -3575,7 +3575,7 @@
         "customType": {
           "type": "string",
           "description": "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.",
-          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):v([0-9]+)$",
+          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
           "maxLength": 255,
           "examples": [
             "sap:custom-definition-format:v1"
@@ -4233,7 +4233,7 @@
         "customType": {
           "type": "string",
           "description": "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.",
-          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):v([0-9]+)$",
+          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
           "maxLength": 255,
           "examples": [
             "sap:custom-definition-format:v1"
@@ -4313,7 +4313,7 @@
         "customType": {
           "type": "string",
           "description": "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.",
-          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):v([0-9]+)$",
+          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
           "maxLength": 255,
           "examples": [
             "sap:custom-definition-format:v1"
@@ -4382,7 +4382,7 @@
         "customType": {
           "type": "string",
           "description": "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.",
-          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):v([0-9]+)$",
+          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
           "maxLength": 255,
           "examples": [
             "sap:custom-definition-format:v1"
@@ -4623,7 +4623,7 @@
         "customType": {
           "type": "string",
           "description": "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.",
-          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):v([0-9]+)$",
+          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
           "maxLength": 255,
           "examples": [
             "sap.xref:open-local-tenant-id:v1"
@@ -4676,7 +4676,7 @@
         "customType": {
           "type": "string",
           "description": "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.",
-          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):v([0-9]+)$",
+          "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
           "maxLength": 255,
           "examples": [
             "sap.xref:credential-exchange:v1"
