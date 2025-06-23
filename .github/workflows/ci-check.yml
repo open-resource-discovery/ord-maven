@@ -1,0 +1,29 @@
+name: CI - Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci-check:
+    name: ci-check
+    runs-on: [self-hosted, solinas]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install Maven
+        uses: s4u/setup-maven-action@v1
+        with:
+          maven-version: '3.9.6'
+
+      - name: Build project
+        run: mvn clean install -B
