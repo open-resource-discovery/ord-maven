@@ -1,0 +1,39 @@
+name: Trigger Jenkins Deploy on Tag
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  deploy:
+    name: Deploy tagged version via Jenkins
+    runs-on: [self-hosted, solinas]
+
+    steps:
+      - name: Extract tag name and detect ms prefix
+        id: tag
+        run: |
+            TAG_NAME="${GITHUB_REF#refs/tags/}"
+            echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
+
+            if [[ "$TAG_NAME" == ms/* ]]; then
+            echo "TAG_PREFIX=ms/" >> $GITHUB_OUTPUT
+            echo "TAG_EXTENSION=${TAG_NAME#ms/}" >> $GITHUB_OUTPUT
+            else
+            echo "TAG_PREFIX=" >> $GITHUB_OUTPUT
+            echo "TAG_EXTENSION=" >> $GITHUB_OUTPUT
+            fi
+
+      - name: Trigger Jenkins Build
+        run: |
+            curl -X POST "$JENKINS_URL/buildWithParameters" \
+            --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
+            --data-urlencode "Treesh=main" \
+            --data-urlencode "Tag prefix=${{ steps.tag.outputs.TAG_PREFIX }}" \
+            --data-urlencode "Tag extension=${{ steps.tag.outputs.TAG_EXTENSION }}" \
+            --data-urlencode "Custom promote timeout (in minutes)=180"
+        env:
+          JENKINS_URL: https://prod-build10200.wdf.sap.corp/job/ght-cpa/job/ght-cpa-ord-maven-SP-MS-common
+          JENKINS_USER: ${{ secrets.JENKINS_USER }}
+          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
