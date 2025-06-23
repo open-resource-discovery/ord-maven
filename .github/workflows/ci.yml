@@ -236,7 +236,8 @@ jobs:
           rm -rf java
 
       - name: Create or update pull request for generated sources
-        uses: peter-evans/create-pull-request@v5
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
         with:
           branch: generated-sources
           commit-message: update generated annotations & models
@@ -252,5 +253,12 @@ jobs:
             annotations/**
             models/**
           token: ${{ secrets.GH_WORKFLOW_TOKEN }}
-          auto-merge: true
-          auto-merge-method: squash
+          delete-branch: false
+
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
