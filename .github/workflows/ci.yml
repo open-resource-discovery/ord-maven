@@ -252,7 +252,7 @@ jobs:
           add-paths: |
             annotations/**
             models/**
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
           delete-branch: false
 
       - name: Enable auto-merge
