@@ -20,10 +20,8 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Install Maven
-        uses: s4u/setup-maven-action@v1
-        with:
-          maven-version: '3.9.6'
+      - name: Set up Maven
+        uses: apache/maven-gh-actions-setup@v1.0.0
 
       - name: Build project
         run: mvn clean install -B
