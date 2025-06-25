@@ -254,11 +254,3 @@ jobs:
             models/**
           token: ${{ secrets.GH_WORKFLOW_TOKEN }}
           delete-branch: false
-
-      - name: Enable auto-merge
-        if: steps.cpr.outputs.pull-request-operation == 'created'
-        uses: peter-evans/enable-pull-request-automerge@v3
-        with:
-          token: ${{ secrets.GH_AUTOMERGE_PAT }}
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-          merge-method: squash
