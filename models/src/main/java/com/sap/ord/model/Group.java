@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "title",
     "description"
 })
-public class Group {
+public class Group implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.

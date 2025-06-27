@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "documentationLabels",
     "tags"
 })
-public class SystemInstance {
+public class SystemInstance implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * Optional [base URL](../index.md#def-base-url) of the **system instance**.

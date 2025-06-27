@@ -47,7 +47,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "groupTypes",
     "tombstones"
 })
-public class DocumentSchema {
+public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * Optional [URL](https://tools.ietf.org/html/rfc3986) to the Open Resource Discovery document schema (defined as a JSON Schema).

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "description",
     "url"
 })
-public class ChangelogEntry {
+public class ChangelogEntry implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * Full version number that corresponds to the `version` that is described by the changelog entry.

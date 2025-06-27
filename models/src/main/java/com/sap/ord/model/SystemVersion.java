@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "documentationLabels",
     "tags"
 })
-public class SystemVersion {
+public class SystemVersion implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * The version number of the system instance (run-time) or the version of the described static system type.

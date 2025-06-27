@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "customType",
     "url"
 })
-public class APIEventResourceLink {
+public class APIEventResourceLink implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions)
