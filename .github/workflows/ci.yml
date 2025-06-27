@@ -260,7 +260,7 @@ jobs:
             - models/src/main/java
 
             Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
-          base: main
+          base: feat/add-ord-pojo-hook-api
           add-paths: |
             annotations/**
             models/**
