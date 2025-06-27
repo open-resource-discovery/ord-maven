@@ -35,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "labels",
     "documentationLabels"
 })
-public class Vendor {
+public class Vendor implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

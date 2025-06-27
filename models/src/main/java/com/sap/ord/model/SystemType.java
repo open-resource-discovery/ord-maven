@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "documentationLabels",
     "tags"
 })
-public class SystemType {
+public class SystemType implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * The system namespace is a unique identifier for the system type.

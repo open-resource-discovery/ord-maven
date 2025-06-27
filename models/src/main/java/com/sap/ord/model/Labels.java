@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
 
 })
-public class Labels {
+public class Labels implements com.sap.ord.service.hooks.PartialOrdPojo {
 
 
     @Override

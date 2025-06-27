@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "supported",
     "description"
 })
-public class Extensible {
+public class Extensible implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * This property defines whether the resource is extensible.

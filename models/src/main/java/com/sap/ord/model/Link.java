@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "url",
     "description"
 })
-public class Link {
+public class Link implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * Human readable title of the link.

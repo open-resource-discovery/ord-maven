@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "customType",
     "customDescription"
 })
-public class AccessStrategy {
+public class AccessStrategy implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * Defines the authentication/authorization strategy through which the referenced `resourceDefinitions` are accessible.

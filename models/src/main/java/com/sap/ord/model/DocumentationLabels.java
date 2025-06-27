@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
 
 })
-public class DocumentationLabels {
+public class DocumentationLabels implements com.sap.ord.service.hooks.PartialOrdPojo {
 
 
     @Override

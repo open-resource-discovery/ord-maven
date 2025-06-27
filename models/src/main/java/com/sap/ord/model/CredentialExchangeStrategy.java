@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "customDescription",
     "callbackUrl"
 })
-public class CredentialExchangeStrategy {
+public class CredentialExchangeStrategy implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * The type of credential exchange strategy.

@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "title",
     "description"
 })
-public class GroupType {
+public class GroupType implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * GroupType ID, which MUST be a valid [Concept ID](../../spec-v1/#concept-id).

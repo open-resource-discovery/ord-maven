@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "eventType"
 })
-public class EventResourceIntegrationAspectSubset {
+public class EventResourceIntegrationAspectSubset implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * The type ID of the individual event or message.

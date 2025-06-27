@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "url",
     "accessStrategies"
 })
-public class ApiResourceDefinition {
+public class ApiResourceDefinition implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * Type of the API Resource Definition
