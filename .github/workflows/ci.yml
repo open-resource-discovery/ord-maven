@@ -32,6 +32,12 @@ jobs:
           node-version: '18'
           cache: 'npm'
           cache-dependency-path: ord-spec/package-lock.json
+      
+      - name: Ensure sed is installed
+        run: |
+          if ! command -v sed &> /dev/null; then
+            sudo apt-get update && sudo apt-get install -y sed
+          fi
 
       - name: Install ORD-Spec npm dependencies
         run: npm ci
@@ -70,6 +76,12 @@ jobs:
             --package com.sap.ord.model \
             --generate-constructors \
             --generate-builders
+
+      - name: Patch generated POJOs to implement PartialOrdPojo
+        run: |
+          # add marker interface to every generated class
+          find java/models/src/main/java/com/sap/ord/model -name '*.java' \
+            -exec sed -i 's/public class \([A-Za-z0-9_]*\) {/public class \1 implements com.sap.ord.service.hooks.PartialOrdPojo {/g' {} \;
 
       - name: Create annotations/pom.xml
         run: |
