@@ -236,10 +236,6 @@ jobs:
           rm -rf ord-spec
           rm -rf java
 
-      - name: Generate or update files
-        run: |
-          echo "Last updated: $(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> timestamp.txt
-
       - name: Create or update pull request for generated sources
         id: cpr
         uses: peter-evans/create-pull-request@v7
@@ -253,11 +249,10 @@ jobs:
             - models/src/main/java
 
             Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
-          base: feat/ci-automerge
+          base: main
           add-paths: |
             annotations/**
             models/**
-            timestamp.txt
           token: ${{ secrets.GH_AUTOMERGE_PAT }}
           delete-branch: false
 
