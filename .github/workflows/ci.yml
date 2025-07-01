@@ -108,6 +108,7 @@ jobs:
                     <target>${maven.compiler.target}</target>
                 </configuration>
               </plugin>
+
                <plugin>
                   <groupId>org.codehaus.mojo</groupId>
                   <artifactId>build-helper-maven-plugin</artifactId>
@@ -235,6 +236,10 @@ jobs:
           rm -rf ord-spec
           rm -rf java
 
+      - name: Generate or update files
+        run: |
+          echo "Last updated: $(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> timestamp.txt
+
       - name: Create or update pull request for generated sources
         id: cpr
         uses: peter-evans/create-pull-request@v7
@@ -248,9 +253,18 @@ jobs:
             - models/src/main/java
 
             Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
-          base: main
+          base: feat/ci-automerge
           add-paths: |
             annotations/**
             models/**
-          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+            timestamp.txt
+          token: ${{ secrets.GITHUB_TOKEN }}
           delete-branch: false
+
+      - name: Enable GitHub Auto-Merge
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
