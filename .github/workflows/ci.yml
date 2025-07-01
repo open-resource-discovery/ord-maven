@@ -108,6 +108,7 @@ jobs:
                     <target>${maven.compiler.target}</target>
                 </configuration>
               </plugin>
+
                <plugin>
                   <groupId>org.codehaus.mojo</groupId>
                   <artifactId>build-helper-maven-plugin</artifactId>
@@ -252,5 +253,13 @@ jobs:
           add-paths: |
             annotations/**
             models/**
-          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          token: ${{ secrets.GH_AUTOMERGE_PAT }}
           delete-branch: false
+
+      - name: Enable GitHub Auto-Merge
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ secrets.GH_AUTOMERGE_PAT }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
