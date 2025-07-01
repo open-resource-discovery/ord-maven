@@ -258,13 +258,13 @@ jobs:
             annotations/**
             models/**
             timestamp.txt
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_AUTOMERGE_PAT }}
           delete-branch: false
 
       - name: Enable GitHub Auto-Merge
         if: steps.cpr.outputs.pull-request-number != ''
         uses: peter-evans/enable-pull-request-automerge@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_AUTOMERGE_PAT }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: squash
