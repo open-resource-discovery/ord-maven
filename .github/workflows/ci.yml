@@ -168,32 +168,6 @@ jobs:
             <artifactId>ord-models</artifactId>
             <name>ORD Java Models</name>
 
-            <repositories>
-                <repository>
-                    <id>central</id>
-                    <name>Maven Central Repository</name>
-                    <url>https://repo.maven.apache.org/maven2/</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                </repository>
-
-                <repository>
-                    <id>annotations-milestones</id>
-                    <name>Milestones Repository</name>
-                    <url>https://int.repositories.cloud.sap/artifactory/deploy-milestones</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                    <snapshots>
-                        <enabled>true</enabled>
-                    </snapshots>
-                </repository>
-            </repositories>
-
              <properties>
               <maven.compiler.source>1.8</maven.compiler.source>
               <maven.compiler.target>1.8</maven.compiler.target>
@@ -291,9 +265,17 @@ jobs:
             - models/src/main/java
 
             Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
-          base: feat/add-ord-pojo-hook-api
+          base: main
           add-paths: |
             annotations/**
             models/**
-          token: ${{ secrets.GH_WORKFLOW_TOKEN }}
+          token: ${{ secrets.GH_AUTOMERGE_PAT }}
           delete-branch: false
+
+      - name: Enable GitHub Auto-Merge
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ secrets.GH_AUTOMERGE_PAT }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
