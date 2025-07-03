@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "ordId",
     "defaultEntryPoint"
 })
-public class ConsumptionBundleReference {
+public class ConsumptionBundleReference implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * The consumption bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to.

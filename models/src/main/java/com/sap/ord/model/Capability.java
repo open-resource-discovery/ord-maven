@@ -46,7 +46,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "documentationLabels",
     "systemInstanceAware"
 })
-public class Capability {
+public class Capability implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

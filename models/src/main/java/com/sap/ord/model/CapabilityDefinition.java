@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "url",
     "accessStrategies"
 })
-public class CapabilityDefinition {
+public class CapabilityDefinition implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * Type of the capability resource definition

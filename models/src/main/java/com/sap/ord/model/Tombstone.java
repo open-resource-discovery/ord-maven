@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "removalDate",
     "description"
 })
-public class Tombstone {
+public class Tombstone implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * [ORD ID](../index.md#ord-id) of the ORD resource/taxonomy that has been removed.

@@ -9,6 +9,32 @@
   <packaging>pom</packaging>
   <name>ORD Java Root</name>
 
+  <repositories>
+      <repository>
+          <id>central</id>
+          <name>Maven Central Repository</name>
+          <url>https://repo.maven.apache.org/maven2/</url>
+          <releases>
+              <enabled>true</enabled>
+          </releases>
+          <snapshots>
+              <enabled>false</enabled>
+          </snapshots>
+      </repository>
+
+      <repository>
+          <id>annotations-milestones</id>
+          <name>Milestones Repository</name>
+          <url>https://int.repositories.cloud.sap/artifactory/deploy-milestones</url>
+          <releases>
+              <enabled>true</enabled>
+          </releases>
+          <snapshots>
+              <enabled>true</enabled>
+          </snapshots>
+      </repository>
+  </repositories>
+
   <modules>
     <module>annotations</module>
     <module>models</module>

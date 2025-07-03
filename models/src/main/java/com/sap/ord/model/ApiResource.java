@@ -78,7 +78,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "policyLevels",
     "systemInstanceAware"
 })
-public class ApiResource {
+public class ApiResource implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "customType",
     "url"
 })
-public class DataProductLink {
+public class DataProductLink implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * 

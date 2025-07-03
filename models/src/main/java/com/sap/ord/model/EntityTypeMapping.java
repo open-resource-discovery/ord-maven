@@ -44,7 +44,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "apiModelSelectors",
     "entityTypeTargets"
 })
-public class EntityTypeMapping {
+public class EntityTypeMapping implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * List of selectors for API models within an API Resource.

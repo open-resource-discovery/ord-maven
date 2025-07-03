@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "url",
     "accessStrategies"
 })
-public class EventResourceDefinition {
+public class EventResourceDefinition implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * Type of the event resource definition

@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "apiResources",
     "eventResources"
 })
-public class IntegrationAspect {
+public class IntegrationAspect implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * Human-readable title.

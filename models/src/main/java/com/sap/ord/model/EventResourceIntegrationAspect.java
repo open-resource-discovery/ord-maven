@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "subset",
     "systemTypeRestriction"
 })
-public class EventResourceIntegrationAspect {
+public class EventResourceIntegrationAspect implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
