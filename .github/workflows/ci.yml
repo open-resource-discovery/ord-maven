@@ -84,7 +84,7 @@ jobs:
             <parent>
                <groupId>com.sap.ord</groupId>
                <artifactId>annotations</artifactId>
-               <version>1.0.0</version>
+               <version>1.0.1</version>
             </parent>
 
             <artifactId>ord-annotations</artifactId>
@@ -151,7 +151,7 @@ jobs:
             <parent>
               <groupId>com.sap.ord</groupId>
               <artifactId>annotations</artifactId>
-              <version>1.0.0</version>
+              <version>1.0.1</version>
             </parent>
 
             <artifactId>ord-models</artifactId>
