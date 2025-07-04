@@ -8,8 +8,10 @@ target/
 .mvn/wrapper/maven-wrapper.properties
 
 # VS Code
-.idea/
+.idea
+*.iws
 *.iml
+*.ipr
 .vscode/
 
 # Logs
