@@ -3,6 +3,7 @@ package com.sap.ord.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -23,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "documentationLabels",
     "tags"
 })
+@Generated("jsonschema2pojo")
 public class SystemType implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -99,41 +101,6 @@ public class SystemType implements com.sap.ord.service.hooks.PartialOrdPojo {
     @JsonProperty("tags")
     @JsonPropertyDescription("List of free text style tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\nTags that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
     private List<String> tags = new ArrayList<String>();
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public SystemType() {
-    }
-
-    /**
-     * 
-     * @param correlationIds
-     *     Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
-     *     
-     *     They express an "identity" / "equals" / "mappable" relationship to the target ID.
-     *     
-     *     If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
-     *     
-     *     MUST be a valid [Correlation ID](../index.md#correlation-id).
-     * @param systemNamespace
-     *     The system namespace is a unique identifier for the system type.
-     *     It is used to reference the system type in the ORD.
-     * @param tags
-     *     List of free text style tags.
-     *     No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
-     *     
-     *     Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains.
-     */
-    public SystemType(String systemNamespace, List<String> correlationIds, Labels labels, DocumentationLabels documentationLabels, List<String> tags) {
-        super();
-        this.systemNamespace = systemNamespace;
-        this.correlationIds = correlationIds;
-        this.labels = labels;
-        this.documentationLabels = documentationLabels;
-        this.tags = tags;
-    }
 
     /**
      * The system namespace is a unique identifier for the system type.

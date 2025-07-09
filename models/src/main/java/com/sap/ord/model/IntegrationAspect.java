@@ -3,6 +3,7 @@ package com.sap.ord.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -30,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "apiResources",
     "eventResources"
 })
+@Generated("jsonschema2pojo")
 public class IntegrationAspect implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -83,45 +85,6 @@ public class IntegrationAspect implements com.sap.ord.service.hooks.PartialOrdPo
     @JsonProperty("eventResources")
     @JsonPropertyDescription("List of Event Resource Dependencies.")
     private List<EventResourceIntegrationAspect> eventResources = new ArrayList<EventResourceIntegrationAspect>();
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public IntegrationAspect() {
-    }
-
-    /**
-     * 
-     * @param apiResources
-     *     List of API Resource Dependencies.
-     * @param description
-     *     Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     *     
-     *     The description SHOULD not be excessive in length and is not meant to provide full documentation.
-     *     Detailed documentation SHOULD be attached as (typed) links.
-     * @param title
-     *     Human-readable title.
-     *     
-     *     MUST NOT exceed 255 chars.
-     *     MUST NOT contain line breaks.
-     * @param mandatory
-     *     If true, the aspect is mandatory to realize the Integration Dependency it contains.
-     * @param eventResources
-     *     List of Event Resource Dependencies.
-     * @param supportMultipleProviders
-     *     If true, the references resources can be provided by multiple system instances.
-     *     If not, only one integration target is supported.
-     */
-    public IntegrationAspect(String title, String description, Boolean mandatory, Boolean supportMultipleProviders, List<ApiResourceIntegrationAspect> apiResources, List<EventResourceIntegrationAspect> eventResources) {
-        super();
-        this.title = title;
-        this.description = description;
-        this.mandatory = mandatory;
-        this.supportMultipleProviders = supportMultipleProviders;
-        this.apiResources = apiResources;
-        this.eventResources = eventResources;
-    }
 
     /**
      * Human-readable title.

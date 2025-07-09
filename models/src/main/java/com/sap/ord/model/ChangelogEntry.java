@@ -2,6 +2,7 @@
 package com.sap.ord.model;
 
 import java.net.URI;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -23,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "description",
     "url"
 })
+@Generated("jsonschema2pojo")
 public class ChangelogEntry implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -73,45 +75,6 @@ public class ChangelogEntry implements com.sap.ord.service.hooks.PartialOrdPojo 
     @JsonProperty("url")
     @JsonPropertyDescription("Optional [URL](https://tools.ietf.org/html/rfc3986) that links to a more detailed changelog entry.\n\nThe link target MUST be absolute and SHOULD be openly accessible.")
     private URI url;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public ChangelogEntry() {
-    }
-
-    /**
-     * 
-     * @param date
-     *     Date of change, without time or timezone information.
-     *     
-     *     The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
-     * @param releaseStatus
-     *     The `releaseStatus` specifies the stability of the resource and its external contract.
-     * @param description
-     *     Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     *     
-     *     The description SHOULD not be excessive in length and is not meant to provide full documentation.
-     *     Detailed documentation SHOULD be attached as (typed) links.
-     * @param version
-     *     Full version number that corresponds to the `version` that is described by the changelog entry.
-     *     
-     *     Ideally it follows the [Semantic Versioning 2.0.0](https://semver.org/) standard,
-     *     but since it should reflect the actual version string / scheme used, this is not a mandatory requirement.
-     * @param url
-     *     Optional [URL](https://tools.ietf.org/html/rfc3986) that links to a more detailed changelog entry.
-     *     
-     *     The link target MUST be absolute and SHOULD be openly accessible.
-     */
-    public ChangelogEntry(String version, String releaseStatus, String date, String description, URI url) {
-        super();
-        this.version = version;
-        this.releaseStatus = releaseStatus;
-        this.date = date;
-        this.description = description;
-        this.url = url;
-    }
 
     /**
      * Full version number that corresponds to the `version` that is described by the changelog entry.

@@ -3,6 +3,7 @@ package com.sap.ord.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -26,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "documentationLabels",
     "tags"
 })
+@Generated("jsonschema2pojo")
 public class SystemInstance implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -116,51 +118,6 @@ public class SystemInstance implements com.sap.ord.service.hooks.PartialOrdPojo 
     @JsonProperty("tags")
     @JsonPropertyDescription("List of free text style tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\nTags that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
     private List<String> tags = new ArrayList<String>();
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public SystemInstance() {
-    }
-
-    /**
-     * 
-     * @param baseUrl
-     *     Optional [base URL](../index.md#def-base-url) of the **system instance**.
-     *     By providing the base URL, relative URLs in the document are resolved relative to it.
-     *     
-     *     The `baseUrl` MUST not contain a leading slash.
-     *     
-     *     MUST be provided if the base URL is not known to the ORD aggregators.
-     *     MUST be provided when the document needs to be fully self contained, e.g. when used for manual imports.
-     * @param correlationIds
-     *     Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
-     *     
-     *     They express an "identity" / "equals" / "mappable" relationship to the target ID.
-     *     
-     *     If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
-     *     
-     *     MUST be a valid [Correlation ID](../index.md#correlation-id).
-     * @param localId
-     *     Optional local ID for the system instance, as known by the described system.
-     *     
-     *     In case of multi-tenant systems, it is equivalent to the local tenant id.
-     * @param tags
-     *     List of free text style tags.
-     *     No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
-     *     
-     *     Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains.
-     */
-    public SystemInstance(String baseUrl, String localId, List<String> correlationIds, Labels labels, DocumentationLabels documentationLabels, List<String> tags) {
-        super();
-        this.baseUrl = baseUrl;
-        this.localId = localId;
-        this.correlationIds = correlationIds;
-        this.labels = labels;
-        this.documentationLabels = documentationLabels;
-        this.tags = tags;
-    }
 
     /**
      * Optional [base URL](../index.md#def-base-url) of the **system instance**.

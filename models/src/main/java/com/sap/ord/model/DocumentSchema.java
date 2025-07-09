@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -47,6 +48,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "groupTypes",
     "tombstones"
 })
+@Generated("jsonschema2pojo")
 public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -233,106 +235,6 @@ public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo 
     @JsonProperty("tombstones")
     @JsonPropertyDescription("List of ORD information (resources or taxonomy) that have been \"tombstoned\"/removed.\nThis MUST be indicated explicitly, so that ORD aggregators and consumers can learn about the removal.\n\nA tombstone entry MAY be removed after a grace period of 31 days.")
     private List<Tombstone> tombstones = new ArrayList<Tombstone>();
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public DocumentSchema() {
-    }
-
-    /**
-     * 
-     * @param openResourceDiscovery
-     *     Version of the Open Resource Discovery specification that is used to describe this document.
-     * @param describedSystemInstance
-     *     Information on the [system instance](../index.md#def-system-instance) that this ORD document describes.
-     * @param groupTypes
-     *     Array of all Group Types that are described in this ORD document.
-     * @param capabilities
-     *     Array of all capabilities that are described in this ORD document.
-     * @param $schema
-     *     Optional [URL](https://tools.ietf.org/html/rfc3986) to the Open Resource Discovery document schema (defined as a JSON Schema).
-     *     If provided, this enables code intelligence and validation in supported editors (like VSCode) and tools.
-     * @param integrationDependencies
-     *     Array of all integration dependencies that are described in this ORD document.
-     * @param description
-     *     Optional description of the ORD document itself.
-     *     Please note that this information is NOT further processed or considered by an ORD aggregator.
-     *     
-     *     Notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     * @param dataProducts
-     *     Array of all data products that are described in this ORD document.
-     * @param groups
-     *     Array of all Groups that are described in this ORD document.
-     * @param consumptionBundles
-     *     Array of all Consumption Bundles that are described in this ORD document.
-     * @param customPolicyLevel
-     *     If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided.
-     *     The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
-     *     
-     *     MUST only be provided if `policyLevel` is set to `custom`.
-     *     MUST be a valid [Specification ID](../index.md#specification-id).
-     * @param packages
-     *     Array of all Packages that are described in this ORD document.
-     * @param describedSystemVersion
-     *     Information on the [system version](../index.md#def-system-version) that this ORD document describes.
-     * @param policyLevels
-     *     A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.
-     *     For each chosen policy level, additional expectations and validations rules will be applied.
-     *     
-     *     Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
-     *     
-     *     A policy level MUST be a valid [Specification ID](../index.md#specification-id).
-     * @param eventResources
-     *     Array of all event resources that are described in this ORD document.
-     * @param products
-     *     Array of all Products that are described in this ORD document.
-     * @param policyLevel
-     *     The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with.
-     *     Depending on the chosen policy level, additional expectations and validations rules will be applied.
-     *     
-     *     The policy level can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
-     *     .
-     * @param tombstones
-     *     List of ORD information (resources or taxonomy) that have been "tombstoned"/removed.
-     *     This MUST be indicated explicitly, so that ORD aggregators and consumers can learn about the removal.
-     *     
-     *     A tombstone entry MAY be removed after a grace period of 31 days.
-     * @param apiResources
-     *     Array of all API Resources that are described in this ORD document.
-     * @param entityTypes
-     *     Array of all entity types that are described in this ORD document.
-     * @param describedSystemType
-     *     Information on the [system type](../index.md#def-system-type) that this ORD document describes.
-     * @param vendors
-     *     Array of all Vendors that are described in this ORD document.
-     */
-    public DocumentSchema(String $schema, DocumentSchema.OpenResourceDiscovery openResourceDiscovery, String description, SystemInstance describedSystemInstance, SystemType describedSystemType, SystemVersion describedSystemVersion, String policyLevel, String customPolicyLevel, List<String> policyLevels, List<ApiResource> apiResources, List<EventResource> eventResources, List<EntityType> entityTypes, List<Capability> capabilities, List<DataProduct> dataProducts, List<IntegrationDependency> integrationDependencies, List<Vendor> vendors, List<Product> products, List<Package> packages, List<ConsumptionBundle> consumptionBundles, List<Group> groups, List<GroupType> groupTypes, List<Tombstone> tombstones) {
-        super();
-        this.$schema = $schema;
-        this.openResourceDiscovery = openResourceDiscovery;
-        this.description = description;
-        this.describedSystemInstance = describedSystemInstance;
-        this.describedSystemType = describedSystemType;
-        this.describedSystemVersion = describedSystemVersion;
-        this.policyLevel = policyLevel;
-        this.customPolicyLevel = customPolicyLevel;
-        this.policyLevels = policyLevels;
-        this.apiResources = apiResources;
-        this.eventResources = eventResources;
-        this.entityTypes = entityTypes;
-        this.capabilities = capabilities;
-        this.dataProducts = dataProducts;
-        this.integrationDependencies = integrationDependencies;
-        this.vendors = vendors;
-        this.products = products;
-        this.packages = packages;
-        this.consumptionBundles = consumptionBundles;
-        this.groups = groups;
-        this.groupTypes = groupTypes;
-        this.tombstones = tombstones;
-    }
 
     /**
      * Optional [URL](https://tools.ietf.org/html/rfc3986) to the Open Resource Discovery document schema (defined as a JSON Schema).
@@ -1045,6 +947,7 @@ public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo 
      * Version of the Open Resource Discovery specification that is used to describe this document.
      * 
      */
+    @Generated("jsonschema2pojo")
     public enum OpenResourceDiscovery {
 
         _1_0("1.0"),

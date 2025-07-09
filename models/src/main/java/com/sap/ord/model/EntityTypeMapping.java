@@ -3,6 +3,7 @@ package com.sap.ord.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -44,6 +45,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "apiModelSelectors",
     "entityTypeTargets"
 })
+@Generated("jsonschema2pojo")
 public class EntityTypeMapping implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -74,39 +76,6 @@ public class EntityTypeMapping implements com.sap.ord.service.hooks.PartialOrdPo
     @JsonProperty("entityTypeTargets")
     @JsonPropertyDescription("List of entity types the ORD resource maps to.\nIf `apiModelSelectors` are given, the mapping is more precise by also pointing to the specific model in the API.\n\nIf multiple entity types are defined as the mapping target,\nall of them can be at least partially mapped to the source API model(s).\n\nEntity types can be referenced using either using an [ORD ID](../../spec-v1/#ord-id) or a [Correlation ID](../../spec-v1/#correlation-id).")
     private List<Object> entityTypeTargets = new ArrayList<Object>();
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public EntityTypeMapping() {
-    }
-
-    /**
-     * 
-     * @param apiModelSelectors
-     *     List of selectors for API models within an API Resource.
-     *     If multiple selectors are given, every selected API model maps to the entity type target(s).
-     *     If omitted, the complete API resource will be mapped to the `entityTypeTargets` (less specific).
-     *     
-     *     Multiple selectors can be useful, e.g. with a CRUD REST API, to combine the similar API models.
-     *     
-     *     Depending on the chosen API protocol and the available resource definition formats,
-     *     different kind of selectors need to be used.
-     * @param entityTypeTargets
-     *     List of entity types the ORD resource maps to.
-     *     If `apiModelSelectors` are given, the mapping is more precise by also pointing to the specific model in the API.
-     *     
-     *     If multiple entity types are defined as the mapping target,
-     *     all of them can be at least partially mapped to the source API model(s).
-     *     
-     *     Entity types can be referenced using either using an [ORD ID](../../spec-v1/#ord-id) or a [Correlation ID](../../spec-v1/#correlation-id).
-     */
-    public EntityTypeMapping(List<Object> apiModelSelectors, List<Object> entityTypeTargets) {
-        super();
-        this.apiModelSelectors = apiModelSelectors;
-        this.entityTypeTargets = entityTypeTargets;
-    }
 
     /**
      * List of selectors for API models within an API Resource.

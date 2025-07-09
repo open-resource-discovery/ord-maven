@@ -43,73 +43,69 @@
       </resource>
     </resources>
 
-      <plugins>
+  <plugins>
+      <!-- 1. JSON schema -> POJO directly in src/main/java -->
+      <plugin>
+          <groupId>org.jsonschema2pojo</groupId>
+          <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+          <version>1.2.2</version>
+          <executions>
+              <execution>
+                  <id>generate-models</id>
+                  <phase>generate-sources</phase>
+                  <goals>
+                      <goal>generate</goal>
+                  </goals>
+              </execution>
+          </executions>
+          <configuration>
+              <sourceDirectory>${project.basedir}/static/spec-v1/interfaces</sourceDirectory>
+              <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+              <targetPackage>com.sap.ord.model</targetPackage>
+              <generateBuilders>true</generateBuilders>
+              <removeOldOutput>true</removeOldOutput>
+          </configuration>
+      </plugin>
 
-          <!-- 1. JSON schema -> POJO directly in src/main/java -->
-          <plugin>
-              <groupId>org.jsonschema2pojo</groupId>
-              <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-              <version>1.2.2</version>
-              <executions>
-                  <execution>
-                      <id>generate-models</id>
-                      <phase>generate-sources</phase>
-                      <goals>
-                          <goal>generate</goal>
-                      </goals>
-                  </execution>
-              </executions>
-              <configuration>
-                  <sourceDirectory>${project.basedir}/static/spec-v1/interfaces</sourceDirectory>
-                  <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-                  <targetPackage>com.sap.ord.model</targetPackage>
-                  <generateBuilders>true</generateBuilders>
-                  <removeOldOutput>true</removeOldOutput>
-              </configuration>
-          </plugin>
+      <!-- 2. Patch all generated POJOs to implements PartialOrdPojo -->
+      <plugin>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <version>3.1.0</version>
+          <executions>
+              <execution>
+                  <id>patch-partial-interface</id>
+                  <phase>generate-sources</phase>
+                  <goals>
+                      <goal>run</goal>
+                  </goals>
+                  <configuration>
+                      <target>
+                          <replaceregexp byline="true" flags="g">
+                              <!-- all generated POJOs -->
+                              <fileset dir="${project.basedir}/src/main/java/com/sap/ord/model">
+                                  <include name="**/*.java"/>
+                              </fileset>
+                              <!-- Search pattern -->
+                              <regexp pattern="public class ([A-Za-z0-9_]+) \{" />
+                              <!-- Inserting the interface -->
+                              <substitution expression="public class \1 implements com.sap.ord.service.hooks.PartialOrdPojo {" />
+                          </replaceregexp>
+                      </target>
+                  </configuration>
+              </execution>
+          </executions>
+      </plugin>
 
-          <!-- 2. Patch all generated POJOs to implements PartialOrdPojo -->
-          <plugin>
-              <artifactId>maven-antrun-plugin</artifactId>
-              <version>3.1.0</version>
-              <executions>
-                  <execution>
-                      <id>patch-partial-interface</id>
-                      <phase>generate-sources</phase>
-                      <goals>
-                          <goal>run</goal>
-                      </goals>
-                      <configuration>
-                          <target>
-                              <replaceregexp byline="true" flags="g">
-                                  <!-- all generated POJOs -->
-                                  <fileset dir="${project.basedir}/src/main/java/com/sap/ord/model">
-                                      <include name="**/*.java"/>
-                                  </fileset>
-                                  <!-- Search pattern -->
-                                  <regexp pattern="public class ([A-Za-z0-9_]+) \{" />
-                                  <!-- Inserting the interface -->
-                                  <substitution expression="public class \1 implements com.sap.ord.service.hooks.PartialOrdPojo {" />
-                              </replaceregexp>
-                          </target>
-                      </configuration>
-                  </execution>
-              </executions>
-          </plugin>
-
-
-
-          <!-- 3. Java-Compiler -->
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-compiler-plugin</artifactId>
-              <version>3.10.1</version>
-              <configuration>
-                  <source>${maven.compiler.source}</source>
-                  <target>${maven.compiler.target}</target>
-              </configuration>
-          </plugin>
-
-      </plugins>
+      <!-- 3. Java-Compiler -->
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.10.1</version>
+          <configuration>
+              <source>${maven.compiler.source}</source>
+              <target>${maven.compiler.target}</target>
+          </configuration>
+      </plugin>
+  </plugins>
   </build>
 </project>

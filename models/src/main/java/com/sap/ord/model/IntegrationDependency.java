@@ -4,6 +4,7 @@ package com.sap.ord.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -58,6 +59,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "labels",
     "documentationLabels"
 })
+@Generated("jsonschema2pojo")
 public class IntegrationDependency implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -316,152 +318,6 @@ public class IntegrationDependency implements com.sap.ord.service.hooks.PartialO
     @JsonProperty("documentationLabels")
     @JsonPropertyDescription("Generic documentation labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of [CommonMark](https://spec.commonmark.org/) (Markdown) text.\n\nDocumentation Labels can be used to attach human readable documentation that cannot be expressed natively in ORD.\nA documentation tool (like an API Catalog) can use the documentation labels to provide generic documentation \"snippets\".\nDue to the given structure they can be displayed e.g. as tables.\n\nThe key of the documentation Label is plain-text (MUST not contain line breaks) and denotes the subject matter that is described.\nThe values (multiple can be provided for the same key) are [CommonMark](https://spec.commonmark.org/) (Markdown) text\nwhich describes the subject matter or lists options for the key.\n\nIn contrast to regular labels, documentation labels are not meant to be used to categorize or query information.")
     private DocumentationLabels documentationLabels;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public IntegrationDependency() {
-    }
-
-    /**
-     * 
-     * @param visibility
-     *     The visibility states who is allowed to "see" the described resource or capability.
-     * @param successors
-     *     The successor resource(s).
-     *     
-     *     MUST be a valid reference to an ORD ID.
-     *     
-     *     If the `releaseStatus` is set to `deprecated`, `successors` MUST be provided if one exists.
-     *     If `successors` is given, the described resource SHOULD set its `releaseStatus` to `deprecated`.
-     * @param aspects
-     *     List of integration aspects that make up the Integration Dependency.
-     *     
-     *     Each aspect listed is a dedicated, constituent part (AND condition).
-     * @param description
-     *     Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     *     
-     *     The description SHOULD not be excessive in length and is not meant to provide full documentation.
-     *     Detailed documentation SHOULD be attached as (typed) links.
-     * @param partOfPackage
-     *     Defines which Package the resource is part of.
-     *     
-     *     MUST be a valid reference to a [Package](#package) ORD ID.
-     *     
-     *     Every resource MUST be part of one package.
-     * @param sunsetDate
-     *     The sunset date defines when the resource is scheduled to be decommissioned/removed.
-     *     
-     *     If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).
-     *     Once the sunset date is known and ready to be communicated externally, it MUST be provided here.
-     *     
-     *     The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
-     * @param shortDescription
-     *     Plain text short description.
-     *     
-     *     MUST NOT exceed 255 chars.
-     *     MUST NOT contain line breaks.
-     * @param relatedIntegrationDependencies
-     *     If an Integration Dependency conceptually belongs or related to another Integration Dependency, this can be indicated here.
-     *     One situation would be where two systems each have an Integration Dependency to describe a two-sided integration from each side.
-     * @param title
-     *     Human-readable title.
-     *     
-     *     MUST NOT exceed 255 chars.
-     *     MUST NOT contain line breaks.
-     * @param ordId
-     *     The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
-     *     
-     *     It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
-     * @param localId
-     *     The locally unique ID under which this resource can be looked up / resolved in the described system itself.
-     *     Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.
-     *     
-     *     It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID.
-     *     But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID.
-     * @param version
-     *     The complete [SemVer](https://semver.org/) version string.
-     *     
-     *     It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
-     *     It SHOULD be changed if the ORD information or referenced resource definitions changed.
-     *     It SHOULD express minor and patch changes that don't lead to incompatible changes.
-     *     
-     *     When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
-     *     In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
-     *     
-     *     If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
-     *     The `version` MUST not be bumped for changes in extensions.
-     *     
-     *     The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
-     *     
-     *     Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     *     For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
-     * @param mandatory
-     *     If true, the Integration Dependency is mandatory for the described system to function.
-     * @param partOfGroups
-     *     Defines which groups the resource is assigned to.
-     *     
-     *     The property is optional, but if given the value MUST be an array of valid Group IDs.
-     *     
-     *     Groups are a lightweight custom taxonomy concept.
-     *     They express a "part of" relationship to the chosen group concept.
-     *     If an "identity / equals" relationship needs to be expressed, use the `correlationIds` instead.
-     *     
-     *     All resources that share the same group ID assignment are effectively grouped together.
-     * @param tags
-     *     List of free text style tags.
-     *     No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
-     *     
-     *     Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains.
-     * @param correlationIds
-     *     Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
-     *     
-     *     They express an "identity" / "equals" / "mappable" relationship to the target ID.
-     *     
-     *     If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
-     *     
-     *     MUST be a valid [Correlation ID](../index.md#correlation-id).
-     * @param lastUpdate
-     *     Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.
-     *     
-     *     The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
-     *     
-     *     When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time.
-     *     Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.
-     *     
-     *     If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.
-     *     
-     *     Together with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
-     * @param releaseStatus
-     *     The `releaseStatus` specifies the stability of the resource and its external contract.
-     * @param links
-     *     Generic Links with arbitrary meaning and content.
-     */
-    public IntegrationDependency(String ordId, String localId, List<String> correlationIds, String title, String shortDescription, String description, String partOfPackage, List<String> partOfGroups, String version, Date lastUpdate, String visibility, String releaseStatus, Date sunsetDate, List<String> successors, Boolean mandatory, List<IntegrationAspect> aspects, List<String> relatedIntegrationDependencies, List<Link> links, List<String> tags, Labels labels, DocumentationLabels documentationLabels) {
-        super();
-        this.ordId = ordId;
-        this.localId = localId;
-        this.correlationIds = correlationIds;
-        this.title = title;
-        this.shortDescription = shortDescription;
-        this.description = description;
-        this.partOfPackage = partOfPackage;
-        this.partOfGroups = partOfGroups;
-        this.version = version;
-        this.lastUpdate = lastUpdate;
-        this.visibility = visibility;
-        this.releaseStatus = releaseStatus;
-        this.sunsetDate = sunsetDate;
-        this.successors = successors;
-        this.mandatory = mandatory;
-        this.aspects = aspects;
-        this.relatedIntegrationDependencies = relatedIntegrationDependencies;
-        this.links = links;
-        this.tags = tags;
-        this.labels = labels;
-        this.documentationLabels = documentationLabels;
-    }
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

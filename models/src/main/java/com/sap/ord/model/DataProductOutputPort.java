@@ -1,6 +1,7 @@
 
 package com.sap.ord.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "ordId"
 })
+@Generated("jsonschema2pojo")
 public class DataProductOutputPort implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -34,25 +36,6 @@ public class DataProductOutputPort implements com.sap.ord.service.hooks.PartialO
     @JsonProperty("ordId")
     @JsonPropertyDescription("The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.")
     private String ordId;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public DataProductOutputPort() {
-    }
-
-    /**
-     * 
-     * @param ordId
-     *     The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
-     *     
-     *     It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
-     */
-    public DataProductOutputPort(String ordId) {
-        super();
-        this.ordId = ordId;
-    }
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

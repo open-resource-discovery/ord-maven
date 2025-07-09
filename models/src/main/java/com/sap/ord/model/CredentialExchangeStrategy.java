@@ -2,6 +2,7 @@
 package com.sap.ord.model;
 
 import java.net.URI;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -28,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "customDescription",
     "callbackUrl"
 })
+@Generated("jsonschema2pojo")
 public class CredentialExchangeStrategy implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -74,47 +76,6 @@ public class CredentialExchangeStrategy implements com.sap.ord.service.hooks.Par
     @JsonProperty("callbackUrl")
     @JsonPropertyDescription("[URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the credential exchange callback endpoint.\n\nThis allows requesting a set of credentials that can be used for consuming all the APIs and Events that are part of the bundle.\n\nThe interface contract/protocol is dependent and defined by the chosen `type`.\n\nWhenever a client wants to consume a resource within a particular bundle, this endpoint can be called to obtain the credentials that this client can use.\n\nThe returned credentials MUST be valid for all resources that are part of the respective bundle.\nThe endpoint SHOULD return a different set of credentials on each invocation.")
     private URI callbackUrl;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public CredentialExchangeStrategy() {
-    }
-
-    /**
-     * 
-     * @param customType
-     *     If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
-     *     
-     *     MUST be a valid [Specification ID](../index.md#specification-id).
-     *     
-     *     MUST only be provided if `type` is set to `custom`.
-     * @param customDescription
-     *     Human-readable description about how the credential exchange is achieved, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     *     
-     *     MUST only be provided if `type` is set to `custom`.
-     * @param callbackUrl
-     *     [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the credential exchange callback endpoint.
-     *     
-     *     This allows requesting a set of credentials that can be used for consuming all the APIs and Events that are part of the bundle.
-     *     
-     *     The interface contract/protocol is dependent and defined by the chosen `type`.
-     *     
-     *     Whenever a client wants to consume a resource within a particular bundle, this endpoint can be called to obtain the credentials that this client can use.
-     *     
-     *     The returned credentials MUST be valid for all resources that are part of the respective bundle.
-     *     The endpoint SHOULD return a different set of credentials on each invocation.
-     * @param type
-     *     The type of credential exchange strategy.
-     */
-    public CredentialExchangeStrategy(String type, String customType, String customDescription, URI callbackUrl) {
-        super();
-        this.type = type;
-        this.customType = customType;
-        this.customDescription = customDescription;
-        this.callbackUrl = callbackUrl;
-    }
 
     /**
      * The type of credential exchange strategy.

@@ -1,6 +1,12 @@
 
 package com.sap.ord.model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -24,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "title",
     "description"
 })
+@Generated("jsonschema2pojo")
 public class GroupType implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -52,32 +59,8 @@ public class GroupType implements com.sap.ord.service.hooks.PartialOrdPojo {
     @JsonProperty("description")
     @JsonPropertyDescription("Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.")
     private String description;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public GroupType() {
-    }
-
-    /**
-     * 
-     * @param groupTypeId
-     *     GroupType ID, which MUST be a valid [Concept ID](../../spec-v1/#concept-id).
-     * @param description
-     *     Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     *     
-     *     The description SHOULD not be excessive in length and is not meant to provide full documentation.
-     *     Detailed documentation SHOULD be attached as (typed) links.
-     * @param title
-     *     Human readable title of the group type.
-     */
-    public GroupType(String groupTypeId, String title, String description) {
-        super();
-        this.groupTypeId = groupTypeId;
-        this.title = title;
-        this.description = description;
-    }
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * GroupType ID, which MUST be a valid [Concept ID](../../spec-v1/#concept-id).
@@ -158,6 +141,21 @@ public class GroupType implements com.sap.ord.service.hooks.PartialOrdPojo {
         return this;
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
+    public GroupType withAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -174,6 +172,10 @@ public class GroupType implements com.sap.ord.service.hooks.PartialOrdPojo {
         sb.append('=');
         sb.append(((this.description == null)?"<null>":this.description));
         sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -187,6 +189,7 @@ public class GroupType implements com.sap.ord.service.hooks.PartialOrdPojo {
         int result = 1;
         result = ((result* 31)+((this.groupTypeId == null)? 0 :this.groupTypeId.hashCode()));
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
         return result;
     }
@@ -200,7 +203,7 @@ public class GroupType implements com.sap.ord.service.hooks.PartialOrdPojo {
             return false;
         }
         GroupType rhs = ((GroupType) other);
-        return ((((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))));
+        return (((((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))));
     }
 
 }

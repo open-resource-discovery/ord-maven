@@ -1,6 +1,12 @@
 
 package com.sap.ord.model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -26,6 +32,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "title",
     "description"
 })
+@Generated("jsonschema2pojo")
 public class Group implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -69,42 +76,8 @@ public class Group implements com.sap.ord.service.hooks.PartialOrdPojo {
     @JsonProperty("description")
     @JsonPropertyDescription("Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.")
     private String description;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Group() {
-    }
-
-    /**
-     * 
-     * @param groupId
-     *     The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.
-     *     
-     *     The first two fragments MUST be equal to the used Group Type ID (`groupTypeId`).
-     *     The last two fragments MUST be a valid [Concept ID](../../spec-v1/#concept-id), indicating the group instance assignment.
-     *     
-     *     The ID concept is a bit unusual, but it ensures globally unique and conflict free group assignments.
-     * @param groupTypeId
-     *     Group Type ID.
-     *     
-     *     MUST match with the first two fragments of the own `groupId`.
-     * @param description
-     *     Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     *     
-     *     The description SHOULD not be excessive in length and is not meant to provide full documentation.
-     *     Detailed documentation SHOULD be attached as (typed) links.
-     * @param title
-     *     Human readable title of the group assignment (for UI).
-     */
-    public Group(String groupId, String groupTypeId, String title, String description) {
-        super();
-        this.groupId = groupId;
-        this.groupTypeId = groupTypeId;
-        this.title = title;
-        this.description = description;
-    }
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.
@@ -224,6 +197,21 @@ public class Group implements com.sap.ord.service.hooks.PartialOrdPojo {
         return this;
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
+    public Group withAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -244,6 +232,10 @@ public class Group implements com.sap.ord.service.hooks.PartialOrdPojo {
         sb.append('=');
         sb.append(((this.description == null)?"<null>":this.description));
         sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -257,6 +249,7 @@ public class Group implements com.sap.ord.service.hooks.PartialOrdPojo {
         int result = 1;
         result = ((result* 31)+((this.groupTypeId == null)? 0 :this.groupTypeId.hashCode()));
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
         result = ((result* 31)+((this.groupId == null)? 0 :this.groupId.hashCode()));
         return result;
@@ -271,7 +264,7 @@ public class Group implements com.sap.ord.service.hooks.PartialOrdPojo {
             return false;
         }
         Group rhs = ((Group) other);
-        return (((((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.groupId == rhs.groupId)||((this.groupId!= null)&&this.groupId.equals(rhs.groupId))));
+        return ((((((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.groupId == rhs.groupId)||((this.groupId!= null)&&this.groupId.equals(rhs.groupId))));
     }
 
 }

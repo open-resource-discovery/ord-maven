@@ -2,6 +2,12 @@
 package com.sap.ord.model;
 
 import java.net.URI;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -21,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "url",
     "description"
 })
+@Generated("jsonschema2pojo")
 public class Link implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -50,33 +57,8 @@ public class Link implements com.sap.ord.service.hooks.PartialOrdPojo {
     @JsonProperty("description")
     @JsonPropertyDescription("Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown)")
     private String description;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Link() {
-    }
-
-    /**
-     * 
-     * @param description
-     *     Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     * @param title
-     *     Human readable title of the link.
-     *     
-     *     MUST be unique within the collection of links provided.
-     * @param url
-     *     [URL](https://tools.ietf.org/html/rfc3986) of the link.
-     *     
-     *     The link target MUST be absolute and SHOULD be openly accessible.
-     */
-    public Link(String title, URI url, String description) {
-        super();
-        this.title = title;
-        this.url = url;
-        this.description = description;
-    }
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * Human readable title of the link.
@@ -159,6 +141,21 @@ public class Link implements com.sap.ord.service.hooks.PartialOrdPojo {
         return this;
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
+    public Link withAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -175,6 +172,10 @@ public class Link implements com.sap.ord.service.hooks.PartialOrdPojo {
         sb.append('=');
         sb.append(((this.description == null)?"<null>":this.description));
         sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -187,6 +188,7 @@ public class Link implements com.sap.ord.service.hooks.PartialOrdPojo {
     public int hashCode() {
         int result = 1;
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
         result = ((result* 31)+((this.url == null)? 0 :this.url.hashCode()));
         return result;
@@ -201,7 +203,7 @@ public class Link implements com.sap.ord.service.hooks.PartialOrdPojo {
             return false;
         }
         Link rhs = ((Link) other);
-        return ((((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description)))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
+        return (((((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description)))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
     }
 
 }

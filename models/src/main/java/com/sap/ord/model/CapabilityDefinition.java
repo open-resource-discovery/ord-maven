@@ -3,6 +3,7 @@ package com.sap.ord.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -23,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "url",
     "accessStrategies"
 })
+@Generated("jsonschema2pojo")
 public class CapabilityDefinition implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -82,54 +84,6 @@ public class CapabilityDefinition implements com.sap.ord.service.hooks.PartialOr
     @JsonProperty("accessStrategies")
     @JsonPropertyDescription("List of supported access strategies for retrieving metadata from the ORD provider.\nAn ORD Consumer/ORD Aggregator MAY choose any of the strategies.\n\nThe access strategies only apply to the metadata access and not the actual API access.\nThe actual access to the APIs for clients is described via Consumption Bundles.\n\nIf this property is not provided, the definition URL will be available through the same access strategy as this ORD document.\nIt is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process.")
     private List<AccessStrategy> accessStrategies = new ArrayList<AccessStrategy>();
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public CapabilityDefinition() {
-    }
-
-    /**
-     * 
-     * @param accessStrategies
-     *     List of supported access strategies for retrieving metadata from the ORD provider.
-     *     An ORD Consumer/ORD Aggregator MAY choose any of the strategies.
-     *     
-     *     The access strategies only apply to the metadata access and not the actual API access.
-     *     The actual access to the APIs for clients is described via Consumption Bundles.
-     *     
-     *     If this property is not provided, the definition URL will be available through the same access strategy as this ORD document.
-     *     It is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process.
-     * @param customType
-     *     If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
-     *     
-     *     MUST be a valid [Specification ID](../index.md#specification-id).
-     *     
-     *     MUST only be provided if `type` is set to `custom`.
-     * @param mediaType
-     *     The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format.
-     *     A consuming application can use this information to know which file format parser it needs to use.
-     *     For example, for OpenAPI 3, it's valid to express the same definition in both YAML and JSON.
-     *     
-     *     If no Media Type is registered for the referenced file,
-     *     `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.
-     *     .
-     * @param type
-     *     Type of the capability resource definition.
-     * @param url
-     *     [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.
-     *     
-     *     It is RECOMMENDED to provide a relative URL (to base URL).
-     */
-    public CapabilityDefinition(String type, String customType, String mediaType, String url, List<AccessStrategy> accessStrategies) {
-        super();
-        this.type = type;
-        this.customType = customType;
-        this.mediaType = mediaType;
-        this.url = url;
-        this.accessStrategies = accessStrategies;
-    }
 
     /**
      * Type of the capability resource definition

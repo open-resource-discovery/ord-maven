@@ -3,6 +3,7 @@ package com.sap.ord.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -35,6 +36,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "labels",
     "documentationLabels"
 })
+@Generated("jsonschema2pojo")
 public class Vendor implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -122,46 +124,6 @@ public class Vendor implements com.sap.ord.service.hooks.PartialOrdPojo {
     @JsonProperty("documentationLabels")
     @JsonPropertyDescription("Generic documentation labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of [CommonMark](https://spec.commonmark.org/) (Markdown) text.\n\nDocumentation Labels can be used to attach human readable documentation that cannot be expressed natively in ORD.\nA documentation tool (like an API Catalog) can use the documentation labels to provide generic documentation \"snippets\".\nDue to the given structure they can be displayed e.g. as tables.\n\nThe key of the documentation Label is plain-text (MUST not contain line breaks) and denotes the subject matter that is described.\nThe values (multiple can be provided for the same key) are [CommonMark](https://spec.commonmark.org/) (Markdown) text\nwhich describes the subject matter or lists options for the key.\n\nIn contrast to regular labels, documentation labels are not meant to be used to categorize or query information.")
     private DocumentationLabels documentationLabels;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Vendor() {
-    }
-
-    /**
-     * 
-     * @param partners
-     *     Optional list of partner vendors, referenced through their ORD ID.
-     *     
-     *     MUST be a valid reference to a [Vendor](#vendor) ORD ID.
-     *     
-     *     This property can be used to indicate partnership relations between vendors.
-     * @param title
-     *     Human-readable title.
-     *     
-     *     MUST NOT exceed 255 chars.
-     *     MUST NOT contain line breaks.
-     * @param ordId
-     *     The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
-     *     
-     *     It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
-     * @param tags
-     *     List of free text style tags.
-     *     No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
-     *     
-     *     Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains.
-     */
-    public Vendor(String ordId, String title, List<String> partners, List<String> tags, Labels labels, DocumentationLabels documentationLabels) {
-        super();
-        this.ordId = ordId;
-        this.title = title;
-        this.partners = partners;
-        this.tags = tags;
-        this.labels = labels;
-        this.documentationLabels = documentationLabels;
-    }
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

@@ -1,6 +1,7 @@
 
 package com.sap.ord.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "ordId",
     "defaultEntryPoint"
 })
+@Generated("jsonschema2pojo")
 public class ConsumptionBundleReference implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -42,31 +44,6 @@ public class ConsumptionBundleReference implements com.sap.ord.service.hooks.Par
     @JsonProperty("defaultEntryPoint")
     @JsonPropertyDescription("In case that an API Resource has multiple entry points, this will indicate which entry point should be used by default\nwhen discovering this resource from the context of the referenced Consumption Bundle.\n\nMUST NOT be provided for Event Resources, as they don't have entry points.\nMUST only be provided if the resource has more than one entry point.\nMUST be in the list of `entryPoints` of the affected resource.")
     private String defaultEntryPoint;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public ConsumptionBundleReference() {
-    }
-
-    /**
-     * 
-     * @param defaultEntryPoint
-     *     In case that an API Resource has multiple entry points, this will indicate which entry point should be used by default
-     *     when discovering this resource from the context of the referenced Consumption Bundle.
-     *     
-     *     MUST NOT be provided for Event Resources, as they don't have entry points.
-     *     MUST only be provided if the resource has more than one entry point.
-     *     MUST be in the list of `entryPoints` of the affected resource.
-     * @param ordId
-     *     The consumption bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to.
-     */
-    public ConsumptionBundleReference(String ordId, String defaultEntryPoint) {
-        super();
-        this.ordId = ordId;
-        this.defaultEntryPoint = defaultEntryPoint;
-    }
 
     /**
      * The consumption bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to.

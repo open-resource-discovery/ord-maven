@@ -3,6 +3,7 @@ package com.sap.ord.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "subset",
     "systemTypeRestriction"
 })
+@Generated("jsonschema2pojo")
 public class EventResourceIntegrationAspect implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -59,38 +61,6 @@ public class EventResourceIntegrationAspect implements com.sap.ord.service.hooks
     @JsonProperty("systemTypeRestriction")
     @JsonPropertyDescription("In case that the event subscriptions are limited to known [system types](../index.md#def-system-type), they can be listed here as [system namespaces](../index.md#system-namespace).\n\nIf given, only system types of the defined namespaces are supported as integration partners.\nIf not given, there is no restriction which system type provides the events.")
     private List<String> systemTypeRestriction = new ArrayList<String>();
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public EventResourceIntegrationAspect() {
-    }
-
-    /**
-     * 
-     * @param systemTypeRestriction
-     *     In case that the event subscriptions are limited to known [system types](../index.md#def-system-type), they can be listed here as [system namespaces](../index.md#system-namespace).
-     *     
-     *     If given, only system types of the defined namespaces are supported as integration partners.
-     *     If not given, there is no restriction which system type provides the events.
-     * @param minVersion
-     *     Minimum version of the references resource that the integration requires.
-     *     .
-     * @param ordId
-     *     The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
-     *     
-     *     It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
-     * @param subset
-     *     List of individual events or messages that are sufficient to achieve the aspect.
-     */
-    public EventResourceIntegrationAspect(String ordId, String minVersion, List<EventResourceIntegrationAspectSubset> subset, List<String> systemTypeRestriction) {
-        super();
-        this.ordId = ordId;
-        this.minVersion = minVersion;
-        this.subset = subset;
-        this.systemTypeRestriction = systemTypeRestriction;
-    }
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

@@ -2,6 +2,12 @@
 package com.sap.ord.model;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -28,6 +34,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "removalDate",
     "description"
 })
+@Generated("jsonschema2pojo")
 public class Tombstone implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -71,40 +78,8 @@ public class Tombstone implements com.sap.ord.service.hooks.PartialOrdPojo {
     @JsonProperty("description")
     @JsonPropertyDescription("Optional description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description of a Tombstone MAY be added to the changelog of the removed resource by an ORD aggregator.")
     private String description;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Tombstone() {
-    }
-
-    /**
-     * 
-     * @param removalDate
-     *     The date when the ORD resource/taxonomy was removed.
-     *     This is related to the `sunsetDate` that can be set to announce a resource as deprecated *before* the removal and setting of a tombstone.
-     *     
-     *     The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
-     * @param groupId
-     *     Group ID of the group that has been removed.
-     * @param groupTypeId
-     *     Group Type ID of the group type that has been removed.
-     * @param description
-     *     Optional description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     *     
-     *     The description of a Tombstone MAY be added to the changelog of the removed resource by an ORD aggregator.
-     * @param ordId
-     *     [ORD ID](../index.md#ord-id) of the ORD resource/taxonomy that has been removed.
-     */
-    public Tombstone(String ordId, String groupId, String groupTypeId, Date removalDate, String description) {
-        super();
-        this.ordId = ordId;
-        this.groupId = groupId;
-        this.groupTypeId = groupTypeId;
-        this.removalDate = removalDate;
-        this.description = description;
-    }
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * [ORD ID](../index.md#ord-id) of the ORD resource/taxonomy that has been removed.
@@ -233,6 +208,21 @@ public class Tombstone implements com.sap.ord.service.hooks.PartialOrdPojo {
         return this;
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
+    public Tombstone withAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -257,6 +247,10 @@ public class Tombstone implements com.sap.ord.service.hooks.PartialOrdPojo {
         sb.append('=');
         sb.append(((this.description == null)?"<null>":this.description));
         sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -268,11 +262,12 @@ public class Tombstone implements com.sap.ord.service.hooks.PartialOrdPojo {
     @Override
     public int hashCode() {
         int result = 1;
+        result = ((result* 31)+((this.removalDate == null)? 0 :this.removalDate.hashCode()));
+        result = ((result* 31)+((this.groupId == null)? 0 :this.groupId.hashCode()));
         result = ((result* 31)+((this.groupTypeId == null)? 0 :this.groupTypeId.hashCode()));
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
-        result = ((result* 31)+((this.removalDate == null)? 0 :this.removalDate.hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.ordId == null)? 0 :this.ordId.hashCode()));
-        result = ((result* 31)+((this.groupId == null)? 0 :this.groupId.hashCode()));
         return result;
     }
 
@@ -285,7 +280,7 @@ public class Tombstone implements com.sap.ord.service.hooks.PartialOrdPojo {
             return false;
         }
         Tombstone rhs = ((Tombstone) other);
-        return ((((((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.removalDate == rhs.removalDate)||((this.removalDate!= null)&&this.removalDate.equals(rhs.removalDate))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.groupId == rhs.groupId)||((this.groupId!= null)&&this.groupId.equals(rhs.groupId))));
+        return (((((((this.removalDate == rhs.removalDate)||((this.removalDate!= null)&&this.removalDate.equals(rhs.removalDate)))&&((this.groupId == rhs.groupId)||((this.groupId!= null)&&this.groupId.equals(rhs.groupId))))&&((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))));
     }
 
 }

@@ -3,6 +3,7 @@ package com.sap.ord.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -53,6 +54,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "labels",
     "documentationLabels"
 })
+@Generated("jsonschema2pojo")
 public class Package implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -321,159 +323,6 @@ public class Package implements com.sap.ord.service.hooks.PartialOrdPojo {
     @JsonProperty("documentationLabels")
     @JsonPropertyDescription("Generic documentation labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of [CommonMark](https://spec.commonmark.org/) (Markdown) text.\n\nDocumentation Labels can be used to attach human readable documentation that cannot be expressed natively in ORD.\nA documentation tool (like an API Catalog) can use the documentation labels to provide generic documentation \"snippets\".\nDue to the given structure they can be displayed e.g. as tables.\n\nThe key of the documentation Label is plain-text (MUST not contain line breaks) and denotes the subject matter that is described.\nThe values (multiple can be provided for the same key) are [CommonMark](https://spec.commonmark.org/) (Markdown) text\nwhich describes the subject matter or lists options for the key.\n\nIn contrast to regular labels, documentation labels are not meant to be used to categorize or query information.")
     private DocumentationLabels documentationLabels;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Package() {
-    }
-
-    /**
-     * 
-     * @param lineOfBusiness
-     *     List of line of business tags.
-     *     No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
-     *     
-     *     `lineOfBusiness` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
-     * @param description
-     *     Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     *     
-     *     The description SHOULD not be excessive in length and is not meant to provide full documentation.
-     *     Detailed documentation SHOULD be attached as (typed) links.
-     * @param industry
-     *     List of industry tags.
-     *     No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
-     *     
-     *     `industry` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
-     * @param shortDescription
-     *     Plain text short description.
-     *     
-     *     MUST NOT exceed 255 chars.
-     *     MUST NOT contain line breaks.
-     * @param customPolicyLevel
-     *     If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided.
-     *     The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
-     *     
-     *     MUST only be provided if `policyLevel` is set to `custom`.
-     *     MUST be a valid [Specification ID](../index.md#specification-id).
-     * @param countries
-     *     List of countries that the package resources are applicable to.
-     *     
-     *     MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
-     *     
-     *     `countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
-     * @param title
-     *     Human-readable title.
-     *     
-     *     MUST NOT exceed 255 chars.
-     *     MUST NOT contain line breaks.
-     * @param ordId
-     *     The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
-     *     
-     *     It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
-     * @param localId
-     *     The locally unique ID under which this resource can be looked up / resolved in the described system itself.
-     *     Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.
-     *     
-     *     It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID.
-     *     But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID.
-     * @param version
-     *     The complete [SemVer](https://semver.org/) version string.
-     *     
-     *     It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
-     *     It SHOULD be changed if the ORD information or referenced resource definitions changed.
-     *     It SHOULD express minor and patch changes that don't lead to incompatible changes.
-     *     
-     *     When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
-     *     In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
-     *     
-     *     If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
-     *     The `version` MUST not be bumped for changes in extensions.
-     *     
-     *     The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
-     *     
-     *     Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     *     For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
-     * @param policyLevels
-     *     A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.
-     *     For each chosen policy level, additional expectations and validations rules will be applied.
-     *     
-     *     Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
-     *     
-     *     A policy level MUST be a valid [Specification ID](../index.md#specification-id).
-     * @param tags
-     *     List of free text style tags.
-     *     No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
-     *     
-     *     Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains.
-     * @param policyLevel
-     *     The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with.
-     *     Depending on the chosen policy level, additional expectations and validations rules will be applied.
-     *     
-     *     The policy level can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
-     *     .
-     * @param partOfProducts
-     *     List of products the resources of the package are a part of.
-     *     
-     *     MUST be a valid reference to a [Product](#product) ORD ID.
-     *     
-     *     `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
-     * @param licenseType
-     *     Standardized identifier for the license.
-     *     It MUST conform to the [SPDX License List](https://spdx.org/licenses).
-     * @param vendor
-     *     Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.
-     *     
-     *     MUST be a valid reference to a [Vendor](#vendor) ORD ID.
-     *     
-     *     MUST be set to `customer:vendor:Customer:` if the contents of the package are created by the customer / user.
-     *     
-     *     MUST be set to a registered partner vendor, if the contents of the package are created by a partner / third party.
-     * @param links
-     *     Generic links with arbitrary meaning and content.
-     *     
-     *     `packageLinks` MUST be preferred if applicable.
-     * @param runtimeRestriction
-     *     If provided, all resources that are part of this package can only run on the listed runtime.
-     *     
-     *     MUST be a valid [system namespace](../index.md#system-namespace).
-     * @param packageLinks
-     *     Links with semantic meaning that are specific to packages.
-     * @param supportInfo
-     *     Optional information that should be provided when creating a support ticket for the resources bundled in this package.
-     *     This can for example be a "component" name that needs to be chosen in the support portal.
-     *     
-     *     Notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     *     
-     *     Please also note that if you want to provide link(s) where you can find support information,
-     *     you can use `packageLinks` with a link of type `support`.
-     */
-    public Package(String ordId, String localId, String title, String shortDescription, String description, String version, String policyLevel, String customPolicyLevel, List<String> policyLevels, List<PackageLink> packageLinks, List<Link> links, String licenseType, String supportInfo, String vendor, List<String> partOfProducts, List<String> countries, List<String> lineOfBusiness, List<String> industry, String runtimeRestriction, List<String> tags, Labels labels, DocumentationLabels documentationLabels) {
-        super();
-        this.ordId = ordId;
-        this.localId = localId;
-        this.title = title;
-        this.shortDescription = shortDescription;
-        this.description = description;
-        this.version = version;
-        this.policyLevel = policyLevel;
-        this.customPolicyLevel = customPolicyLevel;
-        this.policyLevels = policyLevels;
-        this.packageLinks = packageLinks;
-        this.links = links;
-        this.licenseType = licenseType;
-        this.supportInfo = supportInfo;
-        this.vendor = vendor;
-        this.partOfProducts = partOfProducts;
-        this.countries = countries;
-        this.lineOfBusiness = lineOfBusiness;
-        this.industry = industry;
-        this.runtimeRestriction = runtimeRestriction;
-        this.tags = tags;
-        this.labels = labels;
-        this.documentationLabels = documentationLabels;
-    }
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

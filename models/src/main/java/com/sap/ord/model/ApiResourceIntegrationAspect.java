@@ -1,6 +1,7 @@
 
 package com.sap.ord.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "ordId",
     "minVersion"
 })
+@Generated("jsonschema2pojo")
 public class ApiResourceIntegrationAspect implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -38,29 +40,6 @@ public class ApiResourceIntegrationAspect implements com.sap.ord.service.hooks.P
     @JsonProperty("minVersion")
     @JsonPropertyDescription("Minimum version of the references resource that the integration requires.\n")
     private String minVersion;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public ApiResourceIntegrationAspect() {
-    }
-
-    /**
-     * 
-     * @param minVersion
-     *     Minimum version of the references resource that the integration requires.
-     *     .
-     * @param ordId
-     *     The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
-     *     
-     *     It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
-     */
-    public ApiResourceIntegrationAspect(String ordId, String minVersion) {
-        super();
-        this.ordId = ordId;
-        this.minVersion = minVersion;
-    }
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

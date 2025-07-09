@@ -3,6 +3,7 @@ package com.sap.ord.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -36,6 +37,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "labels",
     "documentationLabels"
 })
+@Generated("jsonschema2pojo")
 public class Product implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -165,70 +167,6 @@ public class Product implements com.sap.ord.service.hooks.PartialOrdPojo {
     @JsonProperty("documentationLabels")
     @JsonPropertyDescription("Generic documentation labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of [CommonMark](https://spec.commonmark.org/) (Markdown) text.\n\nDocumentation Labels can be used to attach human readable documentation that cannot be expressed natively in ORD.\nA documentation tool (like an API Catalog) can use the documentation labels to provide generic documentation \"snippets\".\nDue to the given structure they can be displayed e.g. as tables.\n\nThe key of the documentation Label is plain-text (MUST not contain line breaks) and denotes the subject matter that is described.\nThe values (multiple can be provided for the same key) are [CommonMark](https://spec.commonmark.org/) (Markdown) text\nwhich describes the subject matter or lists options for the key.\n\nIn contrast to regular labels, documentation labels are not meant to be used to categorize or query information.")
     private DocumentationLabels documentationLabels;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Product() {
-    }
-
-    /**
-     * 
-     * @param parent
-     *     Optional product parent ORD ID, if a hierarchical product structure needs to be expressed.
-     *     
-     *     MUST be a valid reference to a [Product](#product) ORD ID.
-     * @param vendor
-     *     Vendor / organization that is responsible for the Product.
-     *     
-     *     MUST be a valid reference to a [Vendor](#vendor) ORD ID.
-     * @param correlationIds
-     *     Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
-     *     
-     *     They express an "identity" / "equals" / "mappable" relationship to the target ID.
-     *     
-     *     If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
-     *     
-     *     MUST be a valid [Correlation ID](../index.md#correlation-id).
-     * @param description
-     *     Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     *     
-     *     The description SHOULD not be excessive in length and is not meant to provide full documentation.
-     *     Detailed documentation SHOULD be attached as (typed) links.
-     * @param shortDescription
-     *     Plain text short description.
-     *     
-     *     MUST NOT exceed 255 chars.
-     *     MUST NOT contain line breaks.
-     * @param title
-     *     Human-readable title.
-     *     
-     *     MUST NOT exceed 255 chars.
-     *     MUST NOT contain line breaks.
-     * @param ordId
-     *     The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
-     *     
-     *     It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
-     * @param tags
-     *     List of free text style tags.
-     *     No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
-     *     
-     *     Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains.
-     */
-    public Product(String ordId, List<String> correlationIds, String title, String shortDescription, String description, String vendor, String parent, List<String> tags, Labels labels, DocumentationLabels documentationLabels) {
-        super();
-        this.ordId = ordId;
-        this.correlationIds = correlationIds;
-        this.title = title;
-        this.shortDescription = shortDescription;
-        this.description = description;
-        this.vendor = vendor;
-        this.parent = parent;
-        this.tags = tags;
-        this.labels = labels;
-        this.documentationLabels = documentationLabels;
-    }
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

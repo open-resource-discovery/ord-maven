@@ -1,6 +1,7 @@
 
 package com.sap.ord.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "customType",
     "url"
 })
+@Generated("jsonschema2pojo")
 public class APIEventResourceLink implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -53,36 +55,6 @@ public class APIEventResourceLink implements com.sap.ord.service.hooks.PartialOr
     @JsonProperty("url")
     @JsonPropertyDescription("[URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the API or Event Resource Link.\n\nThe link target SHOULD be absolute and SHOULD be openly accessible.\nIf a relative link is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).")
     private String url;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public APIEventResourceLink() {
-    }
-
-    /**
-     * 
-     * @param customType
-     *     If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
-     *     
-     *     MUST be a valid [Specification ID](../index.md#specification-id).
-     *     
-     *     MUST only be provided if `type` is set to `custom`.
-     * @param type
-     *     See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions).
-     * @param url
-     *     [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the API or Event Resource Link.
-     *     
-     *     The link target SHOULD be absolute and SHOULD be openly accessible.
-     *     If a relative link is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).
-     */
-    public APIEventResourceLink(String type, String customType, String url) {
-        super();
-        this.type = type;
-        this.customType = customType;
-        this.url = url;
-    }
 
     /**
      * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions)

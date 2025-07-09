@@ -1,6 +1,7 @@
 
 package com.sap.ord.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "customType",
     "url"
 })
+@Generated("jsonschema2pojo")
 public class DataProductLink implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -51,34 +53,6 @@ public class DataProductLink implements com.sap.ord.service.hooks.PartialOrdPojo
     @JsonProperty("url")
     @JsonPropertyDescription("[URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the Data Product Link.\n\nThe link target SHOULD be absolute and SHOULD be openly accessible.\nIf a relative link is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).")
     private String url;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public DataProductLink() {
-    }
-
-    /**
-     * 
-     * @param customType
-     *     If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
-     *     
-     *     MUST be a valid [Specification ID](../index.md#specification-id).
-     *     
-     *     MUST only be provided if `type` is set to `custom`.
-     * @param url
-     *     [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the Data Product Link.
-     *     
-     *     The link target SHOULD be absolute and SHOULD be openly accessible.
-     *     If a relative link is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).
-     */
-    public DataProductLink(String type, String customType, String url) {
-        super();
-        this.type = type;
-        this.customType = customType;
-        this.url = url;
-    }
 
     /**
      * 

@@ -1,6 +1,7 @@
 
 package com.sap.ord.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "eventType"
 })
+@Generated("jsonschema2pojo")
 public class EventResourceIntegrationAspectSubset implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -33,26 +35,6 @@ public class EventResourceIntegrationAspectSubset implements com.sap.ord.service
     @JsonProperty("eventType")
     @JsonPropertyDescription("The type ID of the individual event or message.\n\nThis MUST be an ID that is understood by the used protocol and resource definition format.\nE.g. for CloudEvents, the [type](https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#type) can be used.")
     private String eventType;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public EventResourceIntegrationAspectSubset() {
-    }
-
-    /**
-     * 
-     * @param eventType
-     *     The type ID of the individual event or message.
-     *     
-     *     This MUST be an ID that is understood by the used protocol and resource definition format.
-     *     E.g. for CloudEvents, the [type](https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#type) can be used.
-     */
-    public EventResourceIntegrationAspectSubset(String eventType) {
-        super();
-        this.eventType = eventType;
-    }
 
     /**
      * The type ID of the individual event or message.

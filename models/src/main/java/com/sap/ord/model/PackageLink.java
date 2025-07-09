@@ -2,6 +2,12 @@
 package com.sap.ord.model;
 
 import java.net.URI;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import javax.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -22,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "customType",
     "url"
 })
+@Generated("jsonschema2pojo")
 public class PackageLink implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -52,33 +59,8 @@ public class PackageLink implements com.sap.ord.service.hooks.PartialOrdPojo {
     @JsonProperty("url")
     @JsonPropertyDescription("[URL](https://tools.ietf.org/html/rfc3986) to the PackageLink.\n\nThe link target MUST be absolute and SHOULD be openly accessible.")
     private URI url;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public PackageLink() {
-    }
-
-    /**
-     * 
-     * @param customType
-     *     If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
-     *     
-     *     MUST be a valid [Specification ID](../index.md#specification-id).
-     *     
-     *     MUST only be provided if `type` is set to `custom`.
-     * @param url
-     *     [URL](https://tools.ietf.org/html/rfc3986) to the PackageLink.
-     *     
-     *     The link target MUST be absolute and SHOULD be openly accessible.
-     */
-    public PackageLink(String type, String customType, URI url) {
-        super();
-        this.type = type;
-        this.customType = customType;
-        this.url = url;
-    }
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
     /**
      * 
@@ -165,6 +147,21 @@ public class PackageLink implements com.sap.ord.service.hooks.PartialOrdPojo {
         return this;
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
+    public PackageLink withAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -181,6 +178,10 @@ public class PackageLink implements com.sap.ord.service.hooks.PartialOrdPojo {
         sb.append('=');
         sb.append(((this.url == null)?"<null>":this.url));
         sb.append(',');
+        sb.append("additionalProperties");
+        sb.append('=');
+        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -193,6 +194,7 @@ public class PackageLink implements com.sap.ord.service.hooks.PartialOrdPojo {
     public int hashCode() {
         int result = 1;
         result = ((result* 31)+((this.customType == null)? 0 :this.customType.hashCode()));
+        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         result = ((result* 31)+((this.url == null)? 0 :this.url.hashCode()));
         return result;
@@ -207,7 +209,7 @@ public class PackageLink implements com.sap.ord.service.hooks.PartialOrdPojo {
             return false;
         }
         PackageLink rhs = ((PackageLink) other);
-        return ((((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType)))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
+        return (((((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType)))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
     }
 
 }

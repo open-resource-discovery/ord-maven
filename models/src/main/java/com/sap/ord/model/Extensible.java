@@ -3,6 +3,7 @@ package com.sap.ord.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "supported",
     "description"
 })
+@Generated("jsonschema2pojo")
 public class Extensible implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -50,35 +52,6 @@ public class Extensible implements com.sap.ord.service.hooks.PartialOrdPojo {
     @JsonProperty("description")
     @JsonPropertyDescription("A description about the extensibility capabilities of this API, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThis description may contain detailed steps on how to extend the API.\nLinks to external resources can be provided within the description as markdown links.\n\nThis description MUST be provided if `supported` is set to `manual` or `automatic`.")
     private String description;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public Extensible() {
-    }
-
-    /**
-     * 
-     * @param description
-     *     A description about the extensibility capabilities of this API, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     *     
-     *     This description may contain detailed steps on how to extend the API.
-     *     Links to external resources can be provided within the description as markdown links.
-     *     
-     *     This description MUST be provided if `supported` is set to `manual` or `automatic`.
-     * @param supported
-     *     This property defines whether the resource is extensible.
-     *     
-     *     **Not extensible** means that the data model of the resource (i.e. API or event) cannot be extended with custom fields.
-     *     **Manually extensible** means that in addition to defining a custom field, manual activities to include the field in the data model of the resource (i.e. API or event) are required. E.g. using a specific mapping tool or by selecting the resource in the data model extension tool.
-     *     **Automatically extensible** means that after defining a custom field in the local domain model, the resource (i.e. API or event) is automatically extended as part of the default extension field definition.
-     */
-    public Extensible(Extensible.Supported supported, String description) {
-        super();
-        this.supported = supported;
-        this.description = description;
-    }
 
     /**
      * This property defines whether the resource is extensible.
@@ -195,6 +168,7 @@ public class Extensible implements com.sap.ord.service.hooks.PartialOrdPojo {
      * **Automatically extensible** means that after defining a custom field in the local domain model, the resource (i.e. API or event) is automatically extended as part of the default extension field definition.
      * 
      */
+    @Generated("jsonschema2pojo")
     public enum Supported {
 
         NO("no"),

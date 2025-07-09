@@ -1,6 +1,7 @@
 
 package com.sap.ord.model;
 
+import javax.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -19,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "customType",
     "customDescription"
 })
+@Generated("jsonschema2pojo")
 public class AccessStrategy implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
@@ -49,35 +51,6 @@ public class AccessStrategy implements com.sap.ord.service.hooks.PartialOrdPojo 
     @JsonProperty("customDescription")
     @JsonPropertyDescription("Human-readable description about how the access is set up, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nMUST only be provided if `type` is set to `custom`.")
     private String customDescription;
-
-    /**
-     * No args constructor for use in serialization
-     * 
-     */
-    public AccessStrategy() {
-    }
-
-    /**
-     * 
-     * @param customType
-     *     If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
-     *     
-     *     MUST be a valid [Specification ID](../index.md#specification-id).
-     *     
-     *     MUST only be provided if `type` is set to `custom`.
-     * @param customDescription
-     *     Human-readable description about how the access is set up, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     *     
-     *     MUST only be provided if `type` is set to `custom`.
-     * @param type
-     *     Defines the authentication/authorization strategy through which the referenced `resourceDefinitions` are accessible.
-     */
-    public AccessStrategy(String type, String customType, String customDescription) {
-        super();
-        this.type = type;
-        this.customType = customType;
-        this.customDescription = customDescription;
-    }
 
     /**
      * Defines the authentication/authorization strategy through which the referenced `resourceDefinitions` are accessible.
