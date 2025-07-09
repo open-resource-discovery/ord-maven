@@ -61,28 +61,6 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Download jsonschema2pojo CLI
-        run: |
-          curl -L -o jsonschema2pojo.zip \
-            https://github.com/joelittlejohn/jsonschema2pojo/releases/download/jsonschema2pojo-1.2.2/jsonschema2pojo-1.2.2.zip
-          unzip jsonschema2pojo.zip -d jsonschema2pojo
-
-      - name: Generate Java POJOs from JSON Schema
-        run: |
-          mkdir -p java/models/src/main/java
-          java -jar jsonschema2pojo/jsonschema2pojo-1.2.2/lib/jsonschema2pojo-cli-1.2.2.jar \
-            --source ord-spec/static/spec-v1/interfaces/Document.schema.json \
-            --target java/models/src/main/java \
-            --package com.sap.ord.model \
-            --generate-constructors \
-            --generate-builders
-
-      - name: Patch generated POJOs to implement PartialOrdPojo
-        run: |
-          # add marker interface to every generated class
-          find java/models/src/main/java/com/sap/ord/model -name '*.java' \
-            -exec sed -i 's/public class \([A-Za-z0-9_]*\) {/public class \1 implements com.sap.ord.service.hooks.PartialOrdPojo {/g' {} \;
-
       - name: Create annotations/pom.xml
         run: |
           cat > annotations/pom.xml << 'EOF'
@@ -198,36 +176,70 @@ jobs:
                 </resource>
               </resources>
 
-              <plugins>
-               <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
-              </plugin>
+            <plugins>
+                <!-- 1. JSON schema -> POJO directly in src/main/java -->
                 <plugin>
-                  <groupId>org.codehaus.mojo</groupId>
-                  <artifactId>build-helper-maven-plugin</artifactId>
-                  <version>3.4.0</version>
-                  <executions>
-                    <execution>
-                      <id>add-generated-sources</id>
-                      <phase>generate-sources</phase>
-                      <goals>
-                        <goal>add-source</goal>
-                      </goals>
-                      <configuration>
-                        <sources>
-                          <source>${project.build.directory}/generated-sources</source>
-                        </sources>
-                      </configuration>
-                    </execution>
-                  </executions>
+                    <groupId>org.jsonschema2pojo</groupId>
+                    <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                    <version>1.2.2</version>
+                    <executions>
+                        <execution>
+                            <id>generate-models</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <sourceDirectory>${project.basedir}/static/spec-v1/interfaces</sourceDirectory>
+                        <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+                        <targetPackage>com.sap.ord.model</targetPackage>
+                        <generateBuilders>true</generateBuilders>
+                        <removeOldOutput>true</removeOldOutput>
+                    </configuration>
                 </plugin>
-              </plugins>
+      
+                <!-- 2. Patch all generated POJOs to implements PartialOrdPojo -->
+                <plugin>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <executions>
+                        <execution>
+                            <id>patch-partial-interface</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>run</goal>
+                            </goals>
+                            <configuration>
+                                <target>
+                                    <replaceregexp byline="true" flags="g">
+                                        <!-- all generated POJOs -->
+                                        <fileset dir="${project.basedir}/src/main/java/com/sap/ord/model">
+                                            <include name="**/*.java"/>
+                                        </fileset>
+                                        <!-- Search pattern -->
+                                        <regexp pattern="public class ([A-Za-z0-9_]+) \{" />
+                                        <!-- Inserting the interface -->
+                                        <substitution expression="public class \1 implements com.sap.ord.service.hooks.PartialOrdPojo {" />
+                                    </replaceregexp>
+                                </target>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+      
+                <!-- 3. Java-Compiler -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.10.1</version>
+                    <configuration>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
             </build>
           </project>
           EOF
@@ -252,6 +264,9 @@ jobs:
         run: |
           rm -rf ord-spec
           rm -rf java
+
+      - name: Build project
+        run: mvn clean install -B
 
       - name: Create or update pull request for generated sources
         id: cpr
