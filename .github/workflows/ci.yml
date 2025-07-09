@@ -244,6 +244,9 @@ jobs:
           </project>
           EOF
 
+      - name: Build project
+        run: mvn clean install -B
+
       - name: List generated annotation files
         run: ls -R ord-spec/java/annotations/target/generated-sources
 
@@ -264,9 +267,6 @@ jobs:
         run: |
           rm -rf ord-spec
           rm -rf java
-
-      - name: Build project
-        run: mvn clean install -B
 
       - name: Create or update pull request for generated sources
         id: cpr
