@@ -30,13 +30,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class SystemVersion implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
-     * The version number of the system instance (run-time) or the version of the described static system type.
+     * The version of the system instance (run-time) or the version of the described system-version perspective.
      * 
      * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
+     * MUST be provided if the ORD document is `perspective`: `system-version`.
+     * 
+     * For continuous-delivery systems, the version MAY be fixed to the same value, e.g. `1.0.0`, but be aware that phased rollouts may benefit from a more precise versioning like adding a build number.
+     * 
      */
     @JsonProperty("version")
-    @JsonPropertyDescription("The version number of the system instance (run-time) or the version of the described static system type.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.")
+    @JsonPropertyDescription("The version of the system instance (run-time) or the version of the described system-version perspective.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\n\nMUST be provided if the ORD document is `perspective`: `system-version`.\n\nFor continuous-delivery systems, the version MAY be fixed to the same value, e.g. `1.0.0`, but be aware that phased rollouts may benefit from a more precise versioning like adding a build number.")
     private String version;
     /**
      * Human-readable title of the system version.
@@ -113,9 +117,13 @@ public class SystemVersion implements com.sap.ord.service.hooks.PartialOrdPojo {
     private List<String> tags = new ArrayList<String>();
 
     /**
-     * The version number of the system instance (run-time) or the version of the described static system type.
+     * The version of the system instance (run-time) or the version of the described system-version perspective.
      * 
      * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
+     * 
+     * MUST be provided if the ORD document is `perspective`: `system-version`.
+     * 
+     * For continuous-delivery systems, the version MAY be fixed to the same value, e.g. `1.0.0`, but be aware that phased rollouts may benefit from a more precise versioning like adding a build number.
      * 
      */
     @JsonProperty("version")
@@ -124,9 +132,13 @@ public class SystemVersion implements com.sap.ord.service.hooks.PartialOrdPojo {
     }
 
     /**
-     * The version number of the system instance (run-time) or the version of the described static system type.
+     * The version of the system instance (run-time) or the version of the described system-version perspective.
      * 
      * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
+     * 
+     * MUST be provided if the ORD document is `perspective`: `system-version`.
+     * 
+     * For continuous-delivery systems, the version MAY be fixed to the same value, e.g. `1.0.0`, but be aware that phased rollouts may benefit from a more precise versioning like adding a build number.
      * 
      */
     @JsonProperty("version")

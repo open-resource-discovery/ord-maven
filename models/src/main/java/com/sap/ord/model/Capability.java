@@ -194,11 +194,11 @@ public class Capability implements com.sap.ord.service.hooks.PartialOrdPojo {
      * 
      * If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.
      * 
-     * Together with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
+     * Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
      * 
      */
     @JsonProperty("lastUpdate")
-    @JsonPropertyDescription("Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).\n\nWhen retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time.\nTherefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.\n\nIf the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.\n\nTogether with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.")
+    @JsonPropertyDescription("Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).\n\nWhen retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time.\nTherefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.\n\nIf the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.\n\nTogether with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.")
     private Date lastUpdate;
     /**
      * The visibility states who is allowed to "see" the described resource or capability.
@@ -323,6 +323,9 @@ public class Capability implements com.sap.ord.service.hooks.PartialOrdPojo {
     @JsonPropertyDescription("Generic documentation labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of [CommonMark](https://spec.commonmark.org/) (Markdown) text.\n\nDocumentation Labels can be used to attach human readable documentation that cannot be expressed natively in ORD.\nA documentation tool (like an API Catalog) can use the documentation labels to provide generic documentation \"snippets\".\nDue to the given structure they can be displayed e.g. as tables.\n\nThe key of the documentation Label is plain-text (MUST not contain line breaks) and denotes the subject matter that is described.\nThe values (multiple can be provided for the same key) are [CommonMark](https://spec.commonmark.org/) (Markdown) text\nwhich describes the subject matter or lists options for the key.\n\nIn contrast to regular labels, documentation labels are not meant to be used to categorize or query information.")
     private DocumentationLabels documentationLabels;
     /**
+     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
+     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
+     * 
      * Defines whether this ORD resource is **system instance aware**.
      * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
      * 
@@ -332,7 +335,7 @@ public class Capability implements com.sap.ord.service.hooks.PartialOrdPojo {
      * 
      */
     @JsonProperty("systemInstanceAware")
-    @JsonPropertyDescription("Defines whether this ORD resource is **system instance aware**.\nThis is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,\nnot just once per system type, but once per **system instance**.")
+    @JsonPropertyDescription("All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.\nAll resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.\n\nDefines whether this ORD resource is **system instance aware**.\nThis is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,\nnot just once per system type, but once per **system instance**.")
     private Boolean systemInstanceAware = false;
 
     /**
@@ -712,7 +715,7 @@ public class Capability implements com.sap.ord.service.hooks.PartialOrdPojo {
      * 
      * If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.
      * 
-     * Together with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
+     * Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
      * 
      */
     @JsonProperty("lastUpdate")
@@ -730,7 +733,7 @@ public class Capability implements com.sap.ord.service.hooks.PartialOrdPojo {
      * 
      * If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.
      * 
-     * Together with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
+     * Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
      * 
      */
     @JsonProperty("lastUpdate")
@@ -1078,6 +1081,9 @@ public class Capability implements com.sap.ord.service.hooks.PartialOrdPojo {
     }
 
     /**
+     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
+     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
+     * 
      * Defines whether this ORD resource is **system instance aware**.
      * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
      * 
@@ -1092,6 +1098,9 @@ public class Capability implements com.sap.ord.service.hooks.PartialOrdPojo {
     }
 
     /**
+     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
+     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
+     * 
      * Defines whether this ORD resource is **system instance aware**.
      * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
      * 

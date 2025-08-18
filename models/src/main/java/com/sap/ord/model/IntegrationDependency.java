@@ -187,11 +187,11 @@ public class IntegrationDependency implements com.sap.ord.service.hooks.PartialO
      * 
      * If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.
      * 
-     * Together with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
+     * Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
      * 
      */
     @JsonProperty("lastUpdate")
-    @JsonPropertyDescription("Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).\n\nWhen retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time.\nTherefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.\n\nIf the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.\n\nTogether with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.")
+    @JsonPropertyDescription("Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).\n\nWhen retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time.\nTherefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.\n\nIf the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.\n\nTogether with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.")
     private Date lastUpdate;
     /**
      * The visibility states who is allowed to "see" the described resource or capability.
@@ -210,7 +210,7 @@ public class IntegrationDependency implements com.sap.ord.service.hooks.PartialO
     @JsonPropertyDescription("The `releaseStatus` specifies the stability of the resource and its external contract.")
     private String releaseStatus;
     /**
-     * The sunset date defines when the resource is scheduled to be decommissioned/removed.
+     * The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.
      * 
      * If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).
      * Once the sunset date is known and ready to be communicated externally, it MUST be provided here.
@@ -219,7 +219,7 @@ public class IntegrationDependency implements com.sap.ord.service.hooks.PartialO
      * 
      */
     @JsonProperty("sunsetDate")
-    @JsonPropertyDescription("The sunset date defines when the resource is scheduled to be decommissioned/removed.\n\nIf the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).\nOnce the sunset date is known and ready to be communicated externally, it MUST be provided here.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).")
+    @JsonPropertyDescription("The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.\n\nIf the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).\nOnce the sunset date is known and ready to be communicated externally, it MUST be provided here.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).")
     private Date sunsetDate;
     /**
      * The successor resource(s).
@@ -640,7 +640,7 @@ public class IntegrationDependency implements com.sap.ord.service.hooks.PartialO
      * 
      * If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.
      * 
-     * Together with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
+     * Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
      * 
      */
     @JsonProperty("lastUpdate")
@@ -658,7 +658,7 @@ public class IntegrationDependency implements com.sap.ord.service.hooks.PartialO
      * 
      * If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.
      * 
-     * Together with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
+     * Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
      * 
      */
     @JsonProperty("lastUpdate")
@@ -722,7 +722,7 @@ public class IntegrationDependency implements com.sap.ord.service.hooks.PartialO
     }
 
     /**
-     * The sunset date defines when the resource is scheduled to be decommissioned/removed.
+     * The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.
      * 
      * If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).
      * Once the sunset date is known and ready to be communicated externally, it MUST be provided here.
@@ -736,7 +736,7 @@ public class IntegrationDependency implements com.sap.ord.service.hooks.PartialO
     }
 
     /**
-     * The sunset date defines when the resource is scheduled to be decommissioned/removed.
+     * The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.
      * 
      * If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).
      * Once the sunset date is known and ready to be communicated externally, it MUST be provided here.

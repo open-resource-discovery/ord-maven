@@ -17,13 +17,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Tombstone
  * <p>
- * A tombstone indicates that a previously published ORD resource or taxonomy has been removed / decommissioned.
+ * A tombstone indicates that a previously published ORD resource or taxonomy has been removed / decommissioned / archived.
  * This MUST be indicated explicitly, so ORD aggregators and consumers can learn about the removal.
  * 
  * Exactly one of the IDs MUST be provided to state which ORD resource or taxonomy item the Tombstone addresses.
  * 
- * It MUST be kept sufficiently long so that all ORD aggregators can learn about the tombstone.
- * After that it MAY be removed.
+ * The tombstone MUST be kept sufficiently long (at least 31 days) so that all ORD aggregators can learn about the tombstone.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)

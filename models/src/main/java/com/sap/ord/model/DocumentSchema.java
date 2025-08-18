@@ -28,6 +28,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "$schema",
     "openResourceDiscovery",
     "description",
+    "perspective",
     "describedSystemInstance",
     "describedSystemType",
     "describedSystemVersion",
@@ -77,6 +78,21 @@ public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo 
     @JsonProperty("description")
     @JsonPropertyDescription("Optional description of the ORD document itself.\nPlease note that this information is NOT further processed or considered by an ORD aggregator.\n\nNotated in [CommonMark](https://spec.commonmark.org/) (Markdown).")
     private String description;
+    /**
+     * With ORD it's possible to describe a system from a static or a dynamic [perspective](../index.md#perspectives) (for more details, follow the link).
+     * 
+     * It is strongly RECOMMENDED to mark all static ORD documents with perspective `system-version`.
+     * 
+     * It is RECOMMENDED to describe dynamic metadata in both static system-version perspective and additionally describe the system-instance perspective where it diverges from the static metadata.
+     * 
+     * If not provided, this defaults to `system-instance`, which is the most precise description but also the most costly to replicate.
+     * 
+     * Please read the [article on perspectives](../concepts/perspectives) for more explanations.
+     * 
+     */
+    @JsonProperty("perspective")
+    @JsonPropertyDescription("With ORD it's possible to describe a system from a static or a dynamic [perspective](../index.md#perspectives) (for more details, follow the link).\n\nIt is strongly RECOMMENDED to mark all static ORD documents with perspective `system-version`.\n\nIt is RECOMMENDED to describe dynamic metadata in both static system-version perspective and additionally describe the system-instance perspective where it diverges from the static metadata.\n\nIf not provided, this defaults to `system-instance`, which is the most precise description but also the most costly to replicate.\n\nPlease read the [article on perspectives](../concepts/perspectives) for more explanations.")
+    private String perspective = "system instance";
     /**
      * System Instance
      * <p>
@@ -226,14 +242,14 @@ public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo 
     @JsonPropertyDescription("Array of all Group Types that are described in this ORD document.")
     private List<GroupType> groupTypes = new ArrayList<GroupType>();
     /**
-     * List of ORD information (resources or taxonomy) that have been "tombstoned"/removed.
-     * This MUST be indicated explicitly, so that ORD aggregators and consumers can learn about the removal.
+     * List of ORD information (resources or taxonomy) that have been "tombstoned", indicating removal or archival.
+     * This MUST be indicated explicitly, just removing the ORD information itself is not sufficient.
      * 
      * A tombstone entry MAY be removed after a grace period of 31 days.
      * 
      */
     @JsonProperty("tombstones")
-    @JsonPropertyDescription("List of ORD information (resources or taxonomy) that have been \"tombstoned\"/removed.\nThis MUST be indicated explicitly, so that ORD aggregators and consumers can learn about the removal.\n\nA tombstone entry MAY be removed after a grace period of 31 days.")
+    @JsonPropertyDescription("List of ORD information (resources or taxonomy) that have been \"tombstoned\", indicating removal or archival.\nThis MUST be indicated explicitly, just removing the ORD information itself is not sufficient.\n\nA tombstone entry MAY be removed after a grace period of 31 days.")
     private List<Tombstone> tombstones = new ArrayList<Tombstone>();
 
     /**
@@ -312,6 +328,45 @@ public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo 
 
     public DocumentSchema withDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * With ORD it's possible to describe a system from a static or a dynamic [perspective](../index.md#perspectives) (for more details, follow the link).
+     * 
+     * It is strongly RECOMMENDED to mark all static ORD documents with perspective `system-version`.
+     * 
+     * It is RECOMMENDED to describe dynamic metadata in both static system-version perspective and additionally describe the system-instance perspective where it diverges from the static metadata.
+     * 
+     * If not provided, this defaults to `system-instance`, which is the most precise description but also the most costly to replicate.
+     * 
+     * Please read the [article on perspectives](../concepts/perspectives) for more explanations.
+     * 
+     */
+    @JsonProperty("perspective")
+    public String getPerspective() {
+        return perspective;
+    }
+
+    /**
+     * With ORD it's possible to describe a system from a static or a dynamic [perspective](../index.md#perspectives) (for more details, follow the link).
+     * 
+     * It is strongly RECOMMENDED to mark all static ORD documents with perspective `system-version`.
+     * 
+     * It is RECOMMENDED to describe dynamic metadata in both static system-version perspective and additionally describe the system-instance perspective where it diverges from the static metadata.
+     * 
+     * If not provided, this defaults to `system-instance`, which is the most precise description but also the most costly to replicate.
+     * 
+     * Please read the [article on perspectives](../concepts/perspectives) for more explanations.
+     * 
+     */
+    @JsonProperty("perspective")
+    public void setPerspective(String perspective) {
+        this.perspective = perspective;
+    }
+
+    public DocumentSchema withPerspective(String perspective) {
+        this.perspective = perspective;
         return this;
     }
 
@@ -774,8 +829,8 @@ public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo 
     }
 
     /**
-     * List of ORD information (resources or taxonomy) that have been "tombstoned"/removed.
-     * This MUST be indicated explicitly, so that ORD aggregators and consumers can learn about the removal.
+     * List of ORD information (resources or taxonomy) that have been "tombstoned", indicating removal or archival.
+     * This MUST be indicated explicitly, just removing the ORD information itself is not sufficient.
      * 
      * A tombstone entry MAY be removed after a grace period of 31 days.
      * 
@@ -786,8 +841,8 @@ public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo 
     }
 
     /**
-     * List of ORD information (resources or taxonomy) that have been "tombstoned"/removed.
-     * This MUST be indicated explicitly, so that ORD aggregators and consumers can learn about the removal.
+     * List of ORD information (resources or taxonomy) that have been "tombstoned", indicating removal or archival.
+     * This MUST be indicated explicitly, just removing the ORD information itself is not sufficient.
      * 
      * A tombstone entry MAY be removed after a grace period of 31 days.
      * 
@@ -817,6 +872,10 @@ public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo 
         sb.append("description");
         sb.append('=');
         sb.append(((this.description == null)?"<null>":this.description));
+        sb.append(',');
+        sb.append("perspective");
+        sb.append('=');
+        sb.append(((this.perspective == null)?"<null>":this.perspective));
         sb.append(',');
         sb.append("describedSystemInstance");
         sb.append('=');
@@ -924,6 +983,7 @@ public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo 
         result = ((result* 31)+((this.policyLevel == null)? 0 :this.policyLevel.hashCode()));
         result = ((result* 31)+((this.tombstones == null)? 0 :this.tombstones.hashCode()));
         result = ((result* 31)+((this.apiResources == null)? 0 :this.apiResources.hashCode()));
+        result = ((result* 31)+((this.perspective == null)? 0 :this.perspective.hashCode()));
         result = ((result* 31)+((this.entityTypes == null)? 0 :this.entityTypes.hashCode()));
         result = ((result* 31)+((this.describedSystemType == null)? 0 :this.describedSystemType.hashCode()));
         result = ((result* 31)+((this.vendors == null)? 0 :this.vendors.hashCode()));
@@ -939,7 +999,7 @@ public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo 
             return false;
         }
         DocumentSchema rhs = ((DocumentSchema) other);
-        return (((((((((((((((((((((((this.openResourceDiscovery == rhs.openResourceDiscovery)||((this.openResourceDiscovery!= null)&&this.openResourceDiscovery.equals(rhs.openResourceDiscovery)))&&((this.describedSystemInstance == rhs.describedSystemInstance)||((this.describedSystemInstance!= null)&&this.describedSystemInstance.equals(rhs.describedSystemInstance))))&&((this.groupTypes == rhs.groupTypes)||((this.groupTypes!= null)&&this.groupTypes.equals(rhs.groupTypes))))&&((this.capabilities == rhs.capabilities)||((this.capabilities!= null)&&this.capabilities.equals(rhs.capabilities))))&&((this.$schema == rhs.$schema)||((this.$schema!= null)&&this.$schema.equals(rhs.$schema))))&&((this.integrationDependencies == rhs.integrationDependencies)||((this.integrationDependencies!= null)&&this.integrationDependencies.equals(rhs.integrationDependencies))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.dataProducts == rhs.dataProducts)||((this.dataProducts!= null)&&this.dataProducts.equals(rhs.dataProducts))))&&((this.groups == rhs.groups)||((this.groups!= null)&&this.groups.equals(rhs.groups))))&&((this.consumptionBundles == rhs.consumptionBundles)||((this.consumptionBundles!= null)&&this.consumptionBundles.equals(rhs.consumptionBundles))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.packages == rhs.packages)||((this.packages!= null)&&this.packages.equals(rhs.packages))))&&((this.describedSystemVersion == rhs.describedSystemVersion)||((this.describedSystemVersion!= null)&&this.describedSystemVersion.equals(rhs.describedSystemVersion))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.eventResources == rhs.eventResources)||((this.eventResources!= null)&&this.eventResources.equals(rhs.eventResources))))&&((this.products == rhs.products)||((this.products!= null)&&this.products.equals(rhs.products))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.tombstones == rhs.tombstones)||((this.tombstones!= null)&&this.tombstones.equals(rhs.tombstones))))&&((this.apiResources == rhs.apiResources)||((this.apiResources!= null)&&this.apiResources.equals(rhs.apiResources))))&&((this.entityTypes == rhs.entityTypes)||((this.entityTypes!= null)&&this.entityTypes.equals(rhs.entityTypes))))&&((this.describedSystemType == rhs.describedSystemType)||((this.describedSystemType!= null)&&this.describedSystemType.equals(rhs.describedSystemType))))&&((this.vendors == rhs.vendors)||((this.vendors!= null)&&this.vendors.equals(rhs.vendors))));
+        return ((((((((((((((((((((((((this.openResourceDiscovery == rhs.openResourceDiscovery)||((this.openResourceDiscovery!= null)&&this.openResourceDiscovery.equals(rhs.openResourceDiscovery)))&&((this.describedSystemInstance == rhs.describedSystemInstance)||((this.describedSystemInstance!= null)&&this.describedSystemInstance.equals(rhs.describedSystemInstance))))&&((this.groupTypes == rhs.groupTypes)||((this.groupTypes!= null)&&this.groupTypes.equals(rhs.groupTypes))))&&((this.capabilities == rhs.capabilities)||((this.capabilities!= null)&&this.capabilities.equals(rhs.capabilities))))&&((this.$schema == rhs.$schema)||((this.$schema!= null)&&this.$schema.equals(rhs.$schema))))&&((this.integrationDependencies == rhs.integrationDependencies)||((this.integrationDependencies!= null)&&this.integrationDependencies.equals(rhs.integrationDependencies))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.dataProducts == rhs.dataProducts)||((this.dataProducts!= null)&&this.dataProducts.equals(rhs.dataProducts))))&&((this.groups == rhs.groups)||((this.groups!= null)&&this.groups.equals(rhs.groups))))&&((this.consumptionBundles == rhs.consumptionBundles)||((this.consumptionBundles!= null)&&this.consumptionBundles.equals(rhs.consumptionBundles))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.packages == rhs.packages)||((this.packages!= null)&&this.packages.equals(rhs.packages))))&&((this.describedSystemVersion == rhs.describedSystemVersion)||((this.describedSystemVersion!= null)&&this.describedSystemVersion.equals(rhs.describedSystemVersion))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.eventResources == rhs.eventResources)||((this.eventResources!= null)&&this.eventResources.equals(rhs.eventResources))))&&((this.products == rhs.products)||((this.products!= null)&&this.products.equals(rhs.products))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.tombstones == rhs.tombstones)||((this.tombstones!= null)&&this.tombstones.equals(rhs.tombstones))))&&((this.apiResources == rhs.apiResources)||((this.apiResources!= null)&&this.apiResources.equals(rhs.apiResources))))&&((this.perspective == rhs.perspective)||((this.perspective!= null)&&this.perspective.equals(rhs.perspective))))&&((this.entityTypes == rhs.entityTypes)||((this.entityTypes!= null)&&this.entityTypes.equals(rhs.entityTypes))))&&((this.describedSystemType == rhs.describedSystemType)||((this.describedSystemType!= null)&&this.describedSystemType.equals(rhs.describedSystemType))))&&((this.vendors == rhs.vendors)||((this.vendors!= null)&&this.vendors.equals(rhs.vendors))));
     }
 
 
@@ -961,7 +1021,8 @@ public class DocumentSchema implements com.sap.ord.service.hooks.PartialOrdPojo 
         _1_8("1.8"),
         _1_9("1.9"),
         _1_10("1.10"),
-        _1_11("1.11");
+        _1_11("1.11"),
+        _1_12("1.12");
         private final String value;
         private final static Map<String, DocumentSchema.OpenResourceDiscovery> CONSTANTS = new HashMap<String, DocumentSchema.OpenResourceDiscovery>();
 

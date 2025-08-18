@@ -237,11 +237,11 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
      * 
      * If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.
      * 
-     * Together with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
+     * Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
      * 
      */
     @JsonProperty("lastUpdate")
-    @JsonPropertyDescription("Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).\n\nWhen retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time.\nTherefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.\n\nIf the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.\n\nTogether with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.")
+    @JsonPropertyDescription("Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).\n\nWhen retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time.\nTherefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.\n\nIf the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.\n\nTogether with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.")
     private Date lastUpdate;
     /**
      * The visibility states who is allowed to "see" the described resource or capability.
@@ -285,18 +285,16 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
     private String minSystemVersion;
     /**
      * The deprecation date defines when the resource has been set as deprecated.
-     * This is not to be confused with the `sunsetDate` which defines when the resource will be actually decommissioned / removed.
-     * 
-     * If the `releaseStatus` is set to `deprecated`, the `deprecationDate` SHOULD be provided.
+     * This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.
      * 
      * The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
      * 
      */
     @JsonProperty("deprecationDate")
-    @JsonPropertyDescription("The deprecation date defines when the resource has been set as deprecated.\nThis is not to be confused with the `sunsetDate` which defines when the resource will be actually decommissioned / removed.\n\nIf the `releaseStatus` is set to `deprecated`, the `deprecationDate` SHOULD be provided.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).")
+    @JsonPropertyDescription("The deprecation date defines when the resource has been set as deprecated.\nThis is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).")
     private Date deprecationDate;
     /**
-     * The sunset date defines when the resource is scheduled to be decommissioned/removed.
+     * The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.
      * 
      * If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).
      * Once the sunset date is known and ready to be communicated externally, it MUST be provided here.
@@ -305,7 +303,7 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
      * 
      */
     @JsonProperty("sunsetDate")
-    @JsonPropertyDescription("The sunset date defines when the resource is scheduled to be decommissioned/removed.\n\nIf the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).\nOnce the sunset date is known and ready to be communicated externally, it MUST be provided here.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).")
+    @JsonPropertyDescription("The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.\n\nIf the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).\nOnce the sunset date is known and ready to be communicated externally, it MUST be provided here.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).")
     private Date sunsetDate;
     /**
      * The successor resource(s).
@@ -558,6 +556,9 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
     @JsonPropertyDescription("A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
     private List<String> policyLevels = new ArrayList<String>();
     /**
+     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
+     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
+     * 
      * Defines whether this ORD resource is **system instance aware**.
      * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
      * 
@@ -567,7 +568,7 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
      * 
      */
     @JsonProperty("systemInstanceAware")
-    @JsonPropertyDescription("Defines whether this ORD resource is **system instance aware**.\nThis is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,\nnot just once per system type, but once per **system instance**.")
+    @JsonPropertyDescription("All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.\nAll resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.\n\nDefines whether this ORD resource is **system instance aware**.\nThis is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,\nnot just once per system type, but once per **system instance**.")
     private Boolean systemInstanceAware = false;
 
     /**
@@ -1006,7 +1007,7 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
      * 
      * If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.
      * 
-     * Together with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
+     * Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
      * 
      */
     @JsonProperty("lastUpdate")
@@ -1024,7 +1025,7 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
      * 
      * If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.
      * 
-     * Together with `systemInstanceAware`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
+     * Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.
      * 
      */
     @JsonProperty("lastUpdate")
@@ -1155,9 +1156,7 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * The deprecation date defines when the resource has been set as deprecated.
-     * This is not to be confused with the `sunsetDate` which defines when the resource will be actually decommissioned / removed.
-     * 
-     * If the `releaseStatus` is set to `deprecated`, the `deprecationDate` SHOULD be provided.
+     * This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.
      * 
      * The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
      * 
@@ -1169,9 +1168,7 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
 
     /**
      * The deprecation date defines when the resource has been set as deprecated.
-     * This is not to be confused with the `sunsetDate` which defines when the resource will be actually decommissioned / removed.
-     * 
-     * If the `releaseStatus` is set to `deprecated`, the `deprecationDate` SHOULD be provided.
+     * This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.
      * 
      * The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
      * 
@@ -1187,7 +1184,7 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
     }
 
     /**
-     * The sunset date defines when the resource is scheduled to be decommissioned/removed.
+     * The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.
      * 
      * If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).
      * Once the sunset date is known and ready to be communicated externally, it MUST be provided here.
@@ -1201,7 +1198,7 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
     }
 
     /**
-     * The sunset date defines when the resource is scheduled to be decommissioned/removed.
+     * The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.
      * 
      * If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).
      * Once the sunset date is known and ready to be communicated externally, it MUST be provided here.
@@ -1918,6 +1915,9 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
     }
 
     /**
+     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
+     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
+     * 
      * Defines whether this ORD resource is **system instance aware**.
      * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
      * 
@@ -1932,6 +1932,9 @@ public class EventResource implements com.sap.ord.service.hooks.PartialOrdPojo {
     }
 
     /**
+     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
+     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
+     * 
      * Defines whether this ORD resource is **system instance aware**.
      * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
      * 
