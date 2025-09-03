@@ -80,7 +80,7 @@ jobs:
             <modelVersion>4.0.0</modelVersion>
 
             <parent>
-               <groupId>com.sap.ord</groupId>
+               <groupId>org.neonephos.ord</groupId>
                <artifactId>annotations</artifactId>
                <version>1.0.2</version>
             </parent>
@@ -147,7 +147,7 @@ jobs:
             <modelVersion>4.0.0</modelVersion>
 
             <parent>
-              <groupId>com.sap.ord</groupId>
+              <groupId>org.neonephos.ord</groupId>
               <artifactId>annotations</artifactId>
               <version>1.0.2</version>
             </parent>
@@ -167,7 +167,7 @@ jobs:
                 <version>2.17.0</version>
               </dependency>
                <dependency>
-                <groupId>com.sap.ord</groupId>
+                <groupId>org.neonephos.ord</groupId>
                 <artifactId>ord-service</artifactId>
                 <version>1.0.1</version>
               </dependency>
@@ -202,7 +202,7 @@ jobs:
                     <configuration>
                         <sourceDirectory>${project.basedir}/static/spec-v1/interfaces</sourceDirectory>
                         <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-                        <targetPackage>com.sap.ord.model</targetPackage>
+                        <targetPackage>org.neonephos.ord.model</targetPackage>
                         <generateBuilders>true</generateBuilders>
                         <removeOldOutput>true</removeOldOutput>
                     </configuration>

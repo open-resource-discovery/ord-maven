@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.sap.ord</groupId>
+    <groupId>org.neonephos.ord</groupId>
     <artifactId>annotations</artifactId>
     <version>1.0.2</version>
   </parent>
@@ -61,7 +61,7 @@
           <configuration>
               <sourceDirectory>${project.basedir}/static/spec-v1/interfaces</sourceDirectory>
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-              <targetPackage>com.sap.ord.model</targetPackage>
+              <targetPackage>org.neonephos.ord.model</targetPackage>
               <generateBuilders>true</generateBuilders>
               <removeOldOutput>true</removeOldOutput>
           </configuration>
@@ -82,13 +82,13 @@
                       <target>
                           <replaceregexp byline="true" flags="g">
                               <!-- all generated POJOs -->
-                              <fileset dir="${project.basedir}/src/main/java/com/sap/ord/model">
+                              <fileset dir="${project.basedir}/src/main/java/org/neonephos/ord/model">
                                   <include name="**/*.java"/>
                               </fileset>
                               <!-- Search pattern -->
                               <regexp pattern="public class ([A-Za-z0-9_]+) \{" />
                               <!-- Inserting the interface -->
-                              <substitution expression="public class \1 implements com.sap.ord.service.hooks.PartialOrdPojo {" />
+                              <substitution expression="public class \1 implements org.neonephos.ord.service.hooks.PartialOrdPojo {" />
                           </replaceregexp>
                       </target>
                   </configuration>
