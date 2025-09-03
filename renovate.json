@@ -13,37 +13,9 @@
   "enabledManagers": ["maven"],
   "packageRules": [
     {
-      "groupName": "Spring Boot BOM",
-      "matchManagers": ["maven"],
-      "matchPackageNames": ["spring-boot-dependencies"],
-      "semanticCommitType": "chore",
-      "automerge": true
-    },
-    {
-      "groupName": "Parent POM",
-      "matchManagers": ["maven"],
-      "matchDepTypes": ["parent"],
-      "semanticCommitType": "chore",
-      "automerge": true
-    },
-    {
-      "groupName": "Spring Boot Starters",
-      "matchManagers": ["maven"],
-      "matchPackagePatterns": ["^org\\.springframework\\.boot"],
-      "semanticCommitType": "chore",
-      "automerge": true
-    },
-    {
-      "groupName": "Spring Framework",
-      "matchManagers": ["maven"],
-      "matchPackagePatterns": ["^org\\.springframework\\."],
-      "semanticCommitType": "chore",
-      "automerge": true
-    },
-    {
       "groupName": "ORD Dependencies",
       "matchManagers": ["maven"],
-      "matchPackagePatterns": ["^com\\.sap\\.ord", "^org\\.neonephos"],
+      "matchPackagePatterns": ["^com\\.sap\\.ord", "^org\\.neonephos\\.ord"],
       "semanticCommitType": "chore",
       "automerge": true
     },
