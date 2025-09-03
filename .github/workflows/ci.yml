@@ -229,7 +229,7 @@ jobs:
                                         <!-- Search pattern -->
                                         <regexp pattern="public class ([A-Za-z0-9_]+) \{" />
                                         <!-- Inserting the interface -->
-                                        <substitution expression="public class \1 implements com.sap.ord.service.hooks.PartialOrdPojo {" />
+                                        <substitution expression="public class \1 implements org.neonephos.ord.service.hooks.PartialOrdPojo {" />
                                     </replaceregexp>
                                 </target>
                             </configuration>
