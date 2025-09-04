@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":pinVersions"
+  ],
+  "semanticCommits": "enabled",
+  "branchPrefix": "deps/",
+  "timezone": "Europe/Berlin",
+  "schedule": ["every weekend"],
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 0,
+  "enabledManagers": ["maven"],
+  "packageRules": [
+    {
+      "groupName": "ORD Dependencies",
+      "matchManagers": ["maven"],
+      "matchPackagePatterns": ["^com\\.sap\\.ord", "^org\\.neonephos\\.ord"],
+      "semanticCommitType": "chore",
+      "automerge": true
+    },
+    {
+      "groupName": "JUnit and Test Dependencies",
+      "matchManagers": ["maven"],
+      "matchPackagePatterns": ["^org\\.junit\\.", "^org\\.mockito\\.", "^org\\.assertj\\."],
+      "semanticCommitType": "test",
+      "automerge": true
+    },
+    {
+      "groupName": "Other Java Dependencies",
+      "matchManagers": ["maven"],
+      "semanticCommitType": "chore",
+      "automerge": true
+    }
+  ]
+}
+
