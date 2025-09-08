@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.neonephos.ord</groupId>
+    <groupId>org.openresourcediscovery</groupId>
     <artifactId>annotations</artifactId>
     <version>1.0.2</version>
   </parent>
@@ -26,7 +26,7 @@
       <version>2.17.0</version>
     </dependency>
      <dependency>
-      <groupId>org.neonephos.ord</groupId>
+      <groupId>org.openresourcediscovery</groupId>
       <artifactId>ord-service</artifactId>
       <version>1.0.1</version>
     </dependency>
@@ -61,7 +61,7 @@
           <configuration>
               <sourceDirectory>${project.basedir}/static/spec-v1/interfaces</sourceDirectory>
               <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-              <targetPackage>org.neonephos.ord.model</targetPackage>
+              <targetPackage>org.openresourcediscovery.model</targetPackage>
               <generateBuilders>true</generateBuilders>
               <removeOldOutput>true</removeOldOutput>
           </configuration>
@@ -88,7 +88,7 @@
                               <!-- Search pattern -->
                               <regexp pattern="public class ([A-Za-z0-9_]+) \{" />
                               <!-- Inserting the interface -->
-                              <substitution expression="public class \1 implements org.neonephos.ord.service.hooks.PartialOrdPojo {" />
+                              <substitution expression="public class \1 implements org.openresourcediscovery.service.hooks.PartialOrdPojo {" />
                           </replaceregexp>
                       </target>
                   </configuration>
