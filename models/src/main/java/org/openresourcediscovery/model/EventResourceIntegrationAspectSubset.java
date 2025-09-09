@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "eventType"
 })
 @Generated("jsonschema2pojo")
-public class EventResourceIntegrationAspectSubset implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class EventResourceIntegrationAspectSubset {
 
     /**
      * The type ID of the individual event or message.

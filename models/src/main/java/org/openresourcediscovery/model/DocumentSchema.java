@@ -50,7 +50,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "tombstones"
 })
 @Generated("jsonschema2pojo")
-public class DocumentSchema implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class DocumentSchema {
 
     /**
      * Optional [URL](https://tools.ietf.org/html/rfc3986) to the Open Resource Discovery document schema (defined as a JSON Schema).

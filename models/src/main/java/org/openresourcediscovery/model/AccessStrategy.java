@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "customDescription"
 })
 @Generated("jsonschema2pojo")
-public class AccessStrategy implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class AccessStrategy {
 
     /**
      * Defines the authentication/authorization strategy through which the referenced `resourceDefinitions` are accessible.
@@ -162,8 +162,8 @@ public class AccessStrategy implements org.openresourcediscovery.service.hooks.P
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         result = ((result* 31)+((this.customType == null)? 0 :this.customType.hashCode()));
+        result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         result = ((result* 31)+((this.customDescription == null)? 0 :this.customDescription.hashCode()));
         return result;
     }
@@ -177,7 +177,7 @@ public class AccessStrategy implements org.openresourcediscovery.service.hooks.P
             return false;
         }
         AccessStrategy rhs = ((AccessStrategy) other);
-        return ((((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type)))&&((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType))))&&((this.customDescription == rhs.customDescription)||((this.customDescription!= null)&&this.customDescription.equals(rhs.customDescription))));
+        return ((((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType)))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.customDescription == rhs.customDescription)||((this.customDescription!= null)&&this.customDescription.equals(rhs.customDescription))));
     }
 
 }

@@ -35,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 })
 @Generated("jsonschema2pojo")
-public class Labels implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class Labels {
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();

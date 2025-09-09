@@ -55,7 +55,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "documentationLabels"
 })
 @Generated("jsonschema2pojo")
-public class Package implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class Package {
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

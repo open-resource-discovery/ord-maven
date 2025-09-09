@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "tags"
 })
 @Generated("jsonschema2pojo")
-public class SystemVersion implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class SystemVersion {
 
     /**
      * The version of the system instance (run-time) or the version of the described system-version perspective.
@@ -382,9 +382,9 @@ public class SystemVersion implements org.openresourcediscovery.service.hooks.Pa
     public int hashCode() {
         int result = 1;
         result = ((result* 31)+((this.documentationLabels == null)? 0 :this.documentationLabels.hashCode()));
+        result = ((result* 31)+((this.correlationIds == null)? 0 :this.correlationIds.hashCode()));
         result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
         result = ((result* 31)+((this.version == null)? 0 :this.version.hashCode()));
-        result = ((result* 31)+((this.correlationIds == null)? 0 :this.correlationIds.hashCode()));
         result = ((result* 31)+((this.labels == null)? 0 :this.labels.hashCode()));
         result = ((result* 31)+((this.tags == null)? 0 :this.tags.hashCode()));
         return result;
@@ -399,7 +399,7 @@ public class SystemVersion implements org.openresourcediscovery.service.hooks.Pa
             return false;
         }
         SystemVersion rhs = ((SystemVersion) other);
-        return (((((((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels)))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))));
+        return (((((((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels)))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))));
     }
 
 }

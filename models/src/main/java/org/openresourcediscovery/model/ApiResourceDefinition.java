@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "accessStrategies"
 })
 @Generated("jsonschema2pojo")
-public class ApiResourceDefinition implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class ApiResourceDefinition {
 
     /**
      * Type of the API Resource Definition

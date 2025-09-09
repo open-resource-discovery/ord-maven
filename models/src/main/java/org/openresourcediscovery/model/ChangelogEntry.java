@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "url"
 })
 @Generated("jsonschema2pojo")
-public class ChangelogEntry implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class ChangelogEntry {
 
     /**
      * Full version number that corresponds to the `version` that is described by the changelog entry.

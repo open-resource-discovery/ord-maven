@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "description"
 })
 @Generated("jsonschema2pojo")
-public class GroupType implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class GroupType {
 
     /**
      * GroupType ID, which MUST be a valid [Concept ID](../../spec-v1/#concept-id).

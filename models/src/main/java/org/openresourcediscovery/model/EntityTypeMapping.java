@@ -46,7 +46,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "entityTypeTargets"
 })
 @Generated("jsonschema2pojo")
-public class EntityTypeMapping implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class EntityTypeMapping {
 
     /**
      * List of selectors for API models within an API Resource.

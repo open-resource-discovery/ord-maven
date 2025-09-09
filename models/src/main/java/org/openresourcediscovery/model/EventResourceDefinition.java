@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "accessStrategies"
 })
 @Generated("jsonschema2pojo")
-public class EventResourceDefinition implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class EventResourceDefinition {
 
     /**
      * Type of the event resource definition

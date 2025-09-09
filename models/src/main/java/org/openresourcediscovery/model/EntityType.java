@@ -52,7 +52,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "systemInstanceAware"
 })
 @Generated("jsonschema2pojo")
-public class EntityType implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class EntityType {
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

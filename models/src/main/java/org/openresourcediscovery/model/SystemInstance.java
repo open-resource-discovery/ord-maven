@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "tags"
 })
 @Generated("jsonschema2pojo")
-public class SystemInstance implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class SystemInstance {
 
     /**
      * Optional [base URL](../index.md#def-base-url) of the **system instance**.
@@ -390,8 +390,8 @@ public class SystemInstance implements org.openresourcediscovery.service.hooks.P
         int result = 1;
         result = ((result* 31)+((this.documentationLabels == null)? 0 :this.documentationLabels.hashCode()));
         result = ((result* 31)+((this.baseUrl == null)? 0 :this.baseUrl.hashCode()));
-        result = ((result* 31)+((this.localId == null)? 0 :this.localId.hashCode()));
         result = ((result* 31)+((this.correlationIds == null)? 0 :this.correlationIds.hashCode()));
+        result = ((result* 31)+((this.localId == null)? 0 :this.localId.hashCode()));
         result = ((result* 31)+((this.labels == null)? 0 :this.labels.hashCode()));
         result = ((result* 31)+((this.tags == null)? 0 :this.tags.hashCode()));
         return result;
@@ -406,7 +406,7 @@ public class SystemInstance implements org.openresourcediscovery.service.hooks.P
             return false;
         }
         SystemInstance rhs = ((SystemInstance) other);
-        return (((((((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels)))&&((this.baseUrl == rhs.baseUrl)||((this.baseUrl!= null)&&this.baseUrl.equals(rhs.baseUrl))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))));
+        return (((((((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels)))&&((this.baseUrl == rhs.baseUrl)||((this.baseUrl!= null)&&this.baseUrl.equals(rhs.baseUrl))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))));
     }
 
 }

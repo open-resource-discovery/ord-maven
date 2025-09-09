@@ -46,7 +46,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "documentationLabels"
 })
 @Generated("jsonschema2pojo")
-public class ConsumptionBundle implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class ConsumptionBundle {
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
