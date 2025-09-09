@@ -82,7 +82,7 @@
                       <target>
                           <replaceregexp byline="true" flags="g">
                               <!-- all generated POJOs -->
-                              <fileset dir="${project.basedir}/src/main/java/org/neonephos/ord/model">
+                              <fileset dir="${project.basedir}/src/main/java/org/openresourcediscovery/model">
                                   <include name="**/*.java"/>
                               </fileset>
                               <!-- Search pattern -->
