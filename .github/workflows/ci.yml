@@ -166,11 +166,17 @@ jobs:
                 <artifactId>jackson-annotations</artifactId>
                 <version>2.17.0</version>
               </dependency>
-            <!--    <dependency>
+            <dependency>
+              <groupId>javax.annotation</groupId>
+              <artifactId>javax.annotation-api</artifactId>
+              <version>1.3.2</version>
+            </dependency>  
+            <!--
+             <dependency>
                 <groupId>org.openresourcediscovery</groupId>
                 <artifactId>ord-service</artifactId>
                 <version>1.0.1</version>
-              </dependency> -->
+             </dependency> -->
             </dependencies>
 
             <build>
@@ -282,7 +288,7 @@ jobs:
             - models/src/main/java
 
             Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
-          base: main
+          base: chore/rename-packages
           add-paths: |
             annotations/**
             models/**
