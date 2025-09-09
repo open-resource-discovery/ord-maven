@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "accessStrategies"
 })
 @Generated("jsonschema2pojo")
-public class CapabilityDefinition implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class CapabilityDefinition {
 
     /**
      * Type of the capability resource definition

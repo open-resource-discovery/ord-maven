@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "url"
 })
 @Generated("jsonschema2pojo")
-public class APIEventResourceLink implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class APIEventResourceLink {
 
     /**
      * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions)
@@ -170,8 +170,8 @@ public class APIEventResourceLink implements org.openresourcediscovery.service.h
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         result = ((result* 31)+((this.customType == null)? 0 :this.customType.hashCode()));
+        result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         result = ((result* 31)+((this.url == null)? 0 :this.url.hashCode()));
         return result;
     }
@@ -185,7 +185,7 @@ public class APIEventResourceLink implements org.openresourcediscovery.service.h
             return false;
         }
         APIEventResourceLink rhs = ((APIEventResourceLink) other);
-        return ((((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type)))&&((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
+        return ((((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType)))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
     }
 
 }

@@ -28,7 +28,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "description"
 })
 @Generated("jsonschema2pojo")
-public class Link implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class Link {
 
     /**
      * Human readable title of the link.

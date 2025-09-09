@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "minVersion"
 })
 @Generated("jsonschema2pojo")
-public class ApiResourceIntegrationAspect implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class ApiResourceIntegrationAspect {
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

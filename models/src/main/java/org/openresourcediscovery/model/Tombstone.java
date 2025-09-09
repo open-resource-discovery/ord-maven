@@ -34,7 +34,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "description"
 })
 @Generated("jsonschema2pojo")
-public class Tombstone implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class Tombstone {
 
     /**
      * [ORD ID](../index.md#ord-id) of the ORD resource/taxonomy that has been removed.
@@ -261,12 +261,12 @@ public class Tombstone implements org.openresourcediscovery.service.hooks.Partia
     @Override
     public int hashCode() {
         int result = 1;
+        result = ((result* 31)+((this.removalDate == null)? 0 :this.removalDate.hashCode()));
+        result = ((result* 31)+((this.groupId == null)? 0 :this.groupId.hashCode()));
         result = ((result* 31)+((this.groupTypeId == null)? 0 :this.groupTypeId.hashCode()));
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
         result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
-        result = ((result* 31)+((this.removalDate == null)? 0 :this.removalDate.hashCode()));
         result = ((result* 31)+((this.ordId == null)? 0 :this.ordId.hashCode()));
-        result = ((result* 31)+((this.groupId == null)? 0 :this.groupId.hashCode()));
         return result;
     }
 
@@ -279,7 +279,7 @@ public class Tombstone implements org.openresourcediscovery.service.hooks.Partia
             return false;
         }
         Tombstone rhs = ((Tombstone) other);
-        return (((((((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.removalDate == rhs.removalDate)||((this.removalDate!= null)&&this.removalDate.equals(rhs.removalDate))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.groupId == rhs.groupId)||((this.groupId!= null)&&this.groupId.equals(rhs.groupId))));
+        return (((((((this.removalDate == rhs.removalDate)||((this.removalDate!= null)&&this.removalDate.equals(rhs.removalDate)))&&((this.groupId == rhs.groupId)||((this.groupId!= null)&&this.groupId.equals(rhs.groupId))))&&((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))));
     }
 
 }

@@ -25,15 +25,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "tags"
 })
 @Generated("jsonschema2pojo")
-public class SystemType implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class SystemType {
 
     /**
-     * The system namespace is a unique identifier for the system type.
+     * The [system namespace](../index.md#system-namespace) is a unique identifier for the system type.
      * It is used to reference the system type in the ORD.
      * 
      */
     @JsonProperty("systemNamespace")
-    @JsonPropertyDescription("The system namespace is a unique identifier for the system type.\nIt is used to reference the system type in the ORD.")
+    @JsonPropertyDescription("The [system namespace](../index.md#system-namespace) is a unique identifier for the system type.\nIt is used to reference the system type in the ORD.")
     private String systemNamespace;
     /**
      * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
@@ -103,7 +103,7 @@ public class SystemType implements org.openresourcediscovery.service.hooks.Parti
     private List<String> tags = new ArrayList<String>();
 
     /**
-     * The system namespace is a unique identifier for the system type.
+     * The [system namespace](../index.md#system-namespace) is a unique identifier for the system type.
      * It is used to reference the system type in the ORD.
      * 
      */
@@ -113,7 +113,7 @@ public class SystemType implements org.openresourcediscovery.service.hooks.Parti
     }
 
     /**
-     * The system namespace is a unique identifier for the system type.
+     * The [system namespace](../index.md#system-namespace) is a unique identifier for the system type.
      * It is used to reference the system type in the ORD.
      * 
      */

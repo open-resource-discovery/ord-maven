@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "callbackUrl"
 })
 @Generated("jsonschema2pojo")
-public class CredentialExchangeStrategy implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class CredentialExchangeStrategy {
 
     /**
      * The type of credential exchange strategy.

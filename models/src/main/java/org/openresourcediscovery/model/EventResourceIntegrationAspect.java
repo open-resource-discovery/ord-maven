@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "systemTypeRestriction"
 })
 @Generated("jsonschema2pojo")
-public class EventResourceIntegrationAspect implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class EventResourceIntegrationAspect {
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

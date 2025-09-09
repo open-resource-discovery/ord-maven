@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "description"
 })
 @Generated("jsonschema2pojo")
-public class Group implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class Group {
 
     /**
      * The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.

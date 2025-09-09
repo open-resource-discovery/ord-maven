@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "defaultEntryPoint"
 })
 @Generated("jsonschema2pojo")
-public class ConsumptionBundleReference implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class ConsumptionBundleReference {
 
     /**
      * The consumption bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to.

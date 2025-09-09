@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "description"
 })
 @Generated("jsonschema2pojo")
-public class Extensible implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class Extensible {
 
     /**
      * This property defines whether the resource is extensible.

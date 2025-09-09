@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "url"
 })
 @Generated("jsonschema2pojo")
-public class PackageLink implements org.openresourcediscovery.service.hooks.PartialOrdPojo {
+public class PackageLink {
 
     /**
      * 
