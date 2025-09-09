@@ -213,6 +213,7 @@ jobs:
                     <artifactId>maven-antrun-plugin</artifactId>
                     <version>3.1.0</version>
                     <executions>
+                        <!--
                         <execution>
                             <id>patch-partial-interface</id>
                             <phase>generate-sources</phase>
@@ -220,7 +221,7 @@ jobs:
                                 <goal>run</goal>
                             </goals>
                             <configuration>
-                                <target>
+                               <target>
                                     <replaceregexp byline="true" flags="g">
                                         <!-- all generated POJOs -->
                                         <fileset dir="${project.basedir}/src/main/java/com/sap/ord/model">
@@ -229,11 +230,12 @@ jobs:
                                         <!-- Search pattern -->
                                         <regexp pattern="public class ([A-Za-z0-9_]+) \{" />
                                         <!-- Inserting the interface -->
-                                      <!--   <substitution expression="public class \1 implements org.openresourcediscovery.service.hooks.PartialOrdPojo {" /> -->
+                                       <substitution expression="public class \1 implements org.openresourcediscovery.service.hooks.PartialOrdPojo {" /> 
                                     </replaceregexp>
                                 </target>
                             </configuration>
-                        </execution>
+                        </execution> 
+                      -->
                     </executions>
                 </plugin>
       
