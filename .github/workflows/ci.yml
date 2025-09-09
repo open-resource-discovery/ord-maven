@@ -82,7 +82,7 @@ jobs:
             <parent>
                <groupId>org.openresourcediscovery</groupId>
                <artifactId>annotations</artifactId>
-               <version>1.0.2</version>
+               <version>0.0.1</version>
             </parent>
 
             <artifactId>ord-annotations</artifactId>
@@ -149,7 +149,7 @@ jobs:
             <parent>
               <groupId>org.openresourcediscovery</groupId>
               <artifactId>annotations</artifactId>
-              <version>1.0.2</version>
+              <version>0.0.1</version>
             </parent>
 
             <artifactId>ord-models</artifactId>
@@ -175,7 +175,7 @@ jobs:
              <dependency>
                 <groupId>org.openresourcediscovery</groupId>
                 <artifactId>ord-service</artifactId>
-                <version>1.0.1</version>
+                <version>0.0.1</version>
              </dependency> -->
             </dependencies>
 
@@ -288,7 +288,7 @@ jobs:
             - models/src/main/java
 
             Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
-          base: chore/rename-packages
+          base: main
           add-paths: |
             annotations/**
             models/**
