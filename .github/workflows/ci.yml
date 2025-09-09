@@ -223,13 +223,10 @@ jobs:
                             <configuration>
                                <target>
                                     <replaceregexp byline="true" flags="g">
-                                        <!-- all generated POJOs -->
                                         <fileset dir="${project.basedir}/src/main/java/com/sap/ord/model">
                                             <include name="**/*.java"/>
                                         </fileset>
-                                        <!-- Search pattern -->
                                         <regexp pattern="public class ([A-Za-z0-9_]+) \{" />
-                                        <!-- Inserting the interface -->
                                        <substitution expression="public class \1 implements org.openresourcediscovery.service.hooks.PartialOrdPojo {" /> 
                                     </replaceregexp>
                                 </target>
