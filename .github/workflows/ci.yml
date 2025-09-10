@@ -234,7 +234,7 @@ jobs:
             - models/src/main/java
 
             Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
-          base: main
+          base: chore/oss-migration-parent-ci
           add-paths: |
             annotations/**
             models/**
