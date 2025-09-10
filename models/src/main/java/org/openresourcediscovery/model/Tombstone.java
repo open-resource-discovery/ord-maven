@@ -261,12 +261,12 @@ public class Tombstone {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.removalDate == null)? 0 :this.removalDate.hashCode()));
-        result = ((result* 31)+((this.groupId == null)? 0 :this.groupId.hashCode()));
         result = ((result* 31)+((this.groupTypeId == null)? 0 :this.groupTypeId.hashCode()));
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
         result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
+        result = ((result* 31)+((this.removalDate == null)? 0 :this.removalDate.hashCode()));
         result = ((result* 31)+((this.ordId == null)? 0 :this.ordId.hashCode()));
+        result = ((result* 31)+((this.groupId == null)? 0 :this.groupId.hashCode()));
         return result;
     }
 
@@ -279,7 +279,7 @@ public class Tombstone {
             return false;
         }
         Tombstone rhs = ((Tombstone) other);
-        return (((((((this.removalDate == rhs.removalDate)||((this.removalDate!= null)&&this.removalDate.equals(rhs.removalDate)))&&((this.groupId == rhs.groupId)||((this.groupId!= null)&&this.groupId.equals(rhs.groupId))))&&((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))));
+        return (((((((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.removalDate == rhs.removalDate)||((this.removalDate!= null)&&this.removalDate.equals(rhs.removalDate))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.groupId == rhs.groupId)||((this.groupId!= null)&&this.groupId.equals(rhs.groupId))));
     }
 
 }

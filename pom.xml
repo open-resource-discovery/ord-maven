@@ -13,7 +13,7 @@
     <url>https://github.com/open-resource-discovery/ord-maven</url>
 
     <properties>
-        <revision>0.0.1</revision> <!-- public SemVer; internal builds may override via -Drevision=0.0.1-sap-1 -->
+        <revision>0.0.1</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.parameters>true</maven.compiler.parameters>
