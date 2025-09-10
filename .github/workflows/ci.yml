@@ -46,6 +46,11 @@ jobs:
         run: |
           npm ci --prefix tools/annotation-gen || npm i --prefix tools/annotation-gen
 
+      - name: Verify annotated schema presence
+        run: |
+          ls -la ord-spec/static/spec-v1/interfaces
+          test -f ord-spec/static/spec-v1/interfaces/Document.annotated.schema.json
+
       - name: Generate Java Annotation Interfaces
         run: |
           mkdir -p annotations/target/generated-sources
