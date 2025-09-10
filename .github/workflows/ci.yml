@@ -82,7 +82,7 @@ jobs:
             <parent>
                <groupId>org.openresourcediscovery</groupId>
                <artifactId>annotations</artifactId>
-               <version>0.0.1</version>
+               <version>0.0.1-sap-1</version>
             </parent>
 
             <artifactId>ord-annotations</artifactId>
@@ -149,7 +149,7 @@ jobs:
             <parent>
               <groupId>org.openresourcediscovery</groupId>
               <artifactId>annotations</artifactId>
-              <version>0.0.1</version>
+              <version>0.0.1-sap-1</version>
             </parent>
 
             <artifactId>ord-models</artifactId>
@@ -175,7 +175,7 @@ jobs:
              <dependency>
                 <groupId>org.openresourcediscovery</groupId>
                 <artifactId>ord-service</artifactId>
-                <version>0.0.1</version>
+                <version>0.0.1-sap-1</version>
              </dependency> -->
             </dependencies>
 
