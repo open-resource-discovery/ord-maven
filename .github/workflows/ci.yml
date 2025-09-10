@@ -55,10 +55,10 @@ jobs:
         run: |
           mkdir -p annotations/target/generated-sources
           npm run generate --prefix tools/annotation-gen -- \
-            --schema ord-spec/static/spec-v1/interfaces/Document.annotated.schema.json \
-            --outDir annotations/target/generated-sources \
+            --schema "$GITHUB_WORKSPACE/ord-spec/static/spec-v1/interfaces/Document.annotated.schema.json" \
+            --outDir "$GITHUB_WORKSPACE/annotations/target/generated-sources" \
             --pkg org.openresourcediscovery.annotations \
-            --specPkg ord-spec/package.json
+            --specPkg "$GITHUB_WORKSPACE/ord-spec/package.json"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
