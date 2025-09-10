@@ -924,7 +924,7 @@
             },
             {
               "const": "sap:csn-exposure:v1",
-              "description": "API follows the SAP CSN_EXPOSURE service [[SAP internal link]](https://wiki.one.int.sap/wiki/display/DWAAS/CSN+Exposure+API) for exposing metadata in the [CSN-format](https://cap.cloud.sap/docs/cds/csn)."
+              "description": "API follows the SAP CSN_EXPOSURE service for exposing metadata in the [CSN-format](https://cap.cloud.sap/docs/cds/csn)."
             },
             {
               "const": "sap:ape-api:v1",
@@ -944,7 +944,7 @@
             },
             {
               "const": "sap.dp:data-subscription-api:v1",
-              "description": "Data Subscription API [[SAP internal link]](https://pages.github.tools.sap/CPA/data-product-howto-guide/enabling-lob/data-acquisition/data-subscription-api) is the unified data ingestion framework that SAP LoBs can adopt for data ingestion into BDC.\nAn API marked with this implementation standard is providing the Data Delivery part [[SAP internal link]](https://pages.github.tools.sap/CPA/data-product-howto-guide/enabling-lob/data-acquisition/data-subscription-api#data-delivery) of the Data Subscription API flow for a dedicated BDC data source."
+              "description": "Data Subscription API is the unified data ingestion framework that SAP LoBs can adopt for data ingestion into BDC.\nAn API marked with this implementation standard is providing the Data Delivery part of the Data Subscription API flow for a dedicated BDC data source."
             },
             {
               "const": "custom",
@@ -3251,11 +3251,11 @@
             },
             {
               "const": "asyncapi-v2",
-              "description": "[AsyncAPI 2](https://www.asyncapi.com/docs/specifications/2.0.0) API definition for events.\nThe SAP Event Catalog Specification [[SAP internal link]](https://github.tools.sap/CentralEngineering/sap-event-catalog-specification) also falls under this category, as it is a valid AsyncAPI definition."
+              "description": "[AsyncAPI 2](https://www.asyncapi.com/docs/specifications/2.0.0) API definition for events.\nThe SAP Event Catalog Specification also falls under this category, as it is a valid AsyncAPI definition."
             },
             {
               "const": "sap-csn-interop-effective-v1",
-              "description": "CSN Interop Effective [[SAP internal link]](https://pages.github.tools.sap/CPA/csn-interop-specification/) is a standardized and interoperable flavor of [CSN](https://cap.cloud.sap/docs/cds/csn).\nCSN is a notation for compact representations of [CDS](https://cap.cloud.sap/docs/cds/) models.\n\nIn CDS based frameworks (like ABAP, CAP), APIs and Events are derived from a CDS Service definition and its constituent entities.\nIn this case the original CDS service definition MAY be attached, as it usually contains more metadata insight than other formats.\n\nWARNING: Only expose the CDS Service definition that effectively is governed by the API contract and stability. Do not expose internal models!\n\nThe `mediaType` MUST be be set to `application/json`."
+              "description": "CSN Interop Effective is a standardized and interoperable flavor of [CSN](https://cap.cloud.sap/docs/cds/csn).\nCSN is a notation for compact representations of [CDS](https://cap.cloud.sap/docs/cds/) models.\n\nIn CDS based frameworks (like ABAP, CAP), APIs and Events are derived from a CDS Service definition and its constituent entities.\nIn this case the original CDS service definition MAY be attached, as it usually contains more metadata insight than other formats.\n\nWARNING: Only expose the CDS Service definition that effectively is governed by the API contract and stability. Do not expose internal models!\n\nThe `mediaType` MUST be be set to `application/json`."
             },
             {
               "const": "custom",
