@@ -1,0 +1,244 @@
+name: CI – Generate Models & Annotations, Build ORD-Java
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+    name: Generate & Build ORD-Java
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout ord-maven repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Checkout ORD-Spec repo
+        uses: actions/checkout@v3
+        with:
+          repository: CentralEngineering/open-resource-discovery-specification
+          ref: feat/optional-annotation-fields
+          path: ord-spec
+
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: ord-spec/package-lock.json
+      
+      - name: Ensure sed is installed
+        run: |
+          if ! command -v sed &> /dev/null; then
+            sudo apt-get update && sudo apt-get install -y sed
+          fi
+
+      - name: Install ORD-Spec npm dependencies
+        run: npm ci
+        working-directory: ord-spec
+
+      - name: Generate ORD schemas
+        run: npm run generate
+        working-directory: ord-spec
+
+      - name: Generate Java Annotation Interfaces
+        working-directory: ord-spec
+        run: |
+          mkdir -p ../java/annotations/target/generated-sources
+          npx ts-node src/helper/generateJavaAnnotations.ts \
+            --outDir ../java/annotations/target/generated-sources
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Install Maven manually
+        run: |
+          MAVEN_VERSION=3.9.6
+          wget https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
+          tar xzvf apache-maven-${MAVEN_VERSION}-bin.tar.gz
+          echo "MAVEN_HOME=$PWD/apache-maven-${MAVEN_VERSION}" >> $GITHUB_ENV
+          echo "$PWD/apache-maven-${MAVEN_VERSION}/bin" >> $GITHUB_PATH
+
+      - name: Create annotations/pom.xml
+        run: |
+          cat > annotations/pom.xml << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <project xmlns="http://maven.apache.org/POM/4.0.0"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
+            <modelVersion>4.0.0</modelVersion>
+
+            <parent>
+              <groupId>org.openresourcediscovery</groupId>
+              <artifactId>annotations</artifactId>
+              <version>${revision}</version>
+              <relativePath>../pom.xml</relativePath>
+            </parent>
+
+            <artifactId>ord-annotations</artifactId>
+            <name>ORD Annotations</name>
+
+            <build>
+              <sourceDirectory>src/main/java</sourceDirectory>
+              <plugins>
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                </plugin>
+                <plugin>
+                  <groupId>org.codehaus.mojo</groupId>
+                  <artifactId>build-helper-maven-plugin</artifactId>
+                  <version>3.4.0</version>
+                  <executions>
+                    <execution>
+                      <id>add-generated-sources</id>
+                      <phase>generate-sources</phase>
+                      <goals><goal>add-source</goal></goals>
+                      <configuration>
+                        <sources>
+                          <source>${project.basedir}/target/generated-sources</source>
+                        </sources>
+                      </configuration>
+                    </execution>
+                  </executions>
+                </plugin>
+              </plugins>
+            </build>
+          </project>
+          EOF
+
+      - name: Copy Document.schema.json into models folder
+        run: |
+          mkdir -p models/static/spec-v1/interfaces
+          cp ord-spec/static/spec-v1/interfaces/Document.schema.json models/static/spec-v1/interfaces/
+
+      - name: Create models/pom.xml
+        run: |
+          cat > models/pom.xml << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <project xmlns="http://maven.apache.org/POM/4.0.0"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
+            <modelVersion>4.0.0</modelVersion>
+
+            <parent>
+              <groupId>org.openresourcediscovery</groupId>
+              <artifactId>annotations</artifactId>
+              <version>${revision}</version>
+              <relativePath>../pom.xml</relativePath>
+            </parent>
+
+            <artifactId>ord-models</artifactId>
+            <name>ORD Java Models</name>
+
+            <dependencies>
+              <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>2.17.0</version>
+              </dependency>
+              <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>javax.annotation-api</artifactId>
+                <version>1.3.2</version>
+              </dependency>
+            </dependencies>
+
+            <build>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/static/spec-v1/interfaces</directory>
+                  <includes>
+                    <include>Document.schema.json</include>
+                  </includes>
+                  <targetPath>schemas</targetPath>
+                </resource>
+              </resources>
+
+              <plugins>
+                <plugin>
+                  <groupId>org.jsonschema2pojo</groupId>
+                  <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                  <version>1.2.2</version>
+                  <executions>
+                    <execution>
+                      <id>generate-models</id>
+                      <phase>generate-sources</phase>
+                      <goals><goal>generate</goal></goals>
+                    </execution>
+                  </executions>
+                  <configuration>
+                    <sourceDirectory>${project.basedir}/static/spec-v1/interfaces</sourceDirectory>
+                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+                    <targetPackage>org.openresourcediscovery.model</targetPackage>
+                    <generateBuilders>true</generateBuilders>
+                    <removeOldOutput>true</removeOldOutput>
+                  </configuration>
+                </plugin>
+
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                </plugin>
+              </plugins>
+            </build>
+          </project>
+          EOF
+
+      - name: Build project
+        run: mvn clean install -B
+
+      - name: List generated annotation files
+        run: ls -R ord-spec/java/annotations/target/generated-sources
+
+      - name: List generated model files
+        run: ls -R models/src/main/java
+
+      - name: Copy annotations into root-level annotations folder
+        run: |
+          mkdir -p annotations/src/main/java
+          cp -R ord-spec/java/annotations/target/generated-sources/* annotations/src/main/java
+
+      - name: Remove ord-spec and existing java folder
+        run: |
+          rm -rf ord-spec
+
+      - name: Create or update pull request for generated sources
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: generated-sources
+          commit-message: update generated annotations & models
+          title: update generated annotations & models
+          body: |
+            This PR automatically updates the generated annotations and models in the folders:
+            - annotations/src/main/java
+            - models/src/main/java
+
+            Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
+          base: main
+          add-paths: |
+            annotations/**
+            models/**
+          token: ${{ secrets.GH_AUTOMERGE_PAT }}
+          delete-branch: false
+
+      - name: Enable GitHub Auto-Merge
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          token: ${{ secrets.GH_AUTOMERGE_PAT }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          merge-method: squash
