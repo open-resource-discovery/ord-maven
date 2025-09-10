@@ -25,8 +25,8 @@ jobs:
       - name: Checkout ORD-Spec repo
         uses: actions/checkout@v3
         with:
-          repository: CentralEngineering/open-resource-discovery-specification
-          ref: feat/optional-annotation-fields
+          repository: open-resource-discovery/specification
+          ref: main
           path: ord-spec
 
       - name: Set up Node.js 18
@@ -34,28 +34,26 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-          cache-dependency-path: ord-spec/package-lock.json
-      
+          cache-dependency-path: tools/annotation-gen/package-lock.json
+
       - name: Ensure sed is installed
         run: |
           if ! command -v sed &> /dev/null; then
             sudo apt-get update && sudo apt-get install -y sed
           fi
 
-      - name: Install ORD-Spec npm dependencies
-        run: npm ci
-        working-directory: ord-spec
-
-      - name: Generate ORD schemas
-        run: npm run generate
-        working-directory: ord-spec
+      - name: Install generator deps
+        run: |
+          npm ci --prefix tools/annotation-gen || npm i --prefix tools/annotation-gen
 
       - name: Generate Java Annotation Interfaces
-        working-directory: ord-spec
         run: |
-          mkdir -p ../java/annotations/target/generated-sources
-          npx ts-node src/helper/generateJavaAnnotations.ts \
-            --outDir ../java/annotations/target/generated-sources
+          mkdir -p annotations/target/generated-sources
+          npm run generate --prefix tools/annotation-gen -- \
+            --schema ord-spec/static/spec-v1/interfaces/Document.annotated.schema.json \
+            --outDir annotations/target/generated-sources \
+            --pkg org.openresourcediscovery.annotations \
+            --specPkg ord-spec/package.json
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -204,7 +202,7 @@ jobs:
         run: mvn clean install -B
 
       - name: List generated annotation files
-        run: ls -R ord-spec/java/annotations/target/generated-sources
+        run: ls -R annotations/target/generated-sources
 
       - name: List generated model files
         run: ls -R models/src/main/java
@@ -212,9 +210,9 @@ jobs:
       - name: Copy annotations into root-level annotations folder
         run: |
           mkdir -p annotations/src/main/java
-          cp -R ord-spec/java/annotations/target/generated-sources/* annotations/src/main/java
+          cp -R annotations/target/generated-sources/* annotations/src/main/java
 
-      - name: Remove ord-spec and existing java folder
+      - name: Remove ord-spec
         run: |
           rm -rf ord-spec
 
