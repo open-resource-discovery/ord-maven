@@ -1,10 +1,10 @@
-# ORD-Maven Project
+# ORD Maven
 
-This repository contains the **ORD-Maven** project that generates Java annotation interfaces and model classes from the Open Resource Discovery (ORD) specification. It uses GitHub Actions to automate generation, build, and continuous integration (CI) tasks.
-
+This repository contains the **ORD Maven** project, which generates Java **annotations** and **models** from the [Open Resource Discovery (ORD) specification](https://github.tools.sap/CentralEngineering/open-resource-discovery-specification).  
+Generation, build, and continuous integration (CI) are fully automated via GitHub Actions.
 ---
 
-## Project Overview
+## Overview
 
 The ORD-Maven project is responsible for:
 
@@ -21,14 +21,46 @@ This allows other Java projects to consume up‑to‑date types and models direc
 
 - Java 11+ (JDK)
 - Maven 3.6+
-- Node.js 18+ (for code generation steps)
-- GitHub account with permissions to push and create PRs in this repo
+- Node.js 18+ (for code generation)
 
 ### Clone the Repository
 
 ```bash
 git clone https://github.tools.sap/CPA/ord-maven.git
 cd ord-maven
+mvn clean install
+```
+## Using as Dependency
+
+To include the generated artifacts in your Maven project, add the following dependencies:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.openresourcediscovery</groupId>
+        <artifactId>ord-annotations</artifactId>
+        <version>0.0.1-sap-1</version>
+    </dependency>
+
+    <dependency>
+        <groupId>org.openresourcediscovery</groupId>
+        <artifactId>ord-models</artifactId>
+        <version>0.0.1-sap-1</version>
+    </dependency>
+</dependencies>
+```
+
+You also need to configure the repository:
+```xml
+<repositories>
+<repository>
+<id>annotations-milestones</id>
+<name>Milestones Repository</name>
+<url>https://int.repositories.cloud.sap/artifactory/deploy-milestones</url>
+<releases><enabled>true</enabled></releases>
+<snapshots><enabled>true</enabled></snapshots>
+</repository>
+</repositories>
 ```
 
 ## Generating Code
@@ -42,74 +74,6 @@ All code generation is handled by the `ci.yml` workflow:
 5. Patches generated model classes to implement `PartialOrdPojo` marker interface.
 6. Copies generated sources into `annotations/src/main/java` and `models/src/main/java`.
 7. Commits any changes back to the `generated-sources` branch via a pull request.
-
-## Building with Maven
-
-To build both modules locally:
-
-```bash
-# Generate sources first (if not running GH Actions locally)
-# (skip if .java sources already exist in annotations/ and models/)
-cd ord-maven
-mvn clean install
-```
-
-This command will compile both the annotations and models modules, run tests, and package JARs.
-
-## CI/CD Workflow
-
-All workflows live under `.github/workflows`:
-
-### Workflow Triggers
-
-- \`\` runs daily at midnight UTC and on manual dispatch.
-- \`\` runs every 5 minutes (for testing) and on manual dispatch.
-
-### Self‑Hosted Runner
-
-The `ci.yml` job uses a self‑hosted runner labeled `solinas`:
-
-```yaml
-runs-on: [self-hosted, solinas]
-```
-
-Ensure your org has a healthy runner with these labels.
-
-### Secrets & Permissions
-
-- \`\`: A personal access token with `repo` scopes used to create PRs and enable auto‑merge.
-- **Workflow permissions** (in repo settings) must allow write access to `contents` and `pull-requests`.
-
-## Automated Pull Request & Auto‑Merge
-
-1. Regenerates (or updates) source files.
-2. Uses [`peter-evans/create-pull-request`](https://github.com/peter-evans/create-pull-request) to open or update a PR on branch `generated-sources`.
-3. Uses GitHub’s REST/GraphQL API with `peter-evans/enable-pull-request-automerge` (or a custom curl step) to enable auto‑merge (squash) once all required checks pass.
-
-```yaml
-uses: peter-evans/create-pull-request@v7
-# …
-uses: peter-evans/enable-pull-request-automerge@v2
-```
-
-## Branch Protection Rules
-
-Protect `main` by requiring:
-
-- Status check: **CI – Generate Models & Annotations, Build ORD-Java**
-- Status check: **CI Check** (if you have a separate build+test workflow)
-- Allow auto‑merge when checks pass
-
-Configure under **Settings → Branches → Branch protection rules**.
-
-## Contributing
-
-1. Fork the repository.
-2. Create a new feature branch: `feature/my-feature`.
-3. Push your changes and open a pull request.
-4. Ensure CI workflows pass before merging.
-
-For major changes, please open an issue first to discuss.
 
 ## License
 
