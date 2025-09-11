@@ -1,115 +1,88 @@
-# ORD-Maven Project
+# ORD Maven
 
-This repository contains the **ORD-Maven** project that generates Java annotation interfaces and model classes from the Open Resource Discovery (ORD) specification. It uses GitHub Actions to automate generation, build, and continuous integration (CI) tasks.
+This repository contains the **ORD Maven** project, which generates Java **annotations** and **models** from the [Open Resource Discovery (ORD) specification](https://github.com/open-resource-discovery/specification).  
+Generation, build, and continuous integration (CI) are fully automated via GitHub Actions.
 
 ---
 
-## Project Overview
+## Overview
 
-The ORD-Maven project is responsible for:
+ORD Maven provides:
 
-1. **Generating** Java annotation interfaces from generateJavaAnnotations.ts Skript in the ORD specification.
-2. **Generating** Java POJOs (models) from Document.schema.json definitions.
-3. **Packaging** both artifacts as Maven modules.
-4. **Automating** PR creation and auto‑merge via GitHub Actions.
+1. **Annotation generation** via the TypeScript script in `tools/annotation-gen/src/generateAnnotations.ts`.
+2. **Model generation** from `Document.schema.json`.
+3. **Modular packaging** as `ord-annotations` and `ord-models`.
+4. **Automated PR updates** through GitHub Actions.
 
-This allows other Java projects to consume up‑to‑date types and models directly from the source specification.
+This enables Java projects to consume up-to-date annotations and models directly from the ORD specification.
 
-## Getting Started
-
-### Prerequisites
+## Prerequisites
 
 - Java 11+ (JDK)
-- Maven 3.6+
-- Node.js 18+ (for code generation steps)
-- GitHub account with permissions to push and create PRs in this repo
+- Maven 3.9+
+- Node.js 18+ (for code generation)
 
-### Clone the Repository
 
-```bash
-git clone https://github.tools.sap/CPA/ord-maven.git
-cd ord-maven
-```
+## Build & Usage (Local)
 
-## Generating Code
-
-All code generation is handled by the `ci.yml` workflow:
-
-1. Clones this repo and the ORD specification repo (`ord-spec`).
-2. Installs Node.js dependencies and runs `npm run generate` in `ord-spec`.
-3. Generates Java annotation interfaces via a TypeScript helper.
-4. Downloads and runs `jsonschema2pojo` to generate Java POJOs from `Document.schema.json`.
-5. Patches generated model classes to implement `PartialOrdPojo` marker interface.
-6. Copies generated sources into `annotations/src/main/java` and `models/src/main/java`.
-7. Commits any changes back to the `generated-sources` branch via a pull request.
-
-## Building with Maven
-
-To build both modules locally:
+Clone the repo and run:
 
 ```bash
-# Generate sources first (if not running GH Actions locally)
-# (skip if .java sources already exist in annotations/ and models/)
+git clone https://github.com/open-resource-discovery/ord-maven.git
 cd ord-maven
 mvn clean install
 ```
+This will:
+- Run the code generator (tools/annotation-gen) against the ORD specification.
+- Build and install the modules ord-annotations and ord-models into your local Maven repository.
 
-This command will compile both the annotations and models modules, run tests, and package JARs.
+## Using as Dependency
 
-## CI/CD Workflow
+To include the generated artifacts in your Maven project, add the following dependencies:
 
-All workflows live under `.github/workflows`:
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.openresourcediscovery</groupId>
+        <artifactId>ord-annotations</artifactId>
+        <version>0.0.1-sap-1</version>
+    </dependency>
 
-### Workflow Triggers
-
-- \`\` runs daily at midnight UTC and on manual dispatch.
-- \`\` runs every 5 minutes (for testing) and on manual dispatch.
-
-### Self‑Hosted Runner
-
-The `ci.yml` job uses a self‑hosted runner labeled `solinas`:
-
-```yaml
-runs-on: [self-hosted, solinas]
+    <dependency>
+        <groupId>org.openresourcediscovery</groupId>
+        <artifactId>ord-models</artifactId>
+        <version>0.0.1-sap-1</version>
+    </dependency>
+</dependencies>
 ```
 
-Ensure your org has a healthy runner with these labels.
-
-### Secrets & Permissions
-
-- \`\`: A personal access token with `repo` scopes used to create PRs and enable auto‑merge.
-- **Workflow permissions** (in repo settings) must allow write access to `contents` and `pull-requests`.
-
-## Automated Pull Request & Auto‑Merge
-
-1. Regenerates (or updates) source files.
-2. Uses [`peter-evans/create-pull-request`](https://github.com/peter-evans/create-pull-request) to open or update a PR on branch `generated-sources`.
-3. Uses GitHub’s REST/GraphQL API with `peter-evans/enable-pull-request-automerge` (or a custom curl step) to enable auto‑merge (squash) once all required checks pass.
-
-```yaml
-uses: peter-evans/create-pull-request@v7
-# …
-uses: peter-evans/enable-pull-request-automerge@v2
+You also need to configure the repository:
+```xml
+<repositories>
+<repository>
+<id>annotations-milestones</id>
+<name>Milestones Repository</name>
+<url>https://int.repositories.cloud.sap/artifactory/deploy-milestones</url>
+<releases><enabled>true</enabled></releases>
+<snapshots><enabled>true</enabled></snapshots>
+</repository>
+</repositories>
 ```
 
-## Branch Protection Rules
+## Continuous Integration (CI)
 
-Protect `main` by requiring:
+This repository uses **GitHub Actions** to keep the generated code in sync with the upstream [ORD specification](https://github.com/open-resource-discovery/specification).
 
-- Status check: **CI – Generate Models & Annotations, Build ORD-Java**
-- Status check: **CI Check** (if you have a separate build+test workflow)
-- Allow auto‑merge when checks pass
+The CI pipeline runs on each push to `main` and nightly via a scheduled job. It performs the following steps:
 
-Configure under **Settings → Branches → Branch protection rules**.
+1. **Checkout** both this repository and the upstream `specification` repo.
+2. **Verify** the presence of the annotated schema (`Document.annotated.schema.json`).
+3. **Generate** Java annotation interfaces using the custom generator script (`tools/annotation-gen/src/generateAnnotations.ts`).
+4. **Generate** Java models (POJOs) from the specification schemas.
+5. **Build** all Maven modules with Java 11 + Maven 3.9.
+6. **Open a Pull Request** with the regenerated code (`annotations/` and `models/`), which is auto-merged if checks pass.
 
-## Contributing
-
-1. Fork the repository.
-2. Create a new feature branch: `feature/my-feature`.
-3. Push your changes and open a pull request.
-4. Ensure CI workflows pass before merging.
-
-For major changes, please open an issue first to discuss.
+This ensures that the published artifacts always reflect the latest version of the ORD specification without requiring manual updates.
 
 ## License
 
