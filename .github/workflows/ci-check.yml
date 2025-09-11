@@ -1,0 +1,33 @@
+name: CI - Check
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci-check:
+    name: ci-check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Install Maven manually
+        run: |
+          MAVEN_VERSION=3.9.6
+          wget https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
+          tar xzvf apache-maven-${MAVEN_VERSION}-bin.tar.gz
+          echo "MAVEN_HOME=$PWD/apache-maven-${MAVEN_VERSION}" >> $GITHUB_ENV
+          echo "$PWD/apache-maven-${MAVEN_VERSION}/bin" >> $GITHUB_PATH
+
+      - name: Build project
+        run: mvn clean install -B

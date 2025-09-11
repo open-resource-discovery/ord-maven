@@ -1,0 +1,28 @@
+defaultMessage: >
+  Please consider inclusive alternatives. We use 'main' as the default branch. See CONTRIBUTING.md#inclusive-language.
+
+rules:
+  master:
+    level: failure
+  slave:
+    level: failure
+  whitelist:
+    level: warning
+  blacklist:
+    level: warning
+  sanity:
+    level: notice
+
+ignore:
+  - ".github/in-solidarity.yml"
+  - "**/*.yml"
+  - "**/*.png"
+  - "**/*.jpg"
+  - "**/*.svg"
+  - "LICENSE"
+  - "**/node_modules/**"
+  - "**/target/**"
+  - "**/generated-sources/**"
+  - "annotations/target/**"
+  - "models/src/main/java/**"
+  - "models/static/**"
