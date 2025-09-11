@@ -1,11 +1,9 @@
-# Optional: custom default message on matches
 defaultMessage: >
-  Please consider inclusive alternatives. See CONTRIBUTING.md#inclusive-language.
+  Please consider inclusive alternatives. We use 'main' as the default branch. See CONTRIBUTING.md#inclusive-language.
 
-# Tune severities per rule/term (add/remove as you like)
 rules:
   master:
-    level: warning
+    level: failure
   slave:
     level: failure
   whitelist:
@@ -14,14 +12,7 @@ rules:
     level: warning
   sanity:
     level: notice
-  # Example of a custom regex rule
-  # foo:
-  #   regex:
-  #     - /foo/gi
-  #     - /foobar/gi
-  #   level: warning
 
-# Files to ignore (the first two are defaults in the app)
 ignore:
   - ".github/in-solidarity.yml"
   - "**/*.yml"
@@ -29,3 +20,9 @@ ignore:
   - "**/*.jpg"
   - "**/*.svg"
   - "LICENSE"
+  - "**/node_modules/**"
+  - "**/target/**"
+  - "**/generated-sources/**"
+  - "annotations/target/**"
+  - "models/src/main/java/**"
+  - "models/static/**"
