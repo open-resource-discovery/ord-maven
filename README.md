@@ -45,13 +45,11 @@ To include the generated artifacts in your Maven project, add the following depe
     <dependency>
         <groupId>org.openresourcediscovery</groupId>
         <artifactId>ord-annotations</artifactId>
-        <version>0.0.1-sap-1</version>
     </dependency>
 
     <dependency>
         <groupId>org.openresourcediscovery</groupId>
         <artifactId>ord-models</artifactId>
-        <version>0.0.1-sap-1</version>
     </dependency>
 </dependencies>
 ```
@@ -59,13 +57,17 @@ To include the generated artifacts in your Maven project, add the following depe
 You also need to configure the repository:
 ```xml
 <repositories>
-<repository>
-<id>annotations-milestones</id>
-<name>Milestones Repository</name>
-<url>https://int.repositories.cloud.sap/artifactory/deploy-milestones</url>
-<releases><enabled>true</enabled></releases>
-<snapshots><enabled>true</enabled></snapshots>
-</repository>
+    <repository>
+        <id>central</id>
+        <name>Maven Central Repository</name>
+        <url>https://repo.maven.apache.org/maven2/</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
 </repositories>
 ```
 
