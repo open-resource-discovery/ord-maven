@@ -1,7 +1,7 @@
 
 package org.openresourcediscovery.model;
 
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -162,8 +162,8 @@ public class AccessStrategy {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.customType == null)? 0 :this.customType.hashCode()));
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
+        result = ((result* 31)+((this.customType == null)? 0 :this.customType.hashCode()));
         result = ((result* 31)+((this.customDescription == null)? 0 :this.customDescription.hashCode()));
         return result;
     }
@@ -177,7 +177,7 @@ public class AccessStrategy {
             return false;
         }
         AccessStrategy rhs = ((AccessStrategy) other);
-        return ((((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType)))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.customDescription == rhs.customDescription)||((this.customDescription!= null)&&this.customDescription.equals(rhs.customDescription))));
+        return ((((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type)))&&((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType))))&&((this.customDescription == rhs.customDescription)||((this.customDescription!= null)&&this.customDescription.equals(rhs.customDescription))));
     }
 
 }

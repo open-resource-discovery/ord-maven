@@ -8,7 +8,7 @@ on:
 jobs:
   ci-check:
     name: ci-check
-    runs-on: [self-hosted, solinas]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository

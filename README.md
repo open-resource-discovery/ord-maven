@@ -1,35 +1,41 @@
 # ORD Maven
 
-This repository contains the **ORD Maven** project, which generates Java **annotations** and **models** from the [Open Resource Discovery (ORD) specification](https://github.tools.sap/CentralEngineering/open-resource-discovery-specification).  
+This repository contains the **ORD Maven** project, which generates Java **annotations** and **models** from the [Open Resource Discovery (ORD) specification](https://github.com/open-resource-discovery/specification).  
 Generation, build, and continuous integration (CI) are fully automated via GitHub Actions.
+
 ---
 
 ## Overview
 
-The ORD-Maven project is responsible for:
+ORD Maven provides:
 
-1. **Generating** Java annotation interfaces from generateJavaAnnotations.ts Skript in the ORD specification.
-2. **Generating** Java POJOs (models) from Document.schema.json definitions.
-3. **Packaging** both artifacts as Maven modules.
-4. **Automating** PR creation and auto‑merge via GitHub Actions.
+1. **Annotation generation** via the TypeScript script in `tools/annotation-gen/src/generateAnnotations.ts`.
+2. **Model generation** from `Document.schema.json`.
+3. **Modular packaging** as `ord-annotations` and `ord-models`.
+4. **Automated PR updates** through GitHub Actions.
 
-This allows other Java projects to consume up‑to‑date types and models directly from the source specification.
+This enables Java projects to consume up-to-date annotations and models directly from the ORD specification.
 
-## Getting Started
-
-### Prerequisites
+## Prerequisites
 
 - Java 11+ (JDK)
-- Maven 3.6+
+- Maven 3.9+
 - Node.js 18+ (for code generation)
 
-### Clone the Repository
+
+## Build & Usage (Local)
+
+Clone the repo and run:
 
 ```bash
-git clone https://github.tools.sap/CPA/ord-maven.git
+git clone https://github.com/open-resource-discovery/ord-maven.git
 cd ord-maven
 mvn clean install
 ```
+This will:
+- Run the code generator (tools/annotation-gen) against the ORD specification.
+- Build and install the modules ord-annotations and ord-models into your local Maven repository.
+
 ## Using as Dependency
 
 To include the generated artifacts in your Maven project, add the following dependencies:
@@ -39,13 +45,11 @@ To include the generated artifacts in your Maven project, add the following depe
     <dependency>
         <groupId>org.openresourcediscovery</groupId>
         <artifactId>ord-annotations</artifactId>
-        <version>0.0.1-sap-1</version>
     </dependency>
 
     <dependency>
         <groupId>org.openresourcediscovery</groupId>
         <artifactId>ord-models</artifactId>
-        <version>0.0.1-sap-1</version>
     </dependency>
 </dependencies>
 ```
@@ -53,27 +57,34 @@ To include the generated artifacts in your Maven project, add the following depe
 You also need to configure the repository:
 ```xml
 <repositories>
-<repository>
-<id>annotations-milestones</id>
-<name>Milestones Repository</name>
-<url>https://int.repositories.cloud.sap/artifactory/deploy-milestones</url>
-<releases><enabled>true</enabled></releases>
-<snapshots><enabled>true</enabled></snapshots>
-</repository>
+    <repository>
+        <id>central</id>
+        <name>Maven Central Repository</name>
+        <url>https://repo.maven.apache.org/maven2/</url>
+        <releases>
+            <enabled>true</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
 </repositories>
 ```
 
-## Generating Code
+## Continuous Integration (CI)
 
-All code generation is handled by the `ci.yml` workflow:
+This repository uses **GitHub Actions** to keep the generated code in sync with the upstream [ORD specification](https://github.com/open-resource-discovery/specification).
 
-1. Clones this repo and the ORD specification repo (`ord-spec`).
-2. Installs Node.js dependencies and runs `npm run generate` in `ord-spec`.
-3. Generates Java annotation interfaces via a TypeScript helper.
-4. Downloads and runs `jsonschema2pojo` to generate Java POJOs from `Document.schema.json`.
-5. Patches generated model classes to implement `PartialOrdPojo` marker interface.
-6. Copies generated sources into `annotations/src/main/java` and `models/src/main/java`.
-7. Commits any changes back to the `generated-sources` branch via a pull request.
+The CI pipeline runs on each push to `main` and nightly via a scheduled job. It performs the following steps:
+
+1. **Checkout** both this repository and the upstream `specification` repo.
+2. **Verify** the presence of the annotated schema (`Document.annotated.schema.json`).
+3. **Generate** Java annotation interfaces using the custom generator script (`tools/annotation-gen/src/generateAnnotations.ts`).
+4. **Generate** Java models (POJOs) from the specification schemas.
+5. **Build** all Maven modules with Java 11 + Maven 3.9.
+6. **Open a Pull Request** with the regenerated code (`annotations/` and `models/`), which is auto-merged if checks pass.
+
+This ensures that the published artifacts always reflect the latest version of the ORD specification without requiring manual updates.
 
 ## License
 

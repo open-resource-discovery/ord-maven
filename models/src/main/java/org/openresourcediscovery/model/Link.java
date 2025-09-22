@@ -4,7 +4,7 @@ package org.openresourcediscovery.model;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;

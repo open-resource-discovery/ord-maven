@@ -3,7 +3,7 @@ package org.openresourcediscovery.model;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

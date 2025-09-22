@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: Generate & Build ORD-Java
-    runs-on: [self-hosted, solinas]
+    runs-on: ubuntu-latest
     permissions:
       contents: write
 
@@ -22,8 +22,8 @@ jobs:
       - name: Checkout ORD-Spec repo
         uses: actions/checkout@v3
         with:
-          repository: CentralEngineering/open-resource-discovery-specification
-          ref: feat/optional-annotation-fields
+          repository: open-resource-discovery/specification
+          ref: main
           path: ord-spec
 
       - name: Set up Node.js 18
@@ -31,28 +31,31 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-          cache-dependency-path: ord-spec/package-lock.json
-      
+          cache-dependency-path: tools/annotation-gen/package-lock.json
+
       - name: Ensure sed is installed
         run: |
           if ! command -v sed &> /dev/null; then
             sudo apt-get update && sudo apt-get install -y sed
           fi
 
-      - name: Install ORD-Spec npm dependencies
-        run: npm ci
-        working-directory: ord-spec
+      - name: Install generator deps
+        run: |
+          npm ci --prefix tools/annotation-gen || npm i --prefix tools/annotation-gen
 
-      - name: Generate ORD schemas
-        run: npm run generate
-        working-directory: ord-spec
+      - name: Verify annotated schema presence
+        run: |
+          ls -la ord-spec/static/spec-v1/interfaces
+          test -f ord-spec/static/spec-v1/interfaces/Document.annotated.schema.json
 
       - name: Generate Java Annotation Interfaces
-        working-directory: ord-spec
         run: |
-          mkdir -p ../java/annotations/target/generated-sources
-          npx ts-node src/helper/generateJavaAnnotations.ts \
-            --outDir ../java/annotations/target/generated-sources
+          mkdir -p annotations/target/generated-sources
+          npm run generate --prefix tools/annotation-gen -- \
+            --schema "$GITHUB_WORKSPACE/ord-spec/static/spec-v1/interfaces/Document.annotated.schema.json" \
+            --outDir "$GITHUB_WORKSPACE/annotations/target/generated-sources" \
+            --pkg org.openresourcediscovery.annotations \
+            --specPkg "$GITHUB_WORKSPACE/ord-spec/package.json"
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -74,40 +77,29 @@ jobs:
           cat > annotations/pom.xml << 'EOF'
           <?xml version="1.0" encoding="UTF-8"?>
           <project xmlns="http://maven.apache.org/POM/4.0.0"
-                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
-                                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <modelVersion>4.0.0</modelVersion>
 
             <parent>
-               <groupId>org.openresourcediscovery</groupId>
-               <artifactId>annotations</artifactId>
-               <version>0.0.1-sap-1</version>
+              <groupId>org.openresourcediscovery</groupId>
+              <artifactId>annotations</artifactId>
+              <version>${revision}</version>
+              <relativePath>../pom.xml</relativePath>
             </parent>
 
             <artifactId>ord-annotations</artifactId>
             <name>ORD Annotations</name>
 
-            <properties>
-              <maven.compiler.source>1.8</maven.compiler.source>
-              <maven.compiler.target>1.8</maven.compiler.target>
-            </properties>
-
             <build>
               <sourceDirectory>src/main/java</sourceDirectory>
-
               <plugins>
-               <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
-              </plugin>
-
-               <plugin>
+                <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                </plugin>
+                <plugin>
                   <groupId>org.codehaus.mojo</groupId>
                   <artifactId>build-helper-maven-plugin</artifactId>
                   <version>3.4.0</version>
@@ -115,9 +107,7 @@ jobs:
                     <execution>
                       <id>add-generated-sources</id>
                       <phase>generate-sources</phase>
-                      <goals>
-                        <goal>add-source</goal>
-                      </goals>
+                      <goals><goal>add-source</goal></goals>
                       <configuration>
                         <sources>
                           <source>${project.basedir}/target/generated-sources</source>
@@ -149,16 +139,12 @@ jobs:
             <parent>
               <groupId>org.openresourcediscovery</groupId>
               <artifactId>annotations</artifactId>
-              <version>0.0.1-sap-1</version>
+              <version>${revision}</version>
+              <relativePath>../pom.xml</relativePath>
             </parent>
 
             <artifactId>ord-models</artifactId>
             <name>ORD Java Models</name>
-
-             <properties>
-              <maven.compiler.source>1.8</maven.compiler.source>
-              <maven.compiler.target>1.8</maven.compiler.target>
-            </properties>
 
             <dependencies>
               <dependency>
@@ -166,17 +152,11 @@ jobs:
                 <artifactId>jackson-annotations</artifactId>
                 <version>2.17.0</version>
               </dependency>
-            <dependency>
-              <groupId>javax.annotation</groupId>
-              <artifactId>javax.annotation-api</artifactId>
-              <version>1.3.2</version>
-            </dependency>  
-            <!--
-             <dependency>
-                <groupId>org.openresourcediscovery</groupId>
-                <artifactId>ord-service</artifactId>
-                <version>0.0.1-sap-1</version>
-             </dependency> -->
+              <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>javax.annotation-api</artifactId>
+                <version>1.3.2</version>
+              </dependency>
             </dependencies>
 
             <build>
@@ -190,69 +170,32 @@ jobs:
                 </resource>
               </resources>
 
-            <plugins>
-                <!-- 1. JSON schema -> POJO directly in src/main/java -->
+              <plugins>
                 <plugin>
-                    <groupId>org.jsonschema2pojo</groupId>
-                    <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-                    <version>1.2.2</version>
-                    <executions>
-                        <execution>
-                            <id>generate-models</id>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>generate</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <sourceDirectory>${project.basedir}/static/spec-v1/interfaces</sourceDirectory>
-                        <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-                        <targetPackage>org.openresourcediscovery.model</targetPackage>
-                        <generateBuilders>true</generateBuilders>
-                        <removeOldOutput>true</removeOldOutput>
-                    </configuration>
+                  <groupId>org.jsonschema2pojo</groupId>
+                  <artifactId>jsonschema2pojo-maven-plugin</artifactId>
+                  <version>1.2.2</version>
+                  <executions>
+                    <execution>
+                      <id>generate-models</id>
+                      <phase>generate-sources</phase>
+                      <goals><goal>generate</goal></goals>
+                    </execution>
+                  </executions>
+                  <configuration>
+                    <sourceDirectory>${project.basedir}/static/spec-v1/interfaces</sourceDirectory>
+                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+                    <targetPackage>org.openresourcediscovery.model</targetPackage>
+                    <generateBuilders>true</generateBuilders>
+                    <removeOldOutput>true</removeOldOutput>
+                  </configuration>
                 </plugin>
-      
-                <!-- 2. Patch all generated POJOs to implements PartialOrdPojo -->
+
                 <plugin>
-                    <artifactId>maven-antrun-plugin</artifactId>
-                    <version>3.1.0</version>
-                    <executions>
-                        <!--
-                        <execution>
-                            <id>patch-partial-interface</id>
-                            <phase>generate-sources</phase>
-                            <goals>
-                                <goal>run</goal>
-                            </goals>
-                            <configuration>
-                               <target>
-                                    <replaceregexp byline="true" flags="g">
-                                        <fileset dir="${project.basedir}/src/main/java/com/sap/ord/model">
-                                            <include name="**/*.java"/>
-                                        </fileset>
-                                        <regexp pattern="public class ([A-Za-z0-9_]+) \{" />
-                                       <substitution expression="public class \1 implements org.openresourcediscovery.service.hooks.PartialOrdPojo {" /> 
-                                    </replaceregexp>
-                                </target>
-                            </configuration>
-                        </execution> 
-                      -->
-                    </executions>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
                 </plugin>
-      
-                <!-- 3. Java-Compiler -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.10.1</version>
-                    <configuration>
-                        <source>${maven.compiler.source}</source>
-                        <target>${maven.compiler.target}</target>
-                    </configuration>
-                </plugin>
-            </plugins>
+              </plugins>
             </build>
           </project>
           EOF
@@ -261,7 +204,7 @@ jobs:
         run: mvn clean install -B
 
       - name: List generated annotation files
-        run: ls -R ord-spec/java/annotations/target/generated-sources
+        run: ls -R annotations/target/generated-sources
 
       - name: List generated model files
         run: ls -R models/src/main/java
@@ -269,9 +212,9 @@ jobs:
       - name: Copy annotations into root-level annotations folder
         run: |
           mkdir -p annotations/src/main/java
-          cp -R ord-spec/java/annotations/target/generated-sources/* annotations/src/main/java
+          cp -R annotations/target/generated-sources/* annotations/src/main/java
 
-      - name: Remove ord-spec and existing java folder
+      - name: Remove ord-spec
         run: |
           rm -rf ord-spec
 
