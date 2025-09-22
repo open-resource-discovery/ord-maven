@@ -1,7 +1,7 @@
 
 package org.openresourcediscovery.model;
 
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -168,8 +168,8 @@ public class DataProductLink {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.customType == null)? 0 :this.customType.hashCode()));
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
+        result = ((result* 31)+((this.customType == null)? 0 :this.customType.hashCode()));
         result = ((result* 31)+((this.url == null)? 0 :this.url.hashCode()));
         return result;
     }
@@ -183,7 +183,7 @@ public class DataProductLink {
             return false;
         }
         DataProductLink rhs = ((DataProductLink) other);
-        return ((((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType)))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
+        return ((((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type)))&&((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
     }
 
 }

@@ -3,7 +3,7 @@ package org.openresourcediscovery.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Generated;
+import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
@@ -281,12 +281,12 @@ public class IntegrationAspect {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.apiResources == null)? 0 :this.apiResources.hashCode()));
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
         result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
         result = ((result* 31)+((this.mandatory == null)? 0 :this.mandatory.hashCode()));
         result = ((result* 31)+((this.eventResources == null)? 0 :this.eventResources.hashCode()));
         result = ((result* 31)+((this.supportMultipleProviders == null)? 0 :this.supportMultipleProviders.hashCode()));
+        result = ((result* 31)+((this.apiResources == null)? 0 :this.apiResources.hashCode()));
         return result;
     }
 
@@ -299,7 +299,7 @@ public class IntegrationAspect {
             return false;
         }
         IntegrationAspect rhs = ((IntegrationAspect) other);
-        return (((((((this.apiResources == rhs.apiResources)||((this.apiResources!= null)&&this.apiResources.equals(rhs.apiResources)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.mandatory == rhs.mandatory)||((this.mandatory!= null)&&this.mandatory.equals(rhs.mandatory))))&&((this.eventResources == rhs.eventResources)||((this.eventResources!= null)&&this.eventResources.equals(rhs.eventResources))))&&((this.supportMultipleProviders == rhs.supportMultipleProviders)||((this.supportMultipleProviders!= null)&&this.supportMultipleProviders.equals(rhs.supportMultipleProviders))));
+        return (((((((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description)))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.mandatory == rhs.mandatory)||((this.mandatory!= null)&&this.mandatory.equals(rhs.mandatory))))&&((this.eventResources == rhs.eventResources)||((this.eventResources!= null)&&this.eventResources.equals(rhs.eventResources))))&&((this.supportMultipleProviders == rhs.supportMultipleProviders)||((this.supportMultipleProviders!= null)&&this.supportMultipleProviders.equals(rhs.supportMultipleProviders))))&&((this.apiResources == rhs.apiResources)||((this.apiResources!= null)&&this.apiResources.equals(rhs.apiResources))));
     }
 
 }
