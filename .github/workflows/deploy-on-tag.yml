@@ -1,4 +1,4 @@
-name: Trigger Jenkins Deploy on Tag
+name: Deploy Java Package on Tag
 
 on:
   push:
@@ -7,33 +7,28 @@ on:
 
 jobs:
   deploy:
-    name: Deploy tagged version via Jenkins
-    runs-on: [self-hosted, solinas]
+    name: Deploy tagged version to GitHub Packages
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
 
     steps:
-      - name: Extract tag name and detect ms prefix
-        id: tag
-        run: |
-            TAG_NAME="${GITHUB_REF#refs/tags/}"
-            echo "TAG_NAME=$TAG_NAME" >> $GITHUB_OUTPUT
+      - name: Checkout source
+        uses: actions/checkout@v4
 
-            if [[ "$TAG_NAME" == ms/* ]]; then
-            echo "TAG_PREFIX=ms/" >> $GITHUB_OUTPUT
-            echo "TAG_EXTENSION=${TAG_NAME#ms/}" >> $GITHUB_OUTPUT
-            else
-            echo "TAG_PREFIX=" >> $GITHUB_OUTPUT
-            echo "TAG_EXTENSION=" >> $GITHUB_OUTPUT
-            fi
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
+          settings-path: ${{ github.workspace }}
 
-      - name: Trigger Jenkins Build
-        run: |
-            curl -X POST "$JENKINS_URL/buildWithParameters" \
-            --user "$JENKINS_USER:$JENKINS_API_TOKEN" \
-            --data-urlencode "Treesh=main" \
-            --data-urlencode "Tag prefix=${{ steps.tag.outputs.TAG_PREFIX }}" \
-            --data-urlencode "Tag extension=${{ steps.tag.outputs.TAG_EXTENSION }}" \
-            --data-urlencode "Custom promote timeout (in minutes)=180"
+      - name: Deploy with Maven
+        run: mvn --batch-mode deploy -DskipTests
         env:
-          JENKINS_URL: https://prod-build10200.wdf.sap.corp/job/ght-cpa/job/ght-cpa-ord-maven-SP-MS-common
-          JENKINS_USER: ${{ secrets.JENKINS_USER }}
-          JENKINS_API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
