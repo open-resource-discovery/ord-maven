@@ -38,27 +38,55 @@ This will:
 
 ## Using as Dependency
 
-### 1. Add the GitHub package maven repository
+### 1. Add the GitHub Packages repository
+
+**pom.xml**
 
 ```xml
-<repositories>
-  <repository>
+<repository>
     <id>github</id>
-      <url>https://maven.pkg.github.com/open-resource-discovery/ord-maven</url>
-    </repository>
-</repositories>
+    <url>https://maven.pkg.github.com/open-resource-discovery/*</url>
+</repository>
 ```
 
-### 2. Add the dependencies
+### 2. Add the GitHub credentials
 
-To include the generated artifacts in your Maven project, add the following dependency:
+**~/.m2/settings.xml**
+
+```xml
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              https://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <servers>
+    <server>
+      <id>github</id>
+      <username>YOUR_GITHUB_USERNAME</username>
+      <password>YOUR_GITHUB_PERSONAL_ACCESS_TOKEN</password>
+    </server>
+  </servers>
+</settings>
+
+```
+
+### 3. Add the dependencies
+
+**pom.xml**
+
+To include the generated artifacts in your Maven project, add the following dependencies:
 
 ```xml
 <dependencies>
   <dependency>
     <groupId>org.openresourcediscovery</groupId>
-    <artifactId>annotations</artifactId>
+    <artifactId>ord-annotations</artifactId>
     <version>0.0.1</version>
+  </dependency>
+  <dependency>
+      <groupId>org.openresourcediscovery</groupId>
+      <artifactId>ord-models</artifactId>
+      <version>0.0.1</version>
   </dependency>
 </dependencies>
 ```
