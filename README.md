@@ -38,37 +38,29 @@ This will:
 
 ## Using as Dependency
 
-To include the generated artifacts in your Maven project, add the following dependencies:
+### 1. Add the GitHub package maven repository
+
+```xml
+<repositories>
+  <repository>
+    <id>github</id>
+      <url>https://maven.pkg.github.com/open-resource-discovery/ord-maven</url>
+    </repository>
+</repositories>
+```
+
+### 2. Add the dependencies
+
+To include the generated artifacts in your Maven project, add the following dependency:
 
 ```xml
 <dependencies>
-    <dependency>
-        <groupId>org.openresourcediscovery</groupId>
-        <artifactId>ord-annotations</artifactId>
-    </dependency>
-
-    <dependency>
-        <groupId>org.openresourcediscovery</groupId>
-        <artifactId>ord-models</artifactId>
-    </dependency>
+  <dependency>
+    <groupId>org.openresourcediscovery</groupId>
+    <artifactId>annotations</artifactId>
+    <version>0.0.1</version>
+  </dependency>
 </dependencies>
-```
-
-You also need to configure the repository:
-```xml
-<repositories>
-    <repository>
-        <id>central</id>
-        <name>Maven Central Repository</name>
-        <url>https://repo.maven.apache.org/maven2/</url>
-        <releases>
-            <enabled>true</enabled>
-        </releases>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-    </repository>
-</repositories>
 ```
 
 ## Continuous Integration (CI)
