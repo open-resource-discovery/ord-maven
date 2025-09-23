@@ -80,16 +80,11 @@
         <tag>HEAD</tag>
     </scm>
 
-    <!-- Enable when ready to publish to Central via Sonatype Central Portal
     <distributionManagement>
-      <snapshotRepository>
-        <id>ossrh</id>
-        <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-      </snapshotRepository>
       <repository>
-        <id>ossrh</id>
-        <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        <id>github</id>
+        <name>GitHub Packages</name>
+        <url>https://maven.pkg.github.com/open-resource-discovery/ord-maven</url>
       </repository>
     </distributionManagement>
-    -->
 </project>
