@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.openresourcediscovery</groupId>
-    <artifactId>ord-parent</artifactId>
-    <version>0.0.1</version>
+    <artifactId>annotations</artifactId> <!-- aggregator/parent -->
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <name>ORD Java Parent</name>
     <description>Parent/aggregator for ORD annotations and models</description>
@@ -72,19 +72,4 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
-    <scm>
-        <url>https://github.com/open-resource-discovery/ord-maven</url>
-        <connection>scm:git:https://github.com/open-resource-discovery/ord-maven.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/open-resource-discovery/ord-maven.git</developerConnection>
-        <tag>HEAD</tag>
-    </scm>
-
-    <distributionManagement>
-      <repository>
-        <id>github</id>
-        <name>GitHub Packages</name>
-        <url>https://maven.pkg.github.com/open-resource-discovery/ord-maven</url>
-      </repository>
-    </distributionManagement>
 </project>
