@@ -39,20 +39,38 @@ jobs:
             sudo apt-get update && sudo apt-get install -y sed
           fi
 
+      - name: Install ORD-Spec npm dependencies
+        run: npm ci
+        working-directory: ord-spec
+
+      - name: Generate ORD schemas
+        run: npm run generate
+        working-directory: ord-spec
+
       - name: Install generator deps
         run: |
           npm ci --prefix tools/annotation-gen || npm i --prefix tools/annotation-gen
 
-      - name: Verify annotated schema presence
+      - name: Verify schema presence
+        id: schema
+        shell: bash
         run: |
-          ls -la ord-spec/static/spec-v1/interfaces
-          test -f ord-spec/static/spec-v1/interfaces/Document.annotated.schema.json
+          BASE="ord-spec/static/spec-v1/interfaces"
+          if [ -f "$BASE/Document.annotated.schema.json" ]; then
+            echo "schema=$GITHUB_WORKSPACE/$BASE/Document.annotated.schema.json" >> $GITHUB_OUTPUT
+          elif [ -f "$BASE/document.schema.json" ]; then
+            echo "schema=$GITHUB_WORKSPACE/$BASE/document.schema.json" >> $GITHUB_OUTPUT
+          else
+            echo "No document.schema.json found" >&2
+            exit 1
+          fi
+          test -f ord-spec/package.json
 
       - name: Generate Java Annotation Interfaces
         run: |
           mkdir -p annotations/target/generated-sources
           npm run generate --prefix tools/annotation-gen -- \
-            --schema "$GITHUB_WORKSPACE/ord-spec/static/spec-v1/interfaces/Document.annotated.schema.json" \
+            --schema "${{ steps.schema.outputs.schema }}" \
             --outDir "$GITHUB_WORKSPACE/annotations/target/generated-sources" \
             --pkg org.openresourcediscovery.annotations \
             --specPkg "$GITHUB_WORKSPACE/ord-spec/package.json"
