@@ -39,29 +39,20 @@ jobs:
             sudo apt-get update && sudo apt-get install -y sed
           fi
 
-      - name: Install ORD-Spec npm dependencies
-        run: npm ci
-        working-directory: ord-spec
-
-      - name: Generate ORD schemas
-        run: npm run generate
-        working-directory: ord-spec
-
       - name: Install generator deps
         run: |
           npm ci --prefix tools/annotation-gen || npm i --prefix tools/annotation-gen
 
-      - name: Verify schema presence
+      - name: Verify annotated schema presence
         id: schema
         shell: bash
         run: |
           BASE="ord-spec/static/spec-v1/interfaces"
           if [ -f "$BASE/Document.annotated.schema.json" ]; then
             echo "schema=$GITHUB_WORKSPACE/$BASE/Document.annotated.schema.json" >> $GITHUB_OUTPUT
-          elif [ -f "$BASE/document.schema.json" ]; then
-            echo "schema=$GITHUB_WORKSPACE/$BASE/document.schema.json" >> $GITHUB_OUTPUT
           else
-            echo "No document.schema.json found" >&2
+            echo "Document.annotated.schema.json not found" >&2
+            ls -la "$BASE"
             exit 1
           fi
           test -f ord-spec/package.json
