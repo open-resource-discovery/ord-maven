@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: open-resource-discovery/specification
-          ref: main
+          ref: v1.12.2
           path: ord-spec
 
       - name: Set up Node.js 18
@@ -44,15 +44,24 @@ jobs:
           npm ci --prefix tools/annotation-gen || npm i --prefix tools/annotation-gen
 
       - name: Verify annotated schema presence
+        id: schema
+        shell: bash
         run: |
-          ls -la ord-spec/static/spec-v1/interfaces
-          test -f ord-spec/static/spec-v1/interfaces/Document.annotated.schema.json
+          BASE="ord-spec/static/spec-v1/interfaces"
+          if [ -f "$BASE/Document.annotated.schema.json" ]; then
+            echo "schema=$GITHUB_WORKSPACE/$BASE/Document.annotated.schema.json" >> $GITHUB_OUTPUT
+          else
+            echo "Document.annotated.schema.json not found" >&2
+            ls -la "$BASE"
+            exit 1
+          fi
+          test -f ord-spec/package.json
 
       - name: Generate Java Annotation Interfaces
         run: |
           mkdir -p annotations/target/generated-sources
           npm run generate --prefix tools/annotation-gen -- \
-            --schema "$GITHUB_WORKSPACE/ord-spec/static/spec-v1/interfaces/Document.annotated.schema.json" \
+            --schema "${{ steps.schema.outputs.schema }}" \
             --outDir "$GITHUB_WORKSPACE/annotations/target/generated-sources" \
             --pkg org.openresourcediscovery.annotations \
             --specPkg "$GITHUB_WORKSPACE/ord-spec/package.json"
