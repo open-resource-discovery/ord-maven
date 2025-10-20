@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * API and Event Resource Link
+ * Api and Event Resource Link
  * <p>
  * Links with specific semantic meaning that are related to API or event resources.
  * 

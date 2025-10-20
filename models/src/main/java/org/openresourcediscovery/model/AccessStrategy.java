@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * Access Strategy
+ * Metadata Definition Access Strategy
  * <p>
  * Defines the [access strategy](../../spec-extensions/access-strategies/) for accessing the resource definitions.
  * 

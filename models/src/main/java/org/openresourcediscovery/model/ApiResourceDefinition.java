@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * API Resource Definition
+ * Api Resource Definition
  * <p>
  * Link and categorization of a machine-readable API definition.
  * For example, OpenAPI definition, OData Metadata, etc.

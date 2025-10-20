@@ -15,12 +15,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 
 /**
- * ORD Document
+ * Ord Document
  * <p>
  * The [ORD Document](../index.md#ord-document) object serves as a wrapper for the **ORD resources** and **ORD taxonomy** and adds further top-level information
  * that are specific to the document/the service it describes.
  * 
  * The constraints and considerations on [ORD Documents](../index.md#ord-document) MUST be followed.
+ * 
+ * This JSON Schema describes the [ORD document interface](https://open-resource-discovery.github.io/specification/spec-v1/interfaces/Document) of the [ORD specification](https://open-resource-discovery.github.io/specification/).
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
