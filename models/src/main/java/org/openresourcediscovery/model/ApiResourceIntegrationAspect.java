@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * API Resource Integration Aspect
+ * Api Resource Integration Aspect
  * <p>
  * API resource related integration aspect
  * 
