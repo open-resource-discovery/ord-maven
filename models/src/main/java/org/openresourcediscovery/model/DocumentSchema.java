@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * 
  * The constraints and considerations on [ORD Documents](../index.md#ord-document) MUST be followed.
  * 
- * This JSON Schema describes the [ORD document interface](https://open-resource-discovery.github.io/specification/spec-v1/interfaces/Document) of the [ORD specification](https://open-resource-discovery.github.io/specification/).
+ * This JSON Schema describes the [ORD document interface](https://openresourcediscovery.org/spec-v1/interfaces/Document) of the [ORD specification](https://openresourcediscovery.org/).
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
