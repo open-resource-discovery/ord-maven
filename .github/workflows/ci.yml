@@ -39,6 +39,14 @@ jobs:
             sudo apt-get update && sudo apt-get install -y sed
           fi
 
+      - name: Install ORD-Spec npm dependencies
+        run: npm ci
+        working-directory: ord-spec
+
+      - name: Generate ORD schemas
+        run: npm run generate
+        working-directory: ord-spec
+
       - name: Install generator deps
         run: |
           npm ci --prefix tools/annotation-gen || npm i --prefix tools/annotation-gen
