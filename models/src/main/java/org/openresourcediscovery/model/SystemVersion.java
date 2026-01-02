@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * System Version
  * <p>
- * A [system version](../index.md#def-system-version) states the design-time version / release of a [system instance](../index.md#def-system-instance).
- * It provides versioning for operational purposes for the [system type](../index.md#def-system-type).
+ * A [system version](../index.md#system-version) states the design-time version / release of a [system instance](../index.md#system-instance).
+ * It provides versioning for operational purposes for the [system type](../index.md#system-type).
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)

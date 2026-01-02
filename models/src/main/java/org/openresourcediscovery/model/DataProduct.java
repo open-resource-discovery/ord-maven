@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * <p>
  * A [Data Product](../concepts/data-product) is a data set exposed for consumption outside the boundaries of the producing application via APIs and described by high quality metadata that can be accessed through the [ORD Aggregator](../../spec-v1/#ord-aggregator).
  * 
- * Please note that this concept is in beta, see [Data Product - Beta Status](../concepts/data-product#beta-status).
+ * Please note that this concept is in beta, see [Data Product - Current Status](../concepts/data-product#current-status).
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -184,12 +184,12 @@ public class DataProduct {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
     @JsonProperty("version")
-    @JsonPropertyDescription("The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.")
+    @JsonPropertyDescription("The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
     private String version;
     /**
      * Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.
@@ -229,7 +229,7 @@ public class DataProduct {
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
      * This can happen either because it has not been setup for use or disabled by an admin / user.
      * 
-     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.
+     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.
      * 
      * This property can only reflect the knowledge of the described system instance itself.
      * Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).
@@ -239,25 +239,27 @@ public class DataProduct {
      * 
      */
     @JsonProperty("disabled")
-    @JsonPropertyDescription("Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.\nThis can happen either because it has not been setup for use or disabled by an admin / user.\n\nIf the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.\n\nThis property can only reflect the knowledge of the described system instance itself.\nOutside factors for availability can't need to be considered (e.g. network connectivity, middlewares).\n\nA disabled resource MAY skip describing its resource definitions.\n")
+    @JsonPropertyDescription("Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.\nThis can happen either because it has not been setup for use or disabled by an admin / user.\n\nIf the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.\n\nThis property can only reflect the knowledge of the described system instance itself.\nOutside factors for availability can't need to be considered (e.g. network connectivity, middlewares).\n\nA disabled resource MAY skip describing its resource definitions.\n")
     private Boolean disabled = false;
     /**
-     * The resource has been introduced in the given [system version](../index.md#def-system-version).
+     * The resource has been introduced in the given [system version](../index.md#system-version).
      * This implies that the resource is only available if the system instance is of at least that system version.
+     * 
+     * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
      */
     @JsonProperty("minSystemVersion")
-    @JsonPropertyDescription("The resource has been introduced in the given [system version](../index.md#def-system-version).\nThis implies that the resource is only available if the system instance is of at least that system version.")
+    @JsonPropertyDescription("The resource has been introduced in the given [system version](../index.md#system-version).\nThis implies that the resource is only available if the system instance is of at least that system version.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.")
     private String minSystemVersion;
     /**
      * Lifecycle status of the Data Product as a whole.
      * 
-     * MUST be provided when describing the system-instance aware (run-time) perspective.
+     * MUST be provided when describing the system-instance-aware (run-time) perspective.
      * SHOULD NOT be provided in static (design-time) perspective. Static aggregators MUST ignore this property.
      * 
      */
     @JsonProperty("lifecycleStatus")
-    @JsonPropertyDescription("Lifecycle status of the Data Product as a whole.\n\nMUST be provided when describing the system-instance aware (run-time) perspective.\nSHOULD NOT be provided in static (design-time) perspective. Static aggregators MUST ignore this property.")
+    @JsonPropertyDescription("Lifecycle status of the Data Product as a whole.\n\nMUST be provided when describing the system-instance-aware (run-time) perspective.\nSHOULD NOT be provided in static (design-time) perspective. Static aggregators MUST ignore this property.")
     private String lifecycleStatus;
     /**
      * The deprecation date defines when the resource has been set as deprecated.
@@ -395,7 +397,7 @@ public class DataProduct {
     @JsonPropertyDescription("List of line of business tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`lineOfBusiness` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
     private List<String> lineOfBusiness = new ArrayList<String>();
     /**
-     * List of countries that the package resources are applicable to.
+     * List of countries that the Package resources are applicable to.
      * 
      * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
      * 
@@ -403,7 +405,7 @@ public class DataProduct {
      * 
      */
     @JsonProperty("countries")
-    @JsonPropertyDescription("List of countries that the package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+    @JsonPropertyDescription("List of countries that the Package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
     private List<String> countries = new ArrayList<String>();
     /**
      * List of free text style tags.
@@ -493,19 +495,20 @@ public class DataProduct {
     @JsonPropertyDescription("A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
     private List<String> policyLevels = new ArrayList<String>();
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")
-    @JsonPropertyDescription("All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.\nAll resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.\n\nDefines whether this ORD resource is **system instance aware**.\nThis is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,\nnot just once per system type, but once per **system instance**.")
+    @JsonPropertyDescription("Defines whether this ORD resource is **system-instance-aware**.\nThis is the case when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.\n\nThis concept is now **deprecated** in favor of the more explicit `perspective` attribute.\nAll resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.\n\nFor more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).")
     private Boolean systemInstanceAware = false;
 
     /**
@@ -815,7 +818,7 @@ public class DataProduct {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
@@ -840,7 +843,7 @@ public class DataProduct {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
@@ -953,7 +956,7 @@ public class DataProduct {
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
      * This can happen either because it has not been setup for use or disabled by an admin / user.
      * 
-     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.
+     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.
      * 
      * This property can only reflect the knowledge of the described system instance itself.
      * Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).
@@ -971,7 +974,7 @@ public class DataProduct {
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
      * This can happen either because it has not been setup for use or disabled by an admin / user.
      * 
-     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.
+     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.
      * 
      * This property can only reflect the knowledge of the described system instance itself.
      * Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).
@@ -991,8 +994,10 @@ public class DataProduct {
     }
 
     /**
-     * The resource has been introduced in the given [system version](../index.md#def-system-version).
+     * The resource has been introduced in the given [system version](../index.md#system-version).
      * This implies that the resource is only available if the system instance is of at least that system version.
+     * 
+     * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
      */
     @JsonProperty("minSystemVersion")
@@ -1001,8 +1006,10 @@ public class DataProduct {
     }
 
     /**
-     * The resource has been introduced in the given [system version](../index.md#def-system-version).
+     * The resource has been introduced in the given [system version](../index.md#system-version).
      * This implies that the resource is only available if the system instance is of at least that system version.
+     * 
+     * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
      */
     @JsonProperty("minSystemVersion")
@@ -1018,7 +1025,7 @@ public class DataProduct {
     /**
      * Lifecycle status of the Data Product as a whole.
      * 
-     * MUST be provided when describing the system-instance aware (run-time) perspective.
+     * MUST be provided when describing the system-instance-aware (run-time) perspective.
      * SHOULD NOT be provided in static (design-time) perspective. Static aggregators MUST ignore this property.
      * 
      */
@@ -1030,7 +1037,7 @@ public class DataProduct {
     /**
      * Lifecycle status of the Data Product as a whole.
      * 
-     * MUST be provided when describing the system-instance aware (run-time) perspective.
+     * MUST be provided when describing the system-instance-aware (run-time) perspective.
      * SHOULD NOT be provided in static (design-time) perspective. Static aggregators MUST ignore this property.
      * 
      */
@@ -1441,7 +1448,7 @@ public class DataProduct {
     }
 
     /**
-     * List of countries that the package resources are applicable to.
+     * List of countries that the Package resources are applicable to.
      * 
      * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
      * 
@@ -1454,7 +1461,7 @@ public class DataProduct {
     }
 
     /**
-     * List of countries that the package resources are applicable to.
+     * List of countries that the Package resources are applicable to.
      * 
      * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
      * 
@@ -1700,15 +1707,16 @@ public class DataProduct {
     }
 
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")
@@ -1717,15 +1725,16 @@ public class DataProduct {
     }
 
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")

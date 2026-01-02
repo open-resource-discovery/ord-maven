@@ -1,7 +1,9 @@
 
 package org.openresourcediscovery.model;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -21,14 +23,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * 
  * Group Types can be defined centrally (ownership by authority namespace) or decentrally (defined by application / service itself).
  * 
- * To learn more about the concept, see [Group Concept Documentation](../concepts/grouping-and-bundling#Groups).
+ * To learn more about the concept, see [Group Concept Documentation](../concepts/grouping-and-bundling#groups).
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "groupTypeId",
     "title",
-    "description"
+    "description",
+    "partOfGroupTypes"
 })
 @Generated("jsonschema2pojo")
 public class GroupType {
@@ -59,6 +62,16 @@ public class GroupType {
     @JsonProperty("description")
     @JsonPropertyDescription("Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.")
     private String description;
+    /**
+     * A group type can logically be part of another group type, for example in hierarchical taxonomies or graph relationships.
+     * Assigning a group type to be part of another group type is a lightweight and flexible approach to express such relationships.
+     * 
+     * This relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.
+     * 
+     */
+    @JsonProperty("partOfGroupTypes")
+    @JsonPropertyDescription("A group type can logically be part of another group type, for example in hierarchical taxonomies or graph relationships.\nAssigning a group type to be part of another group type is a lightweight and flexible approach to express such relationships.\n\nThis relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.")
+    private List<String> partOfGroupTypes = new ArrayList<String>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -141,6 +154,35 @@ public class GroupType {
         return this;
     }
 
+    /**
+     * A group type can logically be part of another group type, for example in hierarchical taxonomies or graph relationships.
+     * Assigning a group type to be part of another group type is a lightweight and flexible approach to express such relationships.
+     * 
+     * This relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.
+     * 
+     */
+    @JsonProperty("partOfGroupTypes")
+    public List<String> getPartOfGroupTypes() {
+        return partOfGroupTypes;
+    }
+
+    /**
+     * A group type can logically be part of another group type, for example in hierarchical taxonomies or graph relationships.
+     * Assigning a group type to be part of another group type is a lightweight and flexible approach to express such relationships.
+     * 
+     * This relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.
+     * 
+     */
+    @JsonProperty("partOfGroupTypes")
+    public void setPartOfGroupTypes(List<String> partOfGroupTypes) {
+        this.partOfGroupTypes = partOfGroupTypes;
+    }
+
+    public GroupType withPartOfGroupTypes(List<String> partOfGroupTypes) {
+        this.partOfGroupTypes = partOfGroupTypes;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -172,6 +214,10 @@ public class GroupType {
         sb.append('=');
         sb.append(((this.description == null)?"<null>":this.description));
         sb.append(',');
+        sb.append("partOfGroupTypes");
+        sb.append('=');
+        sb.append(((this.partOfGroupTypes == null)?"<null>":this.partOfGroupTypes));
+        sb.append(',');
         sb.append("additionalProperties");
         sb.append('=');
         sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
@@ -191,6 +237,7 @@ public class GroupType {
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
         result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
+        result = ((result* 31)+((this.partOfGroupTypes == null)? 0 :this.partOfGroupTypes.hashCode()));
         return result;
     }
 
@@ -203,7 +250,7 @@ public class GroupType {
             return false;
         }
         GroupType rhs = ((GroupType) other);
-        return (((((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))));
+        return ((((((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.partOfGroupTypes == rhs.partOfGroupTypes)||((this.partOfGroupTypes!= null)&&this.partOfGroupTypes.equals(rhs.partOfGroupTypes))));
     }
 
 }

@@ -16,14 +16,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * A [**Package**](../concepts/grouping-and-bundling#package) organizes a set of related resources together, by publishing and catalog presentation concerns.
  * 
  * The Package can also be used to indicate which products or vendors provided the packaged resources.
- * For partner or customer content, the package can indicate this via the `vendor` and `partOfProducts` assignments.
+ * For partner or customer content, the Package can indicate this via the `vendor` and `partOfProducts` assignments.
  * In any case, the Package `ordID` namespace MUST reflect the namespace of the providing application (which hosts the resource), not the resource definition owner, which could be a customer or partner.
  * 
- * A package SHOULD contain at least one resource. Avoid empty packages.
+ * A Package SHOULD contain at least one resource. Avoid empty Packages.
  * 
- * The package assignment of a resource MAY change, so consumers MUST not rely on this to be stable.
+ * The Package assignment of a resource MAY change, so consumers MUST not rely on this to be stable.
  * 
- * A package does not have a `visibility` property.
+ * A Package does not have a `visibility` property.
  * Whether it is displayed is decided by the fact, whether it contains any visible resources according to the visibility role of the aggregator.
  * 
  * To learn more about the concept and further guidance, see [Package](../concepts/grouping-and-bundling#package).
@@ -127,12 +127,12 @@ public class Package {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
     @JsonProperty("version")
-    @JsonPropertyDescription("The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.")
+    @JsonPropertyDescription("The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
     private String version;
     /**
      * The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with.
@@ -169,11 +169,11 @@ public class Package {
     @JsonPropertyDescription("A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
     private List<String> policyLevels = new ArrayList<String>();
     /**
-     * Links with semantic meaning that are specific to packages.
+     * Links with semantic meaning that are specific to Packages.
      * 
      */
     @JsonProperty("packageLinks")
-    @JsonPropertyDescription("Links with semantic meaning that are specific to packages.")
+    @JsonPropertyDescription("Links with semantic meaning that are specific to Packages.")
     private List<PackageLink> packageLinks = new ArrayList<PackageLink>();
     /**
      * Generic links with arbitrary meaning and content.
@@ -193,7 +193,7 @@ public class Package {
     @JsonPropertyDescription("Standardized identifier for the license.\nIt MUST conform to the [SPDX License List](https://spdx.org/licenses).")
     private String licenseType;
     /**
-     * Optional information that should be provided when creating a support ticket for the resources bundled in this package.
+     * Optional information that should be provided when creating a support ticket for the resources bundled in this Package.
      * This can for example be a "component" name that needs to be chosen in the support portal.
      * 
      * Notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
@@ -203,24 +203,24 @@ public class Package {
      * 
      */
     @JsonProperty("supportInfo")
-    @JsonPropertyDescription("Optional information that should be provided when creating a support ticket for the resources bundled in this package.\nThis can for example be a \"component\" name that needs to be chosen in the support portal.\n\nNotated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nPlease also note that if you want to provide link(s) where you can find support information,\nyou can use `packageLinks` with a link of type `support`.")
+    @JsonPropertyDescription("Optional information that should be provided when creating a support ticket for the resources bundled in this Package.\nThis can for example be a \"component\" name that needs to be chosen in the support portal.\n\nNotated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nPlease also note that if you want to provide link(s) where you can find support information,\nyou can use `packageLinks` with a link of type `support`.")
     private String supportInfo;
     /**
      * Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.
      * 
      * MUST be a valid reference to a [Vendor](#vendor) ORD ID.
      * 
-     * MUST be set to `customer:vendor:Customer:` if the contents of the package are created by the customer / user.
+     * MUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.
      * 
-     * MUST be set to a registered partner vendor, if the contents of the package are created by a partner / third party.
+     * MUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.
      * (Required)
      * 
      */
     @JsonProperty("vendor")
-    @JsonPropertyDescription("Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.\n\nMUST be a valid reference to a [Vendor](#vendor) ORD ID.\n\nMUST be set to `customer:vendor:Customer:` if the contents of the package are created by the customer / user.\n\nMUST be set to a registered partner vendor, if the contents of the package are created by a partner / third party.")
+    @JsonPropertyDescription("Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.\n\nMUST be a valid reference to a [Vendor](#vendor) ORD ID.\n\nMUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.\n\nMUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.")
     private String vendor;
     /**
-     * List of products the resources of the package are a part of.
+     * List of products the resources of the Package are a part of.
      * 
      * MUST be a valid reference to a [Product](#product) ORD ID.
      * 
@@ -228,10 +228,10 @@ public class Package {
      * 
      */
     @JsonProperty("partOfProducts")
-    @JsonPropertyDescription("List of products the resources of the package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+    @JsonPropertyDescription("List of products the resources of the Package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
     private List<String> partOfProducts = new ArrayList<String>();
     /**
-     * List of countries that the package resources are applicable to.
+     * List of countries that the Package resources are applicable to.
      * 
      * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
      * 
@@ -239,7 +239,7 @@ public class Package {
      * 
      */
     @JsonProperty("countries")
-    @JsonPropertyDescription("List of countries that the package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+    @JsonPropertyDescription("List of countries that the Package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
     private List<String> countries = new ArrayList<String>();
     /**
      * List of line of business tags.
@@ -262,13 +262,13 @@ public class Package {
     @JsonPropertyDescription("List of industry tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`industry` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
     private List<String> industry = new ArrayList<String>();
     /**
-     * If provided, all resources that are part of this package can only run on the listed runtime.
+     * If provided, all resources that are part of this Package can only run on the listed runtime.
      * 
      * MUST be a valid [system namespace](../index.md#system-namespace).
      * 
      */
     @JsonProperty("runtimeRestriction")
-    @JsonPropertyDescription("If provided, all resources that are part of this package can only run on the listed runtime.\n\nMUST be a valid [system namespace](../index.md#system-namespace).")
+    @JsonPropertyDescription("If provided, all resources that are part of this Package can only run on the listed runtime.\n\nMUST be a valid [system namespace](../index.md#system-namespace).")
     private String runtimeRestriction;
     /**
      * List of free text style tags.
@@ -493,7 +493,7 @@ public class Package {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
@@ -518,7 +518,7 @@ public class Package {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
@@ -628,7 +628,7 @@ public class Package {
     }
 
     /**
-     * Links with semantic meaning that are specific to packages.
+     * Links with semantic meaning that are specific to Packages.
      * 
      */
     @JsonProperty("packageLinks")
@@ -637,7 +637,7 @@ public class Package {
     }
 
     /**
-     * Links with semantic meaning that are specific to packages.
+     * Links with semantic meaning that are specific to Packages.
      * 
      */
     @JsonProperty("packageLinks")
@@ -703,7 +703,7 @@ public class Package {
     }
 
     /**
-     * Optional information that should be provided when creating a support ticket for the resources bundled in this package.
+     * Optional information that should be provided when creating a support ticket for the resources bundled in this Package.
      * This can for example be a "component" name that needs to be chosen in the support portal.
      * 
      * Notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
@@ -718,7 +718,7 @@ public class Package {
     }
 
     /**
-     * Optional information that should be provided when creating a support ticket for the resources bundled in this package.
+     * Optional information that should be provided when creating a support ticket for the resources bundled in this Package.
      * This can for example be a "component" name that needs to be chosen in the support portal.
      * 
      * Notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
@@ -742,9 +742,9 @@ public class Package {
      * 
      * MUST be a valid reference to a [Vendor](#vendor) ORD ID.
      * 
-     * MUST be set to `customer:vendor:Customer:` if the contents of the package are created by the customer / user.
+     * MUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.
      * 
-     * MUST be set to a registered partner vendor, if the contents of the package are created by a partner / third party.
+     * MUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.
      * (Required)
      * 
      */
@@ -758,9 +758,9 @@ public class Package {
      * 
      * MUST be a valid reference to a [Vendor](#vendor) ORD ID.
      * 
-     * MUST be set to `customer:vendor:Customer:` if the contents of the package are created by the customer / user.
+     * MUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.
      * 
-     * MUST be set to a registered partner vendor, if the contents of the package are created by a partner / third party.
+     * MUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.
      * (Required)
      * 
      */
@@ -775,7 +775,7 @@ public class Package {
     }
 
     /**
-     * List of products the resources of the package are a part of.
+     * List of products the resources of the Package are a part of.
      * 
      * MUST be a valid reference to a [Product](#product) ORD ID.
      * 
@@ -788,7 +788,7 @@ public class Package {
     }
 
     /**
-     * List of products the resources of the package are a part of.
+     * List of products the resources of the Package are a part of.
      * 
      * MUST be a valid reference to a [Product](#product) ORD ID.
      * 
@@ -806,7 +806,7 @@ public class Package {
     }
 
     /**
-     * List of countries that the package resources are applicable to.
+     * List of countries that the Package resources are applicable to.
      * 
      * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
      * 
@@ -819,7 +819,7 @@ public class Package {
     }
 
     /**
-     * List of countries that the package resources are applicable to.
+     * List of countries that the Package resources are applicable to.
      * 
      * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
      * 
@@ -895,7 +895,7 @@ public class Package {
     }
 
     /**
-     * If provided, all resources that are part of this package can only run on the listed runtime.
+     * If provided, all resources that are part of this Package can only run on the listed runtime.
      * 
      * MUST be a valid [system namespace](../index.md#system-namespace).
      * 
@@ -906,7 +906,7 @@ public class Package {
     }
 
     /**
-     * If provided, all resources that are part of this package can only run on the listed runtime.
+     * If provided, all resources that are part of this Package can only run on the listed runtime.
      * 
      * MUST be a valid [system namespace](../index.md#system-namespace).
      * 
