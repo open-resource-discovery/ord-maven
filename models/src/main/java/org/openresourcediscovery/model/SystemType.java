@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * System Type
  * <p>
- * A [system type](../index.md#def-system-type) is the abstract type of an application or service, from operational perspective.
+ * A [system type](../index.md#system-type) is the abstract type of an application or service, from operational perspective.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)

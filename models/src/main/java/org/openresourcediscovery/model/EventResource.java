@@ -163,25 +163,25 @@ public class EventResource {
     @JsonPropertyDescription("Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.")
     private List<String> partOfGroups = new ArrayList<String>();
     /**
-     * List of references to the consumption bundles in this resource belongs to.
+     * List of references to the Consumption Bundles in this resource belongs to.
      * 
      * MUST be a valid reference to a [Consumption Bundle](#consumption-bundle) ORD ID.
      * 
-     * An API resource SHOULD be associated to one or multiple consumption bundles, if it is of direction `inbound` or `mixed`.
-     * Some ORD consumer use cases MAY depend on an association to a consumption bundle.
+     * An API resource SHOULD be associated to one or multiple Consumption Bundles, if it is of direction `inbound` or `mixed`.
+     * Some ORD consumer use cases MAY depend on an association to a Consumption Bundle.
      * If none is given, the resource may not appear as it's unknown how it can be consumed.
      * 
      * If a resource has no direct incoming consumption characteristics:
-     * - MUST NOT assign consumption bundle to API or Event resources with `direction`: `outbound` (no inbound consumption)
-     * - MUST NOT assign consumption bundle if resource is not accessible directly, but only via intermediaries like event brokers or gateways.
-     *   - In this case the intermediary SHOULD describe the consumption bundle instead (potentially also re-describing the resources as well).
+     * - MUST NOT assign Consumption Bundle to API or Event resources with `direction`: `outbound` (no inbound consumption)
+     * - MUST NOT assign Consumption Bundle if resource is not accessible directly, but only via intermediaries like event brokers or gateways.
+     *   - In this case the intermediary SHOULD describe the Consumption Bundle instead (potentially also re-describing the resources as well).
      * 
      */
     @JsonProperty("partOfConsumptionBundles")
-    @JsonPropertyDescription("List of references to the consumption bundles in this resource belongs to.\n\nMUST be a valid reference to a [Consumption Bundle](#consumption-bundle) ORD ID.\n\nAn API resource SHOULD be associated to one or multiple consumption bundles, if it is of direction `inbound` or `mixed`.\nSome ORD consumer use cases MAY depend on an association to a consumption bundle.\nIf none is given, the resource may not appear as it's unknown how it can be consumed.\n\nIf a resource has no direct incoming consumption characteristics:\n- MUST NOT assign consumption bundle to API or Event resources with `direction`: `outbound` (no inbound consumption)\n- MUST NOT assign consumption bundle if resource is not accessible directly, but only via intermediaries like event brokers or gateways.\n  - In this case the intermediary SHOULD describe the consumption bundle instead (potentially also re-describing the resources as well).")
+    @JsonPropertyDescription("List of references to the Consumption Bundles in this resource belongs to.\n\nMUST be a valid reference to a [Consumption Bundle](#consumption-bundle) ORD ID.\n\nAn API resource SHOULD be associated to one or multiple Consumption Bundles, if it is of direction `inbound` or `mixed`.\nSome ORD consumer use cases MAY depend on an association to a Consumption Bundle.\nIf none is given, the resource may not appear as it's unknown how it can be consumed.\n\nIf a resource has no direct incoming consumption characteristics:\n- MUST NOT assign Consumption Bundle to API or Event resources with `direction`: `outbound` (no inbound consumption)\n- MUST NOT assign Consumption Bundle if resource is not accessible directly, but only via intermediaries like event brokers or gateways.\n  - In this case the intermediary SHOULD describe the Consumption Bundle instead (potentially also re-describing the resources as well).")
     private List<ConsumptionBundleReference> partOfConsumptionBundles = new ArrayList<ConsumptionBundleReference>();
     /**
-     * References the default consumption bundle to use for this resource.
+     * References the default Consumption Bundle to use for this resource.
      * 
      * MUST be a valid reference to a [Consumption Bundle](#consumption-bundle) ORD ID.
      * 
@@ -191,10 +191,10 @@ public class EventResource {
      * 
      */
     @JsonProperty("defaultConsumptionBundle")
-    @JsonPropertyDescription("References the default consumption bundle to use for this resource.\n\nMUST be a valid reference to a [Consumption Bundle](#consumption-bundle) ORD ID.\n\nCan be used by clients to make a deterministic and preferred choice when multiple options are available.\n\nThe value MUST be an existing option in the corresponding `partOfConsumptionBundles` array.")
+    @JsonPropertyDescription("References the default Consumption Bundle to use for this resource.\n\nMUST be a valid reference to a [Consumption Bundle](#consumption-bundle) ORD ID.\n\nCan be used by clients to make a deterministic and preferred choice when multiple options are available.\n\nThe value MUST be an existing option in the corresponding `partOfConsumptionBundles` array.")
     private String defaultConsumptionBundle;
     /**
-     * List of products the resources of the package are a part of.
+     * List of products the resources of the Package are a part of.
      * 
      * MUST be a valid reference to a [Product](#product) ORD ID.
      * 
@@ -202,7 +202,7 @@ public class EventResource {
      * 
      */
     @JsonProperty("partOfProducts")
-    @JsonPropertyDescription("List of products the resources of the package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+    @JsonPropertyDescription("List of products the resources of the Package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
     private List<String> partOfProducts = new ArrayList<String>();
     /**
      * The complete [SemVer](https://semver.org/) version string.
@@ -220,12 +220,12 @@ public class EventResource {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
     @JsonProperty("version")
-    @JsonPropertyDescription("The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.")
+    @JsonPropertyDescription("The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
     private String version;
     /**
      * Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.
@@ -263,7 +263,7 @@ public class EventResource {
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
      * This can happen either because it has not been setup for use or disabled by an admin / user.
      * 
-     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.
+     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.
      * 
      * This property can only reflect the knowledge of the described system instance itself.
      * Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).
@@ -273,15 +273,17 @@ public class EventResource {
      * 
      */
     @JsonProperty("disabled")
-    @JsonPropertyDescription("Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.\nThis can happen either because it has not been setup for use or disabled by an admin / user.\n\nIf the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.\n\nThis property can only reflect the knowledge of the described system instance itself.\nOutside factors for availability can't need to be considered (e.g. network connectivity, middlewares).\n\nA disabled resource MAY skip describing its resource definitions.\n")
+    @JsonPropertyDescription("Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.\nThis can happen either because it has not been setup for use or disabled by an admin / user.\n\nIf the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.\n\nThis property can only reflect the knowledge of the described system instance itself.\nOutside factors for availability can't need to be considered (e.g. network connectivity, middlewares).\n\nA disabled resource MAY skip describing its resource definitions.\n")
     private Boolean disabled = false;
     /**
-     * The resource has been introduced in the given [system version](../index.md#def-system-version).
+     * The resource has been introduced in the given [system version](../index.md#system-version).
      * This implies that the resource is only available if the system instance is of at least that system version.
+     * 
+     * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
      */
     @JsonProperty("minSystemVersion")
-    @JsonPropertyDescription("The resource has been introduced in the given [system version](../index.md#def-system-version).\nThis implies that the resource is only available if the system instance is of at least that system version.")
+    @JsonPropertyDescription("The resource has been introduced in the given [system version](../index.md#system-version).\nThis implies that the resource is only available if the system instance is of at least that system version.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.")
     private String minSystemVersion;
     /**
      * The deprecation date defines when the resource has been set as deprecated.
@@ -326,9 +328,11 @@ public class EventResource {
     private List<ChangelogEntry> changelogEntries = new ArrayList<ChangelogEntry>();
     /**
      * List of available machine-readable definitions, which describe the resource or capability in detail.
+     * See also [Resource Definitions](../index.md#resource-definitions) for more context.
      * 
      * Each definition is to be understood as an alternative description format, describing the same resource / capability.
      * As a consequence the same definition type MUST NOT be provided more than once.
+     * The exception is when the same definition type is provided more than once, but with a different `visibility`.
      * 
      * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
      * If the definitions are added or changed, the `version` MUST be incremented.
@@ -336,7 +340,7 @@ public class EventResource {
      * 
      */
     @JsonProperty("resourceDefinitions")
-    @JsonPropertyDescription("List of available machine-readable definitions, which describe the resource or capability in detail.\n\nEach definition is to be understood as an alternative description format, describing the same resource / capability.\nAs a consequence the same definition type MUST NOT be provided more than once.\n\nIt is RECOMMENDED to provide the definitions as they enable machine-readable use cases.\nIf the definitions are added or changed, the `version` MUST be incremented.\nAn ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.")
+    @JsonPropertyDescription("List of available machine-readable definitions, which describe the resource or capability in detail.\nSee also [Resource Definitions](../index.md#resource-definitions) for more context.\n\nEach definition is to be understood as an alternative description format, describing the same resource / capability.\nAs a consequence the same definition type MUST NOT be provided more than once.\nThe exception is when the same definition type is provided more than once, but with a different `visibility`.\n\nIt is RECOMMENDED to provide the definitions as they enable machine-readable use cases.\nIf the definitions are added or changed, the `version` MUST be incremented.\nAn ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.")
     private List<EventResourceDefinition> resourceDefinitions = new ArrayList<EventResourceDefinition>();
     /**
      * Declares this EventResource to be a valid implementation of a standardized or shared contract.
@@ -438,7 +442,7 @@ public class EventResource {
     @JsonPropertyDescription("Contains information about the extensibility of this resource.\n\nIf applicable, a description and further resources about extending this resource are provided.")
     private Extensible extensible;
     /**
-     * List of countries that the package resources are applicable to.
+     * List of countries that the Package resources are applicable to.
      * 
      * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
      * 
@@ -446,7 +450,7 @@ public class EventResource {
      * 
      */
     @JsonProperty("countries")
-    @JsonPropertyDescription("List of countries that the package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+    @JsonPropertyDescription("List of countries that the Package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
     private List<String> countries = new ArrayList<String>();
     /**
      * List of line of business tags.
@@ -556,19 +560,20 @@ public class EventResource {
     @JsonPropertyDescription("A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
     private List<String> policyLevels = new ArrayList<String>();
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")
-    @JsonPropertyDescription("All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.\nAll resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.\n\nDefines whether this ORD resource is **system instance aware**.\nThis is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,\nnot just once per system type, but once per **system instance**.")
+    @JsonPropertyDescription("Defines whether this ORD resource is **system-instance-aware**.\nThis is the case when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.\n\nThis concept is now **deprecated** in favor of the more explicit `perspective` attribute.\nAll resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.\n\nFor more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).")
     private Boolean systemInstanceAware = false;
 
     /**
@@ -832,18 +837,18 @@ public class EventResource {
     }
 
     /**
-     * List of references to the consumption bundles in this resource belongs to.
+     * List of references to the Consumption Bundles in this resource belongs to.
      * 
      * MUST be a valid reference to a [Consumption Bundle](#consumption-bundle) ORD ID.
      * 
-     * An API resource SHOULD be associated to one or multiple consumption bundles, if it is of direction `inbound` or `mixed`.
-     * Some ORD consumer use cases MAY depend on an association to a consumption bundle.
+     * An API resource SHOULD be associated to one or multiple Consumption Bundles, if it is of direction `inbound` or `mixed`.
+     * Some ORD consumer use cases MAY depend on an association to a Consumption Bundle.
      * If none is given, the resource may not appear as it's unknown how it can be consumed.
      * 
      * If a resource has no direct incoming consumption characteristics:
-     * - MUST NOT assign consumption bundle to API or Event resources with `direction`: `outbound` (no inbound consumption)
-     * - MUST NOT assign consumption bundle if resource is not accessible directly, but only via intermediaries like event brokers or gateways.
-     *   - In this case the intermediary SHOULD describe the consumption bundle instead (potentially also re-describing the resources as well).
+     * - MUST NOT assign Consumption Bundle to API or Event resources with `direction`: `outbound` (no inbound consumption)
+     * - MUST NOT assign Consumption Bundle if resource is not accessible directly, but only via intermediaries like event brokers or gateways.
+     *   - In this case the intermediary SHOULD describe the Consumption Bundle instead (potentially also re-describing the resources as well).
      * 
      */
     @JsonProperty("partOfConsumptionBundles")
@@ -852,18 +857,18 @@ public class EventResource {
     }
 
     /**
-     * List of references to the consumption bundles in this resource belongs to.
+     * List of references to the Consumption Bundles in this resource belongs to.
      * 
      * MUST be a valid reference to a [Consumption Bundle](#consumption-bundle) ORD ID.
      * 
-     * An API resource SHOULD be associated to one or multiple consumption bundles, if it is of direction `inbound` or `mixed`.
-     * Some ORD consumer use cases MAY depend on an association to a consumption bundle.
+     * An API resource SHOULD be associated to one or multiple Consumption Bundles, if it is of direction `inbound` or `mixed`.
+     * Some ORD consumer use cases MAY depend on an association to a Consumption Bundle.
      * If none is given, the resource may not appear as it's unknown how it can be consumed.
      * 
      * If a resource has no direct incoming consumption characteristics:
-     * - MUST NOT assign consumption bundle to API or Event resources with `direction`: `outbound` (no inbound consumption)
-     * - MUST NOT assign consumption bundle if resource is not accessible directly, but only via intermediaries like event brokers or gateways.
-     *   - In this case the intermediary SHOULD describe the consumption bundle instead (potentially also re-describing the resources as well).
+     * - MUST NOT assign Consumption Bundle to API or Event resources with `direction`: `outbound` (no inbound consumption)
+     * - MUST NOT assign Consumption Bundle if resource is not accessible directly, but only via intermediaries like event brokers or gateways.
+     *   - In this case the intermediary SHOULD describe the Consumption Bundle instead (potentially also re-describing the resources as well).
      * 
      */
     @JsonProperty("partOfConsumptionBundles")
@@ -877,7 +882,7 @@ public class EventResource {
     }
 
     /**
-     * References the default consumption bundle to use for this resource.
+     * References the default Consumption Bundle to use for this resource.
      * 
      * MUST be a valid reference to a [Consumption Bundle](#consumption-bundle) ORD ID.
      * 
@@ -892,7 +897,7 @@ public class EventResource {
     }
 
     /**
-     * References the default consumption bundle to use for this resource.
+     * References the default Consumption Bundle to use for this resource.
      * 
      * MUST be a valid reference to a [Consumption Bundle](#consumption-bundle) ORD ID.
      * 
@@ -912,7 +917,7 @@ public class EventResource {
     }
 
     /**
-     * List of products the resources of the package are a part of.
+     * List of products the resources of the Package are a part of.
      * 
      * MUST be a valid reference to a [Product](#product) ORD ID.
      * 
@@ -925,7 +930,7 @@ public class EventResource {
     }
 
     /**
-     * List of products the resources of the package are a part of.
+     * List of products the resources of the Package are a part of.
      * 
      * MUST be a valid reference to a [Product](#product) ORD ID.
      * 
@@ -958,7 +963,7 @@ public class EventResource {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
@@ -983,7 +988,7 @@ public class EventResource {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
@@ -1092,7 +1097,7 @@ public class EventResource {
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
      * This can happen either because it has not been setup for use or disabled by an admin / user.
      * 
-     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.
+     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.
      * 
      * This property can only reflect the knowledge of the described system instance itself.
      * Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).
@@ -1110,7 +1115,7 @@ public class EventResource {
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
      * This can happen either because it has not been setup for use or disabled by an admin / user.
      * 
-     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.
+     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.
      * 
      * This property can only reflect the knowledge of the described system instance itself.
      * Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).
@@ -1130,8 +1135,10 @@ public class EventResource {
     }
 
     /**
-     * The resource has been introduced in the given [system version](../index.md#def-system-version).
+     * The resource has been introduced in the given [system version](../index.md#system-version).
      * This implies that the resource is only available if the system instance is of at least that system version.
+     * 
+     * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
      */
     @JsonProperty("minSystemVersion")
@@ -1140,8 +1147,10 @@ public class EventResource {
     }
 
     /**
-     * The resource has been introduced in the given [system version](../index.md#def-system-version).
+     * The resource has been introduced in the given [system version](../index.md#system-version).
      * This implies that the resource is only available if the system instance is of at least that system version.
+     * 
+     * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
      */
     @JsonProperty("minSystemVersion")
@@ -1274,9 +1283,11 @@ public class EventResource {
 
     /**
      * List of available machine-readable definitions, which describe the resource or capability in detail.
+     * See also [Resource Definitions](../index.md#resource-definitions) for more context.
      * 
      * Each definition is to be understood as an alternative description format, describing the same resource / capability.
      * As a consequence the same definition type MUST NOT be provided more than once.
+     * The exception is when the same definition type is provided more than once, but with a different `visibility`.
      * 
      * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
      * If the definitions are added or changed, the `version` MUST be incremented.
@@ -1290,9 +1301,11 @@ public class EventResource {
 
     /**
      * List of available machine-readable definitions, which describe the resource or capability in detail.
+     * See also [Resource Definitions](../index.md#resource-definitions) for more context.
      * 
      * Each definition is to be understood as an alternative description format, describing the same resource / capability.
      * As a consequence the same definition type MUST NOT be provided more than once.
+     * The exception is when the same definition type is provided more than once, but with a different `visibility`.
      * 
      * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
      * If the definitions are added or changed, the `version` MUST be incremented.
@@ -1598,7 +1611,7 @@ public class EventResource {
     }
 
     /**
-     * List of countries that the package resources are applicable to.
+     * List of countries that the Package resources are applicable to.
      * 
      * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
      * 
@@ -1611,7 +1624,7 @@ public class EventResource {
     }
 
     /**
-     * List of countries that the package resources are applicable to.
+     * List of countries that the Package resources are applicable to.
      * 
      * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
      * 
@@ -1915,15 +1928,16 @@ public class EventResource {
     }
 
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")
@@ -1932,15 +1946,16 @@ public class EventResource {
     }
 
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")

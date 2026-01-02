@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "customType",
     "mediaType",
     "url",
+    "visibility",
     "accessStrategies"
 })
 @Generated("jsonschema2pojo")
@@ -72,6 +73,20 @@ public class ApiResourceDefinition {
     @JsonProperty("url")
     @JsonPropertyDescription("[URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.\n\nIt is RECOMMENDED to provide a relative URL (to base URL).")
     private String url;
+    /**
+     * The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.
+     * 
+     * If not given, the resource definition has the same visibility as the resource it describes.
+     * The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.
+     * E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.
+     * 
+     * This makes it also possible to provide both a public and an internal metadata description of the resource,
+     * in case that some metadata must only be made accessible to internal consumers.
+     * 
+     */
+    @JsonProperty("visibility")
+    @JsonPropertyDescription("The visibility states who is allowed to \"see\" and access the resource definition, in case it differs from the resource visibility.\n\nIf not given, the resource definition has the same visibility as the resource it describes.\nThe visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.\nE.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.\n\nThis makes it also possible to provide both a public and an internal metadata description of the resource,\nin case that some metadata must only be made accessible to internal consumers.")
+    private String visibility;
     /**
      * List of supported access strategies for retrieving metadata from the ORD provider.
      * An ORD Consumer/ORD Aggregator MAY choose any of the strategies.
@@ -212,6 +227,43 @@ public class ApiResourceDefinition {
     }
 
     /**
+     * The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.
+     * 
+     * If not given, the resource definition has the same visibility as the resource it describes.
+     * The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.
+     * E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.
+     * 
+     * This makes it also possible to provide both a public and an internal metadata description of the resource,
+     * in case that some metadata must only be made accessible to internal consumers.
+     * 
+     */
+    @JsonProperty("visibility")
+    public String getVisibility() {
+        return visibility;
+    }
+
+    /**
+     * The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.
+     * 
+     * If not given, the resource definition has the same visibility as the resource it describes.
+     * The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.
+     * E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.
+     * 
+     * This makes it also possible to provide both a public and an internal metadata description of the resource,
+     * in case that some metadata must only be made accessible to internal consumers.
+     * 
+     */
+    @JsonProperty("visibility")
+    public void setVisibility(String visibility) {
+        this.visibility = visibility;
+    }
+
+    public ApiResourceDefinition withVisibility(String visibility) {
+        this.visibility = visibility;
+        return this;
+    }
+
+    /**
      * List of supported access strategies for retrieving metadata from the ORD provider.
      * An ORD Consumer/ORD Aggregator MAY choose any of the strategies.
      * 
@@ -268,6 +320,10 @@ public class ApiResourceDefinition {
         sb.append('=');
         sb.append(((this.url == null)?"<null>":this.url));
         sb.append(',');
+        sb.append("visibility");
+        sb.append('=');
+        sb.append(((this.visibility == null)?"<null>":this.visibility));
+        sb.append(',');
         sb.append("accessStrategies");
         sb.append('=');
         sb.append(((this.accessStrategies == null)?"<null>":this.accessStrategies));
@@ -285,6 +341,7 @@ public class ApiResourceDefinition {
         int result = 1;
         result = ((result* 31)+((this.accessStrategies == null)? 0 :this.accessStrategies.hashCode()));
         result = ((result* 31)+((this.customType == null)? 0 :this.customType.hashCode()));
+        result = ((result* 31)+((this.visibility == null)? 0 :this.visibility.hashCode()));
         result = ((result* 31)+((this.mediaType == null)? 0 :this.mediaType.hashCode()));
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         result = ((result* 31)+((this.url == null)? 0 :this.url.hashCode()));
@@ -300,7 +357,7 @@ public class ApiResourceDefinition {
             return false;
         }
         ApiResourceDefinition rhs = ((ApiResourceDefinition) other);
-        return ((((((this.accessStrategies == rhs.accessStrategies)||((this.accessStrategies!= null)&&this.accessStrategies.equals(rhs.accessStrategies)))&&((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType))))&&((this.mediaType == rhs.mediaType)||((this.mediaType!= null)&&this.mediaType.equals(rhs.mediaType))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
+        return (((((((this.accessStrategies == rhs.accessStrategies)||((this.accessStrategies!= null)&&this.accessStrategies.equals(rhs.accessStrategies)))&&((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.mediaType == rhs.mediaType)||((this.mediaType!= null)&&this.mediaType.equals(rhs.mediaType))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
     }
 
 }

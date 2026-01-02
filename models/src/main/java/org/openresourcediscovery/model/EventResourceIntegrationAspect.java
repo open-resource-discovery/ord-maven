@@ -52,14 +52,14 @@ public class EventResourceIntegrationAspect {
     @JsonPropertyDescription("List of individual events or messages that are sufficient to achieve the aspect.")
     private List<EventResourceIntegrationAspectSubset> subset = new ArrayList<EventResourceIntegrationAspectSubset>();
     /**
-     * In case that the event subscriptions are limited to known [system types](../index.md#def-system-type), they can be listed here as [system namespaces](../index.md#system-namespace).
+     * In case that the event subscriptions are limited to known [system types](../index.md#system-type), they can be listed here as [system namespaces](../index.md#system-namespace).
      * 
      * If given, only system types of the defined namespaces are supported as integration partners.
      * If not given, there is no restriction which system type provides the events.
      * 
      */
     @JsonProperty("systemTypeRestriction")
-    @JsonPropertyDescription("In case that the event subscriptions are limited to known [system types](../index.md#def-system-type), they can be listed here as [system namespaces](../index.md#system-namespace).\n\nIf given, only system types of the defined namespaces are supported as integration partners.\nIf not given, there is no restriction which system type provides the events.")
+    @JsonPropertyDescription("In case that the event subscriptions are limited to known [system types](../index.md#system-type), they can be listed here as [system namespaces](../index.md#system-namespace).\n\nIf given, only system types of the defined namespaces are supported as integration partners.\nIf not given, there is no restriction which system type provides the events.")
     private List<String> systemTypeRestriction = new ArrayList<String>();
 
     /**
@@ -140,7 +140,7 @@ public class EventResourceIntegrationAspect {
     }
 
     /**
-     * In case that the event subscriptions are limited to known [system types](../index.md#def-system-type), they can be listed here as [system namespaces](../index.md#system-namespace).
+     * In case that the event subscriptions are limited to known [system types](../index.md#system-type), they can be listed here as [system namespaces](../index.md#system-namespace).
      * 
      * If given, only system types of the defined namespaces are supported as integration partners.
      * If not given, there is no restriction which system type provides the events.
@@ -152,7 +152,7 @@ public class EventResourceIntegrationAspect {
     }
 
     /**
-     * In case that the event subscriptions are limited to known [system types](../index.md#def-system-type), they can be listed here as [system namespaces](../index.md#system-namespace).
+     * In case that the event subscriptions are limited to known [system types](../index.md#system-type), they can be listed here as [system namespaces](../index.md#system-namespace).
      * 
      * If given, only system types of the defined namespaces are supported as integration partners.
      * If not given, there is no restriction which system type provides the events.

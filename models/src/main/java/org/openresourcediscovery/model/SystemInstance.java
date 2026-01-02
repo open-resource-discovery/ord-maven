@@ -13,9 +13,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * System Instance
  * <p>
- * A [system instance](../index.md#def-system-instance) is a concrete, running instance of a system type.
+ * A [system instance](../index.md#system-instance) is a concrete, running instance of a system type.
  * In a multi-tenant system, it corresponds to a tenant.
- * In a single-tenant system, it corresponds to the [system installation](../index.md#def-system-deployment) itself.
+ * In a single-tenant system, it corresponds to the [system installation](../index.md#system-deployment) itself.
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class SystemInstance {
 
     /**
-     * Optional [base URL](../index.md#def-base-url) of the **system instance**.
+     * Optional [base URL](../index.md#base-url) of the **system instance**.
      * By providing the base URL, relative URLs in the document are resolved relative to it.
      * 
      * The `baseUrl` MUST not contain a leading slash.
@@ -41,7 +41,7 @@ public class SystemInstance {
      * 
      */
     @JsonProperty("baseUrl")
-    @JsonPropertyDescription("Optional [base URL](../index.md#def-base-url) of the **system instance**.\nBy providing the base URL, relative URLs in the document are resolved relative to it.\n\nThe `baseUrl` MUST not contain a leading slash.\n\nMUST be provided if the base URL is not known to the ORD aggregators.\nMUST be provided when the document needs to be fully self contained, e.g. when used for manual imports.")
+    @JsonPropertyDescription("Optional [base URL](../index.md#base-url) of the **system instance**.\nBy providing the base URL, relative URLs in the document are resolved relative to it.\n\nThe `baseUrl` MUST not contain a leading slash.\n\nMUST be provided if the base URL is not known to the ORD aggregators.\nMUST be provided when the document needs to be fully self contained, e.g. when used for manual imports.")
     private String baseUrl;
     /**
      * Optional local ID for the system instance, as known by the described system.
@@ -120,7 +120,7 @@ public class SystemInstance {
     private List<String> tags = new ArrayList<String>();
 
     /**
-     * Optional [base URL](../index.md#def-base-url) of the **system instance**.
+     * Optional [base URL](../index.md#base-url) of the **system instance**.
      * By providing the base URL, relative URLs in the document are resolved relative to it.
      * 
      * The `baseUrl` MUST not contain a leading slash.
@@ -135,7 +135,7 @@ public class SystemInstance {
     }
 
     /**
-     * Optional [base URL](../index.md#def-base-url) of the **system instance**.
+     * Optional [base URL](../index.md#base-url) of the **system instance**.
      * By providing the base URL, relative URLs in the document are resolved relative to it.
      * 
      * The `baseUrl` MUST not contain a leading slash.

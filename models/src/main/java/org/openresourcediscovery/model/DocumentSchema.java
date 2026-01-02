@@ -18,11 +18,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Ord Document
  * <p>
  * The [ORD Document](../index.md#ord-document) object serves as a wrapper for the **ORD resources** and **ORD taxonomy** and adds further top-level information
- * that are specific to the document/the service it describes.
+ * that is specific to the document/the service it describes.
  * 
  * The constraints and considerations on [ORD Documents](../index.md#ord-document) MUST be followed.
  * 
- * This JSON Schema describes the [ORD document interface](https://openresourcediscovery.org/spec-v1/interfaces/Document) of the [ORD specification](https://openresourcediscovery.org/).
+ * This JSON Schema describes the [ORD document interface](https://open-resource-discovery.org/spec-v1/interfaces/Document) of the [ORD specification](https://open-resource-discovery.org/).
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -94,36 +94,36 @@ public class DocumentSchema {
      */
     @JsonProperty("perspective")
     @JsonPropertyDescription("With ORD it's possible to describe a system from a static or a dynamic [perspective](../index.md#perspectives) (for more details, follow the link).\n\nIt is strongly RECOMMENDED to mark all static ORD documents with perspective `system-version`.\n\nIt is RECOMMENDED to describe dynamic metadata in both static system-version perspective and additionally describe the system-instance perspective where it diverges from the static metadata.\n\nIf not provided, this defaults to `system-instance`, which is the most precise description but also the most costly to replicate.\n\nPlease read the [article on perspectives](../concepts/perspectives) for more explanations.")
-    private String perspective = "system instance";
+    private String perspective = "system-instance";
     /**
      * System Instance
      * <p>
-     * A [system instance](../index.md#def-system-instance) is a concrete, running instance of a system type.
+     * A [system instance](../index.md#system-instance) is a concrete, running instance of a system type.
      * In a multi-tenant system, it corresponds to a tenant.
-     * In a single-tenant system, it corresponds to the [system installation](../index.md#def-system-deployment) itself.
+     * In a single-tenant system, it corresponds to the [system installation](../index.md#system-deployment) itself.
      * 
      */
     @JsonProperty("describedSystemInstance")
-    @JsonPropertyDescription("A [system instance](../index.md#def-system-instance) is a concrete, running instance of a system type.\nIn a multi-tenant system, it corresponds to a tenant.\nIn a single-tenant system, it corresponds to the [system installation](../index.md#def-system-deployment) itself.")
+    @JsonPropertyDescription("A [system instance](../index.md#system-instance) is a concrete, running instance of a system type.\nIn a multi-tenant system, it corresponds to a tenant.\nIn a single-tenant system, it corresponds to the [system installation](../index.md#system-deployment) itself.")
     private SystemInstance describedSystemInstance;
     /**
      * System Type
      * <p>
-     * A [system type](../index.md#def-system-type) is the abstract type of an application or service, from operational perspective.
+     * A [system type](../index.md#system-type) is the abstract type of an application or service, from operational perspective.
      * 
      */
     @JsonProperty("describedSystemType")
-    @JsonPropertyDescription("A [system type](../index.md#def-system-type) is the abstract type of an application or service, from operational perspective.")
+    @JsonPropertyDescription("A [system type](../index.md#system-type) is the abstract type of an application or service, from operational perspective.")
     private SystemType describedSystemType;
     /**
      * System Version
      * <p>
-     * A [system version](../index.md#def-system-version) states the design-time version / release of a [system instance](../index.md#def-system-instance).
-     * It provides versioning for operational purposes for the [system type](../index.md#def-system-type).
+     * A [system version](../index.md#system-version) states the design-time version / release of a [system instance](../index.md#system-instance).
+     * It provides versioning for operational purposes for the [system type](../index.md#system-type).
      * 
      */
     @JsonProperty("describedSystemVersion")
-    @JsonPropertyDescription("A [system version](../index.md#def-system-version) states the design-time version / release of a [system instance](../index.md#def-system-instance).\nIt provides versioning for operational purposes for the [system type](../index.md#def-system-type).")
+    @JsonPropertyDescription("A [system version](../index.md#system-version) states the design-time version / release of a [system instance](../index.md#system-instance).\nIt provides versioning for operational purposes for the [system type](../index.md#system-type).")
     private SystemVersion describedSystemVersion;
     /**
      * The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with.
@@ -375,9 +375,9 @@ public class DocumentSchema {
     /**
      * System Instance
      * <p>
-     * A [system instance](../index.md#def-system-instance) is a concrete, running instance of a system type.
+     * A [system instance](../index.md#system-instance) is a concrete, running instance of a system type.
      * In a multi-tenant system, it corresponds to a tenant.
-     * In a single-tenant system, it corresponds to the [system installation](../index.md#def-system-deployment) itself.
+     * In a single-tenant system, it corresponds to the [system installation](../index.md#system-deployment) itself.
      * 
      */
     @JsonProperty("describedSystemInstance")
@@ -388,9 +388,9 @@ public class DocumentSchema {
     /**
      * System Instance
      * <p>
-     * A [system instance](../index.md#def-system-instance) is a concrete, running instance of a system type.
+     * A [system instance](../index.md#system-instance) is a concrete, running instance of a system type.
      * In a multi-tenant system, it corresponds to a tenant.
-     * In a single-tenant system, it corresponds to the [system installation](../index.md#def-system-deployment) itself.
+     * In a single-tenant system, it corresponds to the [system installation](../index.md#system-deployment) itself.
      * 
      */
     @JsonProperty("describedSystemInstance")
@@ -406,7 +406,7 @@ public class DocumentSchema {
     /**
      * System Type
      * <p>
-     * A [system type](../index.md#def-system-type) is the abstract type of an application or service, from operational perspective.
+     * A [system type](../index.md#system-type) is the abstract type of an application or service, from operational perspective.
      * 
      */
     @JsonProperty("describedSystemType")
@@ -417,7 +417,7 @@ public class DocumentSchema {
     /**
      * System Type
      * <p>
-     * A [system type](../index.md#def-system-type) is the abstract type of an application or service, from operational perspective.
+     * A [system type](../index.md#system-type) is the abstract type of an application or service, from operational perspective.
      * 
      */
     @JsonProperty("describedSystemType")
@@ -433,8 +433,8 @@ public class DocumentSchema {
     /**
      * System Version
      * <p>
-     * A [system version](../index.md#def-system-version) states the design-time version / release of a [system instance](../index.md#def-system-instance).
-     * It provides versioning for operational purposes for the [system type](../index.md#def-system-type).
+     * A [system version](../index.md#system-version) states the design-time version / release of a [system instance](../index.md#system-instance).
+     * It provides versioning for operational purposes for the [system type](../index.md#system-type).
      * 
      */
     @JsonProperty("describedSystemVersion")
@@ -445,8 +445,8 @@ public class DocumentSchema {
     /**
      * System Version
      * <p>
-     * A [system version](../index.md#def-system-version) states the design-time version / release of a [system instance](../index.md#def-system-instance).
-     * It provides versioning for operational purposes for the [system type](../index.md#def-system-type).
+     * A [system version](../index.md#system-version) states the design-time version / release of a [system instance](../index.md#system-instance).
+     * It provides versioning for operational purposes for the [system type](../index.md#system-type).
      * 
      */
     @JsonProperty("describedSystemVersion")
@@ -1024,7 +1024,8 @@ public class DocumentSchema {
         _1_9("1.9"),
         _1_10("1.10"),
         _1_11("1.11"),
-        _1_12("1.12");
+        _1_12("1.12"),
+        _1_13("1.13");
         private final String value;
         private final static Map<String, DocumentSchema.OpenResourceDiscovery> CONSTANTS = new HashMap<String, DocumentSchema.OpenResourceDiscovery>();
 
