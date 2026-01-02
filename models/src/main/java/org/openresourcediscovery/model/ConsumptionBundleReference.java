@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Consumption Bundle Reference
  * <p>
- * Reference to a Consumption bundle.
+ * Reference to a Consumption Bundle.
  * 
  * This is a complex object to allow additional properties / selections to be attached.
  * 
@@ -25,12 +25,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class ConsumptionBundleReference {
 
     /**
-     * The consumption bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to.
+     * The Consumption Bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to.
      * (Required)
      * 
      */
     @JsonProperty("ordId")
-    @JsonPropertyDescription("The consumption bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to.")
+    @JsonPropertyDescription("The Consumption Bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to.")
     private String ordId;
     /**
      * In case that an API Resource has multiple entry points, this will indicate which entry point should be used by default
@@ -46,7 +46,7 @@ public class ConsumptionBundleReference {
     private String defaultEntryPoint;
 
     /**
-     * The consumption bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to.
+     * The Consumption Bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to.
      * (Required)
      * 
      */
@@ -56,7 +56,7 @@ public class ConsumptionBundleReference {
     }
 
     /**
-     * The consumption bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to.
+     * The Consumption Bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to.
      * (Required)
      * 
      */

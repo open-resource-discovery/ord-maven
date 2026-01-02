@@ -177,12 +177,12 @@ public class Capability {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
     @JsonProperty("version")
-    @JsonPropertyDescription("The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.")
+    @JsonPropertyDescription("The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
     private String version;
     /**
      * Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.
@@ -220,7 +220,7 @@ public class Capability {
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
      * This can happen either because it has not been setup for use or disabled by an admin / user.
      * 
-     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.
+     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.
      * 
      * This property can only reflect the knowledge of the described system instance itself.
      * Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).
@@ -230,15 +230,17 @@ public class Capability {
      * 
      */
     @JsonProperty("disabled")
-    @JsonPropertyDescription("Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.\nThis can happen either because it has not been setup for use or disabled by an admin / user.\n\nIf the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.\n\nThis property can only reflect the knowledge of the described system instance itself.\nOutside factors for availability can't need to be considered (e.g. network connectivity, middlewares).\n\nA disabled resource MAY skip describing its resource definitions.\n")
+    @JsonPropertyDescription("Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.\nThis can happen either because it has not been setup for use or disabled by an admin / user.\n\nIf the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.\n\nThis property can only reflect the knowledge of the described system instance itself.\nOutside factors for availability can't need to be considered (e.g. network connectivity, middlewares).\n\nA disabled resource MAY skip describing its resource definitions.\n")
     private Boolean disabled = false;
     /**
-     * The resource has been introduced in the given [system version](../index.md#def-system-version).
+     * The resource has been introduced in the given [system version](../index.md#system-version).
      * This implies that the resource is only available if the system instance is of at least that system version.
+     * 
+     * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
      */
     @JsonProperty("minSystemVersion")
-    @JsonPropertyDescription("The resource has been introduced in the given [system version](../index.md#def-system-version).\nThis implies that the resource is only available if the system instance is of at least that system version.")
+    @JsonPropertyDescription("The resource has been introduced in the given [system version](../index.md#system-version).\nThis implies that the resource is only available if the system instance is of at least that system version.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.")
     private String minSystemVersion;
     /**
      * Optional list of related EntityType Resources.
@@ -250,9 +252,11 @@ public class Capability {
     private List<String> relatedEntityTypes = new ArrayList<String>();
     /**
      * List of available machine-readable definitions, which describe the resource or capability in detail.
+     * See also [Resource Definitions](../index.md#resource-definitions) for more context.
      * 
      * Each definition is to be understood as an alternative description format, describing the same resource / capability.
      * As a consequence the same definition type MUST NOT be provided more than once.
+     * The exception is when the same definition type is provided more than once, but with a different `visibility`.
      * 
      * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
      * If the definitions are added or changed, the `version` MUST be incremented.
@@ -260,7 +264,7 @@ public class Capability {
      * 
      */
     @JsonProperty("definitions")
-    @JsonPropertyDescription("List of available machine-readable definitions, which describe the resource or capability in detail.\n\nEach definition is to be understood as an alternative description format, describing the same resource / capability.\nAs a consequence the same definition type MUST NOT be provided more than once.\n\nIt is RECOMMENDED to provide the definitions as they enable machine-readable use cases.\nIf the definitions are added or changed, the `version` MUST be incremented.\nAn ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.")
+    @JsonPropertyDescription("List of available machine-readable definitions, which describe the resource or capability in detail.\nSee also [Resource Definitions](../index.md#resource-definitions) for more context.\n\nEach definition is to be understood as an alternative description format, describing the same resource / capability.\nAs a consequence the same definition type MUST NOT be provided more than once.\nThe exception is when the same definition type is provided more than once, but with a different `visibility`.\n\nIt is RECOMMENDED to provide the definitions as they enable machine-readable use cases.\nIf the definitions are added or changed, the `version` MUST be incremented.\nAn ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.")
     private List<CapabilityDefinition> definitions = new ArrayList<CapabilityDefinition>();
     /**
      * Generic Links with arbitrary meaning and content.
@@ -323,19 +327,20 @@ public class Capability {
     @JsonPropertyDescription("Generic documentation labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of [CommonMark](https://spec.commonmark.org/) (Markdown) text.\n\nDocumentation Labels can be used to attach human readable documentation that cannot be expressed natively in ORD.\nA documentation tool (like an API Catalog) can use the documentation labels to provide generic documentation \"snippets\".\nDue to the given structure they can be displayed e.g. as tables.\n\nThe key of the documentation Label is plain-text (MUST not contain line breaks) and denotes the subject matter that is described.\nThe values (multiple can be provided for the same key) are [CommonMark](https://spec.commonmark.org/) (Markdown) text\nwhich describes the subject matter or lists options for the key.\n\nIn contrast to regular labels, documentation labels are not meant to be used to categorize or query information.")
     private DocumentationLabels documentationLabels;
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")
-    @JsonPropertyDescription("All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.\nAll resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.\n\nDefines whether this ORD resource is **system instance aware**.\nThis is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,\nnot just once per system type, but once per **system instance**.")
+    @JsonPropertyDescription("Defines whether this ORD resource is **system-instance-aware**.\nThis is the case when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.\n\nThis concept is now **deprecated** in favor of the more explicit `perspective` attribute.\nAll resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.\n\nFor more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).")
     private Boolean systemInstanceAware = false;
 
     /**
@@ -666,7 +671,7 @@ public class Capability {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
@@ -691,7 +696,7 @@ public class Capability {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
@@ -800,7 +805,7 @@ public class Capability {
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
      * This can happen either because it has not been setup for use or disabled by an admin / user.
      * 
-     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.
+     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.
      * 
      * This property can only reflect the knowledge of the described system instance itself.
      * Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).
@@ -818,7 +823,7 @@ public class Capability {
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
      * This can happen either because it has not been setup for use or disabled by an admin / user.
      * 
-     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.
+     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.
      * 
      * This property can only reflect the knowledge of the described system instance itself.
      * Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).
@@ -838,8 +843,10 @@ public class Capability {
     }
 
     /**
-     * The resource has been introduced in the given [system version](../index.md#def-system-version).
+     * The resource has been introduced in the given [system version](../index.md#system-version).
      * This implies that the resource is only available if the system instance is of at least that system version.
+     * 
+     * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
      */
     @JsonProperty("minSystemVersion")
@@ -848,8 +855,10 @@ public class Capability {
     }
 
     /**
-     * The resource has been introduced in the given [system version](../index.md#def-system-version).
+     * The resource has been introduced in the given [system version](../index.md#system-version).
      * This implies that the resource is only available if the system instance is of at least that system version.
+     * 
+     * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
      */
     @JsonProperty("minSystemVersion")
@@ -889,9 +898,11 @@ public class Capability {
 
     /**
      * List of available machine-readable definitions, which describe the resource or capability in detail.
+     * See also [Resource Definitions](../index.md#resource-definitions) for more context.
      * 
      * Each definition is to be understood as an alternative description format, describing the same resource / capability.
      * As a consequence the same definition type MUST NOT be provided more than once.
+     * The exception is when the same definition type is provided more than once, but with a different `visibility`.
      * 
      * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
      * If the definitions are added or changed, the `version` MUST be incremented.
@@ -905,9 +916,11 @@ public class Capability {
 
     /**
      * List of available machine-readable definitions, which describe the resource or capability in detail.
+     * See also [Resource Definitions](../index.md#resource-definitions) for more context.
      * 
      * Each definition is to be understood as an alternative description format, describing the same resource / capability.
      * As a consequence the same definition type MUST NOT be provided more than once.
+     * The exception is when the same definition type is provided more than once, but with a different `visibility`.
      * 
      * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
      * If the definitions are added or changed, the `version` MUST be incremented.
@@ -1081,15 +1094,16 @@ public class Capability {
     }
 
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")
@@ -1098,15 +1112,16 @@ public class Capability {
     }
 
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")
