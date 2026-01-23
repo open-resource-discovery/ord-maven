@@ -35,6 +35,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "partOfProducts",
     "version",
     "lastUpdate",
+    "abstract",
     "visibility",
     "releaseStatus",
     "disabled",
@@ -244,6 +245,17 @@ public class EventResource {
     @JsonPropertyDescription("Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).\n\nWhen retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time.\nTherefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.\n\nIf the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.\n\nTogether with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.")
     private Date lastUpdate;
     /**
+     * Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.
+     * 
+     * Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.
+     * 
+     * More details can be found on the [Compatibility](../concepts/compatibility) concept page.
+     * 
+     */
+    @JsonProperty("abstract")
+    @JsonPropertyDescription("Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.\n\nAbstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.\n\nMore details can be found on the [Compatibility](../concepts/compatibility) concept page.")
+    private Boolean _abstract = false;
+    /**
      * The visibility states who is allowed to "see" the described resource or capability.
      * (Required)
      * 
@@ -378,17 +390,19 @@ public class EventResource {
     @JsonPropertyDescription("Full description of the custom implementation standard, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nMUST only be provided if `implementationStandard` is set to `custom`.\n\nSHOULD contain documentation and links that describe the used standard.")
     private String customImplementationStandardDescription;
     /**
-     * Declares this event resource is a compatible implementation of the referenced contract.
-     * This is also sometimes known as [Service Provider Interface](https://en.wikipedia.org/wiki/Service_provider_interface).
+     * A reference to the interface (event contract) and its maximum version that this event implements. Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one.
      * 
-     * MUST be a valid reference to an (usually external) [Event Resource](#event-resource) ORD ID.
+     * Serves as a declaration of compatible implementation of event contract, effectively functioning as an "implementationOf" relationship. The data that compatible events return follow the same schema, but itself can be different.
+     * This means that if one event is returning 1 record for a dedicated request, a compatible event could return multiple and different records, as long as they adhere to the same schema.
      * 
-     * All event resources that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.
+     * All events that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.
+     * 
+     * More details can be found on the [Compatibility](../concepts/compatibility) concept page.
      * 
      */
     @JsonProperty("compatibleWith")
-    @JsonPropertyDescription("Declares this event resource is a compatible implementation of the referenced contract.\nThis is also sometimes known as [Service Provider Interface](https://en.wikipedia.org/wiki/Service_provider_interface).\n\nMUST be a valid reference to an (usually external) [Event Resource](#event-resource) ORD ID.\n\nAll event resources that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.")
-    private List<String> compatibleWith = new ArrayList<String>();
+    @JsonPropertyDescription("A reference to the interface (event contract) and its maximum version that this event implements. Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one.\n\nServes as a declaration of compatible implementation of event contract, effectively functioning as an \"implementationOf\" relationship. The data that compatible events return follow the same schema, but itself can be different.\nThis means that if one event is returning 1 record for a dedicated request, a compatible event could return multiple and different records, as long as they adhere to the same schema.\n\nAll events that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.\n\nMore details can be found on the [Compatibility](../concepts/compatibility) concept page.")
+    private List<EventCompatibility> compatibleWith = new ArrayList<EventCompatibility>();
     /**
      * Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components.
      * 
@@ -1044,6 +1058,37 @@ public class EventResource {
     }
 
     /**
+     * Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.
+     * 
+     * Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.
+     * 
+     * More details can be found on the [Compatibility](../concepts/compatibility) concept page.
+     * 
+     */
+    @JsonProperty("abstract")
+    public Boolean getAbstract() {
+        return _abstract;
+    }
+
+    /**
+     * Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.
+     * 
+     * Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.
+     * 
+     * More details can be found on the [Compatibility](../concepts/compatibility) concept page.
+     * 
+     */
+    @JsonProperty("abstract")
+    public void setAbstract(Boolean _abstract) {
+        this._abstract = _abstract;
+    }
+
+    public EventResource withAbstract(Boolean _abstract) {
+        this._abstract = _abstract;
+        return this;
+    }
+
+    /**
      * The visibility states who is allowed to "see" the described resource or capability.
      * (Required)
      * 
@@ -1420,34 +1465,38 @@ public class EventResource {
     }
 
     /**
-     * Declares this event resource is a compatible implementation of the referenced contract.
-     * This is also sometimes known as [Service Provider Interface](https://en.wikipedia.org/wiki/Service_provider_interface).
+     * A reference to the interface (event contract) and its maximum version that this event implements. Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one.
      * 
-     * MUST be a valid reference to an (usually external) [Event Resource](#event-resource) ORD ID.
+     * Serves as a declaration of compatible implementation of event contract, effectively functioning as an "implementationOf" relationship. The data that compatible events return follow the same schema, but itself can be different.
+     * This means that if one event is returning 1 record for a dedicated request, a compatible event could return multiple and different records, as long as they adhere to the same schema.
      * 
-     * All event resources that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.
+     * All events that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.
+     * 
+     * More details can be found on the [Compatibility](../concepts/compatibility) concept page.
      * 
      */
     @JsonProperty("compatibleWith")
-    public List<String> getCompatibleWith() {
+    public List<EventCompatibility> getCompatibleWith() {
         return compatibleWith;
     }
 
     /**
-     * Declares this event resource is a compatible implementation of the referenced contract.
-     * This is also sometimes known as [Service Provider Interface](https://en.wikipedia.org/wiki/Service_provider_interface).
+     * A reference to the interface (event contract) and its maximum version that this event implements. Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one.
      * 
-     * MUST be a valid reference to an (usually external) [Event Resource](#event-resource) ORD ID.
+     * Serves as a declaration of compatible implementation of event contract, effectively functioning as an "implementationOf" relationship. The data that compatible events return follow the same schema, but itself can be different.
+     * This means that if one event is returning 1 record for a dedicated request, a compatible event could return multiple and different records, as long as they adhere to the same schema.
      * 
-     * All event resources that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.
+     * All events that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.
+     * 
+     * More details can be found on the [Compatibility](../concepts/compatibility) concept page.
      * 
      */
     @JsonProperty("compatibleWith")
-    public void setCompatibleWith(List<String> compatibleWith) {
+    public void setCompatibleWith(List<EventCompatibility> compatibleWith) {
         this.compatibleWith = compatibleWith;
     }
 
-    public EventResource withCompatibleWith(List<String> compatibleWith) {
+    public EventResource withCompatibleWith(List<EventCompatibility> compatibleWith) {
         this.compatibleWith = compatibleWith;
         return this;
     }
@@ -2024,6 +2073,10 @@ public class EventResource {
         sb.append('=');
         sb.append(((this.lastUpdate == null)?"<null>":this.lastUpdate));
         sb.append(',');
+        sb.append("_abstract");
+        sb.append('=');
+        sb.append(((this._abstract == null)?"<null>":this._abstract));
+        sb.append(',');
         sb.append("visibility");
         sb.append('=');
         sb.append(((this.visibility == null)?"<null>":this.visibility));
@@ -2184,6 +2237,7 @@ public class EventResource {
         result = ((result* 31)+((this.countries == null)? 0 :this.countries.hashCode()));
         result = ((result* 31)+((this.version == null)? 0 :this.version.hashCode()));
         result = ((result* 31)+((this.systemInstanceAware == null)? 0 :this.systemInstanceAware.hashCode()));
+        result = ((result* 31)+((this._abstract == null)? 0 :this._abstract.hashCode()));
         result = ((result* 31)+((this.changelogEntries == null)? 0 :this.changelogEntries.hashCode()));
         result = ((result* 31)+((this.partOfGroups == null)? 0 :this.partOfGroups.hashCode()));
         result = ((result* 31)+((this.tags == null)? 0 :this.tags.hashCode()));
@@ -2205,7 +2259,7 @@ public class EventResource {
             return false;
         }
         EventResource rhs = ((EventResource) other);
-        return (((((((((((((((((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)||((this.deprecationDate!= null)&&this.deprecationDate.equals(rhs.deprecationDate)))&&((this.customImplementationStandard == rhs.customImplementationStandard)||((this.customImplementationStandard!= null)&&this.customImplementationStandard.equals(rhs.customImplementationStandard))))&&((this.lineOfBusiness == rhs.lineOfBusiness)||((this.lineOfBusiness!= null)&&this.lineOfBusiness.equals(rhs.lineOfBusiness))))&&((this.exposedEntityTypes == rhs.exposedEntityTypes)||((this.exposedEntityTypes!= null)&&this.exposedEntityTypes.equals(rhs.exposedEntityTypes))))&&((this.defaultConsumptionBundle == rhs.defaultConsumptionBundle)||((this.defaultConsumptionBundle!= null)&&this.defaultConsumptionBundle.equals(rhs.defaultConsumptionBundle))))&&((this.entityTypeMappings == rhs.entityTypeMappings)||((this.entityTypeMappings!= null)&&this.entityTypeMappings.equals(rhs.entityTypeMappings))))&&((this.successors == rhs.successors)||((this.successors!= null)&&this.successors.equals(rhs.successors))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.partOfPackage == rhs.partOfPackage)||((this.partOfPackage!= null)&&this.partOfPackage.equals(rhs.partOfPackage))))&&((this.customImplementationStandardDescription == rhs.customImplementationStandardDescription)||((this.customImplementationStandardDescription!= null)&&this.customImplementationStandardDescription.equals(rhs.customImplementationStandardDescription))))&&((this.industry == rhs.industry)||((this.industry!= null)&&this.industry.equals(rhs.industry))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.responsible == rhs.responsible)||((this.responsible!= null)&&this.responsible.equals(rhs.responsible))))&&((this.releaseStatus == rhs.releaseStatus)||((this.releaseStatus!= null)&&this.releaseStatus.equals(rhs.releaseStatus))))&&((this.disabled == rhs.disabled)||((this.disabled!= null)&&this.disabled.equals(rhs.disabled))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.minSystemVersion == rhs.minSystemVersion)||((this.minSystemVersion!= null)&&this.minSystemVersion.equals(rhs.minSystemVersion))))&&((this.resourceDefinitions == rhs.resourceDefinitions)||((this.resourceDefinitions!= null)&&this.resourceDefinitions.equals(rhs.resourceDefinitions))))&&((this.extensible == rhs.extensible)||((this.extensible!= null)&&this.extensible.equals(rhs.extensible))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.compatibleWith == rhs.compatibleWith)||((this.compatibleWith!= null)&&this.compatibleWith.equals(rhs.compatibleWith))))&&((this.implementationStandard == rhs.implementationStandard)||((this.implementationStandard!= null)&&this.implementationStandard.equals(rhs.implementationStandard))))&&((this.partOfConsumptionBundles == rhs.partOfConsumptionBundles)||((this.partOfConsumptionBundles!= null)&&this.partOfConsumptionBundles.equals(rhs.partOfConsumptionBundles))))&&((this.sunsetDate == rhs.sunsetDate)||((this.sunsetDate!= null)&&this.sunsetDate.equals(rhs.sunsetDate))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.countries == rhs.countries)||((this.countries!= null)&&this.countries.equals(rhs.countries))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.systemInstanceAware == rhs.systemInstanceAware)||((this.systemInstanceAware!= null)&&this.systemInstanceAware.equals(rhs.systemInstanceAware))))&&((this.changelogEntries == rhs.changelogEntries)||((this.changelogEntries!= null)&&this.changelogEntries.equals(rhs.changelogEntries))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.partOfProducts == rhs.partOfProducts)||((this.partOfProducts!= null)&&this.partOfProducts.equals(rhs.partOfProducts))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.eventResourceLinks == rhs.eventResourceLinks)||((this.eventResourceLinks!= null)&&this.eventResourceLinks.equals(rhs.eventResourceLinks))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.lastUpdate == rhs.lastUpdate)||((this.lastUpdate!= null)&&this.lastUpdate.equals(rhs.lastUpdate))));
+        return ((((((((((((((((((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)||((this.deprecationDate!= null)&&this.deprecationDate.equals(rhs.deprecationDate)))&&((this.customImplementationStandard == rhs.customImplementationStandard)||((this.customImplementationStandard!= null)&&this.customImplementationStandard.equals(rhs.customImplementationStandard))))&&((this.lineOfBusiness == rhs.lineOfBusiness)||((this.lineOfBusiness!= null)&&this.lineOfBusiness.equals(rhs.lineOfBusiness))))&&((this.exposedEntityTypes == rhs.exposedEntityTypes)||((this.exposedEntityTypes!= null)&&this.exposedEntityTypes.equals(rhs.exposedEntityTypes))))&&((this.defaultConsumptionBundle == rhs.defaultConsumptionBundle)||((this.defaultConsumptionBundle!= null)&&this.defaultConsumptionBundle.equals(rhs.defaultConsumptionBundle))))&&((this.entityTypeMappings == rhs.entityTypeMappings)||((this.entityTypeMappings!= null)&&this.entityTypeMappings.equals(rhs.entityTypeMappings))))&&((this.successors == rhs.successors)||((this.successors!= null)&&this.successors.equals(rhs.successors))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.partOfPackage == rhs.partOfPackage)||((this.partOfPackage!= null)&&this.partOfPackage.equals(rhs.partOfPackage))))&&((this.customImplementationStandardDescription == rhs.customImplementationStandardDescription)||((this.customImplementationStandardDescription!= null)&&this.customImplementationStandardDescription.equals(rhs.customImplementationStandardDescription))))&&((this.industry == rhs.industry)||((this.industry!= null)&&this.industry.equals(rhs.industry))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.responsible == rhs.responsible)||((this.responsible!= null)&&this.responsible.equals(rhs.responsible))))&&((this.releaseStatus == rhs.releaseStatus)||((this.releaseStatus!= null)&&this.releaseStatus.equals(rhs.releaseStatus))))&&((this.disabled == rhs.disabled)||((this.disabled!= null)&&this.disabled.equals(rhs.disabled))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.minSystemVersion == rhs.minSystemVersion)||((this.minSystemVersion!= null)&&this.minSystemVersion.equals(rhs.minSystemVersion))))&&((this.resourceDefinitions == rhs.resourceDefinitions)||((this.resourceDefinitions!= null)&&this.resourceDefinitions.equals(rhs.resourceDefinitions))))&&((this.extensible == rhs.extensible)||((this.extensible!= null)&&this.extensible.equals(rhs.extensible))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.compatibleWith == rhs.compatibleWith)||((this.compatibleWith!= null)&&this.compatibleWith.equals(rhs.compatibleWith))))&&((this.implementationStandard == rhs.implementationStandard)||((this.implementationStandard!= null)&&this.implementationStandard.equals(rhs.implementationStandard))))&&((this.partOfConsumptionBundles == rhs.partOfConsumptionBundles)||((this.partOfConsumptionBundles!= null)&&this.partOfConsumptionBundles.equals(rhs.partOfConsumptionBundles))))&&((this.sunsetDate == rhs.sunsetDate)||((this.sunsetDate!= null)&&this.sunsetDate.equals(rhs.sunsetDate))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.countries == rhs.countries)||((this.countries!= null)&&this.countries.equals(rhs.countries))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.systemInstanceAware == rhs.systemInstanceAware)||((this.systemInstanceAware!= null)&&this.systemInstanceAware.equals(rhs.systemInstanceAware))))&&((this._abstract == rhs._abstract)||((this._abstract!= null)&&this._abstract.equals(rhs._abstract))))&&((this.changelogEntries == rhs.changelogEntries)||((this.changelogEntries!= null)&&this.changelogEntries.equals(rhs.changelogEntries))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.partOfProducts == rhs.partOfProducts)||((this.partOfProducts!= null)&&this.partOfProducts.equals(rhs.partOfProducts))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.eventResourceLinks == rhs.eventResourceLinks)||((this.eventResourceLinks!= null)&&this.eventResourceLinks.equals(rhs.eventResourceLinks))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.lastUpdate == rhs.lastUpdate)||((this.lastUpdate!= null)&&this.lastUpdate.equals(rhs.lastUpdate))));
     }
 
 }

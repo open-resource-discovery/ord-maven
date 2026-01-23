@@ -42,6 +42,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
     "entityTypes",
     "capabilities",
     "dataProducts",
+    "agents",
     "integrationDependencies",
     "vendors",
     "products",
@@ -194,6 +195,13 @@ public class DocumentSchema {
     @JsonProperty("dataProducts")
     @JsonPropertyDescription("Array of all data products that are described in this ORD document.")
     private List<DataProduct> dataProducts = new ArrayList<DataProduct>();
+    /**
+     * Array of all AI Agents that are described in this ORD document.
+     * 
+     */
+    @JsonProperty("agents")
+    @JsonPropertyDescription("Array of all AI Agents that are described in this ORD document.")
+    private List<Agent> agents = new ArrayList<Agent>();
     /**
      * Array of all integration dependencies that are described in this ORD document.
      * 
@@ -670,6 +678,29 @@ public class DocumentSchema {
     }
 
     /**
+     * Array of all AI Agents that are described in this ORD document.
+     * 
+     */
+    @JsonProperty("agents")
+    public List<Agent> getAgents() {
+        return agents;
+    }
+
+    /**
+     * Array of all AI Agents that are described in this ORD document.
+     * 
+     */
+    @JsonProperty("agents")
+    public void setAgents(List<Agent> agents) {
+        this.agents = agents;
+    }
+
+    public DocumentSchema withAgents(List<Agent> agents) {
+        this.agents = agents;
+        return this;
+    }
+
+    /**
      * Array of all integration dependencies that are described in this ORD document.
      * 
      */
@@ -923,6 +954,10 @@ public class DocumentSchema {
         sb.append('=');
         sb.append(((this.dataProducts == null)?"<null>":this.dataProducts));
         sb.append(',');
+        sb.append("agents");
+        sb.append('=');
+        sb.append(((this.agents == null)?"<null>":this.agents));
+        sb.append(',');
         sb.append("integrationDependencies");
         sb.append('=');
         sb.append(((this.integrationDependencies == null)?"<null>":this.integrationDependencies));
@@ -968,27 +1003,28 @@ public class DocumentSchema {
         int result = 1;
         result = ((result* 31)+((this.openResourceDiscovery == null)? 0 :this.openResourceDiscovery.hashCode()));
         result = ((result* 31)+((this.describedSystemInstance == null)? 0 :this.describedSystemInstance.hashCode()));
-        result = ((result* 31)+((this.groupTypes == null)? 0 :this.groupTypes.hashCode()));
-        result = ((result* 31)+((this.capabilities == null)? 0 :this.capabilities.hashCode()));
         result = ((result* 31)+((this.$schema == null)? 0 :this.$schema.hashCode()));
-        result = ((result* 31)+((this.integrationDependencies == null)? 0 :this.integrationDependencies.hashCode()));
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
-        result = ((result* 31)+((this.dataProducts == null)? 0 :this.dataProducts.hashCode()));
-        result = ((result* 31)+((this.groups == null)? 0 :this.groups.hashCode()));
         result = ((result* 31)+((this.consumptionBundles == null)? 0 :this.consumptionBundles.hashCode()));
         result = ((result* 31)+((this.customPolicyLevel == null)? 0 :this.customPolicyLevel.hashCode()));
-        result = ((result* 31)+((this.packages == null)? 0 :this.packages.hashCode()));
-        result = ((result* 31)+((this.describedSystemVersion == null)? 0 :this.describedSystemVersion.hashCode()));
         result = ((result* 31)+((this.policyLevels == null)? 0 :this.policyLevels.hashCode()));
-        result = ((result* 31)+((this.eventResources == null)? 0 :this.eventResources.hashCode()));
         result = ((result* 31)+((this.products == null)? 0 :this.products.hashCode()));
-        result = ((result* 31)+((this.policyLevel == null)? 0 :this.policyLevel.hashCode()));
-        result = ((result* 31)+((this.tombstones == null)? 0 :this.tombstones.hashCode()));
         result = ((result* 31)+((this.apiResources == null)? 0 :this.apiResources.hashCode()));
         result = ((result* 31)+((this.perspective == null)? 0 :this.perspective.hashCode()));
         result = ((result* 31)+((this.entityTypes == null)? 0 :this.entityTypes.hashCode()));
         result = ((result* 31)+((this.describedSystemType == null)? 0 :this.describedSystemType.hashCode()));
         result = ((result* 31)+((this.vendors == null)? 0 :this.vendors.hashCode()));
+        result = ((result* 31)+((this.groupTypes == null)? 0 :this.groupTypes.hashCode()));
+        result = ((result* 31)+((this.capabilities == null)? 0 :this.capabilities.hashCode()));
+        result = ((result* 31)+((this.integrationDependencies == null)? 0 :this.integrationDependencies.hashCode()));
+        result = ((result* 31)+((this.dataProducts == null)? 0 :this.dataProducts.hashCode()));
+        result = ((result* 31)+((this.groups == null)? 0 :this.groups.hashCode()));
+        result = ((result* 31)+((this.packages == null)? 0 :this.packages.hashCode()));
+        result = ((result* 31)+((this.describedSystemVersion == null)? 0 :this.describedSystemVersion.hashCode()));
+        result = ((result* 31)+((this.eventResources == null)? 0 :this.eventResources.hashCode()));
+        result = ((result* 31)+((this.agents == null)? 0 :this.agents.hashCode()));
+        result = ((result* 31)+((this.policyLevel == null)? 0 :this.policyLevel.hashCode()));
+        result = ((result* 31)+((this.tombstones == null)? 0 :this.tombstones.hashCode()));
         return result;
     }
 
@@ -1001,7 +1037,7 @@ public class DocumentSchema {
             return false;
         }
         DocumentSchema rhs = ((DocumentSchema) other);
-        return ((((((((((((((((((((((((this.openResourceDiscovery == rhs.openResourceDiscovery)||((this.openResourceDiscovery!= null)&&this.openResourceDiscovery.equals(rhs.openResourceDiscovery)))&&((this.describedSystemInstance == rhs.describedSystemInstance)||((this.describedSystemInstance!= null)&&this.describedSystemInstance.equals(rhs.describedSystemInstance))))&&((this.groupTypes == rhs.groupTypes)||((this.groupTypes!= null)&&this.groupTypes.equals(rhs.groupTypes))))&&((this.capabilities == rhs.capabilities)||((this.capabilities!= null)&&this.capabilities.equals(rhs.capabilities))))&&((this.$schema == rhs.$schema)||((this.$schema!= null)&&this.$schema.equals(rhs.$schema))))&&((this.integrationDependencies == rhs.integrationDependencies)||((this.integrationDependencies!= null)&&this.integrationDependencies.equals(rhs.integrationDependencies))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.dataProducts == rhs.dataProducts)||((this.dataProducts!= null)&&this.dataProducts.equals(rhs.dataProducts))))&&((this.groups == rhs.groups)||((this.groups!= null)&&this.groups.equals(rhs.groups))))&&((this.consumptionBundles == rhs.consumptionBundles)||((this.consumptionBundles!= null)&&this.consumptionBundles.equals(rhs.consumptionBundles))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.packages == rhs.packages)||((this.packages!= null)&&this.packages.equals(rhs.packages))))&&((this.describedSystemVersion == rhs.describedSystemVersion)||((this.describedSystemVersion!= null)&&this.describedSystemVersion.equals(rhs.describedSystemVersion))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.eventResources == rhs.eventResources)||((this.eventResources!= null)&&this.eventResources.equals(rhs.eventResources))))&&((this.products == rhs.products)||((this.products!= null)&&this.products.equals(rhs.products))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.tombstones == rhs.tombstones)||((this.tombstones!= null)&&this.tombstones.equals(rhs.tombstones))))&&((this.apiResources == rhs.apiResources)||((this.apiResources!= null)&&this.apiResources.equals(rhs.apiResources))))&&((this.perspective == rhs.perspective)||((this.perspective!= null)&&this.perspective.equals(rhs.perspective))))&&((this.entityTypes == rhs.entityTypes)||((this.entityTypes!= null)&&this.entityTypes.equals(rhs.entityTypes))))&&((this.describedSystemType == rhs.describedSystemType)||((this.describedSystemType!= null)&&this.describedSystemType.equals(rhs.describedSystemType))))&&((this.vendors == rhs.vendors)||((this.vendors!= null)&&this.vendors.equals(rhs.vendors))));
+        return (((((((((((((((((((((((((this.openResourceDiscovery == rhs.openResourceDiscovery)||((this.openResourceDiscovery!= null)&&this.openResourceDiscovery.equals(rhs.openResourceDiscovery)))&&((this.describedSystemInstance == rhs.describedSystemInstance)||((this.describedSystemInstance!= null)&&this.describedSystemInstance.equals(rhs.describedSystemInstance))))&&((this.$schema == rhs.$schema)||((this.$schema!= null)&&this.$schema.equals(rhs.$schema))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.consumptionBundles == rhs.consumptionBundles)||((this.consumptionBundles!= null)&&this.consumptionBundles.equals(rhs.consumptionBundles))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.products == rhs.products)||((this.products!= null)&&this.products.equals(rhs.products))))&&((this.apiResources == rhs.apiResources)||((this.apiResources!= null)&&this.apiResources.equals(rhs.apiResources))))&&((this.perspective == rhs.perspective)||((this.perspective!= null)&&this.perspective.equals(rhs.perspective))))&&((this.entityTypes == rhs.entityTypes)||((this.entityTypes!= null)&&this.entityTypes.equals(rhs.entityTypes))))&&((this.describedSystemType == rhs.describedSystemType)||((this.describedSystemType!= null)&&this.describedSystemType.equals(rhs.describedSystemType))))&&((this.vendors == rhs.vendors)||((this.vendors!= null)&&this.vendors.equals(rhs.vendors))))&&((this.groupTypes == rhs.groupTypes)||((this.groupTypes!= null)&&this.groupTypes.equals(rhs.groupTypes))))&&((this.capabilities == rhs.capabilities)||((this.capabilities!= null)&&this.capabilities.equals(rhs.capabilities))))&&((this.integrationDependencies == rhs.integrationDependencies)||((this.integrationDependencies!= null)&&this.integrationDependencies.equals(rhs.integrationDependencies))))&&((this.dataProducts == rhs.dataProducts)||((this.dataProducts!= null)&&this.dataProducts.equals(rhs.dataProducts))))&&((this.groups == rhs.groups)||((this.groups!= null)&&this.groups.equals(rhs.groups))))&&((this.packages == rhs.packages)||((this.packages!= null)&&this.packages.equals(rhs.packages))))&&((this.describedSystemVersion == rhs.describedSystemVersion)||((this.describedSystemVersion!= null)&&this.describedSystemVersion.equals(rhs.describedSystemVersion))))&&((this.eventResources == rhs.eventResources)||((this.eventResources!= null)&&this.eventResources.equals(rhs.eventResources))))&&((this.agents == rhs.agents)||((this.agents!= null)&&this.agents.equals(rhs.agents))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.tombstones == rhs.tombstones)||((this.tombstones!= null)&&this.tombstones.equals(rhs.tombstones))));
     }
 
 
@@ -1025,7 +1061,8 @@ public class DocumentSchema {
         _1_10("1.10"),
         _1_11("1.11"),
         _1_12("1.12"),
-        _1_13("1.13");
+        _1_13("1.13"),
+        _1_14("1.14");
         private final String value;
         private final static Map<String, DocumentSchema.OpenResourceDiscovery> CONSTANTS = new HashMap<String, DocumentSchema.OpenResourceDiscovery>();
 
