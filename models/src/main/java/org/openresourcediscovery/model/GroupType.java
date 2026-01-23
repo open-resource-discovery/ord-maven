@@ -31,6 +31,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "groupTypeId",
     "title",
     "description",
+    "labels",
+    "correlationIds",
     "partOfGroupTypes"
 })
 @Generated("jsonschema2pojo")
@@ -62,6 +64,41 @@ public class GroupType {
     @JsonProperty("description")
     @JsonPropertyDescription("Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.")
     private String description;
+    /**
+     * Labels
+     * <p>
+     * Generic labels that can be applied to most ORD information.
+     * They are defined as an object that may have arbitrary keys.
+     * The value of a key is an array of strings.
+     * 
+     * Labels can be used to attach technical information that cannot be expressed natively in ORD.
+     * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * If multiple parties rely on the existence of certain label information,
+     * standardization through ORD SHOULD be preferred.
+     * 
+     * All labels attached to a `Package` will be inherited to the resources they contain.
+     * Duplicate labels will be merged by the ORD aggregator according to the following rules:
+     * * Values of the same label key will be merged.
+     * * Duplicate values of the same label key will be removed.
+     * 
+     */
+    @JsonProperty("labels")
+    @JsonPropertyDescription("Generic labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
+    private Labels labels;
+    /**
+     * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
+     * 
+     * They express an "identity" / "equals" / "mappable" relationship to the target ID.
+     * 
+     * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
+     * 
+     * MUST be a valid [Correlation ID](../index.md#correlation-id).
+     * 
+     */
+    @JsonProperty("correlationIds")
+    @JsonPropertyDescription("Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
+    private List<String> correlationIds = new ArrayList<String>();
     /**
      * A group type can logically be part of another group type, for example in hierarchical taxonomies or graph relationships.
      * Assigning a group type to be part of another group type is a lightweight and flexible approach to express such relationships.
@@ -155,6 +192,94 @@ public class GroupType {
     }
 
     /**
+     * Labels
+     * <p>
+     * Generic labels that can be applied to most ORD information.
+     * They are defined as an object that may have arbitrary keys.
+     * The value of a key is an array of strings.
+     * 
+     * Labels can be used to attach technical information that cannot be expressed natively in ORD.
+     * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * If multiple parties rely on the existence of certain label information,
+     * standardization through ORD SHOULD be preferred.
+     * 
+     * All labels attached to a `Package` will be inherited to the resources they contain.
+     * Duplicate labels will be merged by the ORD aggregator according to the following rules:
+     * * Values of the same label key will be merged.
+     * * Duplicate values of the same label key will be removed.
+     * 
+     */
+    @JsonProperty("labels")
+    public Labels getLabels() {
+        return labels;
+    }
+
+    /**
+     * Labels
+     * <p>
+     * Generic labels that can be applied to most ORD information.
+     * They are defined as an object that may have arbitrary keys.
+     * The value of a key is an array of strings.
+     * 
+     * Labels can be used to attach technical information that cannot be expressed natively in ORD.
+     * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * If multiple parties rely on the existence of certain label information,
+     * standardization through ORD SHOULD be preferred.
+     * 
+     * All labels attached to a `Package` will be inherited to the resources they contain.
+     * Duplicate labels will be merged by the ORD aggregator according to the following rules:
+     * * Values of the same label key will be merged.
+     * * Duplicate values of the same label key will be removed.
+     * 
+     */
+    @JsonProperty("labels")
+    public void setLabels(Labels labels) {
+        this.labels = labels;
+    }
+
+    public GroupType withLabels(Labels labels) {
+        this.labels = labels;
+        return this;
+    }
+
+    /**
+     * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
+     * 
+     * They express an "identity" / "equals" / "mappable" relationship to the target ID.
+     * 
+     * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
+     * 
+     * MUST be a valid [Correlation ID](../index.md#correlation-id).
+     * 
+     */
+    @JsonProperty("correlationIds")
+    public List<String> getCorrelationIds() {
+        return correlationIds;
+    }
+
+    /**
+     * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
+     * 
+     * They express an "identity" / "equals" / "mappable" relationship to the target ID.
+     * 
+     * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
+     * 
+     * MUST be a valid [Correlation ID](../index.md#correlation-id).
+     * 
+     */
+    @JsonProperty("correlationIds")
+    public void setCorrelationIds(List<String> correlationIds) {
+        this.correlationIds = correlationIds;
+    }
+
+    public GroupType withCorrelationIds(List<String> correlationIds) {
+        this.correlationIds = correlationIds;
+        return this;
+    }
+
+    /**
      * A group type can logically be part of another group type, for example in hierarchical taxonomies or graph relationships.
      * Assigning a group type to be part of another group type is a lightweight and flexible approach to express such relationships.
      * 
@@ -214,6 +339,14 @@ public class GroupType {
         sb.append('=');
         sb.append(((this.description == null)?"<null>":this.description));
         sb.append(',');
+        sb.append("labels");
+        sb.append('=');
+        sb.append(((this.labels == null)?"<null>":this.labels));
+        sb.append(',');
+        sb.append("correlationIds");
+        sb.append('=');
+        sb.append(((this.correlationIds == null)?"<null>":this.correlationIds));
+        sb.append(',');
         sb.append("partOfGroupTypes");
         sb.append('=');
         sb.append(((this.partOfGroupTypes == null)?"<null>":this.partOfGroupTypes));
@@ -233,11 +366,13 @@ public class GroupType {
     @Override
     public int hashCode() {
         int result = 1;
+        result = ((result* 31)+((this.partOfGroupTypes == null)? 0 :this.partOfGroupTypes.hashCode()));
+        result = ((result* 31)+((this.correlationIds == null)? 0 :this.correlationIds.hashCode()));
         result = ((result* 31)+((this.groupTypeId == null)? 0 :this.groupTypeId.hashCode()));
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
         result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
         result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
-        result = ((result* 31)+((this.partOfGroupTypes == null)? 0 :this.partOfGroupTypes.hashCode()));
+        result = ((result* 31)+((this.labels == null)? 0 :this.labels.hashCode()));
         return result;
     }
 
@@ -250,7 +385,7 @@ public class GroupType {
             return false;
         }
         GroupType rhs = ((GroupType) other);
-        return ((((((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.partOfGroupTypes == rhs.partOfGroupTypes)||((this.partOfGroupTypes!= null)&&this.partOfGroupTypes.equals(rhs.partOfGroupTypes))));
+        return ((((((((this.partOfGroupTypes == rhs.partOfGroupTypes)||((this.partOfGroupTypes!= null)&&this.partOfGroupTypes.equals(rhs.partOfGroupTypes)))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))));
     }
 
 }
