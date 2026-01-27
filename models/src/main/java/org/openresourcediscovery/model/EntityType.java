@@ -148,7 +148,7 @@ public class EntityType {
     @JsonPropertyDescription("Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.")
     private List<String> partOfGroups = new ArrayList<String>();
     /**
-     * List of products the resources of the package are a part of.
+     * List of products the resources of the Package are a part of.
      * 
      * MUST be a valid reference to a [Product](#product) ORD ID.
      * 
@@ -156,7 +156,7 @@ public class EntityType {
      * 
      */
     @JsonProperty("partOfProducts")
-    @JsonPropertyDescription("List of products the resources of the package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+    @JsonPropertyDescription("List of products the resources of the Package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
     private List<String> partOfProducts = new ArrayList<String>();
     /**
      * The complete [SemVer](https://semver.org/) version string.
@@ -174,12 +174,12 @@ public class EntityType {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
     @JsonProperty("version")
-    @JsonPropertyDescription("The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.")
+    @JsonPropertyDescription("The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
     private String version;
     /**
      * Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.
@@ -386,19 +386,20 @@ public class EntityType {
     @JsonPropertyDescription("A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
     private List<String> policyLevels = new ArrayList<String>();
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")
-    @JsonPropertyDescription("All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.\nAll resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.\n\nDefines whether this ORD resource is **system instance aware**.\nThis is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,\nnot just once per system type, but once per **system instance**.")
+    @JsonPropertyDescription("Defines whether this ORD resource is **system-instance-aware**.\nThis is the case when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.\n\nThis concept is now **deprecated** in favor of the more explicit `perspective` attribute.\nAll resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.\n\nFor more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).")
     private Boolean systemInstanceAware = false;
 
     /**
@@ -660,7 +661,7 @@ public class EntityType {
     }
 
     /**
-     * List of products the resources of the package are a part of.
+     * List of products the resources of the Package are a part of.
      * 
      * MUST be a valid reference to a [Product](#product) ORD ID.
      * 
@@ -673,7 +674,7 @@ public class EntityType {
     }
 
     /**
-     * List of products the resources of the package are a part of.
+     * List of products the resources of the Package are a part of.
      * 
      * MUST be a valid reference to a [Product](#product) ORD ID.
      * 
@@ -706,7 +707,7 @@ public class EntityType {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
@@ -731,7 +732,7 @@ public class EntityType {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
@@ -1307,15 +1308,16 @@ public class EntityType {
     }
 
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")
@@ -1324,15 +1326,16 @@ public class EntityType {
     }
 
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * <p>
  * A [Data Product](../concepts/data-product) is a data set exposed for consumption outside the boundaries of the producing application via APIs and described by high quality metadata that can be accessed through the [ORD Aggregator](../../spec-v1/#ord-aggregator).
  * 
- * Please note that this concept is in beta, see [Data Product - Beta Status](../concepts/data-product#beta-status).
+ * Please note that this concept is in beta, see [Data Product - Current Status](../concepts/data-product#current-status).
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -35,6 +35,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "visibility",
     "releaseStatus",
     "disabled",
+    "abstract",
     "minSystemVersion",
     "lifecycleStatus",
     "deprecationDate",
@@ -184,12 +185,12 @@ public class DataProduct {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
     @JsonProperty("version")
-    @JsonPropertyDescription("The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.")
+    @JsonPropertyDescription("The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
     private String version;
     /**
      * Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.
@@ -229,7 +230,7 @@ public class DataProduct {
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
      * This can happen either because it has not been setup for use or disabled by an admin / user.
      * 
-     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.
+     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.
      * 
      * This property can only reflect the knowledge of the described system instance itself.
      * Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).
@@ -239,25 +240,36 @@ public class DataProduct {
      * 
      */
     @JsonProperty("disabled")
-    @JsonPropertyDescription("Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.\nThis can happen either because it has not been setup for use or disabled by an admin / user.\n\nIf the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.\n\nThis property can only reflect the knowledge of the described system instance itself.\nOutside factors for availability can't need to be considered (e.g. network connectivity, middlewares).\n\nA disabled resource MAY skip describing its resource definitions.\n")
+    @JsonPropertyDescription("Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.\nThis can happen either because it has not been setup for use or disabled by an admin / user.\n\nIf the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.\n\nThis property can only reflect the knowledge of the described system instance itself.\nOutside factors for availability can't need to be considered (e.g. network connectivity, middlewares).\n\nA disabled resource MAY skip describing its resource definitions.\n")
     private Boolean disabled = false;
     /**
-     * The resource has been introduced in the given [system version](../index.md#def-system-version).
+     * Indicates that the data product serves as interface only. All output ports MUST be marked as abstract.
+     * 
+     * Implementations of this data product MUST declare compatible with on their specific output port resources as consumption of data products happens through the output ports.
+     * 
+     */
+    @JsonProperty("abstract")
+    @JsonPropertyDescription("Indicates that the data product serves as interface only. All output ports MUST be marked as abstract.\n\nImplementations of this data product MUST declare compatible with on their specific output port resources as consumption of data products happens through the output ports.")
+    private Boolean _abstract = false;
+    /**
+     * The resource has been introduced in the given [system version](../index.md#system-version).
      * This implies that the resource is only available if the system instance is of at least that system version.
+     * 
+     * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
      */
     @JsonProperty("minSystemVersion")
-    @JsonPropertyDescription("The resource has been introduced in the given [system version](../index.md#def-system-version).\nThis implies that the resource is only available if the system instance is of at least that system version.")
+    @JsonPropertyDescription("The resource has been introduced in the given [system version](../index.md#system-version).\nThis implies that the resource is only available if the system instance is of at least that system version.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.")
     private String minSystemVersion;
     /**
      * Lifecycle status of the Data Product as a whole.
      * 
-     * MUST be provided when describing the system-instance aware (run-time) perspective.
+     * MUST be provided when describing the system-instance-aware (run-time) perspective.
      * SHOULD NOT be provided in static (design-time) perspective. Static aggregators MUST ignore this property.
      * 
      */
     @JsonProperty("lifecycleStatus")
-    @JsonPropertyDescription("Lifecycle status of the Data Product as a whole.\n\nMUST be provided when describing the system-instance aware (run-time) perspective.\nSHOULD NOT be provided in static (design-time) perspective. Static aggregators MUST ignore this property.")
+    @JsonPropertyDescription("Lifecycle status of the Data Product as a whole.\n\nMUST be provided when describing the system-instance-aware (run-time) perspective.\nSHOULD NOT be provided in static (design-time) perspective. Static aggregators MUST ignore this property.")
     private String lifecycleStatus;
     /**
      * The deprecation date defines when the resource has been set as deprecated.
@@ -395,7 +407,7 @@ public class DataProduct {
     @JsonPropertyDescription("List of line of business tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`lineOfBusiness` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
     private List<String> lineOfBusiness = new ArrayList<String>();
     /**
-     * List of countries that the package resources are applicable to.
+     * List of countries that the Package resources are applicable to.
      * 
      * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
      * 
@@ -403,7 +415,7 @@ public class DataProduct {
      * 
      */
     @JsonProperty("countries")
-    @JsonPropertyDescription("List of countries that the package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+    @JsonPropertyDescription("List of countries that the Package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
     private List<String> countries = new ArrayList<String>();
     /**
      * List of free text style tags.
@@ -493,19 +505,20 @@ public class DataProduct {
     @JsonPropertyDescription("A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
     private List<String> policyLevels = new ArrayList<String>();
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")
-    @JsonPropertyDescription("All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.\nAll resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.\n\nDefines whether this ORD resource is **system instance aware**.\nThis is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,\nnot just once per system type, but once per **system instance**.")
+    @JsonPropertyDescription("Defines whether this ORD resource is **system-instance-aware**.\nThis is the case when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.\n\nThis concept is now **deprecated** in favor of the more explicit `perspective` attribute.\nAll resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.\n\nFor more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).")
     private Boolean systemInstanceAware = false;
 
     /**
@@ -815,7 +828,7 @@ public class DataProduct {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
@@ -840,7 +853,7 @@ public class DataProduct {
      * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
      * 
      * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
-     * For example: If a resource within a `Package` changes, but the package itself did not, the package version does not need to be incremented.
+     * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
      * (Required)
      * 
      */
@@ -953,7 +966,7 @@ public class DataProduct {
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
      * This can happen either because it has not been setup for use or disabled by an admin / user.
      * 
-     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.
+     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.
      * 
      * This property can only reflect the knowledge of the described system instance itself.
      * Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).
@@ -971,7 +984,7 @@ public class DataProduct {
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
      * This can happen either because it has not been setup for use or disabled by an admin / user.
      * 
-     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance aware perspective.
+     * If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.
      * 
      * This property can only reflect the knowledge of the described system instance itself.
      * Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).
@@ -991,8 +1004,37 @@ public class DataProduct {
     }
 
     /**
-     * The resource has been introduced in the given [system version](../index.md#def-system-version).
+     * Indicates that the data product serves as interface only. All output ports MUST be marked as abstract.
+     * 
+     * Implementations of this data product MUST declare compatible with on their specific output port resources as consumption of data products happens through the output ports.
+     * 
+     */
+    @JsonProperty("abstract")
+    public Boolean getAbstract() {
+        return _abstract;
+    }
+
+    /**
+     * Indicates that the data product serves as interface only. All output ports MUST be marked as abstract.
+     * 
+     * Implementations of this data product MUST declare compatible with on their specific output port resources as consumption of data products happens through the output ports.
+     * 
+     */
+    @JsonProperty("abstract")
+    public void setAbstract(Boolean _abstract) {
+        this._abstract = _abstract;
+    }
+
+    public DataProduct withAbstract(Boolean _abstract) {
+        this._abstract = _abstract;
+        return this;
+    }
+
+    /**
+     * The resource has been introduced in the given [system version](../index.md#system-version).
      * This implies that the resource is only available if the system instance is of at least that system version.
+     * 
+     * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
      */
     @JsonProperty("minSystemVersion")
@@ -1001,8 +1043,10 @@ public class DataProduct {
     }
 
     /**
-     * The resource has been introduced in the given [system version](../index.md#def-system-version).
+     * The resource has been introduced in the given [system version](../index.md#system-version).
      * This implies that the resource is only available if the system instance is of at least that system version.
+     * 
+     * It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.
      * 
      */
     @JsonProperty("minSystemVersion")
@@ -1018,7 +1062,7 @@ public class DataProduct {
     /**
      * Lifecycle status of the Data Product as a whole.
      * 
-     * MUST be provided when describing the system-instance aware (run-time) perspective.
+     * MUST be provided when describing the system-instance-aware (run-time) perspective.
      * SHOULD NOT be provided in static (design-time) perspective. Static aggregators MUST ignore this property.
      * 
      */
@@ -1030,7 +1074,7 @@ public class DataProduct {
     /**
      * Lifecycle status of the Data Product as a whole.
      * 
-     * MUST be provided when describing the system-instance aware (run-time) perspective.
+     * MUST be provided when describing the system-instance-aware (run-time) perspective.
      * SHOULD NOT be provided in static (design-time) perspective. Static aggregators MUST ignore this property.
      * 
      */
@@ -1441,7 +1485,7 @@ public class DataProduct {
     }
 
     /**
-     * List of countries that the package resources are applicable to.
+     * List of countries that the Package resources are applicable to.
      * 
      * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
      * 
@@ -1454,7 +1498,7 @@ public class DataProduct {
     }
 
     /**
-     * List of countries that the package resources are applicable to.
+     * List of countries that the Package resources are applicable to.
      * 
      * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
      * 
@@ -1700,15 +1744,16 @@ public class DataProduct {
     }
 
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")
@@ -1717,15 +1762,16 @@ public class DataProduct {
     }
 
     /**
-     * All resources that are [system instance aware](../index.md#def-system-instance-aware) should now be put together in one ORD document that has `perspective`: `system-instance`.
-     * All resources that are [system instance unaware](../index.md#def-system-instance-unaware) should now be put together in one ORD document that has `perspective`: `system-version`.
-     * 
-     * Defines whether this ORD resource is **system instance aware**.
-     * This is the case (and relevant) when the referenced resource definitions are potentially different between **system instances**.
+     * Defines whether this ORD resource is **system-instance-aware**.
+     * This is the case when the referenced resource definitions are potentially different between **system instances**.
      * 
      * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator that represents a system instance aware perspective MUST fetch the referenced resource definitions,
-     * not just once per system type, but once per **system instance**.
+     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
+     * 
+     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
+     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
+     * 
+     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
      * 
      */
     @JsonProperty("systemInstanceAware")
@@ -1797,6 +1843,10 @@ public class DataProduct {
         sb.append("disabled");
         sb.append('=');
         sb.append(((this.disabled == null)?"<null>":this.disabled));
+        sb.append(',');
+        sb.append("_abstract");
+        sb.append('=');
+        sb.append(((this._abstract == null)?"<null>":this._abstract));
         sb.append(',');
         sb.append("minSystemVersion");
         sb.append('=');
@@ -1933,6 +1983,7 @@ public class DataProduct {
         result = ((result* 31)+((this.countries == null)? 0 :this.countries.hashCode()));
         result = ((result* 31)+((this.version == null)? 0 :this.version.hashCode()));
         result = ((result* 31)+((this.systemInstanceAware == null)? 0 :this.systemInstanceAware.hashCode()));
+        result = ((result* 31)+((this._abstract == null)? 0 :this._abstract.hashCode()));
         result = ((result* 31)+((this.changelogEntries == null)? 0 :this.changelogEntries.hashCode()));
         result = ((result* 31)+((this.partOfGroups == null)? 0 :this.partOfGroups.hashCode()));
         result = ((result* 31)+((this.tags == null)? 0 :this.tags.hashCode()));
@@ -1955,7 +2006,7 @@ public class DataProduct {
             return false;
         }
         DataProduct rhs = ((DataProduct) other);
-        return (((((((((((((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)||((this.deprecationDate!= null)&&this.deprecationDate.equals(rhs.deprecationDate)))&&((this.lineOfBusiness == rhs.lineOfBusiness)||((this.lineOfBusiness!= null)&&this.lineOfBusiness.equals(rhs.lineOfBusiness))))&&((this.lifecycleStatus == rhs.lifecycleStatus)||((this.lifecycleStatus!= null)&&this.lifecycleStatus.equals(rhs.lifecycleStatus))))&&((this.successors == rhs.successors)||((this.successors!= null)&&this.successors.equals(rhs.successors))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.partOfPackage == rhs.partOfPackage)||((this.partOfPackage!= null)&&this.partOfPackage.equals(rhs.partOfPackage))))&&((this.industry == rhs.industry)||((this.industry!= null)&&this.industry.equals(rhs.industry))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.outputPorts == rhs.outputPorts)||((this.outputPorts!= null)&&this.outputPorts.equals(rhs.outputPorts))))&&((this.responsible == rhs.responsible)||((this.responsible!= null)&&this.responsible.equals(rhs.responsible))))&&((this.releaseStatus == rhs.releaseStatus)||((this.releaseStatus!= null)&&this.releaseStatus.equals(rhs.releaseStatus))))&&((this.disabled == rhs.disabled)||((this.disabled!= null)&&this.disabled.equals(rhs.disabled))))&&((this.entityTypes == rhs.entityTypes)||((this.entityTypes!= null)&&this.entityTypes.equals(rhs.entityTypes))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.minSystemVersion == rhs.minSystemVersion)||((this.minSystemVersion!= null)&&this.minSystemVersion.equals(rhs.minSystemVersion))))&&((this.dataProductLinks == rhs.dataProductLinks)||((this.dataProductLinks!= null)&&this.dataProductLinks.equals(rhs.dataProductLinks))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.sunsetDate == rhs.sunsetDate)||((this.sunsetDate!= null)&&this.sunsetDate.equals(rhs.sunsetDate))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.countries == rhs.countries)||((this.countries!= null)&&this.countries.equals(rhs.countries))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.systemInstanceAware == rhs.systemInstanceAware)||((this.systemInstanceAware!= null)&&this.systemInstanceAware.equals(rhs.systemInstanceAware))))&&((this.changelogEntries == rhs.changelogEntries)||((this.changelogEntries!= null)&&this.changelogEntries.equals(rhs.changelogEntries))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.partOfProducts == rhs.partOfProducts)||((this.partOfProducts!= null)&&this.partOfProducts.equals(rhs.partOfProducts))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.lastUpdate == rhs.lastUpdate)||((this.lastUpdate!= null)&&this.lastUpdate.equals(rhs.lastUpdate))))&&((this.inputPorts == rhs.inputPorts)||((this.inputPorts!= null)&&this.inputPorts.equals(rhs.inputPorts))))&&((this.category == rhs.category)||((this.category!= null)&&this.category.equals(rhs.category))));
+        return ((((((((((((((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)||((this.deprecationDate!= null)&&this.deprecationDate.equals(rhs.deprecationDate)))&&((this.lineOfBusiness == rhs.lineOfBusiness)||((this.lineOfBusiness!= null)&&this.lineOfBusiness.equals(rhs.lineOfBusiness))))&&((this.lifecycleStatus == rhs.lifecycleStatus)||((this.lifecycleStatus!= null)&&this.lifecycleStatus.equals(rhs.lifecycleStatus))))&&((this.successors == rhs.successors)||((this.successors!= null)&&this.successors.equals(rhs.successors))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.partOfPackage == rhs.partOfPackage)||((this.partOfPackage!= null)&&this.partOfPackage.equals(rhs.partOfPackage))))&&((this.industry == rhs.industry)||((this.industry!= null)&&this.industry.equals(rhs.industry))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.outputPorts == rhs.outputPorts)||((this.outputPorts!= null)&&this.outputPorts.equals(rhs.outputPorts))))&&((this.responsible == rhs.responsible)||((this.responsible!= null)&&this.responsible.equals(rhs.responsible))))&&((this.releaseStatus == rhs.releaseStatus)||((this.releaseStatus!= null)&&this.releaseStatus.equals(rhs.releaseStatus))))&&((this.disabled == rhs.disabled)||((this.disabled!= null)&&this.disabled.equals(rhs.disabled))))&&((this.entityTypes == rhs.entityTypes)||((this.entityTypes!= null)&&this.entityTypes.equals(rhs.entityTypes))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.minSystemVersion == rhs.minSystemVersion)||((this.minSystemVersion!= null)&&this.minSystemVersion.equals(rhs.minSystemVersion))))&&((this.dataProductLinks == rhs.dataProductLinks)||((this.dataProductLinks!= null)&&this.dataProductLinks.equals(rhs.dataProductLinks))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.sunsetDate == rhs.sunsetDate)||((this.sunsetDate!= null)&&this.sunsetDate.equals(rhs.sunsetDate))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.countries == rhs.countries)||((this.countries!= null)&&this.countries.equals(rhs.countries))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.systemInstanceAware == rhs.systemInstanceAware)||((this.systemInstanceAware!= null)&&this.systemInstanceAware.equals(rhs.systemInstanceAware))))&&((this._abstract == rhs._abstract)||((this._abstract!= null)&&this._abstract.equals(rhs._abstract))))&&((this.changelogEntries == rhs.changelogEntries)||((this.changelogEntries!= null)&&this.changelogEntries.equals(rhs.changelogEntries))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.partOfProducts == rhs.partOfProducts)||((this.partOfProducts!= null)&&this.partOfProducts.equals(rhs.partOfProducts))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.lastUpdate == rhs.lastUpdate)||((this.lastUpdate!= null)&&this.lastUpdate.equals(rhs.lastUpdate))))&&((this.inputPorts == rhs.inputPorts)||((this.inputPorts!= null)&&this.inputPorts.equals(rhs.inputPorts))))&&((this.category == rhs.category)||((this.category!= null)&&this.category.equals(rhs.category))));
     }
 
 }

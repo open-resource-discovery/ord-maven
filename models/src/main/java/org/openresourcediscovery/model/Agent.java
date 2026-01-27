@@ -12,13 +12,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * Capability
+ * Agent
  * <p>
- * Capabilities can be used to describe use case specific capabilities, most notably supported features or additional information (like configuration) that needs to be understood from outside.
- * This is a generic ORD concept that aims to cover many different capability discovery use cases that would otherwise need be implemented as individual service provider interfaces (SPIs).
+ * An **Agent** provides a high-level description of an AI-powered autonomous system that can perform tasks, make decisions, and interact with users or other systems to achieve specific business goals.
  * 
- * If a capability needs to expose more information than possible with generic capability properties, a custom capability definition can be defined and referenced in ORD.
- * This is the same idea and mechanism as with API resources and their resource definition formats.
+ * An Agent can relate to specific entity types it works with, declare integration dependencies on external systems it requires, and expose its capabilities through APIs using protocols like A2A (Agent-to-Agent).
+ * 
+ * Agents enable intelligent automation and decision-making within business processes by providing semantic understanding and context-aware capabilities beyond traditional API-based integrations.
+ * 
+ * For more details, see [AI Agents and Protocols](../concepts/ai-agents-and-protocols.md).
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,8 +28,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "ordId",
     "localId",
     "correlationIds",
-    "type",
-    "customType",
     "title",
     "shortDescription",
     "description",
@@ -39,16 +39,26 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "releaseStatus",
     "disabled",
     "minSystemVersion",
+    "partOfProducts",
+    "responsible",
+    "deprecationDate",
+    "sunsetDate",
+    "successors",
+    "changelogEntries",
+    "policyLevels",
+    "countries",
+    "lineOfBusiness",
+    "industry",
     "relatedEntityTypes",
-    "definitions",
+    "exposedApiResources",
+    "integrationDependencies",
     "links",
     "tags",
     "labels",
-    "documentationLabels",
-    "systemInstanceAware"
+    "documentationLabels"
 })
 @Generated("jsonschema2pojo")
-public class Capability {
+public class Agent {
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
@@ -84,25 +94,6 @@ public class Capability {
     @JsonProperty("correlationIds")
     @JsonPropertyDescription("Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
     private List<String> correlationIds = new ArrayList<String>();
-    /**
-     * Type of the Capability
-     * (Required)
-     * 
-     */
-    @JsonProperty("type")
-    @JsonPropertyDescription("Type of the Capability")
-    private String type;
-    /**
-     * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
-     * 
-     * MUST be a valid [Specification ID](../index.md#specification-id).
-     * 
-     * MUST only be provided if `type` is set to `custom`.
-     * 
-     */
-    @JsonProperty("customType")
-    @JsonPropertyDescription("If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.")
-    private String customType;
     /**
      * Human-readable title.
      * 
@@ -243,29 +234,134 @@ public class Capability {
     @JsonPropertyDescription("The resource has been introduced in the given [system version](../index.md#system-version).\nThis implies that the resource is only available if the system instance is of at least that system version.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.")
     private String minSystemVersion;
     /**
+     * List of products the resources of the Package are a part of.
+     * 
+     * MUST be a valid reference to a [Product](#product) ORD ID.
+     * 
+     * `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+     * 
+     */
+    @JsonProperty("partOfProducts")
+    @JsonPropertyDescription("List of products the resources of the Package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+    private List<String> partOfProducts = new ArrayList<String>();
+    /**
+     * Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components.
+     * 
+     */
+    @JsonProperty("responsible")
+    @JsonPropertyDescription("Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components.")
+    private String responsible;
+    /**
+     * The deprecation date defines when the resource has been set as deprecated.
+     * This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.
+     * 
+     * The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
+     * 
+     */
+    @JsonProperty("deprecationDate")
+    @JsonPropertyDescription("The deprecation date defines when the resource has been set as deprecated.\nThis is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).")
+    private Date deprecationDate;
+    /**
+     * The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.
+     * 
+     * If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).
+     * Once the sunset date is known and ready to be communicated externally, it MUST be provided here.
+     * 
+     * The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
+     * 
+     */
+    @JsonProperty("sunsetDate")
+    @JsonPropertyDescription("The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.\n\nIf the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).\nOnce the sunset date is known and ready to be communicated externally, it MUST be provided here.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).")
+    private Date sunsetDate;
+    /**
+     * The successor resource(s).
+     * 
+     * MUST be a valid reference to an ORD ID.
+     * 
+     * If the `releaseStatus` is set to `deprecated`, `successors` MUST be provided if one exists.
+     * If `successors` is given, the described resource SHOULD set its `releaseStatus` to `deprecated`.
+     * 
+     */
+    @JsonProperty("successors")
+    @JsonPropertyDescription("The successor resource(s).\n\nMUST be a valid reference to an ORD ID.\n\nIf the `releaseStatus` is set to `deprecated`, `successors` MUST be provided if one exists.\nIf `successors` is given, the described resource SHOULD set its `releaseStatus` to `deprecated`.")
+    private List<String> successors = new ArrayList<String>();
+    /**
+     * Contains changelog entries that summarize changes with special regards to version and releaseStatus
+     * 
+     */
+    @JsonProperty("changelogEntries")
+    @JsonPropertyDescription("Contains changelog entries that summarize changes with special regards to version and releaseStatus")
+    private List<ChangelogEntry> changelogEntries = new ArrayList<ChangelogEntry>();
+    /**
+     * A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.
+     * For each chosen policy level, additional expectations and validations rules will be applied.
+     * 
+     * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
+     * 
+     * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
+     * 
+     */
+    @JsonProperty("policyLevels")
+    @JsonPropertyDescription("A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
+    private List<String> policyLevels = new ArrayList<String>();
+    /**
+     * List of countries that the Package resources are applicable to.
+     * 
+     * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
+     * 
+     * `countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+     * 
+     */
+    @JsonProperty("countries")
+    @JsonPropertyDescription("List of countries that the Package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+    private List<String> countries = new ArrayList<String>();
+    /**
+     * List of line of business tags.
+     * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
+     * 
+     * `lineOfBusiness` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+     * 
+     */
+    @JsonProperty("lineOfBusiness")
+    @JsonPropertyDescription("List of line of business tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`lineOfBusiness` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+    private List<String> lineOfBusiness = new ArrayList<String>();
+    /**
+     * List of industry tags.
+     * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
+     * 
+     * `industry` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+     * 
+     */
+    @JsonProperty("industry")
+    @JsonPropertyDescription("List of industry tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`industry` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+    private List<String> industry = new ArrayList<String>();
+    /**
      * Optional list of related EntityType Resources.
+     * 
      * MUST be a valid reference to an [EntityType Resource](#entity-type) ORD ID.
      * 
      */
     @JsonProperty("relatedEntityTypes")
-    @JsonPropertyDescription("Optional list of related EntityType Resources.\nMUST be a valid reference to an [EntityType Resource](#entity-type) ORD ID.")
+    @JsonPropertyDescription("Optional list of related EntityType Resources.\n\nMUST be a valid reference to an [EntityType Resource](#entity-type) ORD ID.")
     private List<String> relatedEntityTypes = new ArrayList<String>();
     /**
-     * List of available machine-readable definitions, which describe the resource or capability in detail.
-     * See also [Resource Definitions](../index.md#resource-definitions) for more context.
+     * Optional list of API Resources that expose the functionality of the agent. Typically using the A2A protocol, but other protocols are possible as well.
      * 
-     * Each definition is to be understood as an alternative description format, describing the same resource / capability.
-     * As a consequence the same definition type MUST NOT be provided more than once.
-     * The exception is when the same definition type is provided more than once, but with a different `visibility`.
-     * 
-     * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
-     * If the definitions are added or changed, the `version` MUST be incremented.
-     * An ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.
+     * MUST be a valid reference to an [API Resource](#api-resource) ORD ID.
      * 
      */
-    @JsonProperty("definitions")
-    @JsonPropertyDescription("List of available machine-readable definitions, which describe the resource or capability in detail.\nSee also [Resource Definitions](../index.md#resource-definitions) for more context.\n\nEach definition is to be understood as an alternative description format, describing the same resource / capability.\nAs a consequence the same definition type MUST NOT be provided more than once.\nThe exception is when the same definition type is provided more than once, but with a different `visibility`.\n\nIt is RECOMMENDED to provide the definitions as they enable machine-readable use cases.\nIf the definitions are added or changed, the `version` MUST be incremented.\nAn ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.")
-    private List<CapabilityDefinition> definitions = new ArrayList<CapabilityDefinition>();
+    @JsonProperty("exposedApiResources")
+    @JsonPropertyDescription("Optional list of API Resources that expose the functionality of the agent. Typically using the A2A protocol, but other protocols are possible as well.\n\nMUST be a valid reference to an [API Resource](#api-resource) ORD ID.")
+    private List<ExposedApiResourcesTarget> exposedApiResources = new ArrayList<ExposedApiResourcesTarget>();
+    /**
+     * Optional list of integration dependencies that the agent relies on.
+     * 
+     * MUST be a valid reference to an [Integration Dependency](#integration-dependency) ORD ID.
+     * 
+     */
+    @JsonProperty("integrationDependencies")
+    @JsonPropertyDescription("Optional list of integration dependencies that the agent relies on.\n\nMUST be a valid reference to an [Integration Dependency](#integration-dependency) ORD ID.")
+    private List<String> integrationDependencies = new ArrayList<String>();
     /**
      * Generic Links with arbitrary meaning and content.
      * 
@@ -326,22 +422,6 @@ public class Capability {
     @JsonProperty("documentationLabels")
     @JsonPropertyDescription("Generic documentation labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of [CommonMark](https://spec.commonmark.org/) (Markdown) text.\n\nDocumentation Labels can be used to attach human readable documentation that cannot be expressed natively in ORD.\nA documentation tool (like an API Catalog) can use the documentation labels to provide generic documentation \"snippets\".\nDue to the given structure they can be displayed e.g. as tables.\n\nThe key of the documentation Label is plain-text (MUST not contain line breaks) and denotes the subject matter that is described.\nThe values (multiple can be provided for the same key) are [CommonMark](https://spec.commonmark.org/) (Markdown) text\nwhich describes the subject matter or lists options for the key.\n\nIn contrast to regular labels, documentation labels are not meant to be used to categorize or query information.")
     private DocumentationLabels documentationLabels;
-    /**
-     * Defines whether this ORD resource is **system-instance-aware**.
-     * This is the case when the referenced resource definitions are potentially different between **system instances**.
-     * 
-     * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
-     * 
-     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
-     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
-     * 
-     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
-     * 
-     */
-    @JsonProperty("systemInstanceAware")
-    @JsonPropertyDescription("Defines whether this ORD resource is **system-instance-aware**.\nThis is the case when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.\n\nThis concept is now **deprecated** in favor of the more explicit `perspective` attribute.\nAll resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.\n\nFor more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).")
-    private Boolean systemInstanceAware = false;
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
@@ -367,7 +447,7 @@ public class Capability {
         this.ordId = ordId;
     }
 
-    public Capability withOrdId(String ordId) {
+    public Agent withOrdId(String ordId) {
         this.ordId = ordId;
         return this;
     }
@@ -398,7 +478,7 @@ public class Capability {
         this.localId = localId;
     }
 
-    public Capability withLocalId(String localId) {
+    public Agent withLocalId(String localId) {
         this.localId = localId;
         return this;
     }
@@ -433,64 +513,8 @@ public class Capability {
         this.correlationIds = correlationIds;
     }
 
-    public Capability withCorrelationIds(List<String> correlationIds) {
+    public Agent withCorrelationIds(List<String> correlationIds) {
         this.correlationIds = correlationIds;
-        return this;
-    }
-
-    /**
-     * Type of the Capability
-     * (Required)
-     * 
-     */
-    @JsonProperty("type")
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * Type of the Capability
-     * (Required)
-     * 
-     */
-    @JsonProperty("type")
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Capability withType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
-     * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
-     * 
-     * MUST be a valid [Specification ID](../index.md#specification-id).
-     * 
-     * MUST only be provided if `type` is set to `custom`.
-     * 
-     */
-    @JsonProperty("customType")
-    public String getCustomType() {
-        return customType;
-    }
-
-    /**
-     * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
-     * 
-     * MUST be a valid [Specification ID](../index.md#specification-id).
-     * 
-     * MUST only be provided if `type` is set to `custom`.
-     * 
-     */
-    @JsonProperty("customType")
-    public void setCustomType(String customType) {
-        this.customType = customType;
-    }
-
-    public Capability withCustomType(String customType) {
-        this.customType = customType;
         return this;
     }
 
@@ -520,7 +544,7 @@ public class Capability {
         this.title = title;
     }
 
-    public Capability withTitle(String title) {
+    public Agent withTitle(String title) {
         this.title = title;
         return this;
     }
@@ -549,7 +573,7 @@ public class Capability {
         this.shortDescription = shortDescription;
     }
 
-    public Capability withShortDescription(String shortDescription) {
+    public Agent withShortDescription(String shortDescription) {
         this.shortDescription = shortDescription;
         return this;
     }
@@ -578,7 +602,7 @@ public class Capability {
         this.description = description;
     }
 
-    public Capability withDescription(String description) {
+    public Agent withDescription(String description) {
         this.description = description;
         return this;
     }
@@ -611,7 +635,7 @@ public class Capability {
         this.partOfPackage = partOfPackage;
     }
 
-    public Capability withPartOfPackage(String partOfPackage) {
+    public Agent withPartOfPackage(String partOfPackage) {
         this.partOfPackage = partOfPackage;
         return this;
     }
@@ -650,7 +674,7 @@ public class Capability {
         this.partOfGroups = partOfGroups;
     }
 
-    public Capability withPartOfGroups(List<String> partOfGroups) {
+    public Agent withPartOfGroups(List<String> partOfGroups) {
         this.partOfGroups = partOfGroups;
         return this;
     }
@@ -705,7 +729,7 @@ public class Capability {
         this.version = version;
     }
 
-    public Capability withVersion(String version) {
+    public Agent withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -746,7 +770,7 @@ public class Capability {
         this.lastUpdate = lastUpdate;
     }
 
-    public Capability withLastUpdate(Date lastUpdate) {
+    public Agent withLastUpdate(Date lastUpdate) {
         this.lastUpdate = lastUpdate;
         return this;
     }
@@ -771,7 +795,7 @@ public class Capability {
         this.visibility = visibility;
     }
 
-    public Capability withVisibility(String visibility) {
+    public Agent withVisibility(String visibility) {
         this.visibility = visibility;
         return this;
     }
@@ -796,7 +820,7 @@ public class Capability {
         this.releaseStatus = releaseStatus;
     }
 
-    public Capability withReleaseStatus(String releaseStatus) {
+    public Agent withReleaseStatus(String releaseStatus) {
         this.releaseStatus = releaseStatus;
         return this;
     }
@@ -837,7 +861,7 @@ public class Capability {
         this.disabled = disabled;
     }
 
-    public Capability withDisabled(Boolean disabled) {
+    public Agent withDisabled(Boolean disabled) {
         this.disabled = disabled;
         return this;
     }
@@ -866,13 +890,308 @@ public class Capability {
         this.minSystemVersion = minSystemVersion;
     }
 
-    public Capability withMinSystemVersion(String minSystemVersion) {
+    public Agent withMinSystemVersion(String minSystemVersion) {
         this.minSystemVersion = minSystemVersion;
         return this;
     }
 
     /**
+     * List of products the resources of the Package are a part of.
+     * 
+     * MUST be a valid reference to a [Product](#product) ORD ID.
+     * 
+     * `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+     * 
+     */
+    @JsonProperty("partOfProducts")
+    public List<String> getPartOfProducts() {
+        return partOfProducts;
+    }
+
+    /**
+     * List of products the resources of the Package are a part of.
+     * 
+     * MUST be a valid reference to a [Product](#product) ORD ID.
+     * 
+     * `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+     * 
+     */
+    @JsonProperty("partOfProducts")
+    public void setPartOfProducts(List<String> partOfProducts) {
+        this.partOfProducts = partOfProducts;
+    }
+
+    public Agent withPartOfProducts(List<String> partOfProducts) {
+        this.partOfProducts = partOfProducts;
+        return this;
+    }
+
+    /**
+     * Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components.
+     * 
+     */
+    @JsonProperty("responsible")
+    public String getResponsible() {
+        return responsible;
+    }
+
+    /**
+     * Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components.
+     * 
+     */
+    @JsonProperty("responsible")
+    public void setResponsible(String responsible) {
+        this.responsible = responsible;
+    }
+
+    public Agent withResponsible(String responsible) {
+        this.responsible = responsible;
+        return this;
+    }
+
+    /**
+     * The deprecation date defines when the resource has been set as deprecated.
+     * This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.
+     * 
+     * The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
+     * 
+     */
+    @JsonProperty("deprecationDate")
+    public Date getDeprecationDate() {
+        return deprecationDate;
+    }
+
+    /**
+     * The deprecation date defines when the resource has been set as deprecated.
+     * This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.
+     * 
+     * The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
+     * 
+     */
+    @JsonProperty("deprecationDate")
+    public void setDeprecationDate(Date deprecationDate) {
+        this.deprecationDate = deprecationDate;
+    }
+
+    public Agent withDeprecationDate(Date deprecationDate) {
+        this.deprecationDate = deprecationDate;
+        return this;
+    }
+
+    /**
+     * The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.
+     * 
+     * If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).
+     * Once the sunset date is known and ready to be communicated externally, it MUST be provided here.
+     * 
+     * The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
+     * 
+     */
+    @JsonProperty("sunsetDate")
+    public Date getSunsetDate() {
+        return sunsetDate;
+    }
+
+    /**
+     * The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.
+     * 
+     * If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known).
+     * Once the sunset date is known and ready to be communicated externally, it MUST be provided here.
+     * 
+     * The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
+     * 
+     */
+    @JsonProperty("sunsetDate")
+    public void setSunsetDate(Date sunsetDate) {
+        this.sunsetDate = sunsetDate;
+    }
+
+    public Agent withSunsetDate(Date sunsetDate) {
+        this.sunsetDate = sunsetDate;
+        return this;
+    }
+
+    /**
+     * The successor resource(s).
+     * 
+     * MUST be a valid reference to an ORD ID.
+     * 
+     * If the `releaseStatus` is set to `deprecated`, `successors` MUST be provided if one exists.
+     * If `successors` is given, the described resource SHOULD set its `releaseStatus` to `deprecated`.
+     * 
+     */
+    @JsonProperty("successors")
+    public List<String> getSuccessors() {
+        return successors;
+    }
+
+    /**
+     * The successor resource(s).
+     * 
+     * MUST be a valid reference to an ORD ID.
+     * 
+     * If the `releaseStatus` is set to `deprecated`, `successors` MUST be provided if one exists.
+     * If `successors` is given, the described resource SHOULD set its `releaseStatus` to `deprecated`.
+     * 
+     */
+    @JsonProperty("successors")
+    public void setSuccessors(List<String> successors) {
+        this.successors = successors;
+    }
+
+    public Agent withSuccessors(List<String> successors) {
+        this.successors = successors;
+        return this;
+    }
+
+    /**
+     * Contains changelog entries that summarize changes with special regards to version and releaseStatus
+     * 
+     */
+    @JsonProperty("changelogEntries")
+    public List<ChangelogEntry> getChangelogEntries() {
+        return changelogEntries;
+    }
+
+    /**
+     * Contains changelog entries that summarize changes with special regards to version and releaseStatus
+     * 
+     */
+    @JsonProperty("changelogEntries")
+    public void setChangelogEntries(List<ChangelogEntry> changelogEntries) {
+        this.changelogEntries = changelogEntries;
+    }
+
+    public Agent withChangelogEntries(List<ChangelogEntry> changelogEntries) {
+        this.changelogEntries = changelogEntries;
+        return this;
+    }
+
+    /**
+     * A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.
+     * For each chosen policy level, additional expectations and validations rules will be applied.
+     * 
+     * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
+     * 
+     * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
+     * 
+     */
+    @JsonProperty("policyLevels")
+    public List<String> getPolicyLevels() {
+        return policyLevels;
+    }
+
+    /**
+     * A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.
+     * For each chosen policy level, additional expectations and validations rules will be applied.
+     * 
+     * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
+     * 
+     * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
+     * 
+     */
+    @JsonProperty("policyLevels")
+    public void setPolicyLevels(List<String> policyLevels) {
+        this.policyLevels = policyLevels;
+    }
+
+    public Agent withPolicyLevels(List<String> policyLevels) {
+        this.policyLevels = policyLevels;
+        return this;
+    }
+
+    /**
+     * List of countries that the Package resources are applicable to.
+     * 
+     * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
+     * 
+     * `countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+     * 
+     */
+    @JsonProperty("countries")
+    public List<String> getCountries() {
+        return countries;
+    }
+
+    /**
+     * List of countries that the Package resources are applicable to.
+     * 
+     * MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
+     * 
+     * `countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+     * 
+     */
+    @JsonProperty("countries")
+    public void setCountries(List<String> countries) {
+        this.countries = countries;
+    }
+
+    public Agent withCountries(List<String> countries) {
+        this.countries = countries;
+        return this;
+    }
+
+    /**
+     * List of line of business tags.
+     * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
+     * 
+     * `lineOfBusiness` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+     * 
+     */
+    @JsonProperty("lineOfBusiness")
+    public List<String> getLineOfBusiness() {
+        return lineOfBusiness;
+    }
+
+    /**
+     * List of line of business tags.
+     * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
+     * 
+     * `lineOfBusiness` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+     * 
+     */
+    @JsonProperty("lineOfBusiness")
+    public void setLineOfBusiness(List<String> lineOfBusiness) {
+        this.lineOfBusiness = lineOfBusiness;
+    }
+
+    public Agent withLineOfBusiness(List<String> lineOfBusiness) {
+        this.lineOfBusiness = lineOfBusiness;
+        return this;
+    }
+
+    /**
+     * List of industry tags.
+     * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
+     * 
+     * `industry` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+     * 
+     */
+    @JsonProperty("industry")
+    public List<String> getIndustry() {
+        return industry;
+    }
+
+    /**
+     * List of industry tags.
+     * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
+     * 
+     * `industry` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+     * 
+     */
+    @JsonProperty("industry")
+    public void setIndustry(List<String> industry) {
+        this.industry = industry;
+    }
+
+    public Agent withIndustry(List<String> industry) {
+        this.industry = industry;
+        return this;
+    }
+
+    /**
      * Optional list of related EntityType Resources.
+     * 
      * MUST be a valid reference to an [EntityType Resource](#entity-type) ORD ID.
      * 
      */
@@ -883,6 +1202,7 @@ public class Capability {
 
     /**
      * Optional list of related EntityType Resources.
+     * 
      * MUST be a valid reference to an [EntityType Resource](#entity-type) ORD ID.
      * 
      */
@@ -891,49 +1211,62 @@ public class Capability {
         this.relatedEntityTypes = relatedEntityTypes;
     }
 
-    public Capability withRelatedEntityTypes(List<String> relatedEntityTypes) {
+    public Agent withRelatedEntityTypes(List<String> relatedEntityTypes) {
         this.relatedEntityTypes = relatedEntityTypes;
         return this;
     }
 
     /**
-     * List of available machine-readable definitions, which describe the resource or capability in detail.
-     * See also [Resource Definitions](../index.md#resource-definitions) for more context.
+     * Optional list of API Resources that expose the functionality of the agent. Typically using the A2A protocol, but other protocols are possible as well.
      * 
-     * Each definition is to be understood as an alternative description format, describing the same resource / capability.
-     * As a consequence the same definition type MUST NOT be provided more than once.
-     * The exception is when the same definition type is provided more than once, but with a different `visibility`.
-     * 
-     * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
-     * If the definitions are added or changed, the `version` MUST be incremented.
-     * An ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.
+     * MUST be a valid reference to an [API Resource](#api-resource) ORD ID.
      * 
      */
-    @JsonProperty("definitions")
-    public List<CapabilityDefinition> getDefinitions() {
-        return definitions;
+    @JsonProperty("exposedApiResources")
+    public List<ExposedApiResourcesTarget> getExposedApiResources() {
+        return exposedApiResources;
     }
 
     /**
-     * List of available machine-readable definitions, which describe the resource or capability in detail.
-     * See also [Resource Definitions](../index.md#resource-definitions) for more context.
+     * Optional list of API Resources that expose the functionality of the agent. Typically using the A2A protocol, but other protocols are possible as well.
      * 
-     * Each definition is to be understood as an alternative description format, describing the same resource / capability.
-     * As a consequence the same definition type MUST NOT be provided more than once.
-     * The exception is when the same definition type is provided more than once, but with a different `visibility`.
-     * 
-     * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
-     * If the definitions are added or changed, the `version` MUST be incremented.
-     * An ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.
+     * MUST be a valid reference to an [API Resource](#api-resource) ORD ID.
      * 
      */
-    @JsonProperty("definitions")
-    public void setDefinitions(List<CapabilityDefinition> definitions) {
-        this.definitions = definitions;
+    @JsonProperty("exposedApiResources")
+    public void setExposedApiResources(List<ExposedApiResourcesTarget> exposedApiResources) {
+        this.exposedApiResources = exposedApiResources;
     }
 
-    public Capability withDefinitions(List<CapabilityDefinition> definitions) {
-        this.definitions = definitions;
+    public Agent withExposedApiResources(List<ExposedApiResourcesTarget> exposedApiResources) {
+        this.exposedApiResources = exposedApiResources;
+        return this;
+    }
+
+    /**
+     * Optional list of integration dependencies that the agent relies on.
+     * 
+     * MUST be a valid reference to an [Integration Dependency](#integration-dependency) ORD ID.
+     * 
+     */
+    @JsonProperty("integrationDependencies")
+    public List<String> getIntegrationDependencies() {
+        return integrationDependencies;
+    }
+
+    /**
+     * Optional list of integration dependencies that the agent relies on.
+     * 
+     * MUST be a valid reference to an [Integration Dependency](#integration-dependency) ORD ID.
+     * 
+     */
+    @JsonProperty("integrationDependencies")
+    public void setIntegrationDependencies(List<String> integrationDependencies) {
+        this.integrationDependencies = integrationDependencies;
+    }
+
+    public Agent withIntegrationDependencies(List<String> integrationDependencies) {
+        this.integrationDependencies = integrationDependencies;
         return this;
     }
 
@@ -955,7 +1288,7 @@ public class Capability {
         this.links = links;
     }
 
-    public Capability withLinks(List<Link> links) {
+    public Agent withLinks(List<Link> links) {
         this.links = links;
         return this;
     }
@@ -984,7 +1317,7 @@ public class Capability {
         this.tags = tags;
     }
 
-    public Capability withTags(List<String> tags) {
+    public Agent withTags(List<String> tags) {
         this.tags = tags;
         return this;
     }
@@ -1037,7 +1370,7 @@ public class Capability {
         this.labels = labels;
     }
 
-    public Capability withLabels(Labels labels) {
+    public Agent withLabels(Labels labels) {
         this.labels = labels;
         return this;
     }
@@ -1088,56 +1421,15 @@ public class Capability {
         this.documentationLabels = documentationLabels;
     }
 
-    public Capability withDocumentationLabels(DocumentationLabels documentationLabels) {
+    public Agent withDocumentationLabels(DocumentationLabels documentationLabels) {
         this.documentationLabels = documentationLabels;
-        return this;
-    }
-
-    /**
-     * Defines whether this ORD resource is **system-instance-aware**.
-     * This is the case when the referenced resource definitions are potentially different between **system instances**.
-     * 
-     * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
-     * 
-     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
-     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
-     * 
-     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
-     * 
-     */
-    @JsonProperty("systemInstanceAware")
-    public Boolean getSystemInstanceAware() {
-        return systemInstanceAware;
-    }
-
-    /**
-     * Defines whether this ORD resource is **system-instance-aware**.
-     * This is the case when the referenced resource definitions are potentially different between **system instances**.
-     * 
-     * If this behavior applies, `systemInstanceAware` MUST be set to true.
-     * An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.
-     * 
-     * This concept is now **deprecated** in favor of the more explicit `perspective` attribute.
-     * All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.
-     * 
-     * For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).
-     * 
-     */
-    @JsonProperty("systemInstanceAware")
-    public void setSystemInstanceAware(Boolean systemInstanceAware) {
-        this.systemInstanceAware = systemInstanceAware;
-    }
-
-    public Capability withSystemInstanceAware(Boolean systemInstanceAware) {
-        this.systemInstanceAware = systemInstanceAware;
         return this;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Capability.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(Agent.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("ordId");
         sb.append('=');
         sb.append(((this.ordId == null)?"<null>":this.ordId));
@@ -1149,14 +1441,6 @@ public class Capability {
         sb.append("correlationIds");
         sb.append('=');
         sb.append(((this.correlationIds == null)?"<null>":this.correlationIds));
-        sb.append(',');
-        sb.append("type");
-        sb.append('=');
-        sb.append(((this.type == null)?"<null>":this.type));
-        sb.append(',');
-        sb.append("customType");
-        sb.append('=');
-        sb.append(((this.customType == null)?"<null>":this.customType));
         sb.append(',');
         sb.append("title");
         sb.append('=');
@@ -1202,13 +1486,57 @@ public class Capability {
         sb.append('=');
         sb.append(((this.minSystemVersion == null)?"<null>":this.minSystemVersion));
         sb.append(',');
+        sb.append("partOfProducts");
+        sb.append('=');
+        sb.append(((this.partOfProducts == null)?"<null>":this.partOfProducts));
+        sb.append(',');
+        sb.append("responsible");
+        sb.append('=');
+        sb.append(((this.responsible == null)?"<null>":this.responsible));
+        sb.append(',');
+        sb.append("deprecationDate");
+        sb.append('=');
+        sb.append(((this.deprecationDate == null)?"<null>":this.deprecationDate));
+        sb.append(',');
+        sb.append("sunsetDate");
+        sb.append('=');
+        sb.append(((this.sunsetDate == null)?"<null>":this.sunsetDate));
+        sb.append(',');
+        sb.append("successors");
+        sb.append('=');
+        sb.append(((this.successors == null)?"<null>":this.successors));
+        sb.append(',');
+        sb.append("changelogEntries");
+        sb.append('=');
+        sb.append(((this.changelogEntries == null)?"<null>":this.changelogEntries));
+        sb.append(',');
+        sb.append("policyLevels");
+        sb.append('=');
+        sb.append(((this.policyLevels == null)?"<null>":this.policyLevels));
+        sb.append(',');
+        sb.append("countries");
+        sb.append('=');
+        sb.append(((this.countries == null)?"<null>":this.countries));
+        sb.append(',');
+        sb.append("lineOfBusiness");
+        sb.append('=');
+        sb.append(((this.lineOfBusiness == null)?"<null>":this.lineOfBusiness));
+        sb.append(',');
+        sb.append("industry");
+        sb.append('=');
+        sb.append(((this.industry == null)?"<null>":this.industry));
+        sb.append(',');
         sb.append("relatedEntityTypes");
         sb.append('=');
         sb.append(((this.relatedEntityTypes == null)?"<null>":this.relatedEntityTypes));
         sb.append(',');
-        sb.append("definitions");
+        sb.append("exposedApiResources");
         sb.append('=');
-        sb.append(((this.definitions == null)?"<null>":this.definitions));
+        sb.append(((this.exposedApiResources == null)?"<null>":this.exposedApiResources));
+        sb.append(',');
+        sb.append("integrationDependencies");
+        sb.append('=');
+        sb.append(((this.integrationDependencies == null)?"<null>":this.integrationDependencies));
         sb.append(',');
         sb.append("links");
         sb.append('=');
@@ -1226,10 +1554,6 @@ public class Capability {
         sb.append('=');
         sb.append(((this.documentationLabels == null)?"<null>":this.documentationLabels));
         sb.append(',');
-        sb.append("systemInstanceAware");
-        sb.append('=');
-        sb.append(((this.systemInstanceAware == null)?"<null>":this.systemInstanceAware));
-        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -1241,29 +1565,37 @@ public class Capability {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.visibility == null)? 0 :this.visibility.hashCode()));
+        result = ((result* 31)+((this.deprecationDate == null)? 0 :this.deprecationDate.hashCode()));
+        result = ((result* 31)+((this.lineOfBusiness == null)? 0 :this.lineOfBusiness.hashCode()));
+        result = ((result* 31)+((this.successors == null)? 0 :this.successors.hashCode()));
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
         result = ((result* 31)+((this.partOfPackage == null)? 0 :this.partOfPackage.hashCode()));
-        result = ((result* 31)+((this.shortDescription == null)? 0 :this.shortDescription.hashCode()));
-        result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
+        result = ((result* 31)+((this.industry == null)? 0 :this.industry.hashCode()));
         result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
         result = ((result* 31)+((this.ordId == null)? 0 :this.ordId.hashCode()));
         result = ((result* 31)+((this.localId == null)? 0 :this.localId.hashCode()));
-        result = ((result* 31)+((this.version == null)? 0 :this.version.hashCode()));
-        result = ((result* 31)+((this.systemInstanceAware == null)? 0 :this.systemInstanceAware.hashCode()));
-        result = ((result* 31)+((this.partOfGroups == null)? 0 :this.partOfGroups.hashCode()));
-        result = ((result* 31)+((this.tags == null)? 0 :this.tags.hashCode()));
-        result = ((result* 31)+((this.labels == null)? 0 :this.labels.hashCode()));
-        result = ((result* 31)+((this.documentationLabels == null)? 0 :this.documentationLabels.hashCode()));
-        result = ((result* 31)+((this.customType == null)? 0 :this.customType.hashCode()));
+        result = ((result* 31)+((this.policyLevels == null)? 0 :this.policyLevels.hashCode()));
         result = ((result* 31)+((this.correlationIds == null)? 0 :this.correlationIds.hashCode()));
-        result = ((result* 31)+((this.lastUpdate == null)? 0 :this.lastUpdate.hashCode()));
+        result = ((result* 31)+((this.responsible == null)? 0 :this.responsible.hashCode()));
         result = ((result* 31)+((this.releaseStatus == null)? 0 :this.releaseStatus.hashCode()));
         result = ((result* 31)+((this.relatedEntityTypes == null)? 0 :this.relatedEntityTypes.hashCode()));
+        result = ((result* 31)+((this.exposedApiResources == null)? 0 :this.exposedApiResources.hashCode()));
         result = ((result* 31)+((this.disabled == null)? 0 :this.disabled.hashCode()));
         result = ((result* 31)+((this.links == null)? 0 :this.links.hashCode()));
         result = ((result* 31)+((this.minSystemVersion == null)? 0 :this.minSystemVersion.hashCode()));
-        result = ((result* 31)+((this.definitions == null)? 0 :this.definitions.hashCode()));
+        result = ((result* 31)+((this.visibility == null)? 0 :this.visibility.hashCode()));
+        result = ((result* 31)+((this.integrationDependencies == null)? 0 :this.integrationDependencies.hashCode()));
+        result = ((result* 31)+((this.sunsetDate == null)? 0 :this.sunsetDate.hashCode()));
+        result = ((result* 31)+((this.shortDescription == null)? 0 :this.shortDescription.hashCode()));
+        result = ((result* 31)+((this.countries == null)? 0 :this.countries.hashCode()));
+        result = ((result* 31)+((this.version == null)? 0 :this.version.hashCode()));
+        result = ((result* 31)+((this.changelogEntries == null)? 0 :this.changelogEntries.hashCode()));
+        result = ((result* 31)+((this.partOfGroups == null)? 0 :this.partOfGroups.hashCode()));
+        result = ((result* 31)+((this.tags == null)? 0 :this.tags.hashCode()));
+        result = ((result* 31)+((this.labels == null)? 0 :this.labels.hashCode()));
+        result = ((result* 31)+((this.partOfProducts == null)? 0 :this.partOfProducts.hashCode()));
+        result = ((result* 31)+((this.documentationLabels == null)? 0 :this.documentationLabels.hashCode()));
+        result = ((result* 31)+((this.lastUpdate == null)? 0 :this.lastUpdate.hashCode()));
         return result;
     }
 
@@ -1272,11 +1604,11 @@ public class Capability {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Capability) == false) {
+        if ((other instanceof Agent) == false) {
             return false;
         }
-        Capability rhs = ((Capability) other);
-        return ((((((((((((((((((((((((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.partOfPackage == rhs.partOfPackage)||((this.partOfPackage!= null)&&this.partOfPackage.equals(rhs.partOfPackage))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.systemInstanceAware == rhs.systemInstanceAware)||((this.systemInstanceAware!= null)&&this.systemInstanceAware.equals(rhs.systemInstanceAware))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.lastUpdate == rhs.lastUpdate)||((this.lastUpdate!= null)&&this.lastUpdate.equals(rhs.lastUpdate))))&&((this.releaseStatus == rhs.releaseStatus)||((this.releaseStatus!= null)&&this.releaseStatus.equals(rhs.releaseStatus))))&&((this.relatedEntityTypes == rhs.relatedEntityTypes)||((this.relatedEntityTypes!= null)&&this.relatedEntityTypes.equals(rhs.relatedEntityTypes))))&&((this.disabled == rhs.disabled)||((this.disabled!= null)&&this.disabled.equals(rhs.disabled))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.minSystemVersion == rhs.minSystemVersion)||((this.minSystemVersion!= null)&&this.minSystemVersion.equals(rhs.minSystemVersion))))&&((this.definitions == rhs.definitions)||((this.definitions!= null)&&this.definitions.equals(rhs.definitions))));
+        Agent rhs = ((Agent) other);
+        return ((((((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)||((this.deprecationDate!= null)&&this.deprecationDate.equals(rhs.deprecationDate)))&&((this.lineOfBusiness == rhs.lineOfBusiness)||((this.lineOfBusiness!= null)&&this.lineOfBusiness.equals(rhs.lineOfBusiness))))&&((this.successors == rhs.successors)||((this.successors!= null)&&this.successors.equals(rhs.successors))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.partOfPackage == rhs.partOfPackage)||((this.partOfPackage!= null)&&this.partOfPackage.equals(rhs.partOfPackage))))&&((this.industry == rhs.industry)||((this.industry!= null)&&this.industry.equals(rhs.industry))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.responsible == rhs.responsible)||((this.responsible!= null)&&this.responsible.equals(rhs.responsible))))&&((this.releaseStatus == rhs.releaseStatus)||((this.releaseStatus!= null)&&this.releaseStatus.equals(rhs.releaseStatus))))&&((this.relatedEntityTypes == rhs.relatedEntityTypes)||((this.relatedEntityTypes!= null)&&this.relatedEntityTypes.equals(rhs.relatedEntityTypes))))&&((this.exposedApiResources == rhs.exposedApiResources)||((this.exposedApiResources!= null)&&this.exposedApiResources.equals(rhs.exposedApiResources))))&&((this.disabled == rhs.disabled)||((this.disabled!= null)&&this.disabled.equals(rhs.disabled))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.minSystemVersion == rhs.minSystemVersion)||((this.minSystemVersion!= null)&&this.minSystemVersion.equals(rhs.minSystemVersion))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.integrationDependencies == rhs.integrationDependencies)||((this.integrationDependencies!= null)&&this.integrationDependencies.equals(rhs.integrationDependencies))))&&((this.sunsetDate == rhs.sunsetDate)||((this.sunsetDate!= null)&&this.sunsetDate.equals(rhs.sunsetDate))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.countries == rhs.countries)||((this.countries!= null)&&this.countries.equals(rhs.countries))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.changelogEntries == rhs.changelogEntries)||((this.changelogEntries!= null)&&this.changelogEntries.equals(rhs.changelogEntries))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.partOfProducts == rhs.partOfProducts)||((this.partOfProducts!= null)&&this.partOfProducts.equals(rhs.partOfProducts))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.lastUpdate == rhs.lastUpdate)||((this.lastUpdate!= null)&&this.lastUpdate.equals(rhs.lastUpdate))));
     }
 
 }

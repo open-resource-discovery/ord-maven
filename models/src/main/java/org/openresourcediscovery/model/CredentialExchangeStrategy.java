@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * Credential Exchange Strategy
  * <p>
  * The credential exchange strategy specifies how a set of credentials for a particular usage
- * of the APIs in the consumption bundle can be obtained.
+ * of the APIs in the Consumption Bundle can be obtained.
  * Until a SAP-wide strategy for obtaining such credentials exists and is agreed upon,
  * both LoBs and aggregators (namely Unified Customer Landscape) can define their own strategy specifications.
  * 

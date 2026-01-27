@@ -26,8 +26,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * For the various resource definition formats the selection of API models may need to be expressed differently.
  * As a consequence, there are different types of selectors that are specialized toward certain resource definition formats.
  * 
- * The target of the mapping is a correlation to an entity type via a [Correlation ID](../../#/v1/README?id=correlation-id)
- * or to an [ORD ID](../../spec-v1/#ord-id) of an entity type.
+ * The target of the mapping is a correlation to an entity type via a [Correlation ID](../index.md#correlation-id)
+ * or to an [ORD ID](../index.md#ord-id) of an entity type.
  * It is assumed that the entity types are described in more detail or on a different abstraction level via metadata.
  * When the correlation ID is used, an ORD consumer may need to know how to access the entity type metadata through conventions.
  * This can be determined either by the namespace of the correlation ID,
@@ -69,12 +69,12 @@ public class EntityTypeMapping {
      * If multiple entity types are defined as the mapping target,
      * all of them can be at least partially mapped to the source API model(s).
      * 
-     * Entity types can be referenced using either using an [ORD ID](../../spec-v1/#ord-id) or a [Correlation ID](../../spec-v1/#correlation-id).
+     * Entity types can be referenced using either using an [ORD ID](../index.md#ord-id) or a [Correlation ID](../index.md#correlation-id).
      * (Required)
      * 
      */
     @JsonProperty("entityTypeTargets")
-    @JsonPropertyDescription("List of entity types the ORD resource maps to.\nIf `apiModelSelectors` are given, the mapping is more precise by also pointing to the specific model in the API.\n\nIf multiple entity types are defined as the mapping target,\nall of them can be at least partially mapped to the source API model(s).\n\nEntity types can be referenced using either using an [ORD ID](../../spec-v1/#ord-id) or a [Correlation ID](../../spec-v1/#correlation-id).")
+    @JsonPropertyDescription("List of entity types the ORD resource maps to.\nIf `apiModelSelectors` are given, the mapping is more precise by also pointing to the specific model in the API.\n\nIf multiple entity types are defined as the mapping target,\nall of them can be at least partially mapped to the source API model(s).\n\nEntity types can be referenced using either using an [ORD ID](../index.md#ord-id) or a [Correlation ID](../index.md#correlation-id).")
     private List<Object> entityTypeTargets = new ArrayList<Object>();
 
     /**
@@ -121,7 +121,7 @@ public class EntityTypeMapping {
      * If multiple entity types are defined as the mapping target,
      * all of them can be at least partially mapped to the source API model(s).
      * 
-     * Entity types can be referenced using either using an [ORD ID](../../spec-v1/#ord-id) or a [Correlation ID](../../spec-v1/#correlation-id).
+     * Entity types can be referenced using either using an [ORD ID](../index.md#ord-id) or a [Correlation ID](../index.md#correlation-id).
      * (Required)
      * 
      */
@@ -137,7 +137,7 @@ public class EntityTypeMapping {
      * If multiple entity types are defined as the mapping target,
      * all of them can be at least partially mapped to the source API model(s).
      * 
-     * Entity types can be referenced using either using an [ORD ID](../../spec-v1/#ord-id) or a [Correlation ID](../../spec-v1/#correlation-id).
+     * Entity types can be referenced using either using an [ORD ID](../index.md#ord-id) or a [Correlation ID](../index.md#correlation-id).
      * (Required)
      * 
      */
