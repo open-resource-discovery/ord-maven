@@ -194,20 +194,32 @@ public class IntegrationDependency {
     @JsonPropertyDescription("Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).\n\nWhen retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time.\nTherefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.\n\nIf the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.\n\nTogether with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.")
     private Date lastUpdate;
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * (Required)
      * 
      */
     @JsonProperty("visibility")
-    @JsonPropertyDescription("The visibility states who is allowed to \"see\" the described resource or capability.")
+    @JsonPropertyDescription("Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.\n\nThis controls who can see that the resource exists and retrieve its metadata level information.\nIt does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.\n\nUse this to prevent exposing internal implementation details to inappropriate consumer audiences.")
     private String visibility;
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */
     @JsonProperty("releaseStatus")
-    @JsonPropertyDescription("The `releaseStatus` specifies the stability of the resource and its external contract.")
+    @JsonPropertyDescription("Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
     private String releaseStatus;
     /**
      * The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.
@@ -672,7 +684,12 @@ public class IntegrationDependency {
     }
 
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * (Required)
      * 
      */
@@ -682,7 +699,12 @@ public class IntegrationDependency {
     }
 
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * (Required)
      * 
      */
@@ -697,7 +719,14 @@ public class IntegrationDependency {
     }
 
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */
@@ -707,7 +736,14 @@ public class IntegrationDependency {
     }
 
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */
