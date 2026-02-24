@@ -39,12 +39,19 @@ public class ChangelogEntry {
     @JsonPropertyDescription("Full version number that corresponds to the `version` that is described by the changelog entry.\n\nIdeally it follows the [Semantic Versioning 2.0.0](https://semver.org/) standard,\nbut since it should reflect the actual version string / scheme used, this is not a mandatory requirement.")
     private String version;
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */
     @JsonProperty("releaseStatus")
-    @JsonPropertyDescription("The `releaseStatus` specifies the stability of the resource and its external contract.")
+    @JsonPropertyDescription("Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
     private String releaseStatus;
     /**
      * Date of change, without time or timezone information.
@@ -108,7 +115,14 @@ public class ChangelogEntry {
     }
 
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */
@@ -118,7 +132,14 @@ public class ChangelogEntry {
     }
 
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */

@@ -256,20 +256,32 @@ public class EventResource {
     @JsonPropertyDescription("Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.\n\nAbstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.\n\nMore details can be found on the [Compatibility](../concepts/compatibility) concept page.")
     private Boolean _abstract = false;
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * (Required)
      * 
      */
     @JsonProperty("visibility")
-    @JsonPropertyDescription("The visibility states who is allowed to \"see\" the described resource or capability.")
+    @JsonPropertyDescription("Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.\n\nThis controls who can see that the resource exists and retrieve its metadata level information.\nIt does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.\n\nUse this to prevent exposing internal implementation details to inappropriate consumer audiences.")
     private String visibility;
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */
     @JsonProperty("releaseStatus")
-    @JsonPropertyDescription("The `releaseStatus` specifies the stability of the resource and its external contract.")
+    @JsonPropertyDescription("Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
     private String releaseStatus;
     /**
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
@@ -1089,7 +1101,12 @@ public class EventResource {
     }
 
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * (Required)
      * 
      */
@@ -1099,7 +1116,12 @@ public class EventResource {
     }
 
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * (Required)
      * 
      */
@@ -1114,7 +1136,14 @@ public class EventResource {
     }
 
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */
@@ -1124,7 +1153,14 @@ public class EventResource {
     }
 
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */
