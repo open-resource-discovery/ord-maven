@@ -155,9 +155,9 @@ public class ApiResourceIntegrationAspect {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.minVersion == null)? 0 :this.minVersion.hashCode()));
         result = ((result* 31)+((this.ordId == null)? 0 :this.ordId.hashCode()));
         result = ((result* 31)+((this.subset == null)? 0 :this.subset.hashCode()));
+        result = ((result* 31)+((this.minVersion == null)? 0 :this.minVersion.hashCode()));
         return result;
     }
 
@@ -170,7 +170,7 @@ public class ApiResourceIntegrationAspect {
             return false;
         }
         ApiResourceIntegrationAspect rhs = ((ApiResourceIntegrationAspect) other);
-        return ((((this.minVersion == rhs.minVersion)||((this.minVersion!= null)&&this.minVersion.equals(rhs.minVersion)))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.subset == rhs.subset)||((this.subset!= null)&&this.subset.equals(rhs.subset))));
+        return ((((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId)))&&((this.subset == rhs.subset)||((this.subset!= null)&&this.subset.equals(rhs.subset))))&&((this.minVersion == rhs.minVersion)||((this.minVersion!= null)&&this.minVersion.equals(rhs.minVersion))));
     }
 
 }
