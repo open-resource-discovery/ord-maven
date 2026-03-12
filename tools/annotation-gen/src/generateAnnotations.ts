@@ -2,14 +2,14 @@ import * as fs from "fs";
 import * as path from "path";
 
 /**
- * CLI:
- *   --schema <path to Document.annotated.schema.json>
- *   --outDir <generated sources base dir>
- *   --pkg    <java package for generated annotations>
- *   --specPkg <path to specification's package.json> (optional)
- * Env:
- *   ORD_SPEC_VERSION overrides version read from package.json
- */
+* CLI:
+*   --schema <path to Document.annotated.schema.json>
+*   --outDir <generated sources base dir>
+*   --pkg    <java package for generated annotations>
+*   --specPkg <path to specification's package.json> (optional)
+* Env:
+*   ORD_SPEC_VERSION overrides version read from package.json
+*/
 const args = new Map<string, string>();
 for (let i = 2; i < process.argv.length; i += 2) {
   const k = process.argv[i]?.replace(/^--/, "");
@@ -30,6 +30,85 @@ const SPEC_PKG_JSON =
 
 const OUTPUT_DIR = path.join(OUTPUT_BASE, ...JAVA_PACKAGE.split("."));
 const OUTPUT_FILE = path.join(OUTPUT_DIR, "Ord.java");
+const JAVA_RESERVED_KEYWORDS = new Set([
+    "true",
+    "false",
+    "null",
+    "abstract",
+    "assert",
+    "boolean",
+    "break",
+    "byte",
+    "case",
+    "catch",
+    "char",
+    "class",
+    "continue",
+    "const",
+    "default",
+    "do",
+    "double",
+    "else",
+    "enum",
+    "exports",
+    "extends",
+    "final",
+    "finally",
+    "float",
+    "for",
+    "goto",
+    "if",
+    "implements",
+    "import",
+    "instanceof",
+    "int",
+    "interface",
+    "long",
+    "module",
+    "native",
+    "new",
+    "package",
+    "private",
+    "protected",
+    "public",
+    "requires",
+    "return",
+    "short",
+    "static",
+    "strictfp",
+    "super",
+    "switch",
+    "synchronized",
+    "this",
+    "throw",
+    "throws",
+    "transient",
+    "try",
+    "var",
+    "void",
+    "volatile",
+    "while"
+]);
+
+const topLevelFields = [
+  "SystemInstance",
+  "SystemType",
+  "SystemVersion",
+  "ApiResource",
+  "EventResource",
+  "EntityType",
+  "Capability",
+  "DataProduct",
+  "Agent",
+  "IntegrationDependency",
+  "Vendor",
+  "Product",
+  "Package",
+  "ConsumptionBundle",
+  "Group",
+  "GroupType",
+  "Tombstone"
+]
 
 // --- Schema model types ---
 type SchemaProperty = {
@@ -46,7 +125,6 @@ type SchemaDefinition = {
   properties?: Record<string, SchemaProperty>;
   patternProperties?: Record<string, SchemaProperty>;
   required?: string[];
-  "x-ums-type"?: string; // "root" or nested
 };
 
 type AllDefs = Record<string, SchemaDefinition>;
@@ -109,7 +187,7 @@ function buildDefaultAnnotation(def: SchemaDefinition, annotationName: string): 
     } else {
       val = `@${type}()`;
     }
-    return `${name} = ${val}`;
+    return `${resolveName(name)} = ${val}`;
   }).join(", ");
   return `@${annotationName}${req.length ? `(${args})` : `()`}`;
 }
@@ -155,9 +233,13 @@ function generateProps(def: SchemaDefinition, allDefs: AllDefs): string {
       }
 
       const comment = schema.description ? `    /** ${schema.description.replace(/\n/g, " ")} */\n` : "";
-      return `${comment}    ${javaType} ${name}()${defaultClause};`;
+      return `${comment}    ${javaType} ${resolveName(name)}()${defaultClause};`;
     })
     .join("\n\n");
+}
+
+function resolveName(name: string): string {
+    return `${JAVA_RESERVED_KEYWORDS.has(name) ? '_' : ''}${name}`;
 }
 
 function readOrdSpecVersion(): string {
@@ -210,7 +292,7 @@ function run(): void {
         const entryName = `${name}Entry`;
         return `
   @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.SOURCE)
+  @Retention(RetentionPolicy.RUNTIME)
   public @interface ${entryName} {
     String key();
     ${baseType}[] values();
@@ -220,7 +302,7 @@ function run(): void {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 
     const nested = Object.entries(defs)
-      .filter(([_, d]) => d["x-ums-type"] !== "root")
+      .filter(([n, d]) => !topLevelFields.includes(n))
       .map(([name, def]) => {
         const requiredArray = buildRequiredArray(def);
         const prefix = `    String[] requiredFields() ${requiredArray};\n`;
@@ -232,27 +314,38 @@ function run(): void {
 
         return `
   @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.SOURCE)
+  @Retention(RetentionPolicy.RUNTIME)
   public @interface ${name} {
 ${body}
   }`;
       });
 
     const roots = Object.entries(defs)
-      .filter(([_, d]) => d["x-ums-type"] === "root")
+      .filter(([n, d]) => topLevelFields.includes(n))
       .map(([name, def]) => {
-        const requiredArray = buildRequiredArray(def);
+        const filteredProperties = def.properties ? Object.fromEntries(
+          Object.entries(def.properties)
+            .filter(([propName, _]) => propName !== 'ordId')) : {};
+
+        const filteredDef: SchemaDefinition = {
+          required: def.required,
+          properties: filteredProperties,
+          patternProperties: def.patternProperties,
+        };
+
+        const requiredArray = buildRequiredArray(filteredDef);
         const prefix = `    String[] requiredFields() ${requiredArray};\n`;
         const originalBody =
-          (!def.properties || Object.keys(def.properties).length === 0) && def.patternProperties
+          (!filteredDef.properties || Object.keys(filteredDef.properties).length === 0) && filteredDef.patternProperties
             ? `\n    ${name}Entry[] value() default {};`
-            : generateProps(def, defs);
+            : generateProps(filteredDef, defs);
         const body = prefix + originalBody;
 
         return `
   @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.SOURCE)
+  @Retention(RetentionPolicy.RUNTIME)
   public @interface ${name} {
+    DocumentReference[] partOfDocuments() default { @DocumentReference(id = "1") };\n
 ${body}
   }`;
       });
@@ -262,7 +355,29 @@ ${body}
 
 import java.lang.annotation.*;
 
-public interface Ord {${all}
+public interface Ord {
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  public @interface Documents {
+    Document[] value();
+  }
+
+  @Target(ElementType.TYPE)
+  @Repeatable(Documents.class)
+  @Retention(RetentionPolicy.RUNTIME)
+  public @interface Document {
+    String id() default "1";
+
+    AccessStrategy[] accessStrategies() default { @AccessStrategy(type = "open") };
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  public @interface DocumentReference {
+    String id() default "1";
+  }
+${all}
 
 }`;
 
