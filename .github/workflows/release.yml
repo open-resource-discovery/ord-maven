@@ -2,11 +2,6 @@ name: "GitHub Release"
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: "Version for the release (e.g. 1.2.3)"
-        required: false
-        type: string
 
 jobs:
   create-release:
@@ -17,8 +12,44 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.19.0
+        with:
+          java-version: 17
+          maven-version: 3.9.14
+
+      - name: Extract version from pom.xml
+        run: |
+          PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout 2> /dev/null)
+
+          echo "MAJOR=$(cut -d. -f1 <<<"${PROJECT_VERSION}")" >> $GITHUB_ENV
+          echo "MINOR=$(cut -d. -f2 <<<"${PROJECT_VERSION}")" >> $GITHUB_ENV
+          echo "NEW_MINOR=$(( $(cut -d. -f1 <<<"${PROJECT_VERSION}") + 1 ))" >> $GITHUB_ENV
+
       - name: Create GitHub Release
         uses: open-resource-discovery/github-release@main
         with:
-          tag-template: "rel/<version>"
-          version: ${{ inputs.version }}
+          tag-template: "v<version>"
+          version: ${{ env.MAJOR }}.${{ env.MINOR }}.0
+
+      - name: Update project release version
+        run: |
+          git reset --hard
+          mvn versions:set -DnewVersion="${MAJOR}.${MINOR}.0"
+
+      - name: Create GitHub Packages JAR release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mvn --batch-mode deploy -f ./models/pom.xml
+          mvn --batch-mode deploy -f ./annotations/pom.xml
+
+      - name: Update project version for next development iteration
+        run: |
+          mvn versions:set -DnewVersion="${MAJOR}.${NEW_MINOR}.0-SNAPSHOT"
+
+      - name: Commit and push changes to project version
+        uses: devops-infra/action-commit-push@v1.1.0
+        with:
+          github_token: ${{ secrets.GH_AUTOMERGE_PAT }}
+          commit_message: Update version to ${{ env.MAJOR }}.${{ env.NEW_MINOR }}.0-SNAPSHOT
