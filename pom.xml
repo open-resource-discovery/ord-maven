@@ -1,32 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.openresourcediscovery</groupId>
+    <groupId>org.open-resource-discovery</groupId>
     <artifactId>annotations</artifactId> <!-- aggregator/parent -->
-    <version>${revision}</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>ORD Java Parent</name>
+
+    <name>${project.groupId}:${project.artifactId}</name>
     <description>Parent/aggregator for ORD annotations and models</description>
     <url>https://github.com/open-resource-discovery/ord-maven</url>
 
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://github.com/open-resource-discovery/ord-maven/blob/main/LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>open-resource-discovery-bot</name>
+            <email>openresourcediscovery@gmail.com</email>
+            <organizationUrl>https://open-resource-discovery.org</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/open-resource-discovery/ord-maven.git</connection>
+        <developerConnection>scm:git:ssh://github.com:open-resource-discovery/ord-maven.git</developerConnection>
+        <url>https://github.com/open-resource-discovery/ord-maven/tree/main</url>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <url>https://central.sonatype.com</url>
+        </repository>
+    </distributionManagement>
+
     <properties>
-        <revision>0.0.1</revision>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
         <maven.compiler.parameters>true</maven.compiler.parameters>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <modules>
-        <module>annotations</module>
         <module>models</module>
+        <module>annotations</module>
     </modules>
 
     <build>
         <pluginManagement>
             <plugins>
+
+                <!-- org.apache.maven.plugins:maven-compiler-plugin-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -36,40 +65,69 @@
                     </configuration>
                 </plugin>
 
+                <!-- org.apache.maven.plugins:maven-source-plugin -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.5.5</version>
-                </plugin>
-
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.6.2</version>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.4.0</version>
                     <executions>
                         <execution>
-                            <id>enforce-java-11</id>
-                            <goals><goal>enforce</goal></goals>
+                            <id>attach-sources</id>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- org.apache.maven.plugins:maven-jar-plugin -->
+                <plugin>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.5.0</version>
+                    <executions>
+                        <execution>
+                            <id>javadoc-jar</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
                             <configuration>
-                                <rules>
-                                    <requireJavaVersion>
-                                        <version>[11,12)</version>
-                                    </requireJavaVersion>
-                                </rules>
-                                <fail>true</fail>
+                                <excludes>**/*</excludes>
+                                <classifier>javadoc</classifier>
                             </configuration>
                         </execution>
                     </executions>
                 </plugin>
+
+                <!-- org.apache.maven.plugins:maven-gpg-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>3.2.8</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>sign</goal>
+                            </goals>
+                            <configuration>
+                                <skip>true</skip>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- org.sonatype.central:central-publishing-maven-plugin -->
+                <plugin>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>0.9.0</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <publishingServerId>central</publishingServerId>
+                    </configuration>
+                </plugin>
+
             </plugins>
         </pluginManagement>
     </build>
-
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
 </project>
