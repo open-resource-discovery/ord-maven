@@ -25,3 +25,5 @@ target/
 # Generated sources
 generated-sources/
 generated-annotations/
+
+**/.flattened-pom.xml

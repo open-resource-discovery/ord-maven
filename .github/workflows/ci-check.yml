@@ -30,4 +30,4 @@ jobs:
           echo "$PWD/apache-maven-${MAVEN_VERSION}/bin" >> $GITHUB_PATH
 
       - name: Build project
-        run: mvn clean install -B
+        run: mvn clean install -B -Dgpg.skip=true

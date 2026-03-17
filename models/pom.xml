@@ -11,6 +11,7 @@
 
   <artifactId>ord-models</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
+  <description>ORD Models</description>
 
   <dependencies>
     <dependency>
@@ -74,10 +75,27 @@
       </plugin>
 
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>1.7.3</version>
+        <executions>
+          <execution>
+            <id>flatten</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <flattenMode>ossrh</flattenMode>>
+        </configuration>
+      </plugin>
+
+      <plugin>
         <groupId>org.sonatype.central</groupId>
         <artifactId>central-publishing-maven-plugin</artifactId>
         <configuration>
-          <skipPublishing>true</skipPublishing>
           <publishingServerId>central</publishingServerId>
         </configuration>
       </plugin>
