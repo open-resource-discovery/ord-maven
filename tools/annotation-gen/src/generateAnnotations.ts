@@ -28,8 +28,7 @@ const JAVA_PACKAGE = args.get("pkg") || "org.openresourcediscovery.annotations";
 const SPEC_PKG_JSON =
   args.get("specPkg") || findSpecPackageJson(SCHEMA_PATH) || "ord-spec/package.json";
 
-const OUTPUT_DIR = path.join(OUTPUT_BASE, ...JAVA_PACKAGE.split("."));
-const OUTPUT_FILE = path.join(OUTPUT_DIR, "Ord.java");
+const OUTPUT_FILE = path.join(OUTPUT_BASE, 'java', ...JAVA_PACKAGE.split("."), "Ord.java");
 const JAVA_RESERVED_KEYWORDS = new Set([
     "true",
     "false",
@@ -255,7 +254,7 @@ function readOrdSpecVersion(): string {
 }
 
 function writeOrdSpecInfo(outBaseDir: string, javaPkg: string, version: string): void {
-  const pkgDir = path.join(outBaseDir, ...javaPkg.split("."));
+  const pkgDir = path.join(outBaseDir, "java", ...javaPkg.split("."));
   fs.mkdirSync(pkgDir, { recursive: true });
 
   const java = `package ${javaPkg};
@@ -267,7 +266,7 @@ public final class OrdSpecInfo {
 `;
   fs.writeFileSync(path.join(pkgDir, "OrdSpecInfo.java"), java, "utf8");
 
-  const metaInf = path.join(outBaseDir, "META-INF");
+  const metaInf = path.join(outBaseDir, "resources", "META-INF");
   fs.mkdirSync(metaInf, { recursive: true });
   fs.writeFileSync(path.join(metaInf, "ord-spec.properties"), `ord.spec.version=${version}\n`, "utf8");
 }
@@ -299,7 +298,7 @@ function run(): void {
   }`;
       });
 
-    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+    fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
 
     const nested = Object.entries(defs)
       .filter(([n, d]) => !topLevelFields.includes(n))

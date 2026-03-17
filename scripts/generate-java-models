@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+function _info() {
+  echo -e "[INF][$(date '+%F|%T')] ${1}"
+}
+
+function _error() {
+  echo -e "\033[31m[ERR][$(date '+%F|%T')] ${1}\033[0m"
+}
+
+function _assert_success() {
+  local command="${1}"; shift
+  local exit_code
+
+  "${command}" "${@}"; exit_code="${?}"
+
+  if [[ "${exit_code}" -ne "0" ]]; then
+    _error "Execution of command ${command} failed with code ${exit_code}"
+    _error "Execution callstack (subshell: ${BASH_SUBSHELL}):"
+    for ((index = 0; index < "${#FUNCNAME[@]}" - 1; index++)); do
+      _error "    ${FUNCNAME[${index}]} (invoked at line: ${BASH_LINENO[${index}]})"
+    done
+
+    exit "${exit_code}"
+  fi
+}
+
+readonly PROJECT_ROOT="$(realpath "$(dirname "${0}")/..")"
+
+function main() {
+  _assert_success npm clean-install --prefix "${PROJECT_ROOT}/tools/annotation-gen"
+  _assert_success cp -f "${PROJECT_ROOT}/tools/annotation-gen/node_modules/@open-resource-discovery/specification/dist/generated/spec/v1/schemas/Document.schema.json" "${PROJECT_ROOT}/models/static/spec-v1/interfaces/Document.schema.json"
+  _assert_success mvn org.jsonschema2pojo:jsonschema2pojo-maven-plugin:generate \
+      -Djsonschema2pojo.removeOldOutput=true \
+      -Djsonschema2pojo.generateBuilders=true \
+      -Djsonschema2pojo.targetPackage=org.openresourcediscovery.model \
+      -Djsonschema2pojo.outputDirectory="${PROJECT_ROOT}/models/src/main/java" \
+      -Djsonschema2pojo.sourceDirectory="${PROJECT_ROOT}/models/static/spec-v1/interfaces/Document.schema.json"
+}
+
+main "${@}"
