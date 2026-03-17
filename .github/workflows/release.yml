@@ -45,8 +45,11 @@ jobs:
       - name: Create Maven Central JAR release
         env:
           MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
+          MAVEN_GPG_SECRET_KEY: ${{ secrets.MAVEN_GPG_SECRET_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
         run: |
+          base64 -d <<< "${MAVEN_GPG_SECRET_KEY}" > gpg.key
+          gpg --batch --passphrase "${MAVEN_GPG_PASSPHRASE}" --import gpg.key
           mvn --batch-mode deploy -f models/pom.xml -Dgpg.keyname="${MAVEN_GPG_KEY}"
           mvn --batch-mode deploy -f annotations/pom.xml -Dgpg.keyname="${MAVEN_GPG_KEY}"
 
