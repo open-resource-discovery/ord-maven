@@ -2,9 +2,26 @@ name: "GitHub Release"
 
 on:
   workflow_dispatch:
+    inputs:
+      models:
+        description: "org.open-resource-discovery:ord-models"
+        required: false
+        type: boolean
+        default: true
+      annotations:
+        description: "org.open-resource-discovery:ord-annotations"
+        required: false
+        type: boolean
+        default: true
+      githubRelease:
+        description: "GitHub Release"
+        required: false
+        type: boolean
+        default: true
 
 jobs:
   create-release:
+    environment: maven-central
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -18,21 +35,17 @@ jobs:
           java-version: 17
           maven-version: 3.9.14
 
-      - name: Configure Maven settings.xml
-        uses: s4u/maven-settings-action@v4.0.0
-        with:
-          servers: '[{"id": "central", "username": "${{ secrets.MAVEN_CENTRAL_USER }}", "password": "${{ secrets.MAVEN_CENTRAL_PASSWORD }}"}]'
-
       - name: Extract version from pom.xml
         run: |
           PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout 2> /dev/null)
 
           echo "MAJOR=$(cut -d. -f1 <<<"${PROJECT_VERSION}")" >> $GITHUB_ENV
           echo "MINOR=$(cut -d. -f2 <<<"${PROJECT_VERSION}")" >> $GITHUB_ENV
-          echo "NEW_MINOR=$(( $(cut -d. -f1 <<<"${PROJECT_VERSION}") + 1 ))" >> $GITHUB_ENV
+          echo "NEW_MINOR=$(( $(cut -d. -f2 <<<"${PROJECT_VERSION}") + 1 ))" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: open-resource-discovery/github-release@main
+        if: inputs.githubRelease
         with:
           tag-template: "v<version>"
           version: ${{ env.MAJOR }}.${{ env.MINOR }}.0
@@ -40,22 +53,42 @@ jobs:
       - name: Update project release version
         run: |
           git reset --hard
-          mvn versions:set -DnewVersion="${MAJOR}.${MINOR}.0"
+          mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${{ env.MAJOR }}.${{ env.MINOR }}.0"
 
-      - name: Create Maven Central JAR release
+      - name: Configure Maven settings.xml
+        uses: s4u/maven-settings-action@v4.0.0
+        with:
+          servers: '[{"id": "central", "username": "${{ secrets.MAVEN_CENTRAL_USER }}", "password": "${{ secrets.MAVEN_CENTRAL_PASSWORD }}"}]'
+
+      - name: Configure GPG key
         env:
           MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
           MAVEN_GPG_SECRET_KEY: ${{ secrets.MAVEN_GPG_SECRET_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
         run: |
-          base64 -d <<< "${MAVEN_GPG_SECRET_KEY}" > gpg.key
-          gpg --batch --passphrase "${MAVEN_GPG_PASSPHRASE}" --import gpg.key
+          base64 -d <<< "${MAVEN_GPG_SECRET_KEY}" > "${MAVEN_GPG_KEY}.key"
+          gpg --batch --passphrase "${MAVEN_GPG_PASSPHRASE}" --import "${MAVEN_GPG_KEY}.key"
+
+      - name: Create Maven Central release for org.open-resource-discovery:ord-models
+        if: inputs.models
+        env:
+          MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+        run: |
           mvn --batch-mode deploy -f models/pom.xml -Dgpg.keyname="${MAVEN_GPG_KEY}"
+
+      - name: Create Maven Central release for org.open-resource-discovery:ord-annotations
+        if: inputs.annotations
+        env:
+          MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+        run: |
           mvn --batch-mode deploy -f annotations/pom.xml -Dgpg.keyname="${MAVEN_GPG_KEY}"
 
       - name: Update project version for next development iteration
         run: |
-          mvn versions:set -DnewVersion="${MAJOR}.${NEW_MINOR}.0-SNAPSHOT"
+          git reset --hard
+          mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${{ env.MAJOR }}.${{ env.NEW_MINOR }}.0-SNAPSHOT" 
 
       - name: Create pull request for project version
         id: cpr
