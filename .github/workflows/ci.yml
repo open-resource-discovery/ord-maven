@@ -109,14 +109,11 @@ jobs:
           java-version: '17'
           cache: maven
 
-      - name: Install Maven manually
-        run: |
-          MAVEN_VERSION=3.9.6
-          wget https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
-          tar xzvf apache-maven-${MAVEN_VERSION}-bin.tar.gz
-          echo "MAVEN_HOME=$PWD/apache-maven-${MAVEN_VERSION}" >> $GITHUB_ENV
-          echo "$PWD/apache-maven-${MAVEN_VERSION}/bin" >> $GITHUB_PATH
-
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.19.0
+        with:
+          java-version: 17
+          maven-version: 3.9.14
 
       - name: Copy Document.schema.json into models folder
         run: |
@@ -124,7 +121,7 @@ jobs:
           cp ord-spec/static/spec-v1/interfaces/Document.schema.json models/static/spec-v1/interfaces/
 
       - name: Build project
-        run: mvn clean install -B
+        run: mvn clean install -B -Dgpg.skip=true
 
       - name: List copied annotation files
         run: |
@@ -157,13 +154,13 @@ jobs:
             annotations/src/main/java/**
             annotations/src/main/resources/**
             models/**
-          token: ${{ secrets.GH_AUTOMERGE_PAT }}
+          token: ${{ secrets.GH_TOKEN }}
           delete-branch: false
 
       - name: Enable GitHub Auto-Merge
         if: steps.cpr.outputs.pull-request-number != ''
         uses: peter-evans/enable-pull-request-automerge@v2
         with:
-          token: ${{ secrets.GH_AUTOMERGE_PAT }}
+          token: ${{ secrets.GH_TOKEN }}
           pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
           merge-method: squash

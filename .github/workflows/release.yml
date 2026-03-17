@@ -2,11 +2,6 @@ name: "GitHub Release"
 
 on:
   workflow_dispatch:
-    inputs:
-      version:
-        description: "Version for the release (e.g. 1.2.3)"
-        required: false
-        type: string
 
 jobs:
   create-release:
@@ -17,8 +12,67 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.19.0
+        with:
+          java-version: 17
+          maven-version: 3.9.14
+
+      - name: Configure Maven settings.xml
+        uses: s4u/maven-settings-action@v4.0.0
+        with:
+          servers: '[{"id": "central", "username": "${{ secrets.MAVEN_CENTRAL_USER }}", "password": "${{ secrets.MAVEN_CENTRAL_PASSWORD }}"}]'
+
+      - name: Extract version from pom.xml
+        run: |
+          PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout 2> /dev/null)
+
+          echo "MAJOR=$(cut -d. -f1 <<<"${PROJECT_VERSION}")" >> $GITHUB_ENV
+          echo "MINOR=$(cut -d. -f2 <<<"${PROJECT_VERSION}")" >> $GITHUB_ENV
+          echo "NEW_MINOR=$(( $(cut -d. -f1 <<<"${PROJECT_VERSION}") + 1 ))" >> $GITHUB_ENV
+
       - name: Create GitHub Release
         uses: open-resource-discovery/github-release@main
         with:
-          tag-template: "rel/<version>"
-          version: ${{ inputs.version }}
+          tag-template: "v<version>"
+          version: ${{ env.MAJOR }}.${{ env.MINOR }}.0
+
+      - name: Update project release version
+        run: |
+          git reset --hard
+          mvn versions:set -DnewVersion="${MAJOR}.${MINOR}.0"
+
+      - name: Create Maven Central JAR release
+        env:
+          MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+        run: |
+          mvn --batch-mode deploy -Dgpg.skip=false -Dgpg.keyname="${MAVEN_GPG_KEY}" 
+
+      - name: Update project version for next development iteration
+        run: |
+          mvn versions:set -DnewVersion="${MAJOR}.${NEW_MINOR}.0-SNAPSHOT"
+
+      - name: Create pull request for project version
+        id: cpr
+        uses: peter-evans/create-pull-request@v7
+        with:
+          base: main
+          delete-branch: true
+          token: ${{ secrets.GH_TOKEN }}
+          branch: update-version-${{ env.MAJOR }}.${{ env.NEW_MINOR }}.0-SNAPSHOT
+          title: Update project version to ${{ env.MAJOR }}.${{ env.NEW_MINOR }}.0-SNAPSHOT
+          commit-message: Update project version to ${{ env.MAJOR }}.${{ env.NEW_MINOR }}.0-SNAPSHOT
+          body: This PR automatically updates the project version to ${{ env.MAJOR }}.${{ env.NEW_MINOR }}.0-SNAPSHOT
+          add-paths: |
+            pom.xml
+            models/pom.xml
+            annotations/pom.xml
+
+      - name: Enable GitHub Auto-Merge
+        if: steps.cpr.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v2
+        with:
+          merge-method: squash
+          token: ${{ secrets.GH_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}

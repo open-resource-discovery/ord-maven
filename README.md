@@ -43,12 +43,12 @@ To include the generated artifacts in your Maven project, add the following depe
 ```xml
 <dependencies>
     <dependency>
-        <groupId>org.openresourcediscovery</groupId>
+        <groupId>org.open-resource-discovery</groupId>
         <artifactId>ord-annotations</artifactId>
     </dependency>
 
     <dependency>
-        <groupId>org.openresourcediscovery</groupId>
+        <groupId>org.open-resource-discovery</groupId>
         <artifactId>ord-models</artifactId>
     </dependency>
 </dependencies>
