@@ -41,26 +41,6 @@
 
     <plugins>
       <plugin>
-        <groupId>org.jsonschema2pojo</groupId>
-        <artifactId>jsonschema2pojo-maven-plugin</artifactId>
-        <version>1.3.3</version>
-        <executions>
-          <execution>
-            <id>generate-models</id>
-            <phase>generate-sources</phase>
-            <goals><goal>generate</goal></goals>
-          </execution>
-        </executions>
-        <configuration>
-          <sourceDirectory>${project.basedir}/static/spec-v1/interfaces</sourceDirectory>
-          <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
-          <targetPackage>org.openresourcediscovery.model</targetPackage>
-          <generateBuilders>true</generateBuilders>
-          <removeOldOutput>true</removeOldOutput>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>

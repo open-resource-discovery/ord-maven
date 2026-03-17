@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+function _info() {
+  echo -e "[INF][$(date '+%F|%T')] ${1}"
+}
+
+function _error() {
+  echo -e "\033[31m[ERR][$(date '+%F|%T')] ${1}\033[0m"
+}
+
+function _assert_success() {
+  local command="${1}"; shift
+  local exit_code
+
+  "${command}" "${@}"; exit_code="${?}"
+
+  if [[ "${exit_code}" -ne "0" ]]; then
+    _error "Execution of command ${command} failed with code ${exit_code}"
+    _error "Execution callstack (subshell: ${BASH_SUBSHELL}):"
+    for ((index = 0; index < "${#FUNCNAME[@]}" - 1; index++)); do
+      _error "    ${FUNCNAME[${index}]} (invoked at line: ${BASH_LINENO[${index}]})"
+    done
+
+    exit "${exit_code}"
+  fi
+}
+
+readonly PROJECT_ROOT="$(realpath "$(dirname "${0}")/..")"
+
+function main() {
+  _assert_success rm -rf "${PROJECT_ROOT}/annotations/src/main"
+  _assert_success mkdir -p "${PROJECT_ROOT}/annotations/src/main"
+  _assert_success npm clean-install --prefix "${PROJECT_ROOT}/tools/annotation-gen"
+  _assert_success npm run generate --prefix "${PROJECT_ROOT}/tools/annotation-gen" -- \
+      --pkg org.openresourcediscovery.annotations \
+      --outDir "${PROJECT_ROOT}/annotations/src/main" \
+      --specPkg "${PROJECT_ROOT}/tools/annotation-gen/node_modules/@open-resource-discovery/specification/package.json" \
+      --schema "${PROJECT_ROOT}/tools/annotation-gen/node_modules/@open-resource-discovery/specification/dist/generated/spec/v1/schemas/Document.schema.json"
+}
+
+main "${@}"
