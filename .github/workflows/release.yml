@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       models:
-        description: "org.open-resource-discovery:ord-models"
+        description: "Publish `ord-models`"
         required: false
         type: boolean
         default: true
       annotations:
-        description: "org.open-resource-discovery:ord-annotations"
+        description: "Publish `ord-annotations`"
         required: false
         type: boolean
         default: true
@@ -18,6 +18,11 @@ on:
         required: false
         type: boolean
         default: true
+      bumpVersion:
+        description: "Bump Version"
+        required: false
+        type: string
+
 
 jobs:
   create-release:
@@ -79,11 +84,14 @@ jobs:
           mvn --batch-mode deploy -f annotations/pom.xml -Dgpg.keyname="${MAVEN_GPG_KEY}"
 
       - name: Update project version for next development iteration
+        if: inputs.bumpVersion
         run: |
           git reset --hard
+          # TODO: take version from input.bumpVersion, if not set, use the current logic
           mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${{ env.MAJOR }}.${{ env.NEW_MINOR }}.0-SNAPSHOT" 
 
       - name: Create pull request for project version
+        if: inputs.bumpVersion
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
