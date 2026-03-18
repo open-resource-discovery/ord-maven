@@ -337,9 +337,9 @@ public class CapabilityDefinition {
         int result = 1;
         result = ((result* 31)+((this.accessStrategies == null)? 0 :this.accessStrategies.hashCode()));
         result = ((result* 31)+((this.customType == null)? 0 :this.customType.hashCode()));
+        result = ((result* 31)+((this.visibility == null)? 0 :this.visibility.hashCode()));
         result = ((result* 31)+((this.mediaType == null)? 0 :this.mediaType.hashCode()));
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
-        result = ((result* 31)+((this.visibility == null)? 0 :this.visibility.hashCode()));
         result = ((result* 31)+((this.url == null)? 0 :this.url.hashCode()));
         return result;
     }
@@ -353,7 +353,7 @@ public class CapabilityDefinition {
             return false;
         }
         CapabilityDefinition rhs = ((CapabilityDefinition) other);
-        return (((((((this.accessStrategies == rhs.accessStrategies)||((this.accessStrategies!= null)&&this.accessStrategies.equals(rhs.accessStrategies)))&&((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType))))&&((this.mediaType == rhs.mediaType)||((this.mediaType!= null)&&this.mediaType.equals(rhs.mediaType))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
+        return (((((((this.accessStrategies == rhs.accessStrategies)||((this.accessStrategies!= null)&&this.accessStrategies.equals(rhs.accessStrategies)))&&((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.mediaType == rhs.mediaType)||((this.mediaType!= null)&&this.mediaType.equals(rhs.mediaType))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.url == rhs.url)||((this.url!= null)&&this.url.equals(rhs.url))));
     }
 
 }
