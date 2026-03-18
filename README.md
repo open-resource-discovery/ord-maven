@@ -1,4 +1,7 @@
-[![REUSE status](https://api.reuse.software/badge/github.com/open-resource-discovery/ord-maven)](https://api.reuse.software/info/github.com/open-resource-discovery/ord-maven) [![CI](https://github.com/open-resource-discovery/ord-maven/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/open-resource-discovery/ord-maven/actions/workflows/ci.yml) [![Maven version: ord-models](https://img.shields.io/maven-central/v/org.open-resource-discovery/ord-models?label=ord-models)](https://central.sonatype.com/artifact/org.open-resource-discovery/ord-models) [![Maven version: ord-annotations](https://img.shields.io/maven-central/v/org.open-resource-discovery/ord-annotations?label=ord-annotations)](https://central.sonatype.com/artifact/org.open-resource-discovery/ord-annotations)
+[![REUSE status](https://api.reuse.software/badge/github.com/open-resource-discovery/ord-maven)](https://api.reuse.software/info/github.com/open-resource-discovery/ord-maven)
+[![CI](https://img.shields.io/github/actions/workflow/status/open-resource-discovery/ord-maven/ci.yml?label=CI)](https://github.com/open-resource-discovery/ord-maven/actions/workflows/ci.yml)
+[![Maven version: ord-models](https://img.shields.io/maven-central/v/org.open-resource-discovery/ord-models?label=ord-models)](https://central.sonatype.com/artifact/org.open-resource-discovery/ord-models)
+[![Maven version: ord-annotations](https://img.shields.io/maven-central/v/org.open-resource-discovery/ord-annotations?label=ord-annotations)](https://central.sonatype.com/artifact/org.open-resource-discovery/ord-annotations)
 
 # ORD Maven
 
