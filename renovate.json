@@ -10,44 +10,136 @@
   "schedule": [
     "every weekend"
   ],
+  "updateNotScheduled": false,
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
+  "useBaseBranchConfig": "merge",
   "enabledManagers": [
-    "maven"
+    "maven",
+    "npm",
+    "github-actions"
   ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "automerge": true,
+    "schedule": [
+      "every weekend"
+    ]
+  },
   "packageRules": [
     {
-      "groupName": "ORD Dependencies",
+      "groupName": "Maven build plugins",
       "matchManagers": [
         "maven"
       ],
-      "semanticCommitType": "chore",
-      "automerge": true,
       "matchPackageNames": [
-        "/^com\\.sap\\.ord/",
-        "/^org\\.neonephos\\.ord/"
+        "/^org\\.apache\\.maven\\.plugins:/",
+        "org.codehaus.mojo:build-helper-maven-plugin"
+      ],
+      "semanticCommitType": "build",
+      "automerge": true,
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
       ]
     },
     {
-      "groupName": "JUnit and Test Dependencies",
+      "groupName": "Java library dependencies",
       "matchManagers": [
         "maven"
       ],
-      "semanticCommitType": "test",
-      "automerge": true,
       "matchPackageNames": [
-        "/^org\\.junit\\./",
-        "/^org\\.mockito\\./",
-        "/^org\\.assertj\\./"
+        "com.fasterxml.jackson.core:jackson-annotations",
+        "javax.annotation:javax.annotation-api"
+      ],
+      "semanticCommitType": "chore",
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
       ]
     },
     {
-      "groupName": "Other Java Dependencies",
+      "groupName": "ORD specification",
       "matchManagers": [
-        "maven"
+        "npm"
+      ],
+      "matchFileNames": [
+        "tools/annotation-gen/**"
+      ],
+      "matchPackageNames": [
+        "@open-resource-discovery/specification"
       ],
       "semanticCommitType": "chore",
-      "automerge": true
+      "automerge": true,
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ]
+    },
+    {
+      "groupName": "TypeScript generator tooling",
+      "matchManagers": [
+        "npm"
+      ],
+      "matchFileNames": [
+        "tools/annotation-gen/**"
+      ],
+      "matchPackageNames": [
+        "typescript",
+        "ts-node"
+      ],
+      "semanticCommitType": "build",
+      "automerge": true,
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ]
+    },
+    {
+      "groupName": "GitHub Actions",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchPackageNames": [
+        "actions/checkout",
+        "actions/setup-node"
+      ],
+      "semanticCommitType": "ci",
+      "automerge": true,
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ]
+    },
+    {
+      "groupName": "GitHub Actions",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "matchPackageNames": [
+        "s4u/setup-maven-action",
+        "peter-evans/create-pull-request",
+        "peter-evans/enable-pull-request-automerge",
+        "open-resource-discovery/github-release"
+      ],
+      "semanticCommitType": "ci",
+      "automerge": true,
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ]
     }
   ]
 }

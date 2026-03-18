@@ -1,9 +1,9 @@
 name: CI – Generate Models & Annotations, Build ORD-Java
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'
+  push:
+    branches:
+      - 'main'
 
 jobs:
   build:
@@ -19,121 +19,28 @@ jobs:
           fetch-depth: 0
           persist-credentials: true
 
-      - name: Checkout ORD-Spec repo
-        uses: actions/checkout@v3
-        with:
-          repository: open-resource-discovery/specification
-          ref: main
-          path: ord-spec
-
       - name: Set up Node.js 22
         uses: actions/setup-node@v3
         with:
-          node-version: '22'
           cache: 'npm'
+          node-version: '22'
           cache-dependency-path: tools/annotation-gen/package-lock.json
-
-      - name: Ensure sed is installed
-        run: |
-          if ! command -v sed &> /dev/null; then
-            sudo apt-get update && sudo apt-get install -y sed
-          fi
-
-      - name: Install ORD-Spec npm dependencies
-        run: npm ci
-        working-directory: ord-spec
-
-      - name: Generate ORD schemas
-        run: npm run generate
-        working-directory: ord-spec
-
-      - name: Install generator deps
-        run: |
-          npm ci --prefix tools/annotation-gen || npm i --prefix tools/annotation-gen
-
-      - name: Resolve schema (prefer annotated)
-        id: schema
-        shell: bash
-        run: |
-          set -euo pipefail
-          BASE="ord-spec/static/spec-v1/interfaces"
-          ANN="$BASE/Document.annotated.schema.json"
-          PLAIN="$BASE/Document.schema.json"
-
-          if [ -f "$ANN" ]; then
-            echo "Using annotated schema: $ANN"
-            echo "schema=$GITHUB_WORKSPACE/$ANN" >> "$GITHUB_OUTPUT"
-            echo "schema_source=annotated" >> "$GITHUB_OUTPUT"
-          elif [ -f "$PLAIN" ]; then
-            echo "Annotated schema not found; falling back to: $PLAIN"
-            echo "schema=$GITHUB_WORKSPACE/$PLAIN" >> "$GITHUB_OUTPUT"
-            echo "schema_source=plain" >> "$GITHUB_OUTPUT"
-          else
-            echo "No schema found in $BASE" >&2
-            ls -la "$BASE" || true
-            exit 1
-          fi
-
-          test -f ord-spec/package.json
-
-      - name: Generate Java Annotation Interfaces
-        run: |
-          mkdir -p annotations/target/generated-sources
-          npm run generate --prefix tools/annotation-gen -- \
-            --schema "${{ steps.schema.outputs.schema }}" \
-            --outDir "$GITHUB_WORKSPACE/annotations/target/generated-sources" \
-            --pkg org.openresourcediscovery.annotations \
-            --specPkg "$GITHUB_WORKSPACE/ord-spec/package.json"
-
-      - name: Copy generated annotations into module sources
-        run: |
-          set -euo pipefail
-
-          rm -rf annotations/src/main/java/org
-          mkdir -p annotations/src/main/java
-          cp -R annotations/target/generated-sources/org annotations/src/main/java/
-
-          mkdir -p annotations/src/main/resources/META-INF
-          if [ -f annotations/target/generated-sources/META-INF/ord-spec.properties ]; then
-            cp annotations/target/generated-sources/META-INF/ord-spec.properties \
-              annotations/src/main/resources/META-INF/
-          fi
-
-          ls -R annotations/src/main/java/org/openresourcediscovery/annotations
-          ls -R annotations/src/main/resources/META-INF || true
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: temurin
-          java-version: '17'
-          cache: maven
 
       - name: Setup Maven Action
         uses: s4u/setup-maven-action@v1.19.0
         with:
           java-version: 17
           maven-version: 3.9.14
+          java-distribution: temurin
 
-      - name: Copy Document.schema.json into models folder
-        run: |
-          mkdir -p models/static/spec-v1/interfaces
-          cp ord-spec/static/spec-v1/interfaces/Document.schema.json models/static/spec-v1/interfaces/
+      - name: Generate Java Annotation Interfaces
+        run: ./scripts/generate-java-annotations
+
+      - name: Generate Java Models
+        run: ./scripts/generate-java-models
 
       - name: Build project
         run: mvn clean install -B -Dgpg.skip=true
-
-      - name: List copied annotation files
-        run: |
-          ls -R annotations/src/main/java/org/openresourcediscovery/annotations
-          ls -R annotations/src/main/resources/META-INF || true
-
-      - name: List generated model files
-        run: ls -R models/src/main/java
-
-      - name: Remove ord-spec
-        run: |
-          rm -rf ord-spec
 
       - name: Create or update pull request for generated sources
         id: cpr
@@ -144,16 +51,16 @@ jobs:
           title: update generated annotations & models
           body: |
             This PR automatically updates the generated annotations and models in the folders:
+            - models/src/main/java
             - annotations/src/main/java
             - annotations/src/main/resources
-            - models/src/main/java
 
             Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
           base: main
           add-paths: |
+            models/**
             annotations/src/main/java/**
             annotations/src/main/resources/**
-            models/**
           token: ${{ secrets.GH_TOKEN }}
           delete-branch: false
 
