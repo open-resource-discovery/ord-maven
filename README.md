@@ -9,8 +9,8 @@ Generation, build, and continuous integration (CI) are fully automated via GitHu
 
 ORD Maven provides:
 
-1. **Annotation generation** via the TypeScript script in `tools/annotation-gen/src/generateAnnotations.ts`.
-2. **Model generation** from `Document.schema.json`.
+1. **Annotation generation** via the script in `scripts/generate-java-annotations`.
+2. **Model generation** via the script in `scripts/generate-java-models`.
 3. **Modular packaging** as `ord-annotations` and `ord-models`.
 4. **Automated PR updates** through GitHub Actions.
 
@@ -33,7 +33,8 @@ cd ord-maven
 mvn clean install
 ```
 This will:
-- Run the code generator (tools/annotation-gen) against the ORD specification.
+- Run the code generation for ord-models.
+- Run the code generation for ord-annotations.
 - Build and install the modules ord-annotations and ord-models into your local Maven repository.
 
 ## Using as Dependency
@@ -60,7 +61,7 @@ You also need to configure the repository:
     <repository>
         <id>central</id>
         <name>Maven Central Repository</name>
-        <url>https://repo.maven.apache.org/maven2/</url>
+        <url>https://repo1.maven.org/maven2/</url>
         <releases>
             <enabled>true</enabled>
         </releases>
@@ -75,13 +76,12 @@ You also need to configure the repository:
 
 This repository uses **GitHub Actions** to keep the generated code in sync with the upstream [ORD specification](https://github.com/open-resource-discovery/specification).
 
-The CI pipeline runs on each push to `main` and nightly via a scheduled job. It performs the following steps:
+The CI pipeline runs on each push to `main`. It performs the following steps:
 
-1. **Checkout** both this repository and the upstream `specification` repo.
-2. **Verify** the presence of the annotated schema (`Document.annotated.schema.json`).
-3. **Generate** Java annotation interfaces using the custom generator script (`tools/annotation-gen/src/generateAnnotations.ts`).
-4. **Generate** Java models (POJOs) from the specification schemas.
-5. **Build** all Maven modules with Java 11 + Maven 3.9.
+1. **Checkout** this repository.
+4. **Generate** Java models (POJOs) using the script in `scripts/generate-java-models`.
+3. **Generate** Java annotation interfaces using the script in `scripts/generate-java-annotations`.
+5. **Build** all Maven modules with Java 17+ + Maven 3.9.
 6. **Open a Pull Request** with the regenerated code (`annotations/` and `models/`), which is auto-merged if checks pass.
 
 This ensures that the published artifacts always reflect the latest version of the ORD specification without requiring manual updates.
