@@ -11,7 +11,7 @@
 
   <artifactId>ord-annotations</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
-  <url>https://github.com/open-resource-discovery/ord-maven/tree/main/annotations</url>
+  <url>https://open-resource-discovery.org/</url>
   <description>Generated Java annotations from the Open Resource Discovery (ORD) specification</description>
 
   <scm>
