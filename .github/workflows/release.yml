@@ -34,6 +34,7 @@ jobs:
         with:
           java-version: 17
           maven-version: 3.9.14
+          settings-servers: '[{"id": "central", "username": "${{ secrets.MAVEN_CENTRAL_USER }}", "password": "${{ secrets.MAVEN_CENTRAL_PASSWORD }}"}]'
 
       - name: Extract version from pom.xml
         run: |
@@ -55,19 +56,11 @@ jobs:
           git reset --hard
           mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${{ env.MAJOR }}.${{ env.MINOR }}.0"
 
-      - name: Configure Maven settings.xml
-        uses: s4u/maven-settings-action@v4.0.0
-        with:
-          servers: '[{"id": "central", "username": "${{ secrets.MAVEN_CENTRAL_USER }}", "password": "${{ secrets.MAVEN_CENTRAL_PASSWORD }}"}]'
-
       - name: Configure GPG key
-        env:
-          MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
-          MAVEN_GPG_SECRET_KEY: ${{ secrets.MAVEN_GPG_SECRET_KEY }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-        run: |
-          base64 -d <<< "${MAVEN_GPG_SECRET_KEY}" > "${MAVEN_GPG_KEY}.key"
-          gpg --batch --passphrase "${MAVEN_GPG_PASSPHRASE}" --import "${MAVEN_GPG_KEY}.key"
+        uses: crazy-max/ghaction-import-gpg@v7
+        with:
+          passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          gpg_private_key: ${{ secrets.MAVEN_GPG_SECRET_KEY }}
 
       - name: Create Maven Central release for org.open-resource-discovery:ord-models
         if: inputs.models
