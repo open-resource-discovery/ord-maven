@@ -11,7 +11,14 @@
 
   <artifactId>ord-models</artifactId>
   <name>${project.groupId}:${project.artifactId}</name>
-  <description>ORD Models</description>
+  <url>https://github.com/open-resource-discovery/ord-maven/tree/main/annotations</url>
+  <description>Generated Java classes from the Open Resource Discovery (ORD) specification</description>
+
+  <scm>
+    <connection>scm:git:git://github.com/open-resource-discovery/ord-maven.git</connection>
+    <developerConnection>scm:git:ssh://github.com:open-resource-discovery/ord-maven.git</developerConnection>
+    <url>https://github.com/open-resource-discovery/ord-maven/tree/main</url>
+  </scm>
 
   <dependencies>
     <dependency>

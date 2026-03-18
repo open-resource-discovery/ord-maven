@@ -1,3 +1,5 @@
+[![REUSE status](https://api.reuse.software/badge/github.com/open-resource-discovery/ord-maven)](https://api.reuse.software/info/github.com/open-resource-discovery/ord-maven) [![CI](https://github.com/open-resource-discovery/ord-maven/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/open-resource-discovery/ord-maven/actions/workflows/ci.yml) [![Maven version: ord-models](https://img.shields.io/maven-central/v/org.open-resource-discovery/ord-models?label=ord-models)](https://central.sonatype.com/artifact/org.open-resource-discovery/ord-models) [![Maven version: ord-annotations](https://img.shields.io/maven-central/v/org.open-resource-discovery/ord-annotations?label=ord-annotations)](https://central.sonatype.com/artifact/org.open-resource-discovery/ord-annotations)
+
 # ORD Maven
 
 This repository contains the **ORD Maven** project, which generates Java **annotations** and **models** from the [Open Resource Discovery (ORD) specification](https://github.com/open-resource-discovery/specification).  
@@ -41,21 +43,38 @@ This will:
 
 To include the generated artifacts in your Maven project, add the following dependencies:
 
+- [ord-models](https://central.sonatype.com/artifact/org.open-resource-discovery/ord-models)
 ```xml
-<dependencies>
-    <dependency>
-        <groupId>org.open-resource-discovery</groupId>
-        <artifactId>ord-annotations</artifactId>
-    </dependency>
-
-    <dependency>
-        <groupId>org.open-resource-discovery</groupId>
-        <artifactId>ord-models</artifactId>
-    </dependency>
-</dependencies>
+<project>
+    ...
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>org.open-resource-discovery</groupId>
+            <artifactId>ord-models</artifactId>
+        </dependency>
+        ...
+    </dependencies>
+    ...
+</project>
+```
+- [ord-annotations](https://central.sonatype.com/artifact/org.open-resource-discovery/ord-annotations)
+```xml
+<project>
+    ...
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>org.open-resource-discovery</groupId>
+            <artifactId>ord-annotations</artifactId>
+        </dependency>
+        ...
+    </dependencies>
+    ...
+</project>
 ```
 
-You also need to configure the repository:
+You also need to configure the repository in your `settings.xml`:
 ```xml
 <repositories>
     <repository>

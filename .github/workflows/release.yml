@@ -18,11 +18,10 @@ on:
         required: false
         type: boolean
         default: true
-      bumpVersion:
-        description: "Bump Version"
+      nextVersion:
+        description: "Next Version"
         required: false
         type: string
-
 
 jobs:
   create-release:
@@ -42,24 +41,25 @@ jobs:
           settings-servers: '[{"id": "central", "username": "${{ secrets.MAVEN_CENTRAL_USER }}", "password": "${{ secrets.MAVEN_CENTRAL_PASSWORD }}"}]'
 
       - name: Extract version from pom.xml
+        env:
+          NEXT_VERSION: ${{ inputs.nextVersion }}
         run: |
-          PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout 2> /dev/null)
+          PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout 2> /dev/null | sed 's/-SNAPSHOT$//')
 
-          echo "MAJOR=$(cut -d. -f1 <<<"${PROJECT_VERSION}")" >> $GITHUB_ENV
-          echo "MINOR=$(cut -d. -f2 <<<"${PROJECT_VERSION}")" >> $GITHUB_ENV
-          echo "NEW_MINOR=$(( $(cut -d. -f2 <<<"${PROJECT_VERSION}") + 1 ))" >> $GITHUB_ENV
+          echo "CURRENT_VERSION=${PROJECT_VERSION}" >> $GITHUB_ENV
+          echo "NEXT_VERSION=${NEXT_VERSION:-$(cut -d. -f1 <<<"${PROJECT_VERSION}").$(( $(cut -d. -f2 <<<"${PROJECT_VERSION}") + 1 )).0}" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: open-resource-discovery/github-release@main
         if: inputs.githubRelease
         with:
           tag-template: "v<version>"
-          version: ${{ env.MAJOR }}.${{ env.MINOR }}.0
+          version: ${{ env.CURRENT_VERSION }}
 
       - name: Update project release version
         run: |
           git reset --hard
-          mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${{ env.MAJOR }}.${{ env.MINOR }}.0"
+          mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${{ env.CURRENT_VERSION }}"
 
       - name: Configure GPG key
         uses: crazy-max/ghaction-import-gpg@v7
@@ -84,24 +84,21 @@ jobs:
           mvn --batch-mode deploy -f annotations/pom.xml -Dgpg.keyname="${MAVEN_GPG_KEY}"
 
       - name: Update project version for next development iteration
-        if: inputs.bumpVersion
         run: |
           git reset --hard
-          # TODO: take version from input.bumpVersion, if not set, use the current logic
-          mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${{ env.MAJOR }}.${{ env.NEW_MINOR }}.0-SNAPSHOT" 
+          mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${{ env.NEXT_VERSION }}-SNAPSHOT" 
 
       - name: Create pull request for project version
-        if: inputs.bumpVersion
         id: cpr
         uses: peter-evans/create-pull-request@v7
         with:
           base: main
           delete-branch: true
           token: ${{ secrets.GH_TOKEN }}
-          branch: update-version-${{ env.MAJOR }}.${{ env.NEW_MINOR }}.0-SNAPSHOT
-          title: Update project version to ${{ env.MAJOR }}.${{ env.NEW_MINOR }}.0-SNAPSHOT
-          commit-message: Update project version to ${{ env.MAJOR }}.${{ env.NEW_MINOR }}.0-SNAPSHOT
-          body: This PR automatically updates the project version to ${{ env.MAJOR }}.${{ env.NEW_MINOR }}.0-SNAPSHOT
+          branch: update-version-${{ env.NEXT_VERSION }}-SNAPSHOT
+          title: Update project version to ${{ env.NEXT_VERSION }}-SNAPSHOT
+          commit-message: Update project version to ${{ env.NEXT_VERSION }}-SNAPSHOT
+          body: This PR automatically updates the project version to ${{ env.NEXT_VERSION }}-SNAPSHOT
           add-paths: |
             pom.xml
             models/pom.xml
