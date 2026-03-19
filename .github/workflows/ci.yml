@@ -36,6 +36,10 @@ jobs:
       - name: List files changed
         run: echo "CHANGED_FILES=$(git status -s)" >> $GITHUB_ENV
 
+      - name: Update CHANGELOG.md
+        if: env.CHANGED_FILES != ''
+        run: awk '/^## \[\[[0-9].[0-9].[0-9]\]/{++i == 1 && gsub(/^/,"Update generated annotations and models\n\n")}1' CHANGELOG.md > tmp && mv tmp CHANGELOG.md
+
       - name: Update generated sources
         if: env.CHANGED_FILES != ''
         uses: devops-infra/action-commit-push@v1.1.0
