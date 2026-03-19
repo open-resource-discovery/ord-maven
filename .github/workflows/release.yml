@@ -1,6 +1,27 @@
 name: "GitHub Release"
 
 on:
+  workflow_call:
+    inputs:
+      models:
+        description: "Publish `ord-models`"
+        required: false
+        type: boolean
+        default: true
+      annotations:
+        description: "Publish `ord-annotations`"
+        required: false
+        type: boolean
+        default: true
+      githubRelease:
+        description: "GitHub Release"
+        required: false
+        type: boolean
+        default: true
+      nextVersion:
+        description: "Next Version"
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       models:
@@ -189,23 +210,10 @@ jobs:
       - name: Update project version for next development iteration
         run: mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${TARGET_SNAPSHOT_VERSION}"
 
-      - name: Create pull request for project version
-        id: cpr
-        uses: peter-evans/create-pull-request@v7
+      - name: Update project SNAPSHOT version in repository
+        uses: devops-infra/action-commit-push@v1.1.0
         with:
-          base: main
-          delete-branch: true
-          token: ${{ secrets.GH_TOKEN }}
-          branch: update-version-${{ env.TARGET_SNAPSHOT_VERSION }}
-          title: Update project version to ${{ env.TARGET_SNAPSHOT_VERSION }}
-          commit-message: Update project version to ${{ env.TARGET_SNAPSHOT_VERSION }}
-          body: This PR automatically updates the project version to ${{ env.TARGET_SNAPSHOT_VERSION }}
-          add-paths: pom.xml, models/pom.xml, annotations/pom.xml
-
-      - name: Enable GitHub Auto-Merge
-        if: steps.cpr.outputs.pull-request-number != ''
-        uses: peter-evans/enable-pull-request-automerge@v2
-        with:
-          merge-method: squash
-          token: ${{ secrets.GH_TOKEN }}
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          target_branch: main
+          commit_prefix: "[AUTO]"
+          github_token: "${{ secrets.GH_TOKEN }}"
+          commit_message: This PR automatically updates the project version to ${{ env.TARGET_SNAPSHOT_VERSION }}

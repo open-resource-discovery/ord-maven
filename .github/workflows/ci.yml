@@ -1,7 +1,6 @@
 name: CI – Generate Models & Annotations, Build ORD-Java
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - 'main'
@@ -10,10 +9,8 @@ jobs:
   build:
     name: Generate & Build ORD-Java
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
+
       - name: Checkout ord-maven repo
         uses: actions/checkout@v3
         with:
@@ -23,8 +20,8 @@ jobs:
       - name: Set up Node.js 22
         uses: actions/setup-node@v3
         with:
-          cache: 'npm'
-          node-version: '22'
+          cache: npm
+          node-version: 22
           cache-dependency-path: tools/annotation-gen/package-lock.json
 
       - name: Setup Maven Action
@@ -32,37 +29,27 @@ jobs:
         with:
           java-version: 17
           maven-version: 3.9.14
-          java-distribution: temurin
 
       - name: Build project
         run: mvn clean install -B -Dgpg.skip=true
 
-      - name: Create or update pull request for generated sources
-        id: cpr
-        uses: peter-evans/create-pull-request@v7
-        with:
-          branch: generated-sources
-          commit-message: update generated annotations & models
-          title: update generated annotations & models
-          body: |
-            This PR automatically updates the generated annotations and models in the folders:
-            - models/src/main/java
-            - annotations/src/main/java
-            - annotations/src/main/resources
+      - name: List files changed
+        run: echo "CHANGED_FILES=$(git status -s)" >> $GITHUB_ENV
 
-            Changes are automatically pushed to 'generated-sources' by the CI workflow on main.
-          base: main
-          add-paths: |
-            models/**
-            annotations/src/main/java/**
-            annotations/src/main/resources/**
-          token: ${{ secrets.GH_TOKEN }}
-          delete-branch: false
-
-      - name: Enable GitHub Auto-Merge
-        if: steps.cpr.outputs.pull-request-number != ''
-        uses: peter-evans/enable-pull-request-automerge@v2
+      - name: Update generated sources
+        if: env.CHANGED_FILES != ''
+        uses: devops-infra/action-commit-push@v1.1.0
         with:
-          token: ${{ secrets.GH_TOKEN }}
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
-          merge-method: squash
+          target_branch: main
+          commit_prefix: "[AUTO]"
+          github_token: "${{ secrets.GH_TOKEN }}"
+          commit_message: "Update Open Resource Discovery generated annotations and models"
+
+      - name: Trigger release workflow
+        if: env.CHANGED_FILES != ''
+        uses: convictional/trigger-workflow-and-wait@v1.6.5
+        with:
+          repo: ord-maven
+          owner: open-resource-discovery
+          workflow_file_name: release.yml
+          github_token: ${{ secrets.GH_TOKEN }}
