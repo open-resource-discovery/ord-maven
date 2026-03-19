@@ -24,10 +24,83 @@ on:
         type: string
 
 jobs:
-  create-release:
-    environment: maven-central
+
+  determine-target-release-version:
     runs-on: ubuntu-latest
+    outputs:
+      target-release-version: ${{ env.TARGET_RELEASE_VERSION }}
     steps:
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.19.0
+        with:
+          java-version: 17
+          maven-version: 3.9.14
+
+      - name: Extract SNAPSHOT version from pom.xml
+        run: echo "PROJECT_SNAPSHOT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout 2> /dev/null)" >> $GITHUB_ENV
+
+      - name: Determine release version
+        run: echo "TARGET_RELEASE_VERSION=$(sed 's/-SNAPSHOT$//' <<<"${PROJECT_SNAPSHOT_VERSION}")" >> $GITHUB_ENV
+
+  determine-target-snapshot-version:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_VERSION: ${{ inputs.nextVersion }}
+    outputs:
+      target-snapshot-version: ${{ env.TARGET_SNAPSHOT_VERSION }}
+    steps:
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.19.0
+        with:
+          java-version: 17
+          maven-version: 3.9.14
+
+      - name: Extract SNAPSHOT version from pom.xml
+        run: echo "PROJECT_SNAPSHOT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout 2> /dev/null)" >> $GITHUB_ENV
+
+      - name: Determine new SNAPSHOT release version
+        run: echo "TARGET_SNAPSHOT_VERSION=${NEXT_VERSION:-$(cut -d. -f1 <<<"${PROJECT_SNAPSHOT_VERSION}").$(( $(cut -d. -f2 <<<"${PROJECT_SNAPSHOT_VERSION}") + 1 )).0}-SNAPSHOT" >> $GITHUB_ENV
+
+  create-github-release:
+    runs-on: ubuntu-latest
+    environment: maven-central
+    needs: determine-target-release-version
+    env:
+      TARGET_RELEASE_VERSION: ${{ needs.determine-target-release-version.outputs.target-release-version }}
+    steps:
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create GitHub Release
+        uses: open-resource-discovery/github-release@main
+        if: inputs.githubRelease
+        with:
+          tag-template: "v<version>"
+          version: ${{ env.TARGET_RELEASE_VERSION }}
+
+  release-ord-models:
+    runs-on: ubuntu-latest
+    environment: maven-central
+    needs: [create-github-release, determine-target-release-version]
+    env:
+      TARGET_RELEASE_VERSION: ${{ needs.determine-target-release-version.outputs.target-release-version }}
+    steps:
+
       - name: Check out repository
         uses: actions/checkout@v4
         with:
@@ -40,26 +113,45 @@ jobs:
           maven-version: 3.9.14
           settings-servers: '[{"id": "central", "username": "${{ secrets.MAVEN_CENTRAL_USER }}", "password": "${{ secrets.MAVEN_CENTRAL_PASSWORD }}"}]'
 
-      - name: Extract version from pom.xml
-        env:
-          NEXT_VERSION: ${{ inputs.nextVersion }}
-        run: |
-          PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout 2> /dev/null | sed 's/-SNAPSHOT$//')
-
-          echo "CURRENT_VERSION=${PROJECT_VERSION}" >> $GITHUB_ENV
-          echo "NEXT_VERSION=${NEXT_VERSION:-$(cut -d. -f1 <<<"${PROJECT_VERSION}").$(( $(cut -d. -f2 <<<"${PROJECT_VERSION}") + 1 )).0}" >> $GITHUB_ENV
-
-      - name: Create GitHub Release
-        uses: open-resource-discovery/github-release@main
-        if: inputs.githubRelease
+      - name: Configure GPG key
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
-          tag-template: "v<version>"
-          version: ${{ env.CURRENT_VERSION }}
+          passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          gpg_private_key: ${{ secrets.MAVEN_GPG_SECRET_KEY }}
 
       - name: Update project release version
-        run: |
-          git reset --hard
-          mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${{ env.CURRENT_VERSION }}"
+        run: mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${TARGET_RELEASE_VERSION}"
+
+      - name: Create Maven Central release for org.open-resource-discovery:ord-models
+        if: inputs.models
+        env:
+          POM_PATH: models/pom.xml
+          MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+        run: mvn --batch-mode deploy -f "${POM_PATH}" -Dgpg.keyname="${MAVEN_GPG_KEY}"
+
+  release-ord-annotations:
+    runs-on: ubuntu-latest
+    environment: maven-central
+    needs: [create-github-release, determine-target-release-version]
+    env:
+      TARGET_RELEASE_VERSION: ${{ needs.determine-target-release-version.outputs.target-release-version }}
+    steps:
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.19.0
+        with:
+          java-version: 17
+          maven-version: 3.9.14
+          settings-servers: '[{"id": "central", "username": "${{ secrets.MAVEN_CENTRAL_USER }}", "password": "${{ secrets.MAVEN_CENTRAL_PASSWORD }}"}]'
+
+      - name: Update project release version
+        run: mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${TARGET_RELEASE_VERSION}"
 
       - name: Configure GPG key
         uses: crazy-max/ghaction-import-gpg@v7
@@ -67,26 +159,35 @@ jobs:
           passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           gpg_private_key: ${{ secrets.MAVEN_GPG_SECRET_KEY }}
 
-      - name: Create Maven Central release for org.open-resource-discovery:ord-models
-        if: inputs.models
-        env:
-          MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-        run: |
-          mvn --batch-mode deploy -f models/pom.xml -Dgpg.keyname="${MAVEN_GPG_KEY}"
-
       - name: Create Maven Central release for org.open-resource-discovery:ord-annotations
         if: inputs.annotations
         env:
+          POM_PATH: annotations/pom.xml
           MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_KEY }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-        run: |
-          mvn --batch-mode deploy -f annotations/pom.xml -Dgpg.keyname="${MAVEN_GPG_KEY}"
+        run: mvn --batch-mode deploy -f "${POM_PATH}" -Dgpg.keyname="${MAVEN_GPG_KEY}"
+
+  update-project-version:
+    runs-on: ubuntu-latest
+    environment: maven-central
+    needs: [release-ord-models, create-github-release, release-ord-annotations, determine-target-snapshot-version]
+    env:
+      TARGET_SNAPSHOT_VERSION: ${{ needs.determine-target-snapshot-version.outputs.target-snapshot-version }}
+    steps:
+
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Maven Action
+        uses: s4u/setup-maven-action@v1.19.0
+        with:
+          java-version: 17
+          maven-version: 3.9.14
 
       - name: Update project version for next development iteration
-        run: |
-          git reset --hard
-          mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${{ env.NEXT_VERSION }}-SNAPSHOT" 
+        run: mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${TARGET_SNAPSHOT_VERSION}"
 
       - name: Create pull request for project version
         id: cpr
@@ -95,14 +196,11 @@ jobs:
           base: main
           delete-branch: true
           token: ${{ secrets.GH_TOKEN }}
-          branch: update-version-${{ env.NEXT_VERSION }}-SNAPSHOT
-          title: Update project version to ${{ env.NEXT_VERSION }}-SNAPSHOT
-          commit-message: Update project version to ${{ env.NEXT_VERSION }}-SNAPSHOT
-          body: This PR automatically updates the project version to ${{ env.NEXT_VERSION }}-SNAPSHOT
-          add-paths: |
-            pom.xml
-            models/pom.xml
-            annotations/pom.xml
+          branch: update-version-${{ env.TARGET_SNAPSHOT_VERSION }}
+          title: Update project version to ${{ env.TARGET_SNAPSHOT_VERSION }}
+          commit-message: Update project version to ${{ env.TARGET_SNAPSHOT_VERSION }}
+          body: This PR automatically updates the project version to ${{ env.TARGET_SNAPSHOT_VERSION }}
+          add-paths: pom.xml, models/pom.xml, annotations/pom.xml
 
       - name: Enable GitHub Auto-Merge
         if: steps.cpr.outputs.pull-request-number != ''
