@@ -7,6 +7,6 @@
   "devDependencies": {
     "ts-node": "^10.9.2",
     "typescript": "^5.4.0",
-    "@open-resource-discovery/specification": "^1.14.0"
+    "@open-resource-discovery/specification": "1.14.0"
   }
 }
