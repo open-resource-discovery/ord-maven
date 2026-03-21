@@ -5,8 +5,8 @@
     "generate": "ts-node src/generateAnnotations.ts"
   },
   "devDependencies": {
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.0",
+    "ts-node": "10.9.2",
+    "typescript": "5.9.2",
     "@open-resource-discovery/specification": "1.14.0"
   }
 }
