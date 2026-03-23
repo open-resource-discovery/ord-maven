@@ -34,14 +34,14 @@ jobs:
         run: mvn clean install -B -Dgpg.skip=true
 
       - name: List files changed
-        run: echo "CHANGED_FILES=$(git status -s)" >> $GITHUB_ENV
+        run: echo "CHANGED_FILES=$(git status -s | wc -l)" >> $GITHUB_ENV
 
       - name: Update CHANGELOG.md
-        if: env.CHANGED_FILES != ''
+        if: env.CHANGED_FILES != '0'
         run: awk '/^## \[\[[0-9].[0-9].[0-9]\]/{++i == 1 && gsub(/^/,"Update generated annotations and models\n\n")}1' CHANGELOG.md > tmp && mv tmp CHANGELOG.md
 
       - name: Update generated sources
-        if: env.CHANGED_FILES != ''
+        if: env.CHANGED_FILES != '0'
         uses: devops-infra/action-commit-push@v1.1.0
         with:
           target_branch: main
@@ -50,7 +50,7 @@ jobs:
           commit_message: "Update Open Resource Discovery generated annotations and models"
 
       - name: Trigger release workflow
-        if: env.CHANGED_FILES != ''
+        if: env.CHANGED_FILES != '0'
         uses: convictional/trigger-workflow-and-wait@v1.6.5
         with:
           repo: ord-maven
