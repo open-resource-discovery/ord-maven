@@ -212,7 +212,7 @@ public interface Ord {
     /** Full version number that corresponds to the `version` that is described by the changelog entry.  Ideally it follows the [Semantic Versioning 2.0.0](https://semver.org/) standard, but since it should reflect the actual version string / scheme used, this is not a mandatory requirement. */
     String version() default "";
 
-    /** The `releaseStatus` specifies the stability of the resource and its external contract. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
     String releaseStatus() default "";
 
     /** Date of change, without time or timezone information.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). */
@@ -468,10 +468,10 @@ public interface Ord {
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
     String lastUpdate() default "";
 
-    /** The visibility states who is allowed to "see" the described resource or capability. */
+    /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** The `releaseStatus` specifies the stability of the resource and its external contract. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
     String releaseStatus() default "";
 
     /** Generic links with arbitrary meaning and content.  `packageLinks` MUST be preferred if applicable. */
@@ -580,7 +580,7 @@ public interface Ord {
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
     String lastUpdate() default "";
 
-    /** The visibility states who is allowed to "see" the described resource or capability. */
+    /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
     /** Defines the supported strategies for how the consumption credentials can be exchanged.  Ideally, the system type supports a strategy that can automate the exchange. */
@@ -642,10 +642,10 @@ public interface Ord {
     /** Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.  Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.  More details can be found on the [Compatibility](../concepts/compatibility) concept page. */
     boolean _abstract() default false;
 
-    /** The visibility states who is allowed to "see" the described resource or capability. */
+    /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** The `releaseStatus` specifies the stability of the resource and its external contract. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
     String releaseStatus() default "";
 
     /** Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so. This can happen either because it has not been setup for use or disabled by an admin / user.  If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.  This property can only reflect the knowledge of the described system instance itself. Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).  A disabled resource MAY skip describing its resource definitions.  */
@@ -787,10 +787,10 @@ public interface Ord {
     /** Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.  Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.  More details can be found on the [Compatibility](../concepts/compatibility) concept page. */
     boolean _abstract() default false;
 
-    /** The visibility states who is allowed to "see" the described resource or capability. */
+    /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** The `releaseStatus` specifies the stability of the resource and its external contract. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
     String releaseStatus() default "";
 
     /** Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so. This can happen either because it has not been setup for use or disabled by an admin / user.  If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.  This property can only reflect the knowledge of the described system instance itself. Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).  A disabled resource MAY skip describing its resource definitions.  */
@@ -908,10 +908,10 @@ public interface Ord {
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
     String lastUpdate() default "";
 
-    /** The visibility states who is allowed to "see" the described resource or capability. */
+    /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** The `releaseStatus` specifies the stability of the resource and its external contract. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
     String releaseStatus() default "";
 
     /** The deprecation date defines when the resource has been set as deprecated. This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). */
@@ -1109,10 +1109,10 @@ public interface Ord {
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
     String lastUpdate() default "";
 
-    /** The visibility states who is allowed to "see" the described resource or capability. */
+    /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** The `releaseStatus` specifies the stability of the resource and its external contract. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
     String releaseStatus() default "";
 
     /** Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so. This can happen either because it has not been setup for use or disabled by an admin / user.  If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.  This property can only reflect the knowledge of the described system instance itself. Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).  A disabled resource MAY skip describing its resource definitions.  */
@@ -1242,10 +1242,10 @@ public interface Ord {
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
     String lastUpdate() default "";
 
-    /** The visibility states who is allowed to "see" the described resource or capability. */
+    /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** The `releaseStatus` specifies the stability of the resource and its external contract. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
     String releaseStatus() default "";
 
     /** Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so. This can happen either because it has not been setup for use or disabled by an admin / user.  If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.  This property can only reflect the knowledge of the described system instance itself. Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).  A disabled resource MAY skip describing its resource definitions.  */
@@ -1307,10 +1307,10 @@ public interface Ord {
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
     String lastUpdate() default "";
 
-    /** The visibility states who is allowed to "see" the described resource or capability. */
+    /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** The `releaseStatus` specifies the stability of the resource and its external contract. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
     String releaseStatus() default "";
 
     /** The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.  If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known). Once the sunset date is known and ready to be communicated externally, it MUST be provided here.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). */
