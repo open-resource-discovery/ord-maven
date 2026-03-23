@@ -38,7 +38,11 @@ jobs:
 
       - name: Update CHANGELOG.md
         if: env.CHANGED_FILES != '0'
-        run: awk '/^## \[\[[0-9].[0-9].[0-9]\]/{++i == 1 && gsub(/^/,"Update generated annotations and models\n\n")}1' CHANGELOG.md > tmp && mv tmp CHANGELOG.md
+        run: |
+          TARGET_RELEASE_VERSION="$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout 2> /dev/null | sed 's/-SNAPSHOT$//')"
+
+          awk '/^## \[\[[0-9].[0-9].[0-9]\]/{++i == 1 && gsub(/^/,"Update generated annotations and models\n\n")}1' CHANGELOG.md > tmp && mv tmp CHANGELOG.md
+          awk "/^## \[unreleased\]/{gsub(/$/,\"\n\n## [[${TARGET_RELEASE_VERSION}](https://github.com/open-resource-discovery/ord-maven/releases/tag/v${TARGET_RELEASE_VERSION})] - $(date +%Y-%m-%d)\")}1" CHANGELOG.md > tmp && mv tmp CHANGELOG.md
 
       - name: Update generated sources
         if: env.CHANGED_FILES != '0'
