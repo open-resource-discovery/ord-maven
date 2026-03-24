@@ -211,24 +211,17 @@ function generateProps(def: SchemaDefinition, allDefs: AllDefs): string {
       const isArrayRef = isArray && !!schema.items?.$ref;
 
       let defaultClause = "";
-      if (isAnyOfArray) {
-        const refName = anyOfRefs[0].$ref!.split("/").pop()!;
-        defaultClause = ` default { ${buildDefaultAnnotation(allDefs[refName], refName)} }`;
-      } else if (isArrayRef) {
-        const refName = schema.items!.$ref!.split("/").pop()!;
-        defaultClause = ` default { ${buildDefaultAnnotation(allDefs[refName], refName)} }`;
+
+      if (isArray || isArrayRef || isAnyOfArray) {
+        defaultClause = ` default {}`;
       } else if (isRef) {
-        const refName = schema.$ref!.split("/").pop()!;
-        defaultClause = ` default ${buildDefaultAnnotation(allDefs[refName], refName)}`;
+        defaultClause = ` default @${schema.$ref!.split("/").pop()!}`;
       } else if (javaType === "String") {
-        const v = typeof schema.default === "string" ? schema.default : "";
-        defaultClause = ` default "${v}"`;
+        defaultClause = ` default "${typeof schema.default === "string" ? schema.default : ""}"`;
       } else if (javaType === "boolean") {
         defaultClause = ` default ${schema.default ?? false}`;
       } else if (javaType === "double") {
         defaultClause = ` default ${schema.default ?? 0}`;
-      } else if (isArray) {
-        defaultClause = ` default {}`;
       }
 
       const comment = schema.description ? `    /** ${schema.description.replace(/\n/g, " ")} */\n` : "";
@@ -323,8 +316,7 @@ ${body}
       .filter(([n, d]) => topLevelFields.includes(n))
       .map(([name, def]) => {
         const filteredProperties = def.properties ? Object.fromEntries(
-          Object.entries(def.properties)
-            .filter(([propName, _]) => propName !== 'ordId')) : {};
+            Object.entries(def.properties)) : {};
 
         const filteredDef: SchemaDefinition = {
           required: def.required,
@@ -344,7 +336,7 @@ ${body}
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface ${name} {
-    DocumentReference[] partOfDocuments() default { @DocumentReference(id = "1") };\n
+    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");\n
 ${body}
   }`;
       });
@@ -366,7 +358,7 @@ public interface Ord {
   @Repeatable(Documents.class)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface Document {
-    String id() default "1";
+    String id() default "ord-document";
 
     AccessStrategy[] accessStrategies() default { @AccessStrategy(type = "open") };
   }
@@ -374,7 +366,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface DocumentReference {
-    String id() default "1";
+    String id() default "ord-document";
   }
 ${all}
 
