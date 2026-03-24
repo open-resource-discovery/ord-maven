@@ -336,7 +336,7 @@ ${body}
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface ${name} {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");\n
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");\n
 ${body}
   }`;
       });

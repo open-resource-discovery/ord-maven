@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -49,7 +48,7 @@ public class ApiResourceIntegrationAspect {
      */
     @JsonProperty("subset")
     @JsonPropertyDescription("List of individual API operations that are sufficient to achieve the aspect.")
-    private List<ApiResourceIntegrationAspectSubset> subset = new ArrayList<ApiResourceIntegrationAspectSubset>();
+    private List<ApiResourceIntegrationAspectSubset> subset;
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

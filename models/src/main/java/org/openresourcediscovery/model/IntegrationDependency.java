@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -95,7 +94,7 @@ public class IntegrationDependency {
      */
     @JsonProperty("correlationIds")
     @JsonPropertyDescription("Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
-    private List<String> correlationIds = new ArrayList<String>();
+    private List<String> correlationIds;
     /**
      * Human-readable title.
      * 
@@ -153,7 +152,7 @@ public class IntegrationDependency {
      */
     @JsonProperty("partOfGroups")
     @JsonPropertyDescription("Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.")
-    private List<String> partOfGroups = new ArrayList<String>();
+    private List<String> partOfGroups;
     /**
      * The complete [SemVer](https://semver.org/) version string.
      * 
@@ -244,7 +243,7 @@ public class IntegrationDependency {
      */
     @JsonProperty("successors")
     @JsonPropertyDescription("The successor resource(s).\n\nMUST be a valid reference to an ORD ID.\n\nIf the `releaseStatus` is set to `deprecated`, `successors` MUST be provided if one exists.\nIf `successors` is given, the described resource SHOULD set its `releaseStatus` to `deprecated`.")
-    private List<String> successors = new ArrayList<String>();
+    private List<String> successors;
     /**
      * If true, the Integration Dependency is mandatory for the described system to function.
      * (Required)
@@ -261,7 +260,7 @@ public class IntegrationDependency {
      */
     @JsonProperty("aspects")
     @JsonPropertyDescription("List of integration aspects that make up the Integration Dependency.\n\nEach aspect listed is a dedicated, constituent part (AND condition).")
-    private List<IntegrationAspect> aspects = new ArrayList<IntegrationAspect>();
+    private List<IntegrationAspect> aspects;
     /**
      * If an Integration Dependency conceptually belongs or related to another Integration Dependency, this can be indicated here.
      * One situation would be where two systems each have an Integration Dependency to describe a two-sided integration from each side.
@@ -269,14 +268,14 @@ public class IntegrationDependency {
      */
     @JsonProperty("relatedIntegrationDependencies")
     @JsonPropertyDescription("If an Integration Dependency conceptually belongs or related to another Integration Dependency, this can be indicated here.\nOne situation would be where two systems each have an Integration Dependency to describe a two-sided integration from each side.")
-    private List<String> relatedIntegrationDependencies = new ArrayList<String>();
+    private List<String> relatedIntegrationDependencies;
     /**
      * Generic Links with arbitrary meaning and content.
      * 
      */
     @JsonProperty("links")
     @JsonPropertyDescription("Generic Links with arbitrary meaning and content.")
-    private List<Link> links = new ArrayList<Link>();
+    private List<Link> links;
     /**
      * List of free text style tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -286,7 +285,7 @@ public class IntegrationDependency {
      */
     @JsonProperty("tags")
     @JsonPropertyDescription("List of free text style tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\nTags that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags;
     /**
      * Labels
      * <p>
