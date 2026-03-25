@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -61,7 +60,7 @@ public class SystemVersion {
      */
     @JsonProperty("correlationIds")
     @JsonPropertyDescription("Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
-    private List<String> correlationIds = new ArrayList<String>();
+    private List<String> correlationIds;
     /**
      * Labels
      * <p>
@@ -114,7 +113,7 @@ public class SystemVersion {
      */
     @JsonProperty("tags")
     @JsonPropertyDescription("List of free text style tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\nTags that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags;
 
     /**
      * The version of the system instance (run-time) or the version of the described system-version perspective.

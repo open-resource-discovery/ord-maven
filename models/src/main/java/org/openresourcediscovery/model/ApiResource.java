@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -116,7 +115,7 @@ public class ApiResource {
      */
     @JsonProperty("correlationIds")
     @JsonPropertyDescription("Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
-    private List<String> correlationIds = new ArrayList<String>();
+    private List<String> correlationIds;
     /**
      * Human-readable title.
      * 
@@ -176,7 +175,7 @@ public class ApiResource {
      */
     @JsonProperty("partOfGroups")
     @JsonPropertyDescription("Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.")
-    private List<String> partOfGroups = new ArrayList<String>();
+    private List<String> partOfGroups;
     /**
      * List of references to the Consumption Bundles in this resource belongs to.
      * 
@@ -194,7 +193,7 @@ public class ApiResource {
      */
     @JsonProperty("partOfConsumptionBundles")
     @JsonPropertyDescription("List of references to the Consumption Bundles in this resource belongs to.\n\nMUST be a valid reference to a [Consumption Bundle](#consumption-bundle) ORD ID.\n\nAn API resource SHOULD be associated to one or multiple Consumption Bundles, if it is of direction `inbound` or `mixed`.\nSome ORD consumer use cases MAY depend on an association to a Consumption Bundle.\nIf none is given, the resource may not appear as it's unknown how it can be consumed.\n\nIf a resource has no direct incoming consumption characteristics:\n- MUST NOT assign Consumption Bundle to API or Event resources with `direction`: `outbound` (no inbound consumption)\n- MUST NOT assign Consumption Bundle if resource is not accessible directly, but only via intermediaries like event brokers or gateways.\n  - In this case the intermediary SHOULD describe the Consumption Bundle instead (potentially also re-describing the resources as well).")
-    private List<ConsumptionBundleReference> partOfConsumptionBundles = new ArrayList<ConsumptionBundleReference>();
+    private List<ConsumptionBundleReference> partOfConsumptionBundles;
     /**
      * References the default Consumption Bundle to use for this resource.
      * 
@@ -218,7 +217,7 @@ public class ApiResource {
      */
     @JsonProperty("partOfProducts")
     @JsonPropertyDescription("List of products the resources of the Package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> partOfProducts = new ArrayList<String>();
+    private List<String> partOfProducts;
     /**
      * The complete [SemVer](https://semver.org/) version string.
      * 
@@ -270,20 +269,32 @@ public class ApiResource {
     @JsonPropertyDescription("Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.\n\nAbstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.\n\nMore details can be found on the [Compatibility](../concepts/compatibility) concept page.")
     private Boolean _abstract = false;
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * (Required)
      * 
      */
     @JsonProperty("visibility")
-    @JsonPropertyDescription("The visibility states who is allowed to \"see\" the described resource or capability.")
+    @JsonPropertyDescription("Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.\n\nThis controls who can see that the resource exists and retrieve its metadata level information.\nIt does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.\n\nUse this to prevent exposing internal implementation details to inappropriate consumer audiences.")
     private String visibility;
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */
     @JsonProperty("releaseStatus")
-    @JsonPropertyDescription("The `releaseStatus` specifies the stability of the resource and its external contract.")
+    @JsonPropertyDescription("Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
     private String releaseStatus;
     /**
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
@@ -344,14 +355,14 @@ public class ApiResource {
      */
     @JsonProperty("successors")
     @JsonPropertyDescription("The successor resource(s).\n\nMUST be a valid reference to an ORD ID.\n\nIf the `releaseStatus` is set to `deprecated`, `successors` MUST be provided if one exists.\nIf `successors` is given, the described resource SHOULD set its `releaseStatus` to `deprecated`.")
-    private List<String> successors = new ArrayList<String>();
+    private List<String> successors;
     /**
      * Contains changelog entries that summarize changes with special regards to version and releaseStatus
      * 
      */
     @JsonProperty("changelogEntries")
     @JsonPropertyDescription("Contains changelog entries that summarize changes with special regards to version and releaseStatus")
-    private List<ChangelogEntry> changelogEntries = new ArrayList<ChangelogEntry>();
+    private List<ChangelogEntry> changelogEntries;
     /**
      * List of [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the target host.
      * 
@@ -377,7 +388,7 @@ public class ApiResource {
      */
     @JsonProperty("entryPoints")
     @JsonPropertyDescription("List of [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the target host.\n\nIf the API resource can be accessed through an entry point, it MUST be described here.\n\nThe list of entry points MUST not include duplicates.\nIf multiple entry points are provided they MUST be arbitrarily exchangeable without effects.\nThis means that the URLs are just an alias to each other and the `resourceDefinitions` apply to all entry points equally.\nIn case of multiple entry points it is RECOMMENDED to provide a `defaultEntryPoint` through `partOfConsumptionBundles`.\nThe entry point URLs SHOULD match with the target host(s) in the resource definition files (e.g. OpenAPI `servers`).\nIf there is no match, the information in ORD takes precedence.\n\n**Provider View:**\nIf the URL is relative to the system that describes the ORD information,\nit is RECOMMENDED to use relative references and (if known) to provide the `describedSystemInstance`.`baseUrl`.\nIf the URL is not relative to the described system instance [base URL](../index.md#base-url), a full URL MUST be provided.\nIf the entry points are rewritten by middleware - incl. the special case of client/consumer specific entry points - it is RECOMMENDED to provide relative URLs, so only the `describedSystemInstance`.`baseUrl` has to be rewritten.\nThe provider should not have to describe all middleware or consumer specific entry points. If they are enriched later by the aggregator, it MAY omit the entry points.\n\n**Consumer View**:\nWhen fetching the information from an ORD Aggregator, the consumer MAY rely on receiving full URLs.")
-    private List<String> entryPoints = new ArrayList<String>();
+    private List<String> entryPoints;
     /**
      * Direction of the API Resource consumption.
      * If not provided, "inbound" is assumed.
@@ -411,7 +422,7 @@ public class ApiResource {
      */
     @JsonProperty("resourceDefinitions")
     @JsonPropertyDescription("List of available machine-readable definitions, which describe the resource or capability in detail.\nSee also [Resource Definitions](../index.md#resource-definitions) for more context.\n\nEach definition is to be understood as an alternative description format, describing the same resource / capability.\nAs a consequence the same definition type MUST NOT be provided more than once.\nThe exception is when the same definition type is provided more than once, but with a different `visibility`.\n\nIt is RECOMMENDED to provide the definitions as they enable machine-readable use cases.\nIf the definitions are added or changed, the `version` MUST be incremented.\nAn ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.")
-    private List<ApiResourceDefinition> resourceDefinitions = new ArrayList<ApiResourceDefinition>();
+    private List<ApiResourceDefinition> resourceDefinitions;
     /**
      * Declares this API to be a valid implementation of an externally standardized API contract, sub-protocol or protocol variant.
      * 
@@ -458,7 +469,7 @@ public class ApiResource {
      */
     @JsonProperty("compatibleWith")
     @JsonPropertyDescription("A reference to the interface (API contract) and its maximum version that this API implements. Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one.\n\nServes as a declaration of compatible implementation of API contract, effectively functioning as an \"implementationOf\" relationship. The data that compatible APIs return follow the same schema, but itself can be different.\nThis means that if one API is returning 1 record for a dedicated request, a compatible API could return multiple and different records, as long as they adhere to the same schema.\n\nMUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID.\n\nAll APIs that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.\n\nMore details can be found on the [Compatibility](../concepts/compatibility) concept page.")
-    private List<ApiCompatibility> compatibleWith = new ArrayList<ApiCompatibility>();
+    private List<ApiCompatibility> compatibleWith;
     /**
      * Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components.
      * 
@@ -479,7 +490,7 @@ public class ApiResource {
      */
     @JsonProperty("supportedUseCases")
     @JsonPropertyDescription("List of use cases (types) how the resource is meant to be used for.\n\nThis helps consumers better to understand which use cases had been in mind by the provider\nand are therefore explicitly supported.\nThis is obviously described from a provider perspective, but stating what consumer use cases it potentially supports.\nAs it's not possible to create a list of options that are mutually exclusive, all options that apply should be provided.\n\nIf no array is defined, it is assumed that this information is not provided.")
-    private List<String> supportedUseCases = new ArrayList<String>();
+    private List<String> supportedUseCases;
     /**
      * Usage
      * <p>
@@ -495,7 +506,7 @@ public class ApiResource {
      */
     @JsonProperty("entityTypeMappings")
     @JsonPropertyDescription("Describes mappings between the API Models of the described resource to the underlying, conceptual entity types.")
-    private List<EntityTypeMapping> entityTypeMappings = new ArrayList<EntityTypeMapping>();
+    private List<EntityTypeMapping> entityTypeMappings;
     /**
      * Optional list of [entity types](#entity-type) that are exposed by the resource.
      * 
@@ -506,14 +517,14 @@ public class ApiResource {
      */
     @JsonProperty("exposedEntityTypes")
     @JsonPropertyDescription("Optional list of [entity types](#entity-type) that are exposed by the resource.\n\nThis replaces `entityTypeMappings`. If both is given, the `exposedEntityTypes` wins.\n\nMUST be a valid reference to an [EntityType](#entity-type) ORD ID.")
-    private List<ExposedEntityType> exposedEntityTypes = new ArrayList<ExposedEntityType>();
+    private List<ExposedEntityType> exposedEntityTypes;
     /**
      * Links with semantic meaning that are specific to API Resources.
      * 
      */
     @JsonProperty("apiResourceLinks")
     @JsonPropertyDescription("Links with semantic meaning that are specific to API Resources.")
-    private List<APIEventResourceLink> apiResourceLinks = new ArrayList<APIEventResourceLink>();
+    private List<APIEventResourceLink> apiResourceLinks;
     /**
      * Generic Links with arbitrary meaning and content.
      * 
@@ -522,7 +533,7 @@ public class ApiResource {
      */
     @JsonProperty("links")
     @JsonPropertyDescription("Generic Links with arbitrary meaning and content.\n\nIf applicable, `apiResourceLinks` MUST be used instead of generic `links`.")
-    private List<Link> links = new ArrayList<Link>();
+    private List<Link> links;
     /**
      * Extensible
      * <p>
@@ -544,7 +555,7 @@ public class ApiResource {
      */
     @JsonProperty("countries")
     @JsonPropertyDescription("List of countries that the Package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> countries = new ArrayList<String>();
+    private List<String> countries;
     /**
      * List of line of business tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -554,7 +565,7 @@ public class ApiResource {
      */
     @JsonProperty("lineOfBusiness")
     @JsonPropertyDescription("List of line of business tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`lineOfBusiness` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> lineOfBusiness = new ArrayList<String>();
+    private List<String> lineOfBusiness;
     /**
      * List of industry tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -564,7 +575,7 @@ public class ApiResource {
      */
     @JsonProperty("industry")
     @JsonPropertyDescription("List of industry tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`industry` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> industry = new ArrayList<String>();
+    private List<String> industry;
     /**
      * List of free text style tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -574,7 +585,7 @@ public class ApiResource {
      */
     @JsonProperty("tags")
     @JsonPropertyDescription("List of free text style tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\nTags that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags;
     /**
      * Labels
      * <p>
@@ -651,7 +662,7 @@ public class ApiResource {
      */
     @JsonProperty("policyLevels")
     @JsonPropertyDescription("A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
-    private List<String> policyLevels = new ArrayList<String>();
+    private List<String> policyLevels;
     /**
      * Defines whether this ORD resource is **system-instance-aware**.
      * This is the case when the referenced resource definitions are potentially different between **system instances**.
@@ -1168,7 +1179,12 @@ public class ApiResource {
     }
 
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * (Required)
      * 
      */
@@ -1178,7 +1194,12 @@ public class ApiResource {
     }
 
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * (Required)
      * 
      */
@@ -1193,7 +1214,14 @@ public class ApiResource {
     }
 
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */
@@ -1203,7 +1231,14 @@ public class ApiResource {
     }
 
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */

@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -81,7 +80,7 @@ public class ConsumptionBundle {
      */
     @JsonProperty("correlationIds")
     @JsonPropertyDescription("Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
-    private List<String> correlationIds = new ArrayList<String>();
+    private List<String> correlationIds;
     /**
      * Human-readable title.
      * 
@@ -152,11 +151,16 @@ public class ConsumptionBundle {
     @JsonPropertyDescription("Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).\n\nWhen retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time.\nTherefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.\n\nIf the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.\n\nTogether with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.")
     private Date lastUpdate;
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * 
      */
     @JsonProperty("visibility")
-    @JsonPropertyDescription("The visibility states who is allowed to \"see\" the described resource or capability.")
+    @JsonPropertyDescription("Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.\n\nThis controls who can see that the resource exists and retrieve its metadata level information.\nIt does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.\n\nUse this to prevent exposing internal implementation details to inappropriate consumer audiences.")
     private String visibility;
     /**
      * Defines the supported strategies for how the consumption credentials can be exchanged.
@@ -166,14 +170,14 @@ public class ConsumptionBundle {
      */
     @JsonProperty("credentialExchangeStrategies")
     @JsonPropertyDescription("Defines the supported strategies for how the consumption credentials can be exchanged.\n\nIdeally, the system type supports a strategy that can automate the exchange.")
-    private List<CredentialExchangeStrategy> credentialExchangeStrategies = new ArrayList<CredentialExchangeStrategy>();
+    private List<CredentialExchangeStrategy> credentialExchangeStrategies;
     /**
      * Generic links with arbitrary meaning and content.
      * 
      */
     @JsonProperty("links")
     @JsonPropertyDescription("Generic links with arbitrary meaning and content.")
-    private List<Link> links = new ArrayList<Link>();
+    private List<Link> links;
     /**
      * List of free text style tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -183,7 +187,7 @@ public class ConsumptionBundle {
      */
     @JsonProperty("tags")
     @JsonPropertyDescription("List of free text style tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\nTags that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags;
     /**
      * Labels
      * <p>
@@ -507,7 +511,12 @@ public class ConsumptionBundle {
     }
 
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * 
      */
     @JsonProperty("visibility")
@@ -516,7 +525,12 @@ public class ConsumptionBundle {
     }
 
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * 
      */
     @JsonProperty("visibility")

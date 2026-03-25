@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,7 +114,7 @@ public class Group {
      */
     @JsonProperty("correlationIds")
     @JsonPropertyDescription("Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
-    private List<String> correlationIds = new ArrayList<String>();
+    private List<String> correlationIds;
     /**
      * A group (instance) can logically be part of another group, for example in hierarchical taxonomies or graph relationships.
      * Assigning a group to be part of another group is a lightweight and flexible approach to express such relationships.
@@ -125,7 +124,7 @@ public class Group {
      */
     @JsonProperty("partOfGroups")
     @JsonPropertyDescription("A group (instance) can logically be part of another group, for example in hierarchical taxonomies or graph relationships.\nAssigning a group to be part of another group is a lightweight and flexible approach to express such relationships.\n\nThis relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.")
-    private List<String> partOfGroups = new ArrayList<String>();
+    private List<String> partOfGroups;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
