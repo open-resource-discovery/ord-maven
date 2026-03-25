@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -83,7 +82,7 @@ public class Capability {
      */
     @JsonProperty("correlationIds")
     @JsonPropertyDescription("Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
-    private List<String> correlationIds = new ArrayList<String>();
+    private List<String> correlationIds;
     /**
      * Type of the Capability
      * (Required)
@@ -160,7 +159,7 @@ public class Capability {
      */
     @JsonProperty("partOfGroups")
     @JsonPropertyDescription("Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.")
-    private List<String> partOfGroups = new ArrayList<String>();
+    private List<String> partOfGroups;
     /**
      * The complete [SemVer](https://semver.org/) version string.
      * 
@@ -261,7 +260,7 @@ public class Capability {
      */
     @JsonProperty("relatedEntityTypes")
     @JsonPropertyDescription("Optional list of related EntityType Resources.\nMUST be a valid reference to an [EntityType Resource](#entity-type) ORD ID.")
-    private List<String> relatedEntityTypes = new ArrayList<String>();
+    private List<String> relatedEntityTypes;
     /**
      * List of available machine-readable definitions, which describe the resource or capability in detail.
      * See also [Resource Definitions](../index.md#resource-definitions) for more context.
@@ -277,14 +276,14 @@ public class Capability {
      */
     @JsonProperty("definitions")
     @JsonPropertyDescription("List of available machine-readable definitions, which describe the resource or capability in detail.\nSee also [Resource Definitions](../index.md#resource-definitions) for more context.\n\nEach definition is to be understood as an alternative description format, describing the same resource / capability.\nAs a consequence the same definition type MUST NOT be provided more than once.\nThe exception is when the same definition type is provided more than once, but with a different `visibility`.\n\nIt is RECOMMENDED to provide the definitions as they enable machine-readable use cases.\nIf the definitions are added or changed, the `version` MUST be incremented.\nAn ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.")
-    private List<CapabilityDefinition> definitions = new ArrayList<CapabilityDefinition>();
+    private List<CapabilityDefinition> definitions;
     /**
      * Generic Links with arbitrary meaning and content.
      * 
      */
     @JsonProperty("links")
     @JsonPropertyDescription("Generic Links with arbitrary meaning and content.")
-    private List<Link> links = new ArrayList<Link>();
+    private List<Link> links;
     /**
      * List of free text style tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -294,7 +293,7 @@ public class Capability {
      */
     @JsonProperty("tags")
     @JsonPropertyDescription("List of free text style tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\nTags that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags;
     /**
      * Labels
      * <p>

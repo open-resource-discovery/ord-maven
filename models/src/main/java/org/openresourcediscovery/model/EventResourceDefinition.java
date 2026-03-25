@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -85,7 +84,7 @@ public class EventResourceDefinition {
      */
     @JsonProperty("accessStrategies")
     @JsonPropertyDescription("List of supported access strategies for retrieving metadata from the ORD provider.\nAn ORD Consumer/ORD Aggregator MAY choose any of the strategies.\n\nThe access strategies only apply to the metadata access and not the actual API access.\nThe actual access to the APIs for clients is described via Consumption Bundles.\n\nIf this property is not provided, the definition URL will be available through the same access strategy as this ORD document.\nIt is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process.")
-    private List<AccessStrategy> accessStrategies = new ArrayList<AccessStrategy>();
+    private List<AccessStrategy> accessStrategies;
     /**
      * The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.
      * 

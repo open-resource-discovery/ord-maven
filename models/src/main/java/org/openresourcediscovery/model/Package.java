@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -167,14 +166,14 @@ public class Package {
      */
     @JsonProperty("policyLevels")
     @JsonPropertyDescription("A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
-    private List<String> policyLevels = new ArrayList<String>();
+    private List<String> policyLevels;
     /**
      * Links with semantic meaning that are specific to Packages.
      * 
      */
     @JsonProperty("packageLinks")
     @JsonPropertyDescription("Links with semantic meaning that are specific to Packages.")
-    private List<PackageLink> packageLinks = new ArrayList<PackageLink>();
+    private List<PackageLink> packageLinks;
     /**
      * Generic links with arbitrary meaning and content.
      * 
@@ -183,7 +182,7 @@ public class Package {
      */
     @JsonProperty("links")
     @JsonPropertyDescription("Generic links with arbitrary meaning and content.\n\n`packageLinks` MUST be preferred if applicable.")
-    private List<Link> links = new ArrayList<Link>();
+    private List<Link> links;
     /**
      * Standardized identifier for the license.
      * It MUST conform to the [SPDX License List](https://spdx.org/licenses).
@@ -229,7 +228,7 @@ public class Package {
      */
     @JsonProperty("partOfProducts")
     @JsonPropertyDescription("List of products the resources of the Package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> partOfProducts = new ArrayList<String>();
+    private List<String> partOfProducts;
     /**
      * List of countries that the Package resources are applicable to.
      * 
@@ -240,7 +239,7 @@ public class Package {
      */
     @JsonProperty("countries")
     @JsonPropertyDescription("List of countries that the Package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> countries = new ArrayList<String>();
+    private List<String> countries;
     /**
      * List of line of business tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -250,7 +249,7 @@ public class Package {
      */
     @JsonProperty("lineOfBusiness")
     @JsonPropertyDescription("List of line of business tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`lineOfBusiness` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> lineOfBusiness = new ArrayList<String>();
+    private List<String> lineOfBusiness;
     /**
      * List of industry tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -260,7 +259,7 @@ public class Package {
      */
     @JsonProperty("industry")
     @JsonPropertyDescription("List of industry tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`industry` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> industry = new ArrayList<String>();
+    private List<String> industry;
     /**
      * If provided, all resources that are part of this Package can only run on the listed runtime.
      * 
@@ -279,7 +278,7 @@ public class Package {
      */
     @JsonProperty("tags")
     @JsonPropertyDescription("List of free text style tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\nTags that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags;
     /**
      * Labels
      * <p>

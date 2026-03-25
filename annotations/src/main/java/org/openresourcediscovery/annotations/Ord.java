@@ -488,7 +488,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface Package {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "ordId", "title", "shortDescription", "description", "version", "vendor" };
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
@@ -559,7 +559,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface ConsumptionBundle {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "ordId", "title" };
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
@@ -606,7 +606,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface ApiResource {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "ordId", "title", "shortDescription", "description", "version", "releaseStatus", "apiProtocol", "visibility", "partOfPackage" };
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
@@ -754,7 +754,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface EventResource {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "ordId", "title", "shortDescription", "description", "version", "visibility", "partOfPackage", "releaseStatus" };
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
@@ -887,7 +887,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface EntityType {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "ordId", "localId", "level", "title", "version", "visibility", "partOfPackage", "releaseStatus" };
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
@@ -975,7 +975,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface DataProduct {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "ordId", "type", "category", "title", "shortDescription", "description", "version", "releaseStatus", "visibility", "partOfPackage", "responsible", "outputPorts" };
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
@@ -1097,7 +1097,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface Agent {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "ordId", "title", "version", "releaseStatus", "visibility", "partOfPackage" };
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
@@ -1195,7 +1195,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface Product {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "ordId", "title", "shortDescription", "vendor" };
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
@@ -1230,7 +1230,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface Capability {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "ordId", "type", "title", "version", "releaseStatus", "visibility", "partOfPackage" };
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
@@ -1304,7 +1304,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface IntegrationDependency {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "ordId", "title", "version", "releaseStatus", "visibility", "partOfPackage", "mandatory" };
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
@@ -1372,7 +1372,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface Vendor {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "ordId", "title" };
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
@@ -1395,7 +1395,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface SystemInstance {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default {};
     /** Optional [base URL](../index.md#base-url) of the **system instance**. By providing the base URL, relative URLs in the document are resolved relative to it.  The `baseUrl` MUST not contain a leading slash.  MUST be provided if the base URL is not known to the ORD aggregators. MUST be provided when the document needs to be fully self contained, e.g. when used for manual imports. */
@@ -1418,7 +1418,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface SystemType {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default {};
     /** The [system namespace](../index.md#system-namespace) is a unique identifier for the system type. It is used to reference the system type in the ORD. */
@@ -1438,7 +1438,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface SystemVersion {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default {};
     /** The version of the system instance (run-time) or the version of the described system-version perspective.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.  MUST be provided if the ORD document is `perspective`: `system-version`.  For continuous-delivery systems, the version MAY be fixed to the same value, e.g. `1.0.0`, but be aware that phased rollouts may benefit from a more precise versioning like adding a build number. */
@@ -1461,7 +1461,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface GroupType {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "groupTypeId", "title" };
     /** GroupType ID, which MUST be a valid [Concept ID](../../spec-v1/#concept-id). */
@@ -1485,7 +1485,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface Group {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "groupId", "groupTypeId", "title" };
     /** The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.  The first two fragments MUST be equal to the used Group Type ID (`groupTypeId`). The last two fragments MUST be a valid [Concept ID](../../spec-v1/#concept-id), indicating the group instance assignment.  The ID concept is a bit unusual, but it ensures globally unique and conflict-free group assignments. */
@@ -1512,7 +1512,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   public @interface Tombstone {
-    DocumentReference partOfDocuments() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default { "removalDate" };
     /** [ORD ID](../index.md#ord-id) of the ORD resource/taxonomy that has been removed. */

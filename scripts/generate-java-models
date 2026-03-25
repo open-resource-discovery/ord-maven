@@ -33,6 +33,7 @@ function main() {
   _assert_success mvn org.jsonschema2pojo:jsonschema2pojo-maven-plugin:generate \
       -Djsonschema2pojo.removeOldOutput=true \
       -Djsonschema2pojo.generateBuilders=true \
+      -Djsonschema2pojo.initializeCollections=false \
       -Djsonschema2pojo.targetPackage=org.openresourcediscovery.model \
       -Djsonschema2pojo.outputDirectory="${PROJECT_ROOT}/models/src/main/java" \
       -Djsonschema2pojo.sourceDirectory="${PROJECT_ROOT}/models/static/spec-v1/interfaces/Document.schema.json"
