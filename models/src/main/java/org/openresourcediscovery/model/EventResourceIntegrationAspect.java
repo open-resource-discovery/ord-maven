@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -50,7 +49,7 @@ public class EventResourceIntegrationAspect {
      */
     @JsonProperty("subset")
     @JsonPropertyDescription("List of individual events or messages that are sufficient to achieve the aspect.")
-    private List<EventResourceIntegrationAspectSubset> subset = new ArrayList<EventResourceIntegrationAspectSubset>();
+    private List<EventResourceIntegrationAspectSubset> subset;
     /**
      * In case that the event subscriptions are limited to known [system types](../index.md#system-type), they can be listed here as [system namespaces](../index.md#system-namespace).
      * 
@@ -60,7 +59,7 @@ public class EventResourceIntegrationAspect {
      */
     @JsonProperty("systemTypeRestriction")
     @JsonPropertyDescription("In case that the event subscriptions are limited to known [system types](../index.md#system-type), they can be listed here as [system namespaces](../index.md#system-namespace).\n\nIf given, only system types of the defined namespaces are supported as integration partners.\nIf not given, there is no restriction which system type provides the events.")
-    private List<String> systemTypeRestriction = new ArrayList<String>();
+    private List<String> systemTypeRestriction;
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.

@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,98 +158,98 @@ public class DocumentSchema {
      */
     @JsonProperty("policyLevels")
     @JsonPropertyDescription("A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
-    private List<String> policyLevels = new ArrayList<String>();
+    private List<String> policyLevels;
     /**
      * Array of all API Resources that are described in this ORD document.
      * 
      */
     @JsonProperty("apiResources")
     @JsonPropertyDescription("Array of all API Resources that are described in this ORD document.")
-    private List<ApiResource> apiResources = new ArrayList<ApiResource>();
+    private List<ApiResource> apiResources;
     /**
      * Array of all event resources that are described in this ORD document.
      * 
      */
     @JsonProperty("eventResources")
     @JsonPropertyDescription("Array of all event resources that are described in this ORD document.")
-    private List<EventResource> eventResources = new ArrayList<EventResource>();
+    private List<EventResource> eventResources;
     /**
      * Array of all entity types that are described in this ORD document.
      * 
      */
     @JsonProperty("entityTypes")
     @JsonPropertyDescription("Array of all entity types that are described in this ORD document.")
-    private List<EntityType> entityTypes = new ArrayList<EntityType>();
+    private List<EntityType> entityTypes;
     /**
      * Array of all capabilities that are described in this ORD document.
      * 
      */
     @JsonProperty("capabilities")
     @JsonPropertyDescription("Array of all capabilities that are described in this ORD document.")
-    private List<Capability> capabilities = new ArrayList<Capability>();
+    private List<Capability> capabilities;
     /**
      * Array of all data products that are described in this ORD document.
      * 
      */
     @JsonProperty("dataProducts")
     @JsonPropertyDescription("Array of all data products that are described in this ORD document.")
-    private List<DataProduct> dataProducts = new ArrayList<DataProduct>();
+    private List<DataProduct> dataProducts;
     /**
      * Array of all AI Agents that are described in this ORD document.
      * 
      */
     @JsonProperty("agents")
     @JsonPropertyDescription("Array of all AI Agents that are described in this ORD document.")
-    private List<Agent> agents = new ArrayList<Agent>();
+    private List<Agent> agents;
     /**
      * Array of all integration dependencies that are described in this ORD document.
      * 
      */
     @JsonProperty("integrationDependencies")
     @JsonPropertyDescription("Array of all integration dependencies that are described in this ORD document.")
-    private List<IntegrationDependency> integrationDependencies = new ArrayList<IntegrationDependency>();
+    private List<IntegrationDependency> integrationDependencies;
     /**
      * Array of all Vendors that are described in this ORD document.
      * 
      */
     @JsonProperty("vendors")
     @JsonPropertyDescription("Array of all Vendors that are described in this ORD document.")
-    private List<Vendor> vendors = new ArrayList<Vendor>();
+    private List<Vendor> vendors;
     /**
      * Array of all Products that are described in this ORD document.
      * 
      */
     @JsonProperty("products")
     @JsonPropertyDescription("Array of all Products that are described in this ORD document.")
-    private List<Product> products = new ArrayList<Product>();
+    private List<Product> products;
     /**
      * Array of all Packages that are described in this ORD document.
      * 
      */
     @JsonProperty("packages")
     @JsonPropertyDescription("Array of all Packages that are described in this ORD document.")
-    private List<Package> packages = new ArrayList<Package>();
+    private List<Package> packages;
     /**
      * Array of all Consumption Bundles that are described in this ORD document.
      * 
      */
     @JsonProperty("consumptionBundles")
     @JsonPropertyDescription("Array of all Consumption Bundles that are described in this ORD document.")
-    private List<ConsumptionBundle> consumptionBundles = new ArrayList<ConsumptionBundle>();
+    private List<ConsumptionBundle> consumptionBundles;
     /**
      * Array of all Groups that are described in this ORD document.
      * 
      */
     @JsonProperty("groups")
     @JsonPropertyDescription("Array of all Groups that are described in this ORD document.")
-    private List<Group> groups = new ArrayList<Group>();
+    private List<Group> groups;
     /**
      * Array of all Group Types that are described in this ORD document.
      * 
      */
     @JsonProperty("groupTypes")
     @JsonPropertyDescription("Array of all Group Types that are described in this ORD document.")
-    private List<GroupType> groupTypes = new ArrayList<GroupType>();
+    private List<GroupType> groupTypes;
     /**
      * List of ORD information (resources or taxonomy) that have been "tombstoned", indicating removal or archival.
      * This MUST be indicated explicitly, just removing the ORD information itself is not sufficient.
@@ -260,7 +259,7 @@ public class DocumentSchema {
      */
     @JsonProperty("tombstones")
     @JsonPropertyDescription("List of ORD information (resources or taxonomy) that have been \"tombstoned\", indicating removal or archival.\nThis MUST be indicated explicitly, just removing the ORD information itself is not sufficient.\n\nA tombstone entry MAY be removed after a grace period of 31 days.")
-    private List<Tombstone> tombstones = new ArrayList<Tombstone>();
+    private List<Tombstone> tombstones;
 
     /**
      * Optional [URL](https://tools.ietf.org/html/rfc3986) to the Open Resource Discovery document schema (defined as a JSON Schema).

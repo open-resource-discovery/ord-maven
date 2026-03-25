@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -61,7 +60,7 @@ public class EntityTypeMapping {
      */
     @JsonProperty("apiModelSelectors")
     @JsonPropertyDescription("List of selectors for API models within an API Resource.\nIf multiple selectors are given, every selected API model maps to the entity type target(s).\nIf omitted, the complete API resource will be mapped to the `entityTypeTargets` (less specific).\n\nMultiple selectors can be useful, e.g. with a CRUD REST API, to combine the similar API models.\n\nDepending on the chosen API protocol and the available resource definition formats,\ndifferent kind of selectors need to be used.")
-    private List<Object> apiModelSelectors = new ArrayList<Object>();
+    private List<Object> apiModelSelectors;
     /**
      * List of entity types the ORD resource maps to.
      * If `apiModelSelectors` are given, the mapping is more precise by also pointing to the specific model in the API.
@@ -75,7 +74,7 @@ public class EntityTypeMapping {
      */
     @JsonProperty("entityTypeTargets")
     @JsonPropertyDescription("List of entity types the ORD resource maps to.\nIf `apiModelSelectors` are given, the mapping is more precise by also pointing to the specific model in the API.\n\nIf multiple entity types are defined as the mapping target,\nall of them can be at least partially mapped to the source API model(s).\n\nEntity types can be referenced using either using an [ORD ID](../index.md#ord-id) or a [Correlation ID](../index.md#correlation-id).")
-    private List<Object> entityTypeTargets = new ArrayList<Object>();
+    private List<Object> entityTypeTargets;
 
     /**
      * List of selectors for API models within an API Resource.
