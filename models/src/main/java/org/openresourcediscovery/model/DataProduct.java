@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -97,7 +96,7 @@ public class DataProduct {
      */
     @JsonProperty("correlationIds")
     @JsonPropertyDescription("Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
-    private List<String> correlationIds = new ArrayList<String>();
+    private List<String> correlationIds;
     /**
      * Human-readable title.
      * 
@@ -157,7 +156,7 @@ public class DataProduct {
      */
     @JsonProperty("partOfGroups")
     @JsonPropertyDescription("Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.")
-    private List<String> partOfGroups = new ArrayList<String>();
+    private List<String> partOfGroups;
     /**
      * List of products this Data Product is a part of or is related to, its e.g. data source systems.
      * 
@@ -168,7 +167,7 @@ public class DataProduct {
      */
     @JsonProperty("partOfProducts")
     @JsonPropertyDescription("List of products this Data Product is a part of or is related to, its e.g. data source systems.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> partOfProducts = new ArrayList<String>();
+    private List<String> partOfProducts;
     /**
      * The complete [SemVer](https://semver.org/) version string.
      * 
@@ -304,14 +303,14 @@ public class DataProduct {
      */
     @JsonProperty("successors")
     @JsonPropertyDescription("The successor resource(s).\n\nMUST be a valid reference to an ORD ID.\n\nIf the `releaseStatus` is set to `deprecated`, `successors` MUST be provided if one exists.\nIf `successors` is given, the described resource SHOULD set its `releaseStatus` to `deprecated`.")
-    private List<String> successors = new ArrayList<String>();
+    private List<String> successors;
     /**
      * Contains changelog entries that summarize changes with special regards to version and releaseStatus
      * 
      */
     @JsonProperty("changelogEntries")
     @JsonPropertyDescription("Contains changelog entries that summarize changes with special regards to version and releaseStatus")
-    private List<ChangelogEntry> changelogEntries = new ArrayList<ChangelogEntry>();
+    private List<ChangelogEntry> changelogEntries;
     /**
      * Type of the data product. Based on the type some properties of a data product may become optional/mandatory.
      * (Required)
@@ -336,7 +335,7 @@ public class DataProduct {
      */
     @JsonProperty("entityTypes")
     @JsonPropertyDescription("Aggregated list of entity types that are at least partially exposed by the data product. Detailed mapping can be found on the output port schema level.")
-    private List<String> entityTypes = new ArrayList<String>();
+    private List<String> entityTypes;
     /**
      * The input ports of a data product indicate the data inputs for lineage purposes.
      * 
@@ -349,7 +348,7 @@ public class DataProduct {
      */
     @JsonProperty("inputPorts")
     @JsonPropertyDescription("The input ports of a data product indicate the data inputs for lineage purposes.\n\nIt is a list of Integration Dependencies, whose aspects will form the actual input ports.\n\nInput ports can also be understood as the public interface to ingest data into the data product.\nData products of type `derived` consume data through the input ports. Different input ports allowing ingestion of different sub-sets building up the data-set for the data product.\nData products of type `base` might not have any input ports. Their data sets are typically based directly on the applications / services own data.")
-    private List<DataProductInputPort> inputPorts = new ArrayList<DataProductInputPort>();
+    private List<DataProductInputPort> inputPorts;
     /**
      * Output ports are the interface (APIs and Events) through which the data of the data product can be accessed.
      * 
@@ -363,7 +362,7 @@ public class DataProduct {
      */
     @JsonProperty("outputPorts")
     @JsonPropertyDescription("Output ports are the interface (APIs and Events) through which the data of the data product can be accessed.\n\nOutput ports of the same data product might produce different facets of the data set with different qualities.\nA data set can also be made available via different protocols, which also results in different ports.\n\nAs long as different output ports are accessing the same model beneath, they should belong to the same data product.\nIf the above criteria cannot be reasonably met, consider splitting the data product into multiple smaller data products.")
-    private List<DataProductOutputPort> outputPorts = new ArrayList<DataProductOutputPort>();
+    private List<DataProductOutputPort> outputPorts;
     /**
      * Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components.
      * (Required)
@@ -378,14 +377,14 @@ public class DataProduct {
      */
     @JsonProperty("dataProductLinks")
     @JsonPropertyDescription("Links with semantic meaning that are specific to Data Product Resources.")
-    private List<DataProductLink> dataProductLinks = new ArrayList<DataProductLink>();
+    private List<DataProductLink> dataProductLinks;
     /**
      * Generic Links with arbitrary meaning and content.
      * 
      */
     @JsonProperty("links")
     @JsonPropertyDescription("Generic Links with arbitrary meaning and content.")
-    private List<Link> links = new ArrayList<Link>();
+    private List<Link> links;
     /**
      * List of industry tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -395,7 +394,7 @@ public class DataProduct {
      */
     @JsonProperty("industry")
     @JsonPropertyDescription("List of industry tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`industry` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> industry = new ArrayList<String>();
+    private List<String> industry;
     /**
      * List of line of business tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -405,7 +404,7 @@ public class DataProduct {
      */
     @JsonProperty("lineOfBusiness")
     @JsonPropertyDescription("List of line of business tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`lineOfBusiness` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> lineOfBusiness = new ArrayList<String>();
+    private List<String> lineOfBusiness;
     /**
      * List of countries that the Package resources are applicable to.
      * 
@@ -416,7 +415,7 @@ public class DataProduct {
      */
     @JsonProperty("countries")
     @JsonPropertyDescription("List of countries that the Package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> countries = new ArrayList<String>();
+    private List<String> countries;
     /**
      * List of free text style tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -426,7 +425,7 @@ public class DataProduct {
      */
     @JsonProperty("tags")
     @JsonPropertyDescription("List of free text style tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\nTags that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags;
     /**
      * Labels
      * <p>
@@ -503,7 +502,7 @@ public class DataProduct {
      */
     @JsonProperty("policyLevels")
     @JsonPropertyDescription("A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
-    private List<String> policyLevels = new ArrayList<String>();
+    private List<String> policyLevels;
     /**
      * Defines whether this ORD resource is **system-instance-aware**.
      * This is the case when the referenced resource definitions are potentially different between **system instances**.

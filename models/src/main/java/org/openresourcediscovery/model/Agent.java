@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.processing.Generated;
@@ -93,7 +92,7 @@ public class Agent {
      */
     @JsonProperty("correlationIds")
     @JsonPropertyDescription("Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
-    private List<String> correlationIds = new ArrayList<String>();
+    private List<String> correlationIds;
     /**
      * Human-readable title.
      * 
@@ -151,7 +150,7 @@ public class Agent {
      */
     @JsonProperty("partOfGroups")
     @JsonPropertyDescription("Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.")
-    private List<String> partOfGroups = new ArrayList<String>();
+    private List<String> partOfGroups;
     /**
      * The complete [SemVer](https://semver.org/) version string.
      * 
@@ -192,20 +191,32 @@ public class Agent {
     @JsonPropertyDescription("Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.\n\nThe date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).\n\nWhen retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time.\nTherefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.\n\nIf the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.\n\nTogether with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators.")
     private Date lastUpdate;
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * (Required)
      * 
      */
     @JsonProperty("visibility")
-    @JsonPropertyDescription("The visibility states who is allowed to \"see\" the described resource or capability.")
+    @JsonPropertyDescription("Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.\n\nThis controls who can see that the resource exists and retrieve its metadata level information.\nIt does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.\n\nUse this to prevent exposing internal implementation details to inappropriate consumer audiences.")
     private String visibility;
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */
     @JsonProperty("releaseStatus")
-    @JsonPropertyDescription("The `releaseStatus` specifies the stability of the resource and its external contract.")
+    @JsonPropertyDescription("Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
     private String releaseStatus;
     /**
      * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
@@ -243,7 +254,7 @@ public class Agent {
      */
     @JsonProperty("partOfProducts")
     @JsonPropertyDescription("List of products the resources of the Package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> partOfProducts = new ArrayList<String>();
+    private List<String> partOfProducts;
     /**
      * Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components.
      * 
@@ -284,14 +295,14 @@ public class Agent {
      */
     @JsonProperty("successors")
     @JsonPropertyDescription("The successor resource(s).\n\nMUST be a valid reference to an ORD ID.\n\nIf the `releaseStatus` is set to `deprecated`, `successors` MUST be provided if one exists.\nIf `successors` is given, the described resource SHOULD set its `releaseStatus` to `deprecated`.")
-    private List<String> successors = new ArrayList<String>();
+    private List<String> successors;
     /**
      * Contains changelog entries that summarize changes with special regards to version and releaseStatus
      * 
      */
     @JsonProperty("changelogEntries")
     @JsonPropertyDescription("Contains changelog entries that summarize changes with special regards to version and releaseStatus")
-    private List<ChangelogEntry> changelogEntries = new ArrayList<ChangelogEntry>();
+    private List<ChangelogEntry> changelogEntries;
     /**
      * A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.
      * For each chosen policy level, additional expectations and validations rules will be applied.
@@ -303,7 +314,7 @@ public class Agent {
      */
     @JsonProperty("policyLevels")
     @JsonPropertyDescription("A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
-    private List<String> policyLevels = new ArrayList<String>();
+    private List<String> policyLevels;
     /**
      * List of countries that the Package resources are applicable to.
      * 
@@ -314,7 +325,7 @@ public class Agent {
      */
     @JsonProperty("countries")
     @JsonPropertyDescription("List of countries that the Package resources are applicable to.\n\nMUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).\n\n`countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> countries = new ArrayList<String>();
+    private List<String> countries;
     /**
      * List of line of business tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -324,7 +335,7 @@ public class Agent {
      */
     @JsonProperty("lineOfBusiness")
     @JsonPropertyDescription("List of line of business tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`lineOfBusiness` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> lineOfBusiness = new ArrayList<String>();
+    private List<String> lineOfBusiness;
     /**
      * List of industry tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -334,7 +345,7 @@ public class Agent {
      */
     @JsonProperty("industry")
     @JsonPropertyDescription("List of industry tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\n`industry` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> industry = new ArrayList<String>();
+    private List<String> industry;
     /**
      * Optional list of related EntityType Resources.
      * 
@@ -343,7 +354,7 @@ public class Agent {
      */
     @JsonProperty("relatedEntityTypes")
     @JsonPropertyDescription("Optional list of related EntityType Resources.\n\nMUST be a valid reference to an [EntityType Resource](#entity-type) ORD ID.")
-    private List<String> relatedEntityTypes = new ArrayList<String>();
+    private List<String> relatedEntityTypes;
     /**
      * Optional list of API Resources that expose the functionality of the agent. Typically using the A2A protocol, but other protocols are possible as well.
      * 
@@ -352,7 +363,7 @@ public class Agent {
      */
     @JsonProperty("exposedApiResources")
     @JsonPropertyDescription("Optional list of API Resources that expose the functionality of the agent. Typically using the A2A protocol, but other protocols are possible as well.\n\nMUST be a valid reference to an [API Resource](#api-resource) ORD ID.")
-    private List<ExposedApiResourcesTarget> exposedApiResources = new ArrayList<ExposedApiResourcesTarget>();
+    private List<ExposedApiResourcesTarget> exposedApiResources;
     /**
      * Optional list of integration dependencies that the agent relies on.
      * 
@@ -361,14 +372,14 @@ public class Agent {
      */
     @JsonProperty("integrationDependencies")
     @JsonPropertyDescription("Optional list of integration dependencies that the agent relies on.\n\nMUST be a valid reference to an [Integration Dependency](#integration-dependency) ORD ID.")
-    private List<String> integrationDependencies = new ArrayList<String>();
+    private List<String> integrationDependencies;
     /**
      * Generic Links with arbitrary meaning and content.
      * 
      */
     @JsonProperty("links")
     @JsonPropertyDescription("Generic Links with arbitrary meaning and content.")
-    private List<Link> links = new ArrayList<Link>();
+    private List<Link> links;
     /**
      * List of free text style tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -378,7 +389,7 @@ public class Agent {
      */
     @JsonProperty("tags")
     @JsonPropertyDescription("List of free text style tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\nTags that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags;
     /**
      * Labels
      * <p>
@@ -776,7 +787,12 @@ public class Agent {
     }
 
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * (Required)
      * 
      */
@@ -786,7 +802,12 @@ public class Agent {
     }
 
     /**
-     * The visibility states who is allowed to "see" the described resource or capability.
+     * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
+     * 
+     * This controls who can see that the resource exists and retrieve its metadata level information.
+     * It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.
+     * 
+     * Use this to prevent exposing internal implementation details to inappropriate consumer audiences.
      * (Required)
      * 
      */
@@ -801,7 +822,14 @@ public class Agent {
     }
 
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */
@@ -811,7 +839,14 @@ public class Agent {
     }
 
     /**
-     * The `releaseStatus` specifies the stability of the resource and its external contract.
+     * Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).
+     * 
+     * This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk
+     * of depending on the resource and whether it's suitable for production use.
+     * 
+     * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
+     * 
+     * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
      * (Required)
      * 
      */

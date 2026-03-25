@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -70,7 +69,7 @@ public class Vendor {
      */
     @JsonProperty("partners")
     @JsonPropertyDescription("Optional list of partner vendors, referenced through their ORD ID.\n\nMUST be a valid reference to a [Vendor](#vendor) ORD ID.\n\nThis property can be used to indicate partnership relations between vendors.")
-    private List<String> partners = new ArrayList<String>();
+    private List<String> partners;
     /**
      * List of free text style tags.
      * No special characters are allowed except `-`, `_`, `.`, `/` and ` `.
@@ -80,7 +79,7 @@ public class Vendor {
      */
     @JsonProperty("tags")
     @JsonPropertyDescription("List of free text style tags.\nNo special characters are allowed except `-`, `_`, `.`, `/` and ` `.\n\nTags that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
-    private List<String> tags = new ArrayList<String>();
+    private List<String> tags;
     /**
      * Labels
      * <p>

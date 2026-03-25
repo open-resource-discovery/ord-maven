@@ -1,7 +1,6 @@
 
 package org.openresourcediscovery.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -77,14 +76,14 @@ public class IntegrationAspect {
      */
     @JsonProperty("apiResources")
     @JsonPropertyDescription("List of API Resource Dependencies.")
-    private List<ApiResourceIntegrationAspect> apiResources = new ArrayList<ApiResourceIntegrationAspect>();
+    private List<ApiResourceIntegrationAspect> apiResources;
     /**
      * List of Event Resource Dependencies.
      * 
      */
     @JsonProperty("eventResources")
     @JsonPropertyDescription("List of Event Resource Dependencies.")
-    private List<EventResourceIntegrationAspect> eventResources = new ArrayList<EventResourceIntegrationAspect>();
+    private List<EventResourceIntegrationAspect> eventResources;
 
     /**
      * Human-readable title.
