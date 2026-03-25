@@ -361,6 +361,27 @@ public interface Ord {
     String id() default "ord-document";
 
     AccessStrategy[] accessStrategies() default { @AccessStrategy(type = "open") };
+
+    Group[] groups() default {};
+
+    Vendor[] vendors() default { };
+
+    Product[] products() default {};
+
+    Package[] packages() default {};
+
+    GroupType[] groupTypes() default {};
+
+    Tombstone[] tombstones() default {};
+
+    ConsumptionBundle[] consumptionBundles() default {};
+
+    SystemType describedSystemType() default @SystemType;
+
+    SystemVersion describedSystemVersion() default @SystemVersion;
+
+    SystemInstance describedSystemInstance() default @SystemInstance;
+
   }
 
   @Target(ElementType.TYPE)
