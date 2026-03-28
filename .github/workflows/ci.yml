@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
-          node-version: 24
+          node-version: 24.14.1
           cache-dependency-path: tools/annotation-gen/package-lock.json
 
       - name: Setup Maven Action
