@@ -39,6 +39,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "disabled",
     "minSystemVersion",
     "relatedEntityTypes",
+    "relatedApiResources",
+    "relatedEventResources",
+    "relatedCapabilities",
     "definitions",
     "links",
     "tags",
@@ -261,6 +264,33 @@ public class Capability {
     @JsonProperty("relatedEntityTypes")
     @JsonPropertyDescription("Optional list of related EntityType Resources.\nMUST be a valid reference to an [EntityType Resource](#entity-type) ORD ID.")
     private List<String> relatedEntityTypes;
+    /**
+     * Optional list of related API Resources.
+     * 
+     * Use this to indicate which APIs implement, expose, or are otherwise related to this capability.
+     * 
+     */
+    @JsonProperty("relatedApiResources")
+    @JsonPropertyDescription("Optional list of related API Resources.\n\nUse this to indicate which APIs implement, expose, or are otherwise related to this capability.")
+    private List<RelatedApiResource> relatedApiResources;
+    /**
+     * Optional list of related Event Resources.
+     * 
+     * Use this to indicate which events are emitted, consumed, or otherwise related to this capability.
+     * 
+     */
+    @JsonProperty("relatedEventResources")
+    @JsonPropertyDescription("Optional list of related Event Resources.\n\nUse this to indicate which events are emitted, consumed, or otherwise related to this capability.")
+    private List<RelatedEventResource> relatedEventResources;
+    /**
+     * Optional list of related Capabilities.
+     * 
+     * Use this to indicate dependencies, extensions, or other relationships between capabilities.
+     * 
+     */
+    @JsonProperty("relatedCapabilities")
+    @JsonPropertyDescription("Optional list of related Capabilities.\n\nUse this to indicate dependencies, extensions, or other relationships between capabilities.")
+    private List<RelatedCapability> relatedCapabilities;
     /**
      * List of available machine-readable definitions, which describe the resource or capability in detail.
      * See also [Resource Definitions](../index.md#resource-definitions) for more context.
@@ -932,6 +962,87 @@ public class Capability {
     }
 
     /**
+     * Optional list of related API Resources.
+     * 
+     * Use this to indicate which APIs implement, expose, or are otherwise related to this capability.
+     * 
+     */
+    @JsonProperty("relatedApiResources")
+    public List<RelatedApiResource> getRelatedApiResources() {
+        return relatedApiResources;
+    }
+
+    /**
+     * Optional list of related API Resources.
+     * 
+     * Use this to indicate which APIs implement, expose, or are otherwise related to this capability.
+     * 
+     */
+    @JsonProperty("relatedApiResources")
+    public void setRelatedApiResources(List<RelatedApiResource> relatedApiResources) {
+        this.relatedApiResources = relatedApiResources;
+    }
+
+    public Capability withRelatedApiResources(List<RelatedApiResource> relatedApiResources) {
+        this.relatedApiResources = relatedApiResources;
+        return this;
+    }
+
+    /**
+     * Optional list of related Event Resources.
+     * 
+     * Use this to indicate which events are emitted, consumed, or otherwise related to this capability.
+     * 
+     */
+    @JsonProperty("relatedEventResources")
+    public List<RelatedEventResource> getRelatedEventResources() {
+        return relatedEventResources;
+    }
+
+    /**
+     * Optional list of related Event Resources.
+     * 
+     * Use this to indicate which events are emitted, consumed, or otherwise related to this capability.
+     * 
+     */
+    @JsonProperty("relatedEventResources")
+    public void setRelatedEventResources(List<RelatedEventResource> relatedEventResources) {
+        this.relatedEventResources = relatedEventResources;
+    }
+
+    public Capability withRelatedEventResources(List<RelatedEventResource> relatedEventResources) {
+        this.relatedEventResources = relatedEventResources;
+        return this;
+    }
+
+    /**
+     * Optional list of related Capabilities.
+     * 
+     * Use this to indicate dependencies, extensions, or other relationships between capabilities.
+     * 
+     */
+    @JsonProperty("relatedCapabilities")
+    public List<RelatedCapability> getRelatedCapabilities() {
+        return relatedCapabilities;
+    }
+
+    /**
+     * Optional list of related Capabilities.
+     * 
+     * Use this to indicate dependencies, extensions, or other relationships between capabilities.
+     * 
+     */
+    @JsonProperty("relatedCapabilities")
+    public void setRelatedCapabilities(List<RelatedCapability> relatedCapabilities) {
+        this.relatedCapabilities = relatedCapabilities;
+    }
+
+    public Capability withRelatedCapabilities(List<RelatedCapability> relatedCapabilities) {
+        this.relatedCapabilities = relatedCapabilities;
+        return this;
+    }
+
+    /**
      * List of available machine-readable definitions, which describe the resource or capability in detail.
      * See also [Resource Definitions](../index.md#resource-definitions) for more context.
      * 
@@ -1241,6 +1352,18 @@ public class Capability {
         sb.append('=');
         sb.append(((this.relatedEntityTypes == null)?"<null>":this.relatedEntityTypes));
         sb.append(',');
+        sb.append("relatedApiResources");
+        sb.append('=');
+        sb.append(((this.relatedApiResources == null)?"<null>":this.relatedApiResources));
+        sb.append(',');
+        sb.append("relatedEventResources");
+        sb.append('=');
+        sb.append(((this.relatedEventResources == null)?"<null>":this.relatedEventResources));
+        sb.append(',');
+        sb.append("relatedCapabilities");
+        sb.append('=');
+        sb.append(((this.relatedCapabilities == null)?"<null>":this.relatedCapabilities));
+        sb.append(',');
         sb.append("definitions");
         sb.append('=');
         sb.append(((this.definitions == null)?"<null>":this.definitions));
@@ -1276,14 +1399,24 @@ public class Capability {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.visibility == null)? 0 :this.visibility.hashCode()));
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
         result = ((result* 31)+((this.partOfPackage == null)? 0 :this.partOfPackage.hashCode()));
-        result = ((result* 31)+((this.shortDescription == null)? 0 :this.shortDescription.hashCode()));
+        result = ((result* 31)+((this.relatedApiResources == null)? 0 :this.relatedApiResources.hashCode()));
         result = ((result* 31)+((this.type == null)? 0 :this.type.hashCode()));
         result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
         result = ((result* 31)+((this.ordId == null)? 0 :this.ordId.hashCode()));
         result = ((result* 31)+((this.localId == null)? 0 :this.localId.hashCode()));
+        result = ((result* 31)+((this.relatedEventResources == null)? 0 :this.relatedEventResources.hashCode()));
+        result = ((result* 31)+((this.correlationIds == null)? 0 :this.correlationIds.hashCode()));
+        result = ((result* 31)+((this.releaseStatus == null)? 0 :this.releaseStatus.hashCode()));
+        result = ((result* 31)+((this.relatedEntityTypes == null)? 0 :this.relatedEntityTypes.hashCode()));
+        result = ((result* 31)+((this.relatedCapabilities == null)? 0 :this.relatedCapabilities.hashCode()));
+        result = ((result* 31)+((this.disabled == null)? 0 :this.disabled.hashCode()));
+        result = ((result* 31)+((this.links == null)? 0 :this.links.hashCode()));
+        result = ((result* 31)+((this.minSystemVersion == null)? 0 :this.minSystemVersion.hashCode()));
+        result = ((result* 31)+((this.definitions == null)? 0 :this.definitions.hashCode()));
+        result = ((result* 31)+((this.visibility == null)? 0 :this.visibility.hashCode()));
+        result = ((result* 31)+((this.shortDescription == null)? 0 :this.shortDescription.hashCode()));
         result = ((result* 31)+((this.version == null)? 0 :this.version.hashCode()));
         result = ((result* 31)+((this.systemInstanceAware == null)? 0 :this.systemInstanceAware.hashCode()));
         result = ((result* 31)+((this.partOfGroups == null)? 0 :this.partOfGroups.hashCode()));
@@ -1291,14 +1424,7 @@ public class Capability {
         result = ((result* 31)+((this.labels == null)? 0 :this.labels.hashCode()));
         result = ((result* 31)+((this.documentationLabels == null)? 0 :this.documentationLabels.hashCode()));
         result = ((result* 31)+((this.customType == null)? 0 :this.customType.hashCode()));
-        result = ((result* 31)+((this.correlationIds == null)? 0 :this.correlationIds.hashCode()));
         result = ((result* 31)+((this.lastUpdate == null)? 0 :this.lastUpdate.hashCode()));
-        result = ((result* 31)+((this.releaseStatus == null)? 0 :this.releaseStatus.hashCode()));
-        result = ((result* 31)+((this.relatedEntityTypes == null)? 0 :this.relatedEntityTypes.hashCode()));
-        result = ((result* 31)+((this.disabled == null)? 0 :this.disabled.hashCode()));
-        result = ((result* 31)+((this.links == null)? 0 :this.links.hashCode()));
-        result = ((result* 31)+((this.minSystemVersion == null)? 0 :this.minSystemVersion.hashCode()));
-        result = ((result* 31)+((this.definitions == null)? 0 :this.definitions.hashCode()));
         return result;
     }
 
@@ -1311,7 +1437,7 @@ public class Capability {
             return false;
         }
         Capability rhs = ((Capability) other);
-        return ((((((((((((((((((((((((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.partOfPackage == rhs.partOfPackage)||((this.partOfPackage!= null)&&this.partOfPackage.equals(rhs.partOfPackage))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.systemInstanceAware == rhs.systemInstanceAware)||((this.systemInstanceAware!= null)&&this.systemInstanceAware.equals(rhs.systemInstanceAware))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.lastUpdate == rhs.lastUpdate)||((this.lastUpdate!= null)&&this.lastUpdate.equals(rhs.lastUpdate))))&&((this.releaseStatus == rhs.releaseStatus)||((this.releaseStatus!= null)&&this.releaseStatus.equals(rhs.releaseStatus))))&&((this.relatedEntityTypes == rhs.relatedEntityTypes)||((this.relatedEntityTypes!= null)&&this.relatedEntityTypes.equals(rhs.relatedEntityTypes))))&&((this.disabled == rhs.disabled)||((this.disabled!= null)&&this.disabled.equals(rhs.disabled))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.minSystemVersion == rhs.minSystemVersion)||((this.minSystemVersion!= null)&&this.minSystemVersion.equals(rhs.minSystemVersion))))&&((this.definitions == rhs.definitions)||((this.definitions!= null)&&this.definitions.equals(rhs.definitions))));
+        return (((((((((((((((((((((((((((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description)))&&((this.partOfPackage == rhs.partOfPackage)||((this.partOfPackage!= null)&&this.partOfPackage.equals(rhs.partOfPackage))))&&((this.relatedApiResources == rhs.relatedApiResources)||((this.relatedApiResources!= null)&&this.relatedApiResources.equals(rhs.relatedApiResources))))&&((this.type == rhs.type)||((this.type!= null)&&this.type.equals(rhs.type))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.relatedEventResources == rhs.relatedEventResources)||((this.relatedEventResources!= null)&&this.relatedEventResources.equals(rhs.relatedEventResources))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.releaseStatus == rhs.releaseStatus)||((this.releaseStatus!= null)&&this.releaseStatus.equals(rhs.releaseStatus))))&&((this.relatedEntityTypes == rhs.relatedEntityTypes)||((this.relatedEntityTypes!= null)&&this.relatedEntityTypes.equals(rhs.relatedEntityTypes))))&&((this.relatedCapabilities == rhs.relatedCapabilities)||((this.relatedCapabilities!= null)&&this.relatedCapabilities.equals(rhs.relatedCapabilities))))&&((this.disabled == rhs.disabled)||((this.disabled!= null)&&this.disabled.equals(rhs.disabled))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.minSystemVersion == rhs.minSystemVersion)||((this.minSystemVersion!= null)&&this.minSystemVersion.equals(rhs.minSystemVersion))))&&((this.definitions == rhs.definitions)||((this.definitions!= null)&&this.definitions.equals(rhs.definitions))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.systemInstanceAware == rhs.systemInstanceAware)||((this.systemInstanceAware!= null)&&this.systemInstanceAware.equals(rhs.systemInstanceAware))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.customType == rhs.customType)||((this.customType!= null)&&this.customType.equals(rhs.customType))))&&((this.lastUpdate == rhs.lastUpdate)||((this.lastUpdate!= null)&&this.lastUpdate.equals(rhs.lastUpdate))));
     }
 
 }

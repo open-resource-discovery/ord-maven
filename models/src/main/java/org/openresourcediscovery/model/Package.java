@@ -41,6 +41,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "policyLevels",
     "packageLinks",
     "links",
+    "files",
     "licenseType",
     "supportInfo",
     "vendor",
@@ -183,6 +184,13 @@ public class Package {
     @JsonProperty("links")
     @JsonPropertyDescription("Generic links with arbitrary meaning and content.\n\n`packageLinks` MUST be preferred if applicable.")
     private List<Link> links;
+    /**
+     * Generic list of files with arbitrary meaning and content. Meant to be used for linking PDFs, Word or similar content. This option MUST NOT be used for linking the actual metadata files like OpenAPI, AsyncAPI, CSN, etc.
+     * 
+     */
+    @JsonProperty("files")
+    @JsonPropertyDescription("Generic list of files with arbitrary meaning and content. Meant to be used for linking PDFs, Word or similar content. This option MUST NOT be used for linking the actual metadata files like OpenAPI, AsyncAPI, CSN, etc.")
+    private List<File> files;
     /**
      * Standardized identifier for the license.
      * It MUST conform to the [SPDX License List](https://spdx.org/licenses).
@@ -677,6 +685,29 @@ public class Package {
     }
 
     /**
+     * Generic list of files with arbitrary meaning and content. Meant to be used for linking PDFs, Word or similar content. This option MUST NOT be used for linking the actual metadata files like OpenAPI, AsyncAPI, CSN, etc.
+     * 
+     */
+    @JsonProperty("files")
+    public List<File> getFiles() {
+        return files;
+    }
+
+    /**
+     * Generic list of files with arbitrary meaning and content. Meant to be used for linking PDFs, Word or similar content. This option MUST NOT be used for linking the actual metadata files like OpenAPI, AsyncAPI, CSN, etc.
+     * 
+     */
+    @JsonProperty("files")
+    public void setFiles(List<File> files) {
+        this.files = files;
+    }
+
+    public Package withFiles(List<File> files) {
+        this.files = files;
+        return this;
+    }
+
+    /**
      * Standardized identifier for the license.
      * It MUST conform to the [SPDX License List](https://spdx.org/licenses).
      * 
@@ -1101,6 +1132,10 @@ public class Package {
         sb.append('=');
         sb.append(((this.links == null)?"<null>":this.links));
         sb.append(',');
+        sb.append("files");
+        sb.append('=');
+        sb.append(((this.files == null)?"<null>":this.files));
+        sb.append(',');
         sb.append("licenseType");
         sb.append('=');
         sb.append(((this.licenseType == null)?"<null>":this.licenseType));
@@ -1174,6 +1209,7 @@ public class Package {
         result = ((result* 31)+((this.licenseType == null)? 0 :this.licenseType.hashCode()));
         result = ((result* 31)+((this.documentationLabels == null)? 0 :this.documentationLabels.hashCode()));
         result = ((result* 31)+((this.vendor == null)? 0 :this.vendor.hashCode()));
+        result = ((result* 31)+((this.files == null)? 0 :this.files.hashCode()));
         result = ((result* 31)+((this.links == null)? 0 :this.links.hashCode()));
         result = ((result* 31)+((this.runtimeRestriction == null)? 0 :this.runtimeRestriction.hashCode()));
         result = ((result* 31)+((this.packageLinks == null)? 0 :this.packageLinks.hashCode()));
@@ -1190,7 +1226,7 @@ public class Package {
             return false;
         }
         Package rhs = ((Package) other);
-        return (((((((((((((((((((((((this.lineOfBusiness == rhs.lineOfBusiness)||((this.lineOfBusiness!= null)&&this.lineOfBusiness.equals(rhs.lineOfBusiness)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.industry == rhs.industry)||((this.industry!= null)&&this.industry.equals(rhs.industry))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.countries == rhs.countries)||((this.countries!= null)&&this.countries.equals(rhs.countries))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.partOfProducts == rhs.partOfProducts)||((this.partOfProducts!= null)&&this.partOfProducts.equals(rhs.partOfProducts))))&&((this.licenseType == rhs.licenseType)||((this.licenseType!= null)&&this.licenseType.equals(rhs.licenseType))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.vendor == rhs.vendor)||((this.vendor!= null)&&this.vendor.equals(rhs.vendor))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.runtimeRestriction == rhs.runtimeRestriction)||((this.runtimeRestriction!= null)&&this.runtimeRestriction.equals(rhs.runtimeRestriction))))&&((this.packageLinks == rhs.packageLinks)||((this.packageLinks!= null)&&this.packageLinks.equals(rhs.packageLinks))))&&((this.supportInfo == rhs.supportInfo)||((this.supportInfo!= null)&&this.supportInfo.equals(rhs.supportInfo))));
+        return ((((((((((((((((((((((((this.lineOfBusiness == rhs.lineOfBusiness)||((this.lineOfBusiness!= null)&&this.lineOfBusiness.equals(rhs.lineOfBusiness)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.industry == rhs.industry)||((this.industry!= null)&&this.industry.equals(rhs.industry))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.countries == rhs.countries)||((this.countries!= null)&&this.countries.equals(rhs.countries))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.partOfProducts == rhs.partOfProducts)||((this.partOfProducts!= null)&&this.partOfProducts.equals(rhs.partOfProducts))))&&((this.licenseType == rhs.licenseType)||((this.licenseType!= null)&&this.licenseType.equals(rhs.licenseType))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.vendor == rhs.vendor)||((this.vendor!= null)&&this.vendor.equals(rhs.vendor))))&&((this.files == rhs.files)||((this.files!= null)&&this.files.equals(rhs.files))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.runtimeRestriction == rhs.runtimeRestriction)||((this.runtimeRestriction!= null)&&this.runtimeRestriction.equals(rhs.runtimeRestriction))))&&((this.packageLinks == rhs.packageLinks)||((this.packageLinks!= null)&&this.packageLinks.equals(rhs.packageLinks))))&&((this.supportInfo == rhs.supportInfo)||((this.supportInfo!= null)&&this.supportInfo.equals(rhs.supportInfo))));
     }
 
 }

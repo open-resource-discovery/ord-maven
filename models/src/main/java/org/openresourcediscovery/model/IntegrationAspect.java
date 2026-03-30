@@ -28,7 +28,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "mandatory",
     "supportMultipleProviders",
     "apiResources",
-    "eventResources"
+    "eventResources",
+    "capabilities"
 })
 @Generated("jsonschema2pojo")
 public class IntegrationAspect {
@@ -84,6 +85,13 @@ public class IntegrationAspect {
     @JsonProperty("eventResources")
     @JsonPropertyDescription("List of Event Resource Dependencies.")
     private List<EventResourceIntegrationAspect> eventResources;
+    /**
+     * List of Capability Dependencies.
+     * 
+     */
+    @JsonProperty("capabilities")
+    @JsonPropertyDescription("List of Capability Dependencies.")
+    private List<CapabilityIntegrationAspect> capabilities;
 
     /**
      * Human-readable title.
@@ -241,6 +249,29 @@ public class IntegrationAspect {
         return this;
     }
 
+    /**
+     * List of Capability Dependencies.
+     * 
+     */
+    @JsonProperty("capabilities")
+    public List<CapabilityIntegrationAspect> getCapabilities() {
+        return capabilities;
+    }
+
+    /**
+     * List of Capability Dependencies.
+     * 
+     */
+    @JsonProperty("capabilities")
+    public void setCapabilities(List<CapabilityIntegrationAspect> capabilities) {
+        this.capabilities = capabilities;
+    }
+
+    public IntegrationAspect withCapabilities(List<CapabilityIntegrationAspect> capabilities) {
+        this.capabilities = capabilities;
+        return this;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -269,6 +300,10 @@ public class IntegrationAspect {
         sb.append('=');
         sb.append(((this.eventResources == null)?"<null>":this.eventResources));
         sb.append(',');
+        sb.append("capabilities");
+        sb.append('=');
+        sb.append(((this.capabilities == null)?"<null>":this.capabilities));
+        sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -280,6 +315,7 @@ public class IntegrationAspect {
     @Override
     public int hashCode() {
         int result = 1;
+        result = ((result* 31)+((this.capabilities == null)? 0 :this.capabilities.hashCode()));
         result = ((result* 31)+((this.apiResources == null)? 0 :this.apiResources.hashCode()));
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
         result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
@@ -298,7 +334,7 @@ public class IntegrationAspect {
             return false;
         }
         IntegrationAspect rhs = ((IntegrationAspect) other);
-        return (((((((this.apiResources == rhs.apiResources)||((this.apiResources!= null)&&this.apiResources.equals(rhs.apiResources)))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.mandatory == rhs.mandatory)||((this.mandatory!= null)&&this.mandatory.equals(rhs.mandatory))))&&((this.eventResources == rhs.eventResources)||((this.eventResources!= null)&&this.eventResources.equals(rhs.eventResources))))&&((this.supportMultipleProviders == rhs.supportMultipleProviders)||((this.supportMultipleProviders!= null)&&this.supportMultipleProviders.equals(rhs.supportMultipleProviders))));
+        return ((((((((this.capabilities == rhs.capabilities)||((this.capabilities!= null)&&this.capabilities.equals(rhs.capabilities)))&&((this.apiResources == rhs.apiResources)||((this.apiResources!= null)&&this.apiResources.equals(rhs.apiResources))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.mandatory == rhs.mandatory)||((this.mandatory!= null)&&this.mandatory.equals(rhs.mandatory))))&&((this.eventResources == rhs.eventResources)||((this.eventResources!= null)&&this.eventResources.equals(rhs.eventResources))))&&((this.supportMultipleProviders == rhs.supportMultipleProviders)||((this.supportMultipleProviders!= null)&&this.supportMultipleProviders.equals(rhs.supportMultipleProviders))));
     }
 
 }

@@ -114,6 +114,8 @@
             ],
             "default": "none",
             "x-introduced-in-version": "1.3.0",
+            "x-deprecation-text": "ORD now support multiple policy levels. Use `policyLevels` (plural) instead.",
+            "x-deprecated-in-version": "1.9.9",
             "examples": [
                 "sap:core:v1"
             ]
@@ -124,6 +126,8 @@
             "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
             "maxLength": 255,
             "x-introduced-in-version": "1.3.0",
+            "x-deprecation-text": "ORD now support multiple policy levels. Use `policyLevels` (plural) instead.",
+            "x-deprecated-in-version": "1.9.9",
             "examples": [
                 "sap.xref:customPolicy:v1"
             ]
@@ -336,6 +340,8 @@
                     ],
                     "default": "none",
                     "x-introduced-in-version": "1.3.0",
+                    "x-deprecation-text": "ORD now support multiple policy levels. Use `policyLevels` (plural) instead.",
+                    "x-deprecated-in-version": "1.9.9",
                     "examples": [
                         "sap:core:v1"
                     ]
@@ -346,6 +352,8 @@
                     "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
                     "maxLength": 255,
                     "x-introduced-in-version": "1.3.0",
+                    "x-deprecation-text": "ORD now support multiple policy levels. Use `policyLevels` (plural) instead.",
+                    "x-deprecated-in-version": "1.9.9",
                     "examples": [
                         "sap.xref:customPolicy:v1"
                     ]
@@ -375,6 +383,14 @@
                     "description": "Generic links with arbitrary meaning and content.\n\n`packageLinks` MUST be preferred if applicable.",
                     "items": {
                         "$ref": "#/definitions/Link"
+                    }
+                },
+                "files": {
+                    "type": "array",
+                    "x-introduced-in-version": "1.14.2",
+                    "description": "Generic list of files with arbitrary meaning and content. Meant to be used for linking PDFs, Word or similar content. This option MUST NOT be used for linking the actual metadata files like OpenAPI, AsyncAPI, CSN, etc.",
+                    "items": {
+                        "$ref": "#/definitions/File"
                     }
                 },
                 "licenseType": {
@@ -1026,8 +1042,13 @@
                     "description": "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.",
                     "oneOf": [
                         {
+                            "const": "development",
+                            "x-introduced-in-version": "1.14.2",
+                            "description": "The resource is unreleased and under active development. The API contract is unstable and subject to\nbreaking changes at any time. Not intended for consumption outside of the development team."
+                        },
+                        {
                             "const": "beta",
-                            "description": "The API contract has no stability guarantees. Breaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
+                            "description": "The API contract is released / available to consumers, but has no final stability guarantees.\nBreaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
                         },
                         {
                             "const": "active",
@@ -1335,6 +1356,8 @@
                 "entityTypeMappings": {
                     "type": "array",
                     "x-introduced-in-version": "1.6.0",
+                    "x-deprecated-in-version": "1.11.0",
+                    "x-deprecation-text": "Use the simplified `exposedEntityTypes` instead.",
                     "description": "Describes mappings between the API Models of the described resource to the underlying, conceptual entity types.",
                     "items": {
                         "$ref": "#/definitions/EntityTypeMapping"
@@ -1628,6 +1651,8 @@
                     ],
                     "default": "none",
                     "x-introduced-in-version": "1.3.0",
+                    "x-deprecation-text": "ORD now support multiple policy levels. Use `policyLevels` (plural) instead.",
+                    "x-deprecated-in-version": "1.9.9",
                     "examples": [
                         "sap:core:v1"
                     ]
@@ -1638,6 +1663,8 @@
                     "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
                     "maxLength": 255,
                     "x-introduced-in-version": "1.3.0",
+                    "x-deprecation-text": "ORD now support multiple policy levels. Use `policyLevels` (plural) instead.",
+                    "x-deprecated-in-version": "1.9.9",
                     "examples": [
                         "sap.xref:customPolicy:v1"
                     ]
@@ -1659,6 +1686,8 @@
                     "type": "boolean",
                     "description": "Defines whether this ORD resource is **system-instance-aware**.\nThis is the case when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.\n\nThis concept is now **deprecated** in favor of the more explicit `perspective` attribute.\nAll resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.\n\nFor more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).",
                     "default": false,
+                    "x-deprecated-in-version": "1.12.0",
+                    "x-deprecation-text": "Use `perspectives` instead (see [perspectives](../concepts/perspectives) article).",
                     "examples": [
                         true
                     ]
@@ -1858,8 +1887,13 @@
                     "description": "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.",
                     "oneOf": [
                         {
+                            "const": "development",
+                            "x-introduced-in-version": "1.14.2",
+                            "description": "The resource is unreleased and under active development. The API contract is unstable and subject to\nbreaking changes at any time. Not intended for consumption outside of the development team."
+                        },
+                        {
                             "const": "beta",
-                            "description": "The API contract has no stability guarantees. Breaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
+                            "description": "The API contract is released / available to consumers, but has no final stability guarantees.\nBreaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
                         },
                         {
                             "const": "active",
@@ -2012,6 +2046,8 @@
                 "entityTypeMappings": {
                     "type": "array",
                     "x-introduced-in-version": "1.6.0",
+                    "x-deprecated-in-version": "1.11.0",
+                    "x-deprecation-text": "Use the simplified `exposedEntityTypes` instead.",
                     "description": "Describes mappings between the API Models of the described resource to the underlying, conceptual entity types.",
                     "items": {
                         "$ref": "#/definitions/EntityTypeMapping"
@@ -2306,6 +2342,8 @@
                     ],
                     "default": "none",
                     "x-introduced-in-version": "1.3.0",
+                    "x-deprecation-text": "ORD now support multiple policy levels. Use `policyLevels` (plural) instead.",
+                    "x-deprecated-in-version": "1.9.9",
                     "examples": [
                         "sap:core:v1"
                     ]
@@ -2316,6 +2354,8 @@
                     "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
                     "maxLength": 255,
                     "x-introduced-in-version": "1.3.0",
+                    "x-deprecation-text": "ORD now support multiple policy levels. Use `policyLevels` (plural) instead.",
+                    "x-deprecated-in-version": "1.9.9",
                     "examples": [
                         "sap.xref:customPolicy:v1"
                     ]
@@ -2337,6 +2377,8 @@
                     "type": "boolean",
                     "description": "Defines whether this ORD resource is **system-instance-aware**.\nThis is the case when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.\n\nThis concept is now **deprecated** in favor of the more explicit `perspective` attribute.\nAll resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.\n\nFor more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).",
                     "default": false,
+                    "x-deprecated-in-version": "1.12.0",
+                    "x-deprecation-text": "Use `perspectives` instead (see [perspectives](../concepts/perspectives) article).",
                     "examples": [
                         true
                     ]
@@ -2520,8 +2562,13 @@
                     "description": "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.",
                     "oneOf": [
                         {
+                            "const": "development",
+                            "x-introduced-in-version": "1.14.2",
+                            "description": "The resource is unreleased and under active development. The API contract is unstable and subject to\nbreaking changes at any time. Not intended for consumption outside of the development team."
+                        },
+                        {
                             "const": "beta",
-                            "description": "The API contract has no stability guarantees. Breaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
+                            "description": "The API contract is released / available to consumers, but has no final stability guarantees.\nBreaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
                         },
                         {
                             "const": "active",
@@ -2673,6 +2720,8 @@
                     ],
                     "default": "none",
                     "x-introduced-in-version": "1.3.0",
+                    "x-deprecation-text": "ORD now support multiple policy levels. Use `policyLevels` (plural) instead.",
+                    "x-deprecated-in-version": "1.9.9",
                     "examples": [
                         "sap:core:v1"
                     ]
@@ -2683,6 +2732,8 @@
                     "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
                     "maxLength": 255,
                     "x-introduced-in-version": "1.3.0",
+                    "x-deprecation-text": "ORD now support multiple policy levels. Use `policyLevels` (plural) instead.",
+                    "x-deprecated-in-version": "1.9.9",
                     "examples": [
                         "sap.xref:customPolicy:v1"
                     ]
@@ -2704,6 +2755,8 @@
                     "type": "boolean",
                     "description": "Defines whether this ORD resource is **system-instance-aware**.\nThis is the case when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.\n\nThis concept is now **deprecated** in favor of the more explicit `perspective` attribute.\nAll resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.\n\nFor more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).",
                     "default": false,
+                    "x-deprecated-in-version": "1.12.0",
+                    "x-deprecation-text": "Use `perspectives` instead (see [perspectives](../concepts/perspectives) article).",
                     "examples": [
                         true
                     ]
@@ -2873,8 +2926,13 @@
                     "description": "The `releaseStatus` specifies the stability towards incompatible changes in the future.\nIn the context of data products, it it covers only properties on the data product level.\nAPIs that are part of the input and output ports have their own independent `releaseStatus` and `version`.",
                     "oneOf": [
                         {
+                            "const": "development",
+                            "x-introduced-in-version": "1.14.2",
+                            "description": "The resource is unreleased and under active development. The API contract is unstable and subject to\nbreaking changes at any time. Not intended for consumption outside of the development team."
+                        },
+                        {
                             "const": "beta",
-                            "description": "The API contract has no stability guarantees. Breaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
+                            "description": "The API contract is released / available to consumers, but has no final stability guarantees.\nBreaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
                         },
                         {
                             "const": "active",
@@ -3384,6 +3442,8 @@
                     ],
                     "default": "none",
                     "x-introduced-in-version": "1.3.0",
+                    "x-deprecation-text": "ORD now support multiple policy levels. Use `policyLevels` (plural) instead.",
+                    "x-deprecated-in-version": "1.9.9",
                     "examples": [
                         "sap:core:v1"
                     ]
@@ -3395,6 +3455,8 @@
                     "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
                     "maxLength": 255,
                     "x-introduced-in-version": "1.3.0",
+                    "x-deprecation-text": "ORD now support multiple policy levels. Use `policyLevels` (plural) instead.",
+                    "x-deprecated-in-version": "1.9.9",
                     "examples": [
                         "sap.xref:customPolicy:v1"
                     ]
@@ -3417,6 +3479,8 @@
                     "type": "boolean",
                     "description": "Defines whether this ORD resource is **system-instance-aware**.\nThis is the case when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.\n\nThis concept is now **deprecated** in favor of the more explicit `perspective` attribute.\nAll resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.\n\nFor more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).",
                     "default": false,
+                    "x-deprecated-in-version": "1.12.0",
+                    "x-deprecation-text": "Use `perspectives` instead (see [perspectives](../concepts/perspectives) article).",
                     "examples": [
                         true
                     ]
@@ -3801,10 +3865,7 @@
                 "description": {
                     "type": "string",
                     "minLength": 1,
-                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.",
-                    "examples": [
-                        "SAP S/4HANA Cloud, our next generation cloud ERP suite designed for\nin-memory computing, acts as a digital core, connecting your\nenterprise with people, business networks, the Internet of Things,\nBig Data, and more.\n"
-                    ]
+                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links."
                 },
                 "partOfPackage": {
                     "type": "string",
@@ -3870,8 +3931,13 @@
                     "description": "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.",
                     "oneOf": [
                         {
+                            "const": "development",
+                            "x-introduced-in-version": "1.14.2",
+                            "description": "The resource is unreleased and under active development. The API contract is unstable and subject to\nbreaking changes at any time. Not intended for consumption outside of the development team."
+                        },
+                        {
                             "const": "beta",
-                            "description": "The API contract has no stability guarantees. Breaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
+                            "description": "The API contract is released / available to consumers, but has no final stability guarantees.\nBreaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
                         },
                         {
                             "const": "active",
@@ -4477,10 +4543,7 @@
                 "description": {
                     "type": "string",
                     "minLength": 1,
-                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.",
-                    "examples": [
-                        "SAP S/4HANA Cloud, our next generation cloud ERP suite designed for\nin-memory computing, acts as a digital core, connecting your\nenterprise with people, business networks, the Internet of Things,\nBig Data, and more.\n"
-                    ]
+                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links."
                 },
                 "partOfPackage": {
                     "type": "string",
@@ -4546,8 +4609,13 @@
                     "description": "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.",
                     "oneOf": [
                         {
+                            "const": "development",
+                            "x-introduced-in-version": "1.14.2",
+                            "description": "The resource is unreleased and under active development. The API contract is unstable and subject to\nbreaking changes at any time. Not intended for consumption outside of the development team."
+                        },
+                        {
                             "const": "beta",
-                            "description": "The API contract has no stability guarantees. Breaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
+                            "description": "The API contract is released / available to consumers, but has no final stability guarantees.\nBreaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
                         },
                         {
                             "const": "active",
@@ -4597,6 +4665,54 @@
                         ]
                     ]
                 },
+                "relatedApiResources": {
+                    "type": "array",
+                    "x-introduced-in-version": "1.14.2",
+                    "description": "Optional list of related API Resources.\n\nUse this to indicate which APIs implement, expose, or are otherwise related to this capability.",
+                    "items": {
+                        "$ref": "#/definitions/RelatedApiResource"
+                    },
+                    "examples": [
+                        [
+                            {
+                                "ordId": "sap.s4:apiResource:API_BUSINESS_PARTNER:v1",
+                                "relationType": "foo.bar:relationName"
+                            }
+                        ]
+                    ]
+                },
+                "relatedEventResources": {
+                    "type": "array",
+                    "x-introduced-in-version": "1.14.2",
+                    "description": "Optional list of related Event Resources.\n\nUse this to indicate which events are emitted, consumed, or otherwise related to this capability.",
+                    "items": {
+                        "$ref": "#/definitions/RelatedEventResource"
+                    },
+                    "examples": [
+                        [
+                            {
+                                "ordId": "sap.s4:eventResource:BusinessPartnerEvents:v1",
+                                "relationType": "foo.bar:relationName"
+                            }
+                        ]
+                    ]
+                },
+                "relatedCapabilities": {
+                    "type": "array",
+                    "x-introduced-in-version": "1.14.2",
+                    "description": "Optional list of related Capabilities.\n\nUse this to indicate dependencies, extensions, or other relationships between capabilities.",
+                    "items": {
+                        "$ref": "#/definitions/RelatedCapability"
+                    },
+                    "examples": [
+                        [
+                            {
+                                "ordId": "sap.foo:capability:baseExtensibility:v1",
+                                "relationType": "foo.bar:relationName"
+                            }
+                        ]
+                    ]
+                },
                 "definitions": {
                     "type": "array",
                     "description": "List of available machine-readable definitions, which describe the resource or capability in detail.\nSee also [Resource Definitions](../index.md#resource-definitions) for more context.\n\nEach definition is to be understood as an alternative description format, describing the same resource / capability.\nAs a consequence the same definition type MUST NOT be provided more than once.\nThe exception is when the same definition type is provided more than once, but with a different `visibility`.\n\nIt is RECOMMENDED to provide the definitions as they enable machine-readable use cases.\nIf the definitions are added or changed, the `version` MUST be incremented.\nAn ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.",
@@ -4636,6 +4752,8 @@
                     "type": "boolean",
                     "description": "Defines whether this ORD resource is **system-instance-aware**.\nThis is the case when the referenced resource definitions are potentially different between **system instances**.\n\nIf this behavior applies, `systemInstanceAware` MUST be set to true.\nAn ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.\n\nThis concept is now **deprecated** in favor of the more explicit `perspective` attribute.\nAll resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.\n\nFor more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives).",
                     "default": false,
+                    "x-deprecated-in-version": "1.12.0",
+                    "x-deprecation-text": "Use `perspectives` instead (see [perspectives](../concepts/perspectives) article).",
                     "examples": [
                         true
                     ]
@@ -4813,10 +4931,7 @@
                 "description": {
                     "type": "string",
                     "minLength": 1,
-                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.",
-                    "examples": [
-                        "SAP S/4HANA Cloud, our next generation cloud ERP suite designed for\nin-memory computing, acts as a digital core, connecting your\nenterprise with people, business networks, the Internet of Things,\nBig Data, and more.\n"
-                    ]
+                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links."
                 },
                 "partOfPackage": {
                     "type": "string",
@@ -4882,8 +4997,13 @@
                     "description": "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.",
                     "oneOf": [
                         {
+                            "const": "development",
+                            "x-introduced-in-version": "1.14.2",
+                            "description": "The resource is unreleased and under active development. The API contract is unstable and subject to\nbreaking changes at any time. Not intended for consumption outside of the development team."
+                        },
+                        {
                             "const": "beta",
-                            "description": "The API contract has no stability guarantees. Breaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
+                            "description": "The API contract is released / available to consumers, but has no final stability guarantees.\nBreaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
                         },
                         {
                             "const": "active",
@@ -5013,10 +5133,7 @@
                 "description": {
                     "type": "string",
                     "minLength": 1,
-                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.",
-                    "examples": [
-                        "SAP S/4HANA Cloud, our next generation cloud ERP suite designed for\nin-memory computing, acts as a digital core, connecting your\nenterprise with people, business networks, the Internet of Things,\nBig Data, and more.\n"
-                    ]
+                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links."
                 },
                 "mandatory": {
                     "type": "boolean",
@@ -5038,6 +5155,13 @@
                     "description": "List of Event Resource Dependencies.",
                     "items": {
                         "$ref": "#/definitions/EventResourceIntegrationAspect"
+                    }
+                },
+                "capabilities": {
+                    "type": "array",
+                    "description": "List of Capability Dependencies.",
+                    "items": {
+                        "$ref": "#/definitions/CapabilityIntegrationAspect"
                     }
                 }
             },
@@ -5179,6 +5303,37 @@
                 "operationId"
             ]
         },
+        "CapabilityIntegrationAspect": {
+            "type": "object",
+            "title": "Capability Integration Aspect",
+            "x-introduced-in-version": "1.14.2",
+            "x-ums-type": "custom",
+            "description": "Capability related integration aspect",
+            "properties": {
+                "ordId": {
+                    "type": "string",
+                    "description": "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.",
+                    "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):(capability):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
+                    "maxLength": 255,
+                    "examples": [
+                        "sap.foo.bar:capability:fieldExtensibility:v1"
+                    ]
+                },
+                "minVersion": {
+                    "type": "string",
+                    "description": "Minimum version of the references resource that the integration requires.\n",
+                    "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",
+                    "examples": [
+                        "1.2.3",
+                        "1.0.0-alpha.1"
+                    ]
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "ordId"
+            ]
+        },
         "Vendor": {
             "type": "object",
             "title": "Vendor",
@@ -5268,8 +5423,13 @@
                     "description": "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.",
                     "oneOf": [
                         {
+                            "const": "development",
+                            "x-introduced-in-version": "1.14.2",
+                            "description": "The resource is unreleased and under active development. The API contract is unstable and subject to\nbreaking changes at any time. Not intended for consumption outside of the development team."
+                        },
+                        {
                             "const": "beta",
-                            "description": "The API contract has no stability guarantees. Breaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
+                            "description": "The API contract is released / available to consumers, but has no final stability guarantees.\nBreaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
                         },
                         {
                             "const": "active",
@@ -5342,7 +5502,7 @@
                 "description": {
                     "type": "string",
                     "minLength": 1,
-                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown)",
+                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).",
                     "examples": [
                         "This gives you an overview on where to find which kind of APIs in SAP S/4HANA.\n"
                     ]
@@ -5357,6 +5517,62 @@
                     "url": "https://blogs.sap.com/2018/04/11/testing-of-s4hana-inventory-management-odata-apis-via-sap-api-hub/",
                     "title": "APIs for SAP S/4HANA",
                     "description": "This gives you an overview on where to find which kind of APIs in SAP S/4HANA."
+                }
+            ]
+        },
+        "File": {
+            "type": "object",
+            "title": "File",
+            "x-introduced-in-version": "1.14.2",
+            "description": "File that can be attached on ORD package level.\n",
+            "x-ums-type": "custom",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Human readable title of the file.\n\nMUST be unique within the collection of files provided.",
+                    "examples": [
+                        "Developer Guide for SAP Ariba Portal"
+                    ]
+                },
+                "url": {
+                    "type": "string",
+                    "format": "uri-reference",
+                    "description": "[URL](https://tools.ietf.org/html/rfc3986) of the link.\n\nThe file target MAY be relative or absolute.\nIf a relative URL is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).\nIf an absolute URL is given, then it MUST be openly accessible.",
+                    "examples": [
+                        "/ord/v1/Ariba/Files/DeveloperPortal/SAP-Ariba-developer-portal.pdf"
+                    ]
+                },
+                "description": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.",
+                    "examples": [
+                        "Includes administrator, quick start, and authentication guides.\n"
+                    ]
+                },
+                "mediaType": {
+                    "description": "The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format.\nA consuming application can use this information to know which file format parser it needs to use.\n\nIf no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.\n",
+                    "type": "string",
+                    "pattern": "^(application|text)\\/[a-zA-Z0-9][a-zA-Z0-9.+\\-]*$",
+                    "examples": [
+                        "application/json",
+                        "text/plain",
+                        "application/xml"
+                    ]
+                }
+            },
+            "required": [
+                "title",
+                "url",
+                "mediaType"
+            ],
+            "examples": [
+                {
+                    "url": "/ord/v1/Ariba/Files/DeveloperPortal/SAP-Ariba-developer-portal.pdf",
+                    "title": "Developer Guide for SAP Ariba Portal",
+                    "description": "Includes administrator, quick start, and authentication guides.",
+                    "mediaType": "application/pdf"
                 }
             ]
         },
@@ -5937,10 +6153,7 @@
                 "description": {
                     "type": "string",
                     "minLength": 1,
-                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.",
-                    "examples": [
-                        "SAP S/4HANA Cloud, our next generation cloud ERP suite designed for\nin-memory computing, acts as a digital core, connecting your\nenterprise with people, business networks, the Internet of Things,\nBig Data, and more.\n"
-                    ]
+                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links."
                 },
                 "labels": {
                     "$ref": "#/definitions/Labels"
@@ -6022,10 +6235,7 @@
                 "description": {
                     "type": "string",
                     "minLength": 1,
-                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.",
-                    "examples": [
-                        "SAP S/4HANA Cloud, our next generation cloud ERP suite designed for\nin-memory computing, acts as a digital core, connecting your\nenterprise with people, business networks, the Internet of Things,\nBig Data, and more.\n"
-                    ]
+                    "description": "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links."
                 },
                 "labels": {
                     "$ref": "#/definitions/Labels"
@@ -6133,6 +6343,8 @@
             "title": "Entity Type Mapping",
             "type": "object",
             "x-introduced-in-version": "1.6.0",
+            "x-deprecated-in-version": "1.11.0",
+            "x-deprecation-text": "Use the simplified `relatedEntityTypes` instead.",
             "x-ums-type": "custom",
             "description": "An API or Event resource may optionally define its `entityTypeMappings`.\nThis is used to map and correlate the API models to the underlying, conceptual **entity types**.\n\nIf the mapping from API resource to entity types is not defined,\ncertain use-cases that rely on this explicit connection will not be possible.\n\nThis mapping is meant to be rather fine granular.\nTherefore, the mapping needs to be done on basis of one of the referenced resource definitions,\nas only there we know the details and the actual contents of the API Model of the API resource.\n\nFor the various resource definition formats the selection of API models may need to be expressed differently.\nAs a consequence, there are different types of selectors that are specialized toward certain resource definition formats.\n\nThe target of the mapping is a correlation to an entity type via a [Correlation ID](../index.md#correlation-id)\nor to an [ORD ID](../index.md#ord-id) of an entity type.\nIt is assumed that the entity types are described in more detail or on a different abstraction level via metadata.\nWhen the correlation ID is used, an ORD consumer may need to know how to access the entity type metadata through conventions.\nThis can be determined either by the namespace of the correlation ID,\nor through a defined and known `implementationStandard` that can resolve the `localId` fragment of the correlation ID .\n\nAt SAP, the metadata about entity types could be retrieved via the CSN_EXPOSURE service.\nTo indicate this, the service needs to be implemented and described in ORD with `implementationStandard` set to `sap:csn-exposure:v1`).\n\nODM 2.0 relies on the entity type mappings and uses the the mapping to express the relationship of an API to the\ncorresponding ODM entity. ORD consumers like SAP Business Accelerator Hub consume the mapping to make the relationships navigate-able for customers.",
             "properties": {
@@ -6238,6 +6450,8 @@
         "ApiModelSelectorOData": {
             "title": "Api Model Selector (Odata)",
             "x-introduced-in-version": "1.6.0",
+            "x-deprecated-in-version": "1.11.0",
+            "x-deprecation-text": "Use the simplified `relatedEntityTypes` instead.\n\nFor creating a mapping from API model to Entity Types, consider using the [Entity Relationship](https://sap.github.io/csn-interop-specification/annotations/entity-relationship) annotations.",
             "x-ums-type": "custom",
             "type": "object",
             "description": "API Model Selector for OData, using entity set names for the selection.\n\nMUST only be used if the API Resource provides an API Resource Definition of type `edmx`.",
@@ -6273,6 +6487,8 @@
         "ApiModelSelectorJsonPointer": {
             "title": "Api Model Selector (Json Pointer)",
             "x-introduced-in-version": "1.6.0",
+            "x-deprecated-in-version": "1.11.0",
+            "x-deprecation-text": "Use the simplified `relatedEntityTypes` instead.\n\nFor creating a mapping from API model to Entity Types, consider using the [Entity Relationship](https://sap.github.io/csn-interop-specification/annotations/entity-relationship) annotations.",
             "x-ums-type": "custom",
             "type": "object",
             "description": "Generic API Model Selector for JSON / YAML based resource definitions.\nIt uses a [JSON Pointer](https://datatracker.ietf.org/doc/html/rfc6901) that points to the\nentity type description within the resource definition.\n\nThe JSON Pointer always to refer to the structure of the document as originally provided, before further post-processing like resolving $ref properties.\n\nMUST only be used if the API Resource provides an API Resource Definition of media type `application/json` or `text/yaml`.",
@@ -6335,6 +6551,8 @@
         "EntityTypeOrdIdTarget": {
             "title": "Entity Type Target (ORD ID)",
             "x-introduced-in-version": "1.6.0",
+            "x-deprecated-in-version": "1.11.0",
+            "x-deprecation-text": "Use the simplified `relatedEntityTypes` instead.",
             "x-ums-type": "custom",
             "type": "object",
             "description": "Define which entity type is the target of an entity type mapping\n\nEntity types can be referenced using a [ORD ID](../index.md#ord-id) of an entity type.",
@@ -6362,6 +6580,8 @@
             "type": "object",
             "description": "Define which entity type is the target of an entity type mapping\n\nEntity types can be referenced using a [Correlation ID](../index.md#correlation-id).",
             "x-introduced-in-version": "1.6.0",
+            "x-deprecated-in-version": "1.11.0",
+            "x-deprecation-text": "Use the simplified `relatedEntityTypes` instead.",
             "x-ums-type": "custom",
             "properties": {
                 "correlationId": {
@@ -6399,10 +6619,15 @@
                 },
                 "relationType": {
                     "type": "string",
-                    "description": "Optional type of the relationship, which defines a stricter semantic what the relationship implies.\n\nIf not provided, the relationship type has no semantics, it's \"related somehow\".",
+                    "description": "Optional type of the relationship, which defines a stricter semantic what the relationship implies.\n\nIf not provided, the relationship type has no semantics, it's \"related somehow\".\n\nMUST be a valid [Concept ID](../index.md#concept-id).",
                     "x-introduced-in-version": "1.12.0",
                     "x-feature-status": "beta",
-                    "oneOf": [
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-\\/]+)$",
+                            "description": "Any valid [Concept ID](../index.md#concept-id)."
+                        },
                         {
                             "const": "part-of",
                             "description": "The described entity type is a composite part of the referenced entity type.\nE.g. a `SalesOrderItem` is part of a `SalesOrder`."
@@ -6413,7 +6638,125 @@
                         }
                     ],
                     "examples": [
-                        "can-share-identity"
+                        "can-share-identity",
+                        "foo.bar:relationName"
+                    ]
+                }
+            },
+            "required": [
+                "ordId"
+            ],
+            "additionalProperties": false
+        },
+        "RelatedApiResource": {
+            "title": "Related API Resource",
+            "x-introduced-in-version": "1.14.2",
+            "x-ums-type": "embedded",
+            "type": "object",
+            "description": "Defines a relation to an API Resource (via its ORD ID).",
+            "properties": {
+                "ordId": {
+                    "type": "string",
+                    "description": "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.",
+                    "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):(apiResource):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
+                    "maxLength": 255,
+                    "examples": [
+                        "sap.s4:apiResource:API_BUSINESS_PARTNER:v1"
+                    ],
+                    "x-association-target": [
+                        "#/definitions/ApiResource/ordId"
+                    ]
+                },
+                "relationType": {
+                    "type": "string",
+                    "description": "Optional type of the relationship as a [Concept ID](../index.md#concept-id).\n\nDefines the semantic meaning of the relationship.\nIf not provided, the relationship has no specific semantics (\"related somehow\").",
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-\\/]+)$",
+                            "description": "Any valid [Concept ID](../index.md#concept-id)."
+                        }
+                    ],
+                    "examples": [
+                        "foo.bar:relationName"
+                    ]
+                }
+            },
+            "required": [
+                "ordId"
+            ],
+            "additionalProperties": false
+        },
+        "RelatedEventResource": {
+            "title": "Related Event Resource",
+            "x-introduced-in-version": "1.14.2",
+            "x-ums-type": "embedded",
+            "type": "object",
+            "description": "Defines a relation to an Event Resource (via its ORD ID).",
+            "properties": {
+                "ordId": {
+                    "type": "string",
+                    "description": "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.",
+                    "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):(eventResource):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
+                    "maxLength": 255,
+                    "examples": [
+                        "sap.s4:eventResource:BusinessPartnerEvents:v1"
+                    ],
+                    "x-association-target": [
+                        "#/definitions/EventResource/ordId"
+                    ]
+                },
+                "relationType": {
+                    "type": "string",
+                    "description": "Optional type of the relationship as a [Concept ID](../index.md#concept-id).\n\nDefines the semantic meaning of the relationship.\nIf not provided, the relationship has no specific semantics (\"related somehow\").",
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-\\/]+)$",
+                            "description": "Any valid [Concept ID](../index.md#concept-id)."
+                        }
+                    ],
+                    "examples": [
+                        "foo.bar:relationName"
+                    ]
+                }
+            },
+            "required": [
+                "ordId"
+            ],
+            "additionalProperties": false
+        },
+        "RelatedCapability": {
+            "title": "Related Capability",
+            "x-introduced-in-version": "1.14.2",
+            "x-ums-type": "embedded",
+            "type": "object",
+            "description": "Defines a relation to another Capability (via its ORD ID).",
+            "properties": {
+                "ordId": {
+                    "type": "string",
+                    "description": "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.",
+                    "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):(capability):([a-zA-Z0-9._\\-]+):(v0|v[1-9][0-9]*)$",
+                    "maxLength": 255,
+                    "examples": [
+                        "sap.foo:capability:fieldExtensibility:v1"
+                    ],
+                    "x-association-target": [
+                        "#/definitions/Capability/ordId"
+                    ]
+                },
+                "relationType": {
+                    "type": "string",
+                    "description": "Optional type of the relationship as a [Concept ID](../index.md#concept-id).\n\nDefines the semantic meaning of the relationship.\nIf not provided, the relationship has no specific semantics (\"related somehow\").",
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-\\/]+)$",
+                            "description": "Any valid [Concept ID](../index.md#concept-id)."
+                        }
+                    ],
+                    "examples": [
+                        "foo.bar:relationName"
                     ]
                 }
             },
@@ -6509,10 +6852,7 @@
                 "description": {
                     "type": "string",
                     "minLength": 1,
-                    "description": "Optional description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description of a Tombstone MAY be added to the changelog of the removed resource by an ORD aggregator.",
-                    "examples": [
-                        "SAP S/4HANA Cloud, our next generation cloud ERP suite designed for\nin-memory computing, acts as a digital core, connecting your\nenterprise with people, business networks, the Internet of Things,\nBig Data, and more.\n"
-                    ]
+                    "description": "Optional description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description of a Tombstone MAY be added to the changelog of the removed resource by an ORD aggregator."
                 }
             },
             "required": [
@@ -6642,8 +6982,13 @@
                     "description": "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.",
                     "oneOf": [
                         {
+                            "const": "development",
+                            "x-introduced-in-version": "1.14.2",
+                            "description": "The resource is unreleased and under active development. The API contract is unstable and subject to\nbreaking changes at any time. Not intended for consumption outside of the development team."
+                        },
+                        {
                             "const": "beta",
-                            "description": "The API contract has no stability guarantees. Breaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
+                            "description": "The API contract is released / available to consumers, but has no final stability guarantees.\nBreaking changes may occur at any time without notice or deprecation period.\n\nNot recommended for production use unless you can tolerate breaking changes. Suitable for experimentation, early adopters,\nand feedback gathering. Resources of `beta` status MAY be changed or removed at the provider's discretion."
                         },
                         {
                             "const": "active",

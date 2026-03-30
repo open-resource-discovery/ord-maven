@@ -51,11 +51,11 @@ public class Link {
     @JsonPropertyDescription("[URL](https://tools.ietf.org/html/rfc3986) of the link.\n\nThe link target MUST be absolute and SHOULD be openly accessible.")
     private URI url;
     /**
-     * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown)
+     * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
      * 
      */
     @JsonProperty("description")
-    @JsonPropertyDescription("Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown)")
+    @JsonPropertyDescription("Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).")
     private String description;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
@@ -119,7 +119,7 @@ public class Link {
     }
 
     /**
-     * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown)
+     * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
      * 
      */
     @JsonProperty("description")
@@ -128,7 +128,7 @@ public class Link {
     }
 
     /**
-     * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown)
+     * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
      * 
      */
     @JsonProperty("description")

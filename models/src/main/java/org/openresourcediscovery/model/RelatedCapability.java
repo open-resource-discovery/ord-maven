@@ -9,9 +9,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * Related Entity Type
+ * Related Capability
  * <p>
- * Defines the relation between Entity Types (via its ORD ID).
+ * Defines a relation to another Capability (via its ORD ID).
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "relationType"
 })
 @Generated("jsonschema2pojo")
-public class RelatedEntityType {
+public class RelatedCapability {
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
@@ -33,15 +33,14 @@ public class RelatedEntityType {
     @JsonPropertyDescription("The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.")
     private String ordId;
     /**
-     * Optional type of the relationship, which defines a stricter semantic what the relationship implies.
+     * Optional type of the relationship as a [Concept ID](../index.md#concept-id).
      * 
-     * If not provided, the relationship type has no semantics, it's "related somehow".
-     * 
-     * MUST be a valid [Concept ID](../index.md#concept-id).
+     * Defines the semantic meaning of the relationship.
+     * If not provided, the relationship has no specific semantics ("related somehow").
      * 
      */
     @JsonProperty("relationType")
-    @JsonPropertyDescription("Optional type of the relationship, which defines a stricter semantic what the relationship implies.\n\nIf not provided, the relationship type has no semantics, it's \"related somehow\".\n\nMUST be a valid [Concept ID](../index.md#concept-id).")
+    @JsonPropertyDescription("Optional type of the relationship as a [Concept ID](../index.md#concept-id).\n\nDefines the semantic meaning of the relationship.\nIf not provided, the relationship has no specific semantics (\"related somehow\").")
     private String relationType;
 
     /**
@@ -68,17 +67,16 @@ public class RelatedEntityType {
         this.ordId = ordId;
     }
 
-    public RelatedEntityType withOrdId(String ordId) {
+    public RelatedCapability withOrdId(String ordId) {
         this.ordId = ordId;
         return this;
     }
 
     /**
-     * Optional type of the relationship, which defines a stricter semantic what the relationship implies.
+     * Optional type of the relationship as a [Concept ID](../index.md#concept-id).
      * 
-     * If not provided, the relationship type has no semantics, it's "related somehow".
-     * 
-     * MUST be a valid [Concept ID](../index.md#concept-id).
+     * Defines the semantic meaning of the relationship.
+     * If not provided, the relationship has no specific semantics ("related somehow").
      * 
      */
     @JsonProperty("relationType")
@@ -87,11 +85,10 @@ public class RelatedEntityType {
     }
 
     /**
-     * Optional type of the relationship, which defines a stricter semantic what the relationship implies.
+     * Optional type of the relationship as a [Concept ID](../index.md#concept-id).
      * 
-     * If not provided, the relationship type has no semantics, it's "related somehow".
-     * 
-     * MUST be a valid [Concept ID](../index.md#concept-id).
+     * Defines the semantic meaning of the relationship.
+     * If not provided, the relationship has no specific semantics ("related somehow").
      * 
      */
     @JsonProperty("relationType")
@@ -99,7 +96,7 @@ public class RelatedEntityType {
         this.relationType = relationType;
     }
 
-    public RelatedEntityType withRelationType(String relationType) {
+    public RelatedCapability withRelationType(String relationType) {
         this.relationType = relationType;
         return this;
     }
@@ -107,7 +104,7 @@ public class RelatedEntityType {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(RelatedEntityType.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(RelatedCapability.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("ordId");
         sb.append('=');
         sb.append(((this.ordId == null)?"<null>":this.ordId));
@@ -137,10 +134,10 @@ public class RelatedEntityType {
         if (other == this) {
             return true;
         }
-        if ((other instanceof RelatedEntityType) == false) {
+        if ((other instanceof RelatedCapability) == false) {
             return false;
         }
-        RelatedEntityType rhs = ((RelatedEntityType) other);
+        RelatedCapability rhs = ((RelatedCapability) other);
         return (((this.relationType == rhs.relationType)||((this.relationType!= null)&&this.relationType.equals(rhs.relationType)))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))));
     }
 

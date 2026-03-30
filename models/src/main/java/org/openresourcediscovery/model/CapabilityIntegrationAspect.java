@@ -9,18 +9,18 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * Related Entity Type
+ * Capability Integration Aspect
  * <p>
- * Defines the relation between Entity Types (via its ORD ID).
+ * Capability related integration aspect
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "ordId",
-    "relationType"
+    "minVersion"
 })
 @Generated("jsonschema2pojo")
-public class RelatedEntityType {
+public class CapabilityIntegrationAspect {
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
@@ -33,16 +33,13 @@ public class RelatedEntityType {
     @JsonPropertyDescription("The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.")
     private String ordId;
     /**
-     * Optional type of the relationship, which defines a stricter semantic what the relationship implies.
+     * Minimum version of the references resource that the integration requires.
      * 
-     * If not provided, the relationship type has no semantics, it's "related somehow".
-     * 
-     * MUST be a valid [Concept ID](../index.md#concept-id).
      * 
      */
-    @JsonProperty("relationType")
-    @JsonPropertyDescription("Optional type of the relationship, which defines a stricter semantic what the relationship implies.\n\nIf not provided, the relationship type has no semantics, it's \"related somehow\".\n\nMUST be a valid [Concept ID](../index.md#concept-id).")
-    private String relationType;
+    @JsonProperty("minVersion")
+    @JsonPropertyDescription("Minimum version of the references resource that the integration requires.\n")
+    private String minVersion;
 
     /**
      * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
@@ -68,53 +65,47 @@ public class RelatedEntityType {
         this.ordId = ordId;
     }
 
-    public RelatedEntityType withOrdId(String ordId) {
+    public CapabilityIntegrationAspect withOrdId(String ordId) {
         this.ordId = ordId;
         return this;
     }
 
     /**
-     * Optional type of the relationship, which defines a stricter semantic what the relationship implies.
+     * Minimum version of the references resource that the integration requires.
      * 
-     * If not provided, the relationship type has no semantics, it's "related somehow".
-     * 
-     * MUST be a valid [Concept ID](../index.md#concept-id).
      * 
      */
-    @JsonProperty("relationType")
-    public String getRelationType() {
-        return relationType;
+    @JsonProperty("minVersion")
+    public String getMinVersion() {
+        return minVersion;
     }
 
     /**
-     * Optional type of the relationship, which defines a stricter semantic what the relationship implies.
+     * Minimum version of the references resource that the integration requires.
      * 
-     * If not provided, the relationship type has no semantics, it's "related somehow".
-     * 
-     * MUST be a valid [Concept ID](../index.md#concept-id).
      * 
      */
-    @JsonProperty("relationType")
-    public void setRelationType(String relationType) {
-        this.relationType = relationType;
+    @JsonProperty("minVersion")
+    public void setMinVersion(String minVersion) {
+        this.minVersion = minVersion;
     }
 
-    public RelatedEntityType withRelationType(String relationType) {
-        this.relationType = relationType;
+    public CapabilityIntegrationAspect withMinVersion(String minVersion) {
+        this.minVersion = minVersion;
         return this;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(RelatedEntityType.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
+        sb.append(CapabilityIntegrationAspect.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("ordId");
         sb.append('=');
         sb.append(((this.ordId == null)?"<null>":this.ordId));
         sb.append(',');
-        sb.append("relationType");
+        sb.append("minVersion");
         sb.append('=');
-        sb.append(((this.relationType == null)?"<null>":this.relationType));
+        sb.append(((this.minVersion == null)?"<null>":this.minVersion));
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
@@ -127,8 +118,8 @@ public class RelatedEntityType {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.relationType == null)? 0 :this.relationType.hashCode()));
         result = ((result* 31)+((this.ordId == null)? 0 :this.ordId.hashCode()));
+        result = ((result* 31)+((this.minVersion == null)? 0 :this.minVersion.hashCode()));
         return result;
     }
 
@@ -137,11 +128,11 @@ public class RelatedEntityType {
         if (other == this) {
             return true;
         }
-        if ((other instanceof RelatedEntityType) == false) {
+        if ((other instanceof CapabilityIntegrationAspect) == false) {
             return false;
         }
-        RelatedEntityType rhs = ((RelatedEntityType) other);
-        return (((this.relationType == rhs.relationType)||((this.relationType!= null)&&this.relationType.equals(rhs.relationType)))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))));
+        CapabilityIntegrationAspect rhs = ((CapabilityIntegrationAspect) other);
+        return (((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId)))&&((this.minVersion == rhs.minVersion)||((this.minVersion!= null)&&this.minVersion.equals(rhs.minVersion))));
     }
 
 }

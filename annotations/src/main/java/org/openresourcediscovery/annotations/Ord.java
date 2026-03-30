@@ -177,6 +177,9 @@ public interface Ord {
 
     /** List of Event Resource Dependencies. */
     EventResourceIntegrationAspect[] eventResources() default {};
+
+    /** List of Capability Dependencies. */
+    CapabilityIntegrationAspect[] capabilities() default {};
   }
 
   @Target(ElementType.TYPE)
@@ -228,6 +231,17 @@ public interface Ord {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
+  public @interface CapabilityIntegrationAspect {
+    String[] requiredFields() default { "ordId" };
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Minimum version of the references resource that the integration requires.  */
+    String minVersion() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
   public @interface ChangelogEntry {
     String[] requiredFields() default { "version", "releaseStatus", "date" };
     /** Full version number that corresponds to the `version` that is described by the changelog entry.  Ideally it follows the [Semantic Versioning 2.0.0](https://semver.org/) standard, but since it should reflect the actual version string / scheme used, this is not a mandatory requirement. */
@@ -256,8 +270,25 @@ public interface Ord {
     /** [URL](https://tools.ietf.org/html/rfc3986) of the link.  The link target MUST be absolute and SHOULD be openly accessible. */
     String url() default "";
 
-    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown) */
+    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown). */
     String description() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  public @interface File {
+    String[] requiredFields() default { "title", "url", "mediaType" };
+    /** Human readable title of the file.  MUST be unique within the collection of files provided. */
+    String title() default "";
+
+    /** [URL](https://tools.ietf.org/html/rfc3986) of the link.  The file target MAY be relative or absolute. If a relative URL is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl). If an absolute URL is given, then it MUST be openly accessible. */
+    String url() default "";
+
+    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
+    String description() default "";
+
+    /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
+    String mediaType() default "";
   }
 
   @Target(ElementType.TYPE)
@@ -443,7 +474,40 @@ public interface Ord {
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
-    /** Optional type of the relationship, which defines a stricter semantic what the relationship implies.  If not provided, the relationship type has no semantics, it's "related somehow". */
+    /** Optional type of the relationship, which defines a stricter semantic what the relationship implies.  If not provided, the relationship type has no semantics, it's "related somehow".  MUST be a valid [Concept ID](../index.md#concept-id). */
+    String relationType() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  public @interface RelatedApiResource {
+    String[] requiredFields() default { "ordId" };
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Optional type of the relationship as a [Concept ID](../index.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
+    String relationType() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  public @interface RelatedEventResource {
+    String[] requiredFields() default { "ordId" };
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Optional type of the relationship as a [Concept ID](../index.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
+    String relationType() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  public @interface RelatedCapability {
+    String[] requiredFields() default { "ordId" };
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Optional type of the relationship as a [Concept ID](../index.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
     String relationType() default "";
   }
 
@@ -544,6 +608,9 @@ public interface Ord {
 
     /** Generic links with arbitrary meaning and content.  `packageLinks` MUST be preferred if applicable. */
     Link[] links() default {};
+
+    /** Generic list of files with arbitrary meaning and content. Meant to be used for linking PDFs, Word or similar content. This option MUST NOT be used for linking the actual metadata files like OpenAPI, AsyncAPI, CSN, etc. */
+    File[] files() default {};
 
     /** Standardized identifier for the license. It MUST conform to the [SPDX License List](https://spdx.org/licenses). */
     String licenseType() default "";
@@ -1304,6 +1371,15 @@ public interface Ord {
 
     /** Optional list of related EntityType Resources. MUST be a valid reference to an [EntityType Resource](#entity-type) ORD ID. */
     String[] relatedEntityTypes() default {};
+
+    /** Optional list of related API Resources.  Use this to indicate which APIs implement, expose, or are otherwise related to this capability. */
+    RelatedApiResource[] relatedApiResources() default {};
+
+    /** Optional list of related Event Resources.  Use this to indicate which events are emitted, consumed, or otherwise related to this capability. */
+    RelatedEventResource[] relatedEventResources() default {};
+
+    /** Optional list of related Capabilities.  Use this to indicate dependencies, extensions, or other relationships between capabilities. */
+    RelatedCapability[] relatedCapabilities() default {};
 
     /** List of available machine-readable definitions, which describe the resource or capability in detail. See also [Resource Definitions](../index.md#resource-definitions) for more context.  Each definition is to be understood as an alternative description format, describing the same resource / capability. As a consequence the same definition type MUST NOT be provided more than once. The exception is when the same definition type is provided more than once, but with a different `visibility`.  It is RECOMMENDED to provide the definitions as they enable machine-readable use cases. If the definitions are added or changed, the `version` MUST be incremented. An ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented. */
     CapabilityDefinition[] definitions() default {};
