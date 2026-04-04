@@ -3,7 +3,7 @@ import { resolveJavaType } from "../utils/resolve-java-type";
 import { resolveName } from "../utils/resolve-name";
 import { SchemaProperty } from "../types/schema-property";
 
-const PART_OF_DOCUMENT = 'DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");';
+const PART_OF_DOCUMENT = 'DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");';
 const TOP_LEVEL_FIELDS = Object.freeze(
   new Set([
     "SystemInstance",
@@ -123,7 +123,13 @@ public interface Ord {
   @Repeatable(Documents.class)
   @Retention(RetentionPolicy.RUNTIME)
   @interface Document {
-    String id() default "ord-document";
+    String name() default "ord-document";
+
+    String description() default "";
+
+    String perspective() default "";
+
+    String[] policyLevels() default {};
 
     AccessStrategy[] accessStrategies() default { @AccessStrategy(type = "open") };
 
@@ -152,7 +158,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface DocumentReference {
-    String id() default "ord-document";
+    String name();
   }
 
   ${Object.entries(definitions)
