@@ -37,6 +37,7 @@ function main() {
       -Djsonschema2pojo.targetPackage=org.openresourcediscovery.model \
       -Djsonschema2pojo.outputDirectory="${PROJECT_ROOT}/models/src/main/java" \
       -Djsonschema2pojo.sourceDirectory="${PROJECT_ROOT}/models/static/spec-v1/interfaces/Document.schema.json"
+  _assert_success mvn spotless:apply -q -B -pl models
 }
 
 main "${@}"

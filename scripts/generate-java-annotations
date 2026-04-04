@@ -28,14 +28,15 @@ function _assert_success() {
 readonly PROJECT_ROOT="$(realpath "$(dirname "${0}")/..")"
 
 function main() {
-  _assert_success rm -rf "${PROJECT_ROOT}/annotations/src/main"
-  _assert_success mkdir -p "${PROJECT_ROOT}/annotations/src/main"
+  _assert_success rm -rf "${PROJECT_ROOT}/annotations/src/main/java/org/openresourcediscovery/annotations"
+  _assert_success mkdir -p "${PROJECT_ROOT}/annotations/src/main/java/org/openresourcediscovery/annotations"
   _assert_success npm clean-install --prefix "${PROJECT_ROOT}/tools/annotation-gen"
   _assert_success npm run generate --prefix "${PROJECT_ROOT}/tools/annotation-gen" -- \
-      --pkg org.openresourcediscovery.annotations \
+      --pkg 'org.openresourcediscovery.annotations' \
       --outDir "${PROJECT_ROOT}/annotations/src/main" \
       --specPkg "${PROJECT_ROOT}/tools/annotation-gen/node_modules/@open-resource-discovery/specification/package.json" \
       --schema "${PROJECT_ROOT}/tools/annotation-gen/node_modules/@open-resource-discovery/specification/dist/generated/spec/v1/schemas/Document.schema.json"
+  _assert_success mvn spotless:apply -q -B -pl annotations
 }
 
 main "${@}"

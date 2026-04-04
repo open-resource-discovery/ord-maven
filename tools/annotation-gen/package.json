@@ -2,11 +2,21 @@
   "name": "ord-annotation-gen",
   "private": true,
   "scripts": {
-    "generate": "ts-node src/generateAnnotations.ts"
+    "generate": "ts-node src/generate.ts",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src"
   },
   "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@open-resource-discovery/specification": "1.14.3",
+    "@sap/eslint-config": "^0.5.1",
+    "eslint": "^10.2.0",
+    "eslint-config-prettier": "10.1.8",
+    "prettier": "3.8.1",
     "ts-node": "10.9.2",
     "typescript": "6.0.2",
-    "@open-resource-discovery/specification": "1.14.3"
+    "typescript-eslint": "8.58.0"
   }
 }
