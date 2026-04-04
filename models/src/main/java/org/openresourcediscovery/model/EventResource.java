@@ -39,6 +39,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "releaseStatus",
     "disabled",
     "minSystemVersion",
+    "relatedApiResources",
+    "relatedEventResources",
     "deprecationDate",
     "sunsetDate",
     "successors",
@@ -309,6 +311,24 @@ public class EventResource {
     @JsonPropertyDescription("The resource has been introduced in the given [system version](../index.md#system-version).\nThis implies that the resource is only available if the system instance is of at least that system version.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.")
     private String minSystemVersion;
     /**
+     * Optional list of related API Resources.
+     * 
+     * Use this to indicate which APIs implement, expose, or are otherwise related to this entity.
+     * 
+     */
+    @JsonProperty("relatedApiResources")
+    @JsonPropertyDescription("Optional list of related API Resources.\n\nUse this to indicate which APIs implement, expose, or are otherwise related to this entity.")
+    private List<RelatedApiResource> relatedApiResources;
+    /**
+     * Optional list of related Event Resources.
+     * 
+     * Use this to indicate which events are emitted, consumed, or otherwise related to this entity.
+     * 
+     */
+    @JsonProperty("relatedEventResources")
+    @JsonPropertyDescription("Optional list of related Event Resources.\n\nUse this to indicate which events are emitted, consumed, or otherwise related to this entity.")
+    private List<RelatedEventResource> relatedEventResources;
+    /**
      * The deprecation date defines when the resource has been set as deprecated.
      * This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.
      * 
@@ -510,12 +530,14 @@ public class EventResource {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.
@@ -527,7 +549,7 @@ public class EventResource {
      * 
      */
     @JsonProperty("labels")
-    @JsonPropertyDescription("Generic labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
+    @JsonPropertyDescription("Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
     private Labels labels;
     /**
      * Documentation Labels
@@ -1244,6 +1266,60 @@ public class EventResource {
     }
 
     /**
+     * Optional list of related API Resources.
+     * 
+     * Use this to indicate which APIs implement, expose, or are otherwise related to this entity.
+     * 
+     */
+    @JsonProperty("relatedApiResources")
+    public List<RelatedApiResource> getRelatedApiResources() {
+        return relatedApiResources;
+    }
+
+    /**
+     * Optional list of related API Resources.
+     * 
+     * Use this to indicate which APIs implement, expose, or are otherwise related to this entity.
+     * 
+     */
+    @JsonProperty("relatedApiResources")
+    public void setRelatedApiResources(List<RelatedApiResource> relatedApiResources) {
+        this.relatedApiResources = relatedApiResources;
+    }
+
+    public EventResource withRelatedApiResources(List<RelatedApiResource> relatedApiResources) {
+        this.relatedApiResources = relatedApiResources;
+        return this;
+    }
+
+    /**
+     * Optional list of related Event Resources.
+     * 
+     * Use this to indicate which events are emitted, consumed, or otherwise related to this entity.
+     * 
+     */
+    @JsonProperty("relatedEventResources")
+    public List<RelatedEventResource> getRelatedEventResources() {
+        return relatedEventResources;
+    }
+
+    /**
+     * Optional list of related Event Resources.
+     * 
+     * Use this to indicate which events are emitted, consumed, or otherwise related to this entity.
+     * 
+     */
+    @JsonProperty("relatedEventResources")
+    public void setRelatedEventResources(List<RelatedEventResource> relatedEventResources) {
+        this.relatedEventResources = relatedEventResources;
+    }
+
+    public EventResource withRelatedEventResources(List<RelatedEventResource> relatedEventResources) {
+        this.relatedEventResources = relatedEventResources;
+        return this;
+    }
+
+    /**
      * The deprecation date defines when the resource has been set as deprecated.
      * This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.
      * 
@@ -1815,12 +1891,14 @@ public class EventResource {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.
@@ -1839,12 +1917,14 @@ public class EventResource {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.
@@ -2128,6 +2208,14 @@ public class EventResource {
         sb.append('=');
         sb.append(((this.minSystemVersion == null)?"<null>":this.minSystemVersion));
         sb.append(',');
+        sb.append("relatedApiResources");
+        sb.append('=');
+        sb.append(((this.relatedApiResources == null)?"<null>":this.relatedApiResources));
+        sb.append(',');
+        sb.append("relatedEventResources");
+        sb.append('=');
+        sb.append(((this.relatedEventResources == null)?"<null>":this.relatedEventResources));
+        sb.append(',');
         sb.append("deprecationDate");
         sb.append('=');
         sb.append(((this.deprecationDate == null)?"<null>":this.deprecationDate));
@@ -2248,6 +2336,7 @@ public class EventResource {
         result = ((result* 31)+((this.successors == null)? 0 :this.successors.hashCode()));
         result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
         result = ((result* 31)+((this.partOfPackage == null)? 0 :this.partOfPackage.hashCode()));
+        result = ((result* 31)+((this.relatedApiResources == null)? 0 :this.relatedApiResources.hashCode()));
         result = ((result* 31)+((this.customImplementationStandardDescription == null)? 0 :this.customImplementationStandardDescription.hashCode()));
         result = ((result* 31)+((this.industry == null)? 0 :this.industry.hashCode()));
         result = ((result* 31)+((this.customPolicyLevel == null)? 0 :this.customPolicyLevel.hashCode()));
@@ -2255,6 +2344,7 @@ public class EventResource {
         result = ((result* 31)+((this.ordId == null)? 0 :this.ordId.hashCode()));
         result = ((result* 31)+((this.localId == null)? 0 :this.localId.hashCode()));
         result = ((result* 31)+((this.policyLevels == null)? 0 :this.policyLevels.hashCode()));
+        result = ((result* 31)+((this.relatedEventResources == null)? 0 :this.relatedEventResources.hashCode()));
         result = ((result* 31)+((this.correlationIds == null)? 0 :this.correlationIds.hashCode()));
         result = ((result* 31)+((this.responsible == null)? 0 :this.responsible.hashCode()));
         result = ((result* 31)+((this.releaseStatus == null)? 0 :this.releaseStatus.hashCode()));
@@ -2294,7 +2384,7 @@ public class EventResource {
             return false;
         }
         EventResource rhs = ((EventResource) other);
-        return ((((((((((((((((((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)||((this.deprecationDate!= null)&&this.deprecationDate.equals(rhs.deprecationDate)))&&((this.customImplementationStandard == rhs.customImplementationStandard)||((this.customImplementationStandard!= null)&&this.customImplementationStandard.equals(rhs.customImplementationStandard))))&&((this.lineOfBusiness == rhs.lineOfBusiness)||((this.lineOfBusiness!= null)&&this.lineOfBusiness.equals(rhs.lineOfBusiness))))&&((this.exposedEntityTypes == rhs.exposedEntityTypes)||((this.exposedEntityTypes!= null)&&this.exposedEntityTypes.equals(rhs.exposedEntityTypes))))&&((this.defaultConsumptionBundle == rhs.defaultConsumptionBundle)||((this.defaultConsumptionBundle!= null)&&this.defaultConsumptionBundle.equals(rhs.defaultConsumptionBundle))))&&((this.entityTypeMappings == rhs.entityTypeMappings)||((this.entityTypeMappings!= null)&&this.entityTypeMappings.equals(rhs.entityTypeMappings))))&&((this.successors == rhs.successors)||((this.successors!= null)&&this.successors.equals(rhs.successors))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.partOfPackage == rhs.partOfPackage)||((this.partOfPackage!= null)&&this.partOfPackage.equals(rhs.partOfPackage))))&&((this.customImplementationStandardDescription == rhs.customImplementationStandardDescription)||((this.customImplementationStandardDescription!= null)&&this.customImplementationStandardDescription.equals(rhs.customImplementationStandardDescription))))&&((this.industry == rhs.industry)||((this.industry!= null)&&this.industry.equals(rhs.industry))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.responsible == rhs.responsible)||((this.responsible!= null)&&this.responsible.equals(rhs.responsible))))&&((this.releaseStatus == rhs.releaseStatus)||((this.releaseStatus!= null)&&this.releaseStatus.equals(rhs.releaseStatus))))&&((this.disabled == rhs.disabled)||((this.disabled!= null)&&this.disabled.equals(rhs.disabled))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.minSystemVersion == rhs.minSystemVersion)||((this.minSystemVersion!= null)&&this.minSystemVersion.equals(rhs.minSystemVersion))))&&((this.resourceDefinitions == rhs.resourceDefinitions)||((this.resourceDefinitions!= null)&&this.resourceDefinitions.equals(rhs.resourceDefinitions))))&&((this.extensible == rhs.extensible)||((this.extensible!= null)&&this.extensible.equals(rhs.extensible))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.compatibleWith == rhs.compatibleWith)||((this.compatibleWith!= null)&&this.compatibleWith.equals(rhs.compatibleWith))))&&((this.implementationStandard == rhs.implementationStandard)||((this.implementationStandard!= null)&&this.implementationStandard.equals(rhs.implementationStandard))))&&((this.partOfConsumptionBundles == rhs.partOfConsumptionBundles)||((this.partOfConsumptionBundles!= null)&&this.partOfConsumptionBundles.equals(rhs.partOfConsumptionBundles))))&&((this.sunsetDate == rhs.sunsetDate)||((this.sunsetDate!= null)&&this.sunsetDate.equals(rhs.sunsetDate))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.countries == rhs.countries)||((this.countries!= null)&&this.countries.equals(rhs.countries))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.systemInstanceAware == rhs.systemInstanceAware)||((this.systemInstanceAware!= null)&&this.systemInstanceAware.equals(rhs.systemInstanceAware))))&&((this._abstract == rhs._abstract)||((this._abstract!= null)&&this._abstract.equals(rhs._abstract))))&&((this.changelogEntries == rhs.changelogEntries)||((this.changelogEntries!= null)&&this.changelogEntries.equals(rhs.changelogEntries))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.partOfProducts == rhs.partOfProducts)||((this.partOfProducts!= null)&&this.partOfProducts.equals(rhs.partOfProducts))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.eventResourceLinks == rhs.eventResourceLinks)||((this.eventResourceLinks!= null)&&this.eventResourceLinks.equals(rhs.eventResourceLinks))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.lastUpdate == rhs.lastUpdate)||((this.lastUpdate!= null)&&this.lastUpdate.equals(rhs.lastUpdate))));
+        return ((((((((((((((((((((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)||((this.deprecationDate!= null)&&this.deprecationDate.equals(rhs.deprecationDate)))&&((this.customImplementationStandard == rhs.customImplementationStandard)||((this.customImplementationStandard!= null)&&this.customImplementationStandard.equals(rhs.customImplementationStandard))))&&((this.lineOfBusiness == rhs.lineOfBusiness)||((this.lineOfBusiness!= null)&&this.lineOfBusiness.equals(rhs.lineOfBusiness))))&&((this.exposedEntityTypes == rhs.exposedEntityTypes)||((this.exposedEntityTypes!= null)&&this.exposedEntityTypes.equals(rhs.exposedEntityTypes))))&&((this.defaultConsumptionBundle == rhs.defaultConsumptionBundle)||((this.defaultConsumptionBundle!= null)&&this.defaultConsumptionBundle.equals(rhs.defaultConsumptionBundle))))&&((this.entityTypeMappings == rhs.entityTypeMappings)||((this.entityTypeMappings!= null)&&this.entityTypeMappings.equals(rhs.entityTypeMappings))))&&((this.successors == rhs.successors)||((this.successors!= null)&&this.successors.equals(rhs.successors))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.partOfPackage == rhs.partOfPackage)||((this.partOfPackage!= null)&&this.partOfPackage.equals(rhs.partOfPackage))))&&((this.relatedApiResources == rhs.relatedApiResources)||((this.relatedApiResources!= null)&&this.relatedApiResources.equals(rhs.relatedApiResources))))&&((this.customImplementationStandardDescription == rhs.customImplementationStandardDescription)||((this.customImplementationStandardDescription!= null)&&this.customImplementationStandardDescription.equals(rhs.customImplementationStandardDescription))))&&((this.industry == rhs.industry)||((this.industry!= null)&&this.industry.equals(rhs.industry))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.relatedEventResources == rhs.relatedEventResources)||((this.relatedEventResources!= null)&&this.relatedEventResources.equals(rhs.relatedEventResources))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.responsible == rhs.responsible)||((this.responsible!= null)&&this.responsible.equals(rhs.responsible))))&&((this.releaseStatus == rhs.releaseStatus)||((this.releaseStatus!= null)&&this.releaseStatus.equals(rhs.releaseStatus))))&&((this.disabled == rhs.disabled)||((this.disabled!= null)&&this.disabled.equals(rhs.disabled))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.minSystemVersion == rhs.minSystemVersion)||((this.minSystemVersion!= null)&&this.minSystemVersion.equals(rhs.minSystemVersion))))&&((this.resourceDefinitions == rhs.resourceDefinitions)||((this.resourceDefinitions!= null)&&this.resourceDefinitions.equals(rhs.resourceDefinitions))))&&((this.extensible == rhs.extensible)||((this.extensible!= null)&&this.extensible.equals(rhs.extensible))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.compatibleWith == rhs.compatibleWith)||((this.compatibleWith!= null)&&this.compatibleWith.equals(rhs.compatibleWith))))&&((this.implementationStandard == rhs.implementationStandard)||((this.implementationStandard!= null)&&this.implementationStandard.equals(rhs.implementationStandard))))&&((this.partOfConsumptionBundles == rhs.partOfConsumptionBundles)||((this.partOfConsumptionBundles!= null)&&this.partOfConsumptionBundles.equals(rhs.partOfConsumptionBundles))))&&((this.sunsetDate == rhs.sunsetDate)||((this.sunsetDate!= null)&&this.sunsetDate.equals(rhs.sunsetDate))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.countries == rhs.countries)||((this.countries!= null)&&this.countries.equals(rhs.countries))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.systemInstanceAware == rhs.systemInstanceAware)||((this.systemInstanceAware!= null)&&this.systemInstanceAware.equals(rhs.systemInstanceAware))))&&((this._abstract == rhs._abstract)||((this._abstract!= null)&&this._abstract.equals(rhs._abstract))))&&((this.changelogEntries == rhs.changelogEntries)||((this.changelogEntries!= null)&&this.changelogEntries.equals(rhs.changelogEntries))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.partOfProducts == rhs.partOfProducts)||((this.partOfProducts!= null)&&this.partOfProducts.equals(rhs.partOfProducts))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.eventResourceLinks == rhs.eventResourceLinks)||((this.eventResourceLinks!= null)&&this.eventResourceLinks.equals(rhs.eventResourceLinks))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.lastUpdate == rhs.lastUpdate)||((this.lastUpdate!= null)&&this.lastUpdate.equals(rhs.lastUpdate))));
     }
 
 }

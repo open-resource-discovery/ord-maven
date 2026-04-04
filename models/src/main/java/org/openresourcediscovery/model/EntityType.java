@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Entity Type
  * <p>
- * An [**Entity Type**](../concepts/grouping-and-bundling#entity-type) describes either a business concept / term or an underlying conceptual model.
- * The same entity type can be exposed through one or multiple API and events resources.
+ * An [**Entity Type**](../concepts/grouping-and-bundling#entity-type) describes either a business concept / term or an underlying conceptual model (e.g. a business object / domain model).
+ * Entity Types can be related to API & Event resources, Data Products and other Entity Types, connecting exposed resources to business semantics.
  * 
  * To learn more about the concept, see [Entity Type](../concepts/grouping-and-bundling#entity-type).
  * 
@@ -322,12 +322,14 @@ public class EntityType {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.
@@ -339,7 +341,7 @@ public class EntityType {
      * 
      */
     @JsonProperty("labels")
-    @JsonPropertyDescription("Generic labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
+    @JsonPropertyDescription("Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
     private Labels labels;
     /**
      * Documentation Labels
@@ -1146,12 +1148,14 @@ public class EntityType {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.
@@ -1170,12 +1174,14 @@ public class EntityType {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.

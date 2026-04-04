@@ -751,6 +751,12 @@ public interface Ord {
     /** The resource has been introduced in the given [system version](../index.md#system-version). This implies that the resource is only available if the system instance is of at least that system version.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. */
     String minSystemVersion() default "";
 
+    /** Optional list of related API Resources.  Use this to indicate which APIs implement, expose, or are otherwise related to this entity. */
+    RelatedApiResource[] relatedApiResources() default {};
+
+    /** Optional list of related Event Resources.  Use this to indicate which events are emitted, consumed, or otherwise related to this entity. */
+    RelatedEventResource[] relatedEventResources() default {};
+
     /** The deprecation date defines when the resource has been set as deprecated. This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). */
     String deprecationDate() default "";
 
@@ -898,6 +904,12 @@ public interface Ord {
 
     /** The resource has been introduced in the given [system version](../index.md#system-version). This implies that the resource is only available if the system instance is of at least that system version.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. */
     String minSystemVersion() default "";
+
+    /** Optional list of related API Resources.  Use this to indicate which APIs implement, expose, or are otherwise related to this entity. */
+    RelatedApiResource[] relatedApiResources() default {};
+
+    /** Optional list of related Event Resources.  Use this to indicate which events are emitted, consumed, or otherwise related to this entity. */
+    RelatedEventResource[] relatedEventResources() default {};
 
     /** The deprecation date defines when the resource has been set as deprecated. This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). */
     String deprecationDate() default "";
@@ -1372,10 +1384,10 @@ public interface Ord {
     /** Optional list of related EntityType Resources. MUST be a valid reference to an [EntityType Resource](#entity-type) ORD ID. */
     String[] relatedEntityTypes() default {};
 
-    /** Optional list of related API Resources.  Use this to indicate which APIs implement, expose, or are otherwise related to this capability. */
+    /** Optional list of related API Resources.  Use this to indicate which APIs implement, expose, or are otherwise related to this entity. */
     RelatedApiResource[] relatedApiResources() default {};
 
-    /** Optional list of related Event Resources.  Use this to indicate which events are emitted, consumed, or otherwise related to this capability. */
+    /** Optional list of related Event Resources.  Use this to indicate which events are emitted, consumed, or otherwise related to this entity. */
     RelatedEventResource[] relatedEventResources() default {};
 
     /** Optional list of related Capabilities.  Use this to indicate dependencies, extensions, or other relationships between capabilities. */

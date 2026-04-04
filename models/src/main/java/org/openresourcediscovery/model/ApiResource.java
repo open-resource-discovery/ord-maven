@@ -48,6 +48,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "releaseStatus",
     "disabled",
     "minSystemVersion",
+    "relatedApiResources",
+    "relatedEventResources",
     "deprecationDate",
     "sunsetDate",
     "successors",
@@ -323,6 +325,24 @@ public class ApiResource {
     @JsonPropertyDescription("The resource has been introduced in the given [system version](../index.md#system-version).\nThis implies that the resource is only available if the system instance is of at least that system version.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.")
     private String minSystemVersion;
     /**
+     * Optional list of related API Resources.
+     * 
+     * Use this to indicate which APIs implement, expose, or are otherwise related to this entity.
+     * 
+     */
+    @JsonProperty("relatedApiResources")
+    @JsonPropertyDescription("Optional list of related API Resources.\n\nUse this to indicate which APIs implement, expose, or are otherwise related to this entity.")
+    private List<RelatedApiResource> relatedApiResources;
+    /**
+     * Optional list of related Event Resources.
+     * 
+     * Use this to indicate which events are emitted, consumed, or otherwise related to this entity.
+     * 
+     */
+    @JsonProperty("relatedEventResources")
+    @JsonPropertyDescription("Optional list of related Event Resources.\n\nUse this to indicate which events are emitted, consumed, or otherwise related to this entity.")
+    private List<RelatedEventResource> relatedEventResources;
+    /**
      * The deprecation date defines when the resource has been set as deprecated.
      * This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.
      * 
@@ -589,12 +609,14 @@ public class ApiResource {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.
@@ -606,7 +628,7 @@ public class ApiResource {
      * 
      */
     @JsonProperty("labels")
-    @JsonPropertyDescription("Generic labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
+    @JsonPropertyDescription("Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
     private Labels labels;
     /**
      * Documentation Labels
@@ -1319,6 +1341,60 @@ public class ApiResource {
 
     public ApiResource withMinSystemVersion(String minSystemVersion) {
         this.minSystemVersion = minSystemVersion;
+        return this;
+    }
+
+    /**
+     * Optional list of related API Resources.
+     * 
+     * Use this to indicate which APIs implement, expose, or are otherwise related to this entity.
+     * 
+     */
+    @JsonProperty("relatedApiResources")
+    public List<RelatedApiResource> getRelatedApiResources() {
+        return relatedApiResources;
+    }
+
+    /**
+     * Optional list of related API Resources.
+     * 
+     * Use this to indicate which APIs implement, expose, or are otherwise related to this entity.
+     * 
+     */
+    @JsonProperty("relatedApiResources")
+    public void setRelatedApiResources(List<RelatedApiResource> relatedApiResources) {
+        this.relatedApiResources = relatedApiResources;
+    }
+
+    public ApiResource withRelatedApiResources(List<RelatedApiResource> relatedApiResources) {
+        this.relatedApiResources = relatedApiResources;
+        return this;
+    }
+
+    /**
+     * Optional list of related Event Resources.
+     * 
+     * Use this to indicate which events are emitted, consumed, or otherwise related to this entity.
+     * 
+     */
+    @JsonProperty("relatedEventResources")
+    public List<RelatedEventResource> getRelatedEventResources() {
+        return relatedEventResources;
+    }
+
+    /**
+     * Optional list of related Event Resources.
+     * 
+     * Use this to indicate which events are emitted, consumed, or otherwise related to this entity.
+     * 
+     */
+    @JsonProperty("relatedEventResources")
+    public void setRelatedEventResources(List<RelatedEventResource> relatedEventResources) {
+        this.relatedEventResources = relatedEventResources;
+    }
+
+    public ApiResource withRelatedEventResources(List<RelatedEventResource> relatedEventResources) {
+        this.relatedEventResources = relatedEventResources;
         return this;
     }
 
@@ -2069,12 +2145,14 @@ public class ApiResource {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.
@@ -2093,12 +2171,14 @@ public class ApiResource {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.
@@ -2382,6 +2462,14 @@ public class ApiResource {
         sb.append('=');
         sb.append(((this.minSystemVersion == null)?"<null>":this.minSystemVersion));
         sb.append(',');
+        sb.append("relatedApiResources");
+        sb.append('=');
+        sb.append(((this.relatedApiResources == null)?"<null>":this.relatedApiResources));
+        sb.append(',');
+        sb.append("relatedEventResources");
+        sb.append('=');
+        sb.append(((this.relatedEventResources == null)?"<null>":this.relatedEventResources));
+        sb.append(',');
         sb.append("deprecationDate");
         sb.append('=');
         sb.append(((this.deprecationDate == null)?"<null>":this.deprecationDate));
@@ -2519,6 +2607,7 @@ public class ApiResource {
         result = ((result* 31)+((this.defaultConsumptionBundle == null)? 0 :this.defaultConsumptionBundle.hashCode()));
         result = ((result* 31)+((this.usage == null)? 0 :this.usage.hashCode()));
         result = ((result* 31)+((this.partOfPackage == null)? 0 :this.partOfPackage.hashCode()));
+        result = ((result* 31)+((this.relatedApiResources == null)? 0 :this.relatedApiResources.hashCode()));
         result = ((result* 31)+((this.customImplementationStandardDescription == null)? 0 :this.customImplementationStandardDescription.hashCode()));
         result = ((result* 31)+((this.customPolicyLevel == null)? 0 :this.customPolicyLevel.hashCode()));
         result = ((result* 31)+((this.ordId == null)? 0 :this.ordId.hashCode()));
@@ -2545,6 +2634,7 @@ public class ApiResource {
         result = ((result* 31)+((this.industry == null)? 0 :this.industry.hashCode()));
         result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
         result = ((result* 31)+((this.localId == null)? 0 :this.localId.hashCode()));
+        result = ((result* 31)+((this.relatedEventResources == null)? 0 :this.relatedEventResources.hashCode()));
         result = ((result* 31)+((this.correlationIds == null)? 0 :this.correlationIds.hashCode()));
         result = ((result* 31)+((this.responsible == null)? 0 :this.responsible.hashCode()));
         result = ((result* 31)+((this.releaseStatus == null)? 0 :this.releaseStatus.hashCode()));
@@ -2573,7 +2663,7 @@ public class ApiResource {
             return false;
         }
         ApiResource rhs = ((ApiResource) other);
-        return (((((((((((((((((((((((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)||((this.deprecationDate!= null)&&this.deprecationDate.equals(rhs.deprecationDate)))&&((this.lineOfBusiness == rhs.lineOfBusiness)||((this.lineOfBusiness!= null)&&this.lineOfBusiness.equals(rhs.lineOfBusiness))))&&((this.exposedEntityTypes == rhs.exposedEntityTypes)||((this.exposedEntityTypes!= null)&&this.exposedEntityTypes.equals(rhs.exposedEntityTypes))))&&((this.defaultConsumptionBundle == rhs.defaultConsumptionBundle)||((this.defaultConsumptionBundle!= null)&&this.defaultConsumptionBundle.equals(rhs.defaultConsumptionBundle))))&&((this.usage == rhs.usage)||((this.usage!= null)&&this.usage.equals(rhs.usage))))&&((this.partOfPackage == rhs.partOfPackage)||((this.partOfPackage!= null)&&this.partOfPackage.equals(rhs.partOfPackage))))&&((this.customImplementationStandardDescription == rhs.customImplementationStandardDescription)||((this.customImplementationStandardDescription!= null)&&this.customImplementationStandardDescription.equals(rhs.customImplementationStandardDescription))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.minSystemVersion == rhs.minSystemVersion)||((this.minSystemVersion!= null)&&this.minSystemVersion.equals(rhs.minSystemVersion))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.compatibleWith == rhs.compatibleWith)||((this.compatibleWith!= null)&&this.compatibleWith.equals(rhs.compatibleWith))))&&((this.implementationStandard == rhs.implementationStandard)||((this.implementationStandard!= null)&&this.implementationStandard.equals(rhs.implementationStandard))))&&((this.sunsetDate == rhs.sunsetDate)||((this.sunsetDate!= null)&&this.sunsetDate.equals(rhs.sunsetDate))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.countries == rhs.countries)||((this.countries!= null)&&this.countries.equals(rhs.countries))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.systemInstanceAware == rhs.systemInstanceAware)||((this.systemInstanceAware!= null)&&this.systemInstanceAware.equals(rhs.systemInstanceAware))))&&((this._abstract == rhs._abstract)||((this._abstract!= null)&&this._abstract.equals(rhs._abstract))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.lastUpdate == rhs.lastUpdate)||((this.lastUpdate!= null)&&this.lastUpdate.equals(rhs.lastUpdate))))&&((this.customImplementationStandard == rhs.customImplementationStandard)||((this.customImplementationStandard!= null)&&this.customImplementationStandard.equals(rhs.customImplementationStandard))))&&((this.entryPoints == rhs.entryPoints)||((this.entryPoints!= null)&&this.entryPoints.equals(rhs.entryPoints))))&&((this.entityTypeMappings == rhs.entityTypeMappings)||((this.entityTypeMappings!= null)&&this.entityTypeMappings.equals(rhs.entityTypeMappings))))&&((this.successors == rhs.successors)||((this.successors!= null)&&this.successors.equals(rhs.successors))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.industry == rhs.industry)||((this.industry!= null)&&this.industry.equals(rhs.industry))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.responsible == rhs.responsible)||((this.responsible!= null)&&this.responsible.equals(rhs.responsible))))&&((this.releaseStatus == rhs.releaseStatus)||((this.releaseStatus!= null)&&this.releaseStatus.equals(rhs.releaseStatus))))&&((this.disabled == rhs.disabled)||((this.disabled!= null)&&this.disabled.equals(rhs.disabled))))&&((this.resourceDefinitions == rhs.resourceDefinitions)||((this.resourceDefinitions!= null)&&this.resourceDefinitions.equals(rhs.resourceDefinitions))))&&((this.extensible == rhs.extensible)||((this.extensible!= null)&&this.extensible.equals(rhs.extensible))))&&((this.direction == rhs.direction)||((this.direction!= null)&&this.direction.equals(rhs.direction))))&&((this.supportedUseCases == rhs.supportedUseCases)||((this.supportedUseCases!= null)&&this.supportedUseCases.equals(rhs.supportedUseCases))))&&((this.partOfConsumptionBundles == rhs.partOfConsumptionBundles)||((this.partOfConsumptionBundles!= null)&&this.partOfConsumptionBundles.equals(rhs.partOfConsumptionBundles))))&&((this.apiProtocol == rhs.apiProtocol)||((this.apiProtocol!= null)&&this.apiProtocol.equals(rhs.apiProtocol))))&&((this.changelogEntries == rhs.changelogEntries)||((this.changelogEntries!= null)&&this.changelogEntries.equals(rhs.changelogEntries))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))))&&((this.partOfProducts == rhs.partOfProducts)||((this.partOfProducts!= null)&&this.partOfProducts.equals(rhs.partOfProducts))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.apiResourceLinks == rhs.apiResourceLinks)||((this.apiResourceLinks!= null)&&this.apiResourceLinks.equals(rhs.apiResourceLinks))));
+        return (((((((((((((((((((((((((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)||((this.deprecationDate!= null)&&this.deprecationDate.equals(rhs.deprecationDate)))&&((this.lineOfBusiness == rhs.lineOfBusiness)||((this.lineOfBusiness!= null)&&this.lineOfBusiness.equals(rhs.lineOfBusiness))))&&((this.exposedEntityTypes == rhs.exposedEntityTypes)||((this.exposedEntityTypes!= null)&&this.exposedEntityTypes.equals(rhs.exposedEntityTypes))))&&((this.defaultConsumptionBundle == rhs.defaultConsumptionBundle)||((this.defaultConsumptionBundle!= null)&&this.defaultConsumptionBundle.equals(rhs.defaultConsumptionBundle))))&&((this.usage == rhs.usage)||((this.usage!= null)&&this.usage.equals(rhs.usage))))&&((this.partOfPackage == rhs.partOfPackage)||((this.partOfPackage!= null)&&this.partOfPackage.equals(rhs.partOfPackage))))&&((this.relatedApiResources == rhs.relatedApiResources)||((this.relatedApiResources!= null)&&this.relatedApiResources.equals(rhs.relatedApiResources))))&&((this.customImplementationStandardDescription == rhs.customImplementationStandardDescription)||((this.customImplementationStandardDescription!= null)&&this.customImplementationStandardDescription.equals(rhs.customImplementationStandardDescription))))&&((this.customPolicyLevel == rhs.customPolicyLevel)||((this.customPolicyLevel!= null)&&this.customPolicyLevel.equals(rhs.customPolicyLevel))))&&((this.ordId == rhs.ordId)||((this.ordId!= null)&&this.ordId.equals(rhs.ordId))))&&((this.policyLevels == rhs.policyLevels)||((this.policyLevels!= null)&&this.policyLevels.equals(rhs.policyLevels))))&&((this.links == rhs.links)||((this.links!= null)&&this.links.equals(rhs.links))))&&((this.minSystemVersion == rhs.minSystemVersion)||((this.minSystemVersion!= null)&&this.minSystemVersion.equals(rhs.minSystemVersion))))&&((this.visibility == rhs.visibility)||((this.visibility!= null)&&this.visibility.equals(rhs.visibility))))&&((this.compatibleWith == rhs.compatibleWith)||((this.compatibleWith!= null)&&this.compatibleWith.equals(rhs.compatibleWith))))&&((this.implementationStandard == rhs.implementationStandard)||((this.implementationStandard!= null)&&this.implementationStandard.equals(rhs.implementationStandard))))&&((this.sunsetDate == rhs.sunsetDate)||((this.sunsetDate!= null)&&this.sunsetDate.equals(rhs.sunsetDate))))&&((this.shortDescription == rhs.shortDescription)||((this.shortDescription!= null)&&this.shortDescription.equals(rhs.shortDescription))))&&((this.countries == rhs.countries)||((this.countries!= null)&&this.countries.equals(rhs.countries))))&&((this.version == rhs.version)||((this.version!= null)&&this.version.equals(rhs.version))))&&((this.systemInstanceAware == rhs.systemInstanceAware)||((this.systemInstanceAware!= null)&&this.systemInstanceAware.equals(rhs.systemInstanceAware))))&&((this._abstract == rhs._abstract)||((this._abstract!= null)&&this._abstract.equals(rhs._abstract))))&&((this.tags == rhs.tags)||((this.tags!= null)&&this.tags.equals(rhs.tags))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.lastUpdate == rhs.lastUpdate)||((this.lastUpdate!= null)&&this.lastUpdate.equals(rhs.lastUpdate))))&&((this.customImplementationStandard == rhs.customImplementationStandard)||((this.customImplementationStandard!= null)&&this.customImplementationStandard.equals(rhs.customImplementationStandard))))&&((this.entryPoints == rhs.entryPoints)||((this.entryPoints!= null)&&this.entryPoints.equals(rhs.entryPoints))))&&((this.entityTypeMappings == rhs.entityTypeMappings)||((this.entityTypeMappings!= null)&&this.entityTypeMappings.equals(rhs.entityTypeMappings))))&&((this.successors == rhs.successors)||((this.successors!= null)&&this.successors.equals(rhs.successors))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.industry == rhs.industry)||((this.industry!= null)&&this.industry.equals(rhs.industry))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.localId == rhs.localId)||((this.localId!= null)&&this.localId.equals(rhs.localId))))&&((this.relatedEventResources == rhs.relatedEventResources)||((this.relatedEventResources!= null)&&this.relatedEventResources.equals(rhs.relatedEventResources))))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.responsible == rhs.responsible)||((this.responsible!= null)&&this.responsible.equals(rhs.responsible))))&&((this.releaseStatus == rhs.releaseStatus)||((this.releaseStatus!= null)&&this.releaseStatus.equals(rhs.releaseStatus))))&&((this.disabled == rhs.disabled)||((this.disabled!= null)&&this.disabled.equals(rhs.disabled))))&&((this.resourceDefinitions == rhs.resourceDefinitions)||((this.resourceDefinitions!= null)&&this.resourceDefinitions.equals(rhs.resourceDefinitions))))&&((this.extensible == rhs.extensible)||((this.extensible!= null)&&this.extensible.equals(rhs.extensible))))&&((this.direction == rhs.direction)||((this.direction!= null)&&this.direction.equals(rhs.direction))))&&((this.supportedUseCases == rhs.supportedUseCases)||((this.supportedUseCases!= null)&&this.supportedUseCases.equals(rhs.supportedUseCases))))&&((this.partOfConsumptionBundles == rhs.partOfConsumptionBundles)||((this.partOfConsumptionBundles!= null)&&this.partOfConsumptionBundles.equals(rhs.partOfConsumptionBundles))))&&((this.apiProtocol == rhs.apiProtocol)||((this.apiProtocol!= null)&&this.apiProtocol.equals(rhs.apiProtocol))))&&((this.changelogEntries == rhs.changelogEntries)||((this.changelogEntries!= null)&&this.changelogEntries.equals(rhs.changelogEntries))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))))&&((this.partOfProducts == rhs.partOfProducts)||((this.partOfProducts!= null)&&this.partOfProducts.equals(rhs.partOfProducts))))&&((this.policyLevel == rhs.policyLevel)||((this.policyLevel!= null)&&this.policyLevel.equals(rhs.policyLevel))))&&((this.documentationLabels == rhs.documentationLabels)||((this.documentationLabels!= null)&&this.documentationLabels.equals(rhs.documentationLabels))))&&((this.apiResourceLinks == rhs.apiResourceLinks)||((this.apiResourceLinks!= null)&&this.apiResourceLinks.equals(rhs.apiResourceLinks))));
     }
 
 }

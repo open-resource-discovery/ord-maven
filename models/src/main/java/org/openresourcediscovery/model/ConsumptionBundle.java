@@ -13,10 +13,10 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Consumption Bundle
  * <p>
- * A [**Consumption Bundle**](../concepts/grouping-and-bundling#consumption-bundle) groups APIs and Events together that can be consumed with the credentials and auth mechanism.
- * Ideally it also includes instructions and details how to request access and credentials for resources.
+ * A [**Consumption Bundle**](../concepts/grouping-and-bundling#consumption-bundle) groups APIs and Events together that can be consumed with the same credentials and auth mechanism.
+ * Ideally it also includes instructions and details on how to request access and credentials for resources.
  * 
- * For more documentation and guidance how to correctly this correctly, see [Consumption Bundle details](../concepts/grouping-and-bundling#consumption-bundle).
+ * For more documentation and guidance on how to use this correctly, see [Consumption Bundle](../concepts/grouping-and-bundling#consumption-bundle).
  * 
  * A Consumption Bundle SHOULD have at least one association with a resource (0..n). Avoid empty Consumption Bundles.
  * A Consumption Bundle MUST NOT contain APIs and Events that are NOT defined in the ORD document(s) returned
@@ -191,12 +191,14 @@ public class ConsumptionBundle {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.
@@ -208,7 +210,7 @@ public class ConsumptionBundle {
      * 
      */
     @JsonProperty("labels")
-    @JsonPropertyDescription("Generic labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
+    @JsonPropertyDescription("Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
     private Labels labels;
     /**
      * Documentation Labels
@@ -625,12 +627,14 @@ public class ConsumptionBundle {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.
@@ -649,12 +653,14 @@ public class ConsumptionBundle {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.

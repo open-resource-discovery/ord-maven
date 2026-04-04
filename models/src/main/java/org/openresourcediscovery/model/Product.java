@@ -12,15 +12,17 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Product
  * <p>
- * A **product** in ORD is understood as a commercial product or service.
+ * A [**Product**](../concepts/grouping-and-bundling#product) in ORD is understood as a software product or service offering (whether commercial or free).
  * 
- * It is a high-level entity for structuring the software portfolio from a sales / software logistics perspective.
- * While **system type** is a technical concept, **product** covers the commercial and marketing view.
+ * It is a high-level entity for structuring the software portfolio from a portfolio / software logistics perspective.
+ * While **system type** is a technical concept, **product** covers the portfolio and marketing view.
  * 
  * Please note that the ORD concept of a product is very simple on purpose.
  * There is no distinction between products and services and concepts like product versions, variants, etc.
  * 
  * ORD assumes that this is handled by specialized systems and that ORD only provides the means to correlate to them.
+ * 
+ * To learn more about the concept, see [Product](../concepts/grouping-and-bundling#product).
  * 
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -126,12 +128,14 @@ public class Product {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.
@@ -143,7 +147,7 @@ public class Product {
      * 
      */
     @JsonProperty("labels")
-    @JsonPropertyDescription("Generic labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
+    @JsonPropertyDescription("Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
     private Labels labels;
     /**
      * Documentation Labels
@@ -410,12 +414,14 @@ public class Product {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.
@@ -434,12 +440,14 @@ public class Product {
     /**
      * Labels
      * <p>
-     * Generic labels that can be applied to most ORD information.
+     * Generic key-value labels that can be applied to most ORD information.
      * They are defined as an object that may have arbitrary keys.
      * The value of a key is an array of strings.
      * 
      * Labels can be used to attach technical information that cannot be expressed natively in ORD.
      * An ORD aggregator should allow to categorize and query information based on the labels provided.
+     * 
+     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
      * 
      * If multiple parties rely on the existence of certain label information,
      * standardization through ORD SHOULD be preferred.

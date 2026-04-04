@@ -14,12 +14,14 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * Labels
  * <p>
- * Generic labels that can be applied to most ORD information.
+ * Generic key-value labels that can be applied to most ORD information.
  * They are defined as an object that may have arbitrary keys.
  * The value of a key is an array of strings.
  * 
  * Labels can be used to attach technical information that cannot be expressed natively in ORD.
  * An ORD aggregator should allow to categorize and query information based on the labels provided.
+ * 
+ * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
  * 
  * If multiple parties rely on the existence of certain label information,
  * standardization through ORD SHOULD be preferred.
