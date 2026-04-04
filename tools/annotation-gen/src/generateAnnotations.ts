@@ -126,8 +126,6 @@ type SchemaDefinition = {
   required?: string[];
 };
 
-type AllDefs = Record<string, SchemaDefinition>;
-
 // ----- helpers -----
 function findSpecPackageJson(schemaPath: string): string | null {
   try {
@@ -168,30 +166,7 @@ function resolveJavaType(prop: SchemaProperty = { type: "string" }): string {
   }
 }
 
-function buildDefaultAnnotation(def: SchemaDefinition, annotationName: string): string {
-  const req = def.required ?? [];
-  const props = def.properties ?? {};
-  const args = req.map((name) => {
-    const prop = props[name];
-    const type = resolveJavaType(prop);
-    let val: string;
-    if (type === "String") {
-      val = `"${typeof prop.default === "string" ? prop.default : ""}"`;
-    } else if (type === "boolean") {
-      val = `${prop.default ?? false}`;
-    } else if (type === "double") {
-      val = `${prop.default ?? 0}`;
-    } else if (type.endsWith("[]")) {
-      val = `{}`;
-    } else {
-      val = `@${type}()`;
-    }
-    return `${resolveName(name)} = ${val}`;
-  }).join(", ");
-  return `@${annotationName}${req.length ? `(${args})` : `()`}`;
-}
-
-function generateProps(def: SchemaDefinition, allDefs: AllDefs): string {
+function generateProps(def: SchemaDefinition): string {
   const props = def.properties ?? {};
 
   if (!Object.keys(props).length && def.patternProperties) {
@@ -294,14 +269,14 @@ function run(): void {
     fs.mkdirSync(path.dirname(OUTPUT_FILE), { recursive: true });
 
     const nested = Object.entries(defs)
-      .filter(([n, d]) => !topLevelFields.includes(n))
+      .filter(([n]) => !topLevelFields.includes(n))
       .map(([name, def]) => {
         const requiredArray = buildRequiredArray(def);
         const prefix = `    String[] requiredFields() ${requiredArray};\n`;
         const originalBody =
           (!def.properties || Object.keys(def.properties).length === 0) && def.patternProperties
             ? `\n    ${name}Entry[] value() default {};`
-            : generateProps(def, defs);
+            : generateProps(def);
         const body = prefix + originalBody;
 
         return `
@@ -313,7 +288,7 @@ ${body}
       });
 
     const roots = Object.entries(defs)
-      .filter(([n, d]) => topLevelFields.includes(n))
+      .filter(([n]) => topLevelFields.includes(n))
       .map(([name, def]) => {
         const filteredProperties = def.properties ? Object.fromEntries(
             Object.entries(def.properties)) : {};
@@ -329,7 +304,7 @@ ${body}
         const originalBody =
           (!filteredDef.properties || Object.keys(filteredDef.properties).length === 0) && filteredDef.patternProperties
             ? `\n    ${name}Entry[] value() default {};`
-            : generateProps(filteredDef, defs);
+            : generateProps(filteredDef);
         const body = prefix + originalBody;
 
         return `
