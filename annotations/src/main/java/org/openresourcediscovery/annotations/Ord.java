@@ -1,26 +1,32 @@
 package org.openresourcediscovery.annotations;
 
-import java.lang.annotation.*;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 public interface Ord {
 
+  String VERSION = "1.14.3";
+
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface Documents {
+  @interface Documents {
     Document[] value();
   }
 
   @Target(ElementType.TYPE)
   @Repeatable(Documents.class)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface Document {
+  @interface Document {
     String id() default "ord-document";
 
-    AccessStrategy[] accessStrategies() default { @AccessStrategy(type = "open") };
+    AccessStrategy[] accessStrategies() default {@AccessStrategy(type = "open")};
 
     Group[] groups() default {};
 
-    Vendor[] vendors() default { };
+    Vendor[] vendors() default {};
 
     Product[] products() default {};
 
@@ -37,545 +43,21 @@ public interface Ord {
     SystemVersion describedSystemVersion() default @SystemVersion;
 
     SystemInstance describedSystemInstance() default @SystemInstance;
-
   }
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface DocumentReference {
+  @interface DocumentReference {
     String id() default "ord-document";
   }
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface LabelsEntry {
-    String key();
-    String[] values();
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface DocumentationLabelsEntry {
-    String key();
-    String[] values();
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface ConsumptionBundleReference {
-    String[] requiredFields() default { "ordId" };
-    /** The Consumption Bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to. */
-    String ordId() default "";
-
-    /** In case that an API Resource has multiple entry points, this will indicate which entry point should be used by default when discovering this resource from the context of the referenced Consumption Bundle.  MUST NOT be provided for Event Resources, as they don't have entry points. MUST only be provided if the resource has more than one entry point. MUST be in the list of `entryPoints` of the affected resource. */
-    String defaultEntryPoint() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface DataProductInputPort {
-    String[] requiredFields() default { "ordId" };
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
-    String ordId() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface DataProductOutputPort {
-    String[] requiredFields() default { "ordId" };
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
-    String ordId() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface ApiResourceDefinition {
-    String[] requiredFields() default { "type", "mediaType", "url" };
-    /** Type of the API Resource Definition If "custom" is chosen, a customType MUST be provided */
-    String type() default "";
-
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
-    String customType() default "";
-
-    /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use. For example, for OpenAPI 3, it's valid to express the same definition in both YAML and JSON.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
-    String mediaType() default "";
-
-    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.  It is RECOMMENDED to provide a relative URL (to base URL). */
-    String url() default "";
-
-    /** The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.  If not given, the resource definition has the same visibility as the resource it describes. The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes. E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.  This makes it also possible to provide both a public and an internal metadata description of the resource, in case that some metadata must only be made accessible to internal consumers. */
-    String visibility() default "";
-
-    /** List of supported access strategies for retrieving metadata from the ORD provider. An ORD Consumer/ORD Aggregator MAY choose any of the strategies.  The access strategies only apply to the metadata access and not the actual API access. The actual access to the APIs for clients is described via Consumption Bundles.  If this property is not provided, the definition URL will be available through the same access strategy as this ORD document. It is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process. */
-    AccessStrategy[] accessStrategies() default {};
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface EventResourceDefinition {
-    String[] requiredFields() default { "type", "mediaType", "url" };
-    /** Type of the event resource definition */
-    String type() default "";
-
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
-    String customType() default "";
-
-    /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use. For example, for OpenAPI 3, it's valid to express the same definition in both YAML and JSON.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
-    String mediaType() default "";
-
-    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.  It is RECOMMENDED to provide a relative URL (to base URL). */
-    String url() default "";
-
-    /** List of supported access strategies for retrieving metadata from the ORD provider. An ORD Consumer/ORD Aggregator MAY choose any of the strategies.  The access strategies only apply to the metadata access and not the actual API access. The actual access to the APIs for clients is described via Consumption Bundles.  If this property is not provided, the definition URL will be available through the same access strategy as this ORD document. It is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process. */
-    AccessStrategy[] accessStrategies() default {};
-
-    /** The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.  If not given, the resource definition has the same visibility as the resource it describes. The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes. E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.  This makes it also possible to provide both a public and an internal metadata description of the resource, in case that some metadata must only be made accessible to internal consumers. */
-    String visibility() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface CapabilityDefinition {
-    String[] requiredFields() default { "type", "mediaType", "url" };
-    /** Type of the capability resource definition */
-    String type() default "";
-
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
-    String customType() default "";
-
-    /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use. For example, for OpenAPI 3, it's valid to express the same definition in both YAML and JSON.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
-    String mediaType() default "";
-
-    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.  It is RECOMMENDED to provide a relative URL (to base URL). */
-    String url() default "";
-
-    /** List of supported access strategies for retrieving metadata from the ORD provider. An ORD Consumer/ORD Aggregator MAY choose any of the strategies.  The access strategies only apply to the metadata access and not the actual API access. The actual access to the APIs for clients is described via Consumption Bundles.  If this property is not provided, the definition URL will be available through the same access strategy as this ORD document. It is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process. */
-    AccessStrategy[] accessStrategies() default {};
-
-    /** The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.  If not given, the resource definition has the same visibility as the resource it describes. The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes. E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.  This makes it also possible to provide both a public and an internal metadata description of the resource, in case that some metadata must only be made accessible to internal consumers. */
-    String visibility() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface IntegrationAspect {
-    String[] requiredFields() default { "title", "mandatory" };
-    /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
-    String title() default "";
-
-    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
-    String description() default "";
-
-    /** If true, the aspect is mandatory to realize the Integration Dependency it contains. */
-    boolean mandatory() default false;
-
-    /** If true, the references resources can be provided by multiple system instances. If not, only one integration target is supported. */
-    boolean supportMultipleProviders() default false;
-
-    /** List of API Resource Dependencies. */
-    ApiResourceIntegrationAspect[] apiResources() default {};
-
-    /** List of Event Resource Dependencies. */
-    EventResourceIntegrationAspect[] eventResources() default {};
-
-    /** List of Capability Dependencies. */
-    CapabilityIntegrationAspect[] capabilities() default {};
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface ApiResourceIntegrationAspect {
-    String[] requiredFields() default { "ordId" };
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
-    String ordId() default "";
-
-    /** Minimum version of the references resource that the integration requires.  */
-    String minVersion() default "";
-
-    /** List of individual API operations that are sufficient to achieve the aspect. */
-    ApiResourceIntegrationAspectSubset[] subset() default {};
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface EventResourceIntegrationAspect {
-    String[] requiredFields() default { "ordId" };
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
-    String ordId() default "";
-
-    /** Minimum version of the references resource that the integration requires.  */
-    String minVersion() default "";
-
-    /** List of individual events or messages that are sufficient to achieve the aspect. */
-    EventResourceIntegrationAspectSubset[] subset() default {};
-
-    /** In case that the event subscriptions are limited to known [system types](../index.md#system-type), they can be listed here as [system namespaces](../index.md#system-namespace).  If given, only system types of the defined namespaces are supported as integration partners. If not given, there is no restriction which system type provides the events. */
-    String[] systemTypeRestriction() default {};
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface EventResourceIntegrationAspectSubset {
-    String[] requiredFields() default { "eventType" };
-    /** The type ID of the individual event or message.  This MUST be an ID that is understood by the used protocol and resource definition format. E.g. for CloudEvents, the [type](https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#type) can be used. */
-    String eventType() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface ApiResourceIntegrationAspectSubset {
-    String[] requiredFields() default { "operationId" };
-    /** The ID of the individual API operation or tool.  This MUST be an ID that is understood by the used protocol and resource definition format. E.g. for OpenAPI this is the `operationId`, for MCP this is the tool `name`. */
-    String operationId() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface CapabilityIntegrationAspect {
-    String[] requiredFields() default { "ordId" };
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
-    String ordId() default "";
-
-    /** Minimum version of the references resource that the integration requires.  */
-    String minVersion() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface ChangelogEntry {
-    String[] requiredFields() default { "version", "releaseStatus", "date" };
-    /** Full version number that corresponds to the `version` that is described by the changelog entry.  Ideally it follows the [Semantic Versioning 2.0.0](https://semver.org/) standard, but since it should reflect the actual version string / scheme used, this is not a mandatory requirement. */
-    String version() default "";
-
-    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
-    String releaseStatus() default "";
-
-    /** Date of change, without time or timezone information.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). */
-    String date() default "";
-
-    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
-    String description() default "";
-
-    /** Optional [URL](https://tools.ietf.org/html/rfc3986) that links to a more detailed changelog entry.  The link target MUST be absolute and SHOULD be openly accessible. */
-    String url() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface Link {
-    String[] requiredFields() default { "title", "url" };
-    /** Human readable title of the link.  MUST be unique within the collection of links provided. */
-    String title() default "";
-
-    /** [URL](https://tools.ietf.org/html/rfc3986) of the link.  The link target MUST be absolute and SHOULD be openly accessible. */
-    String url() default "";
-
-    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown). */
-    String description() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface File {
-    String[] requiredFields() default { "title", "url", "mediaType" };
-    /** Human readable title of the file.  MUST be unique within the collection of files provided. */
-    String title() default "";
-
-    /** [URL](https://tools.ietf.org/html/rfc3986) of the link.  The file target MAY be relative or absolute. If a relative URL is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl). If an absolute URL is given, then it MUST be openly accessible. */
-    String url() default "";
-
-    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
-    String description() default "";
-
-    /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
-    String mediaType() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface PackageLink {
-    String[] requiredFields() default { "type", "url" };
-    String type() default "";
-
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
-    String customType() default "";
-
-    /** [URL](https://tools.ietf.org/html/rfc3986) to the PackageLink.  The link target MUST be absolute and SHOULD be openly accessible. */
-    String url() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface APIEventResourceLink {
-    String[] requiredFields() default { "url", "type" };
-    /** See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions) */
-    String type() default "";
-
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
-    String customType() default "";
-
-    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the API or Event Resource Link.  The link target SHOULD be absolute and SHOULD be openly accessible. If a relative link is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl). */
-    String url() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface DataProductLink {
-    String[] requiredFields() default { "url", "type" };
-    String type() default "";
-
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
-    String customType() default "";
-
-    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the Data Product Link.  The link target SHOULD be absolute and SHOULD be openly accessible. If a relative link is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl). */
-    String url() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface AccessStrategy {
-    String[] requiredFields() default { "type" };
-    /** Defines the authentication/authorization strategy through which the referenced `resourceDefinitions` are accessible. */
-    String type() default "";
-
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
-    String customType() default "";
-
-    /** Human-readable description about how the access is set up, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  MUST only be provided if `type` is set to `custom`. */
-    String customDescription() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface CredentialExchangeStrategy {
-    String[] requiredFields() default { "type" };
-    /** The type of credential exchange strategy. */
-    String type() default "";
-
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
-    String customType() default "";
-
-    /** Human-readable description about how the credential exchange is achieved, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  MUST only be provided if `type` is set to `custom`. */
-    String customDescription() default "";
-
-    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the credential exchange callback endpoint.  This allows requesting a set of credentials that can be used for consuming all the APIs and Events that are part of the bundle.  The interface contract/protocol is dependent and defined by the chosen `type`.  Whenever a client wants to consume a resource within a particular bundle, this endpoint can be called to obtain the credentials that this client can use.  The returned credentials MUST be valid for all resources that are part of the respective bundle. The endpoint SHOULD return a different set of credentials on each invocation. */
-    String callbackUrl() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface Labels {
-    String[] requiredFields() default {};
-
-    LabelsEntry[] value() default {};
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface DocumentationLabels {
-    String[] requiredFields() default {};
-
-    DocumentationLabelsEntry[] value() default {};
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface Extensible {
-    String[] requiredFields() default { "supported" };
-    /** This property defines whether the resource is extensible.  **Not extensible** means that the data model of the resource (i.e. API or event) cannot be extended with custom fields. **Manually extensible** means that in addition to defining a custom field, manual activities to include the field in the data model of the resource (i.e. API or event) are required. E.g. using a specific mapping tool or by selecting the resource in the data model extension tool. **Automatically extensible** means that after defining a custom field in the local domain model, the resource (i.e. API or event) is automatically extended as part of the default extension field definition. */
-    String supported() default "";
-
-    /** A description about the extensibility capabilities of this API, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  This description may contain detailed steps on how to extend the API. Links to external resources can be provided within the description as markdown links.  This description MUST be provided if `supported` is set to `manual` or `automatic`. */
-    String description() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface EntityTypeMapping {
-    String[] requiredFields() default { "entityTypeTargets" };
-    /** List of selectors for API models within an API Resource. If multiple selectors are given, every selected API model maps to the entity type target(s). If omitted, the complete API resource will be mapped to the `entityTypeTargets` (less specific).  Multiple selectors can be useful, e.g. with a CRUD REST API, to combine the similar API models.  Depending on the chosen API protocol and the available resource definition formats, different kind of selectors need to be used. */
-    ApiModelSelectorOData[] apiModelSelectors() default {};
-
-    /** List of entity types the ORD resource maps to. If `apiModelSelectors` are given, the mapping is more precise by also pointing to the specific model in the API.  If multiple entity types are defined as the mapping target, all of them can be at least partially mapped to the source API model(s).  Entity types can be referenced using either using an [ORD ID](../index.md#ord-id) or a [Correlation ID](../index.md#correlation-id). */
-    EntityTypeOrdIdTarget[] entityTypeTargets() default {};
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface ApiCompatibility {
-    String[] requiredFields() default { "ordId", "maxVersion" };
-    /** ORD ID of the APIResource that serves as contract that this resource is compatible with.  MUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID. */
-    String ordId() default "";
-
-    /** Specifies the maximum version of the interface contract that this resource is compatible with. This is the version, that the resource fully implements and supports.  Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one. It is important to consider, given the example of an API version 1.0, that has the fields A and B. Being compatible with version 1.0 means to have exactly the fields A and B and potential tenant specific extensions in a dedicated namespace. If an API contract changes to version 1.1 compatible by adding field C, the API declaring compatibility towards 1.0, will miss field C. Only if adopting the contract of 1.1 with having fields A, B, and C, such an API is also compatible with version 1.1 of the contract. However, a client relying on version 1.0 of the contract, can still work with the API being compatible with version 1.1 of the contract.  Following the [Semantic Versioning 2.0.0](https://semver.org/) standard, patch versions (x.y.Z) must not have impact on the schema/contract. Therefore, the maxVersion are only the major.minor parts of a semantic version. */
-    String maxVersion() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface EventCompatibility {
-    String[] requiredFields() default { "ordId", "maxVersion" };
-    /** ORD ID of the EventResource that serves as contract that this resource is compatible with.  MUST be a valid reference to an (usually external) [Event Resource](#event-resource) ORD ID. */
-    String ordId() default "";
-
-    /** Specifies the maximum version of the interface contract that this resource is compatible with. This is the version, that the resource fully implements and supports.  Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one. It is important to consider, given the example of an event version 1.0, that has the fields A and B. Being compatible with version 1.0 means to have exactly the fields A and B and potential tenant specific extensions in a dedicated namespace. If an event contract changes to version 1.1 compatible by adding field C, the event declaring compatibility towards 1.0, will miss field C. Only if adopting the contract of 1.1 with having fields A, B, and C, such an event is also compatible with version 1.1 of the contract. However, a client relying on version 1.0 of the contract, can still work with the event being compatible with version 1.1 of the contract.  Following the [Semantic Versioning 2.0.0](https://semver.org/) standard, patch versions (x.y.Z) must not have impact on the schema/contract. Therefore, the maxVersion are only the major.minor parts of a semantic version. */
-    String maxVersion() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface ApiModelSelectorOData {
-    String[] requiredFields() default { "type", "entitySetName" };
-    /** The type for OData selectors is fixed to `odata`. */
-    String type() default "";
-
-    /** OData entity set name.  As defined in the EDMX, e.g. `<EntitySet Name="AttachmentContent">`. */
-    String entitySetName() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface ApiModelSelectorJsonPointer {
-    String[] requiredFields() default { "type", "jsonPointer" };
-    /** The type for generic JSON Pointer selectors is fixed to `json-pointer`. */
-    String type() default "";
-
-    /** JSON Pointer to the entity type schema / description within the resource definition format.  MUST be a valid JSON Pointer according to [RFC6901](https://datatracker.ietf.org/doc/html/rfc6901).  The JSON pointers MUST point to each instance of the mapped entity type in the resource definition file, BEFORE `$ref` JSON Schema References are resolved (dereferenced). */
-    String jsonPointer() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface ExposedApiResourcesTarget {
-    String[] requiredFields() default { "ordId" };
-    /** The API Resource ORD ID that this reference points to.  MUST be a valid reference to an [API Resource](#api-resource) ORD ID. */
-    String ordId() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface EntityTypeOrdIdTarget {
-    String[] requiredFields() default { "ordId" };
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
-    String ordId() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface EntityTypeCorrelationIdTarget {
-    String[] requiredFields() default { "correlationId" };
-    String correlationId() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface RelatedEntityType {
-    String[] requiredFields() default { "ordId" };
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
-    String ordId() default "";
-
-    /** Optional type of the relationship, which defines a stricter semantic what the relationship implies.  If not provided, the relationship type has no semantics, it's "related somehow".  MUST be a valid [Concept ID](../index.md#concept-id). */
-    String relationType() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface RelatedApiResource {
-    String[] requiredFields() default { "ordId" };
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
-    String ordId() default "";
-
-    /** Optional type of the relationship as a [Concept ID](../index.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
-    String relationType() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface RelatedEventResource {
-    String[] requiredFields() default { "ordId" };
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
-    String ordId() default "";
-
-    /** Optional type of the relationship as a [Concept ID](../index.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
-    String relationType() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface RelatedCapability {
-    String[] requiredFields() default { "ordId" };
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
-    String ordId() default "";
-
-    /** Optional type of the relationship as a [Concept ID](../index.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
-    String relationType() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface ExposedEntityType {
-    String[] requiredFields() default { "ordId" };
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
-    String ordId() default "";
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface OrdResource {
-    String[] requiredFields() default { "ordId", "title", "description", "version", "visibility", "releaseStatus", "partOfPackage" };
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
-    String ordId() default "";
-
-    /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
-    String localId() default "";
-
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
-    String[] correlationIds() default {};
-
-    /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
-    String title() default "";
-
-    /** Plain text short description.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
-    String shortDescription() default "";
-
-    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
-    String description() default "";
-
-    /** Defines which Package the resource is part of.  MUST be a valid reference to a [Package](#package) ORD ID.  Every resource MUST be part of one package. */
-    String partOfPackage() default "";
-
-    /** Defines which groups the resource is assigned to.  The property is optional, but if given the value MUST be an array of valid Group IDs.  Groups are a lightweight custom taxonomy concept. They express a "part of" relationship to the chosen group concept. If an "identity / equals" relationship needs to be expressed, use the `correlationIds` instead.  All resources that share the same group ID assignment are effectively grouped together. */
-    String[] partOfGroups() default {};
-
-    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
-    String version() default "";
-
-    /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
-    String lastUpdate() default "";
-
-    /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
-    String visibility() default "";
-
-    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
-    String releaseStatus() default "";
-
-    /** Generic links with arbitrary meaning and content.  `packageLinks` MUST be preferred if applicable. */
-    Link[] links() default {};
-
-    /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
-    String[] tags() default {};
-
-    Labels labels() default @Labels;
-
-    DocumentationLabels documentationLabels() default @DocumentationLabels;
-  }
-
-  @Target(ElementType.TYPE)
-  @Retention(RetentionPolicy.RUNTIME)
-  public @interface Package {
+  @interface Package {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "ordId", "title", "shortDescription", "description", "version", "vendor" };
+    String[] requiredFields() default {"ordId", "title", "shortDescription", "description", "version", "vendor"};
+
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
@@ -639,17 +121,20 @@ public interface Ord {
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] tags() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
   }
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface ConsumptionBundle {
+  @interface ConsumptionBundle {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "ordId", "title" };
+    String[] requiredFields() default {"ordId", "title"};
+
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
@@ -686,17 +171,43 @@ public interface Ord {
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] tags() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
   }
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface ApiResource {
+  @interface ConsumptionBundleReference {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The Consumption Bundle ORD ID (`ConsumptionBundle.ordId`) this reference points to. */
+    String ordId() default "";
+
+    /** In case that an API Resource has multiple entry points, this will indicate which entry point should be used by default when discovering this resource from the context of the referenced Consumption Bundle.  MUST NOT be provided for Event Resources, as they don't have entry points. MUST only be provided if the resource has more than one entry point. MUST be in the list of `entryPoints` of the affected resource. */
+    String defaultEntryPoint() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface ApiResource {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "ordId", "title", "shortDescription", "description", "version", "releaseStatus", "apiProtocol", "visibility", "partOfPackage" };
+    String[] requiredFields() default {
+      "ordId",
+      "title",
+      "shortDescription",
+      "description",
+      "version",
+      "releaseStatus",
+      "apiProtocol",
+      "visibility",
+      "partOfPackage"
+    };
+
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
@@ -814,6 +325,7 @@ public interface Ord {
     /** Generic Links with arbitrary meaning and content.  If applicable, `apiResourceLinks` MUST be used instead of generic `links`. */
     Link[] links() default {};
 
+    /**  */
     Extensible extensible() default @Extensible;
 
     /** List of countries that the Package resources are applicable to.  MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).  `countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
@@ -828,8 +340,10 @@ public interface Ord {
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] tags() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
 
     /** The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with. Depending on the chosen policy level, additional expectations and validations rules will be applied.  The policy level can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  */
@@ -847,10 +361,20 @@ public interface Ord {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface EventResource {
+  @interface EventResource {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "ordId", "title", "shortDescription", "description", "version", "visibility", "partOfPackage", "releaseStatus" };
+    String[] requiredFields() default {
+      "ordId",
+      "title",
+      "shortDescription",
+      "description",
+      "version",
+      "visibility",
+      "partOfPackage",
+      "releaseStatus"
+    };
+
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
@@ -953,6 +477,7 @@ public interface Ord {
     /** Generic Links with arbitrary meaning and content. */
     Link[] links() default {};
 
+    /**  */
     Extensible extensible() default @Extensible;
 
     /** List of countries that the Package resources are applicable to.  MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).  `countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
@@ -967,8 +492,10 @@ public interface Ord {
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] tags() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
 
     /** The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with. Depending on the chosen policy level, additional expectations and validations rules will be applied.  The policy level can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  */
@@ -986,10 +513,13 @@ public interface Ord {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface EntityType {
+  @interface EntityType {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "ordId", "localId", "level", "title", "version", "visibility", "partOfPackage", "releaseStatus" };
+    String[] requiredFields() default {
+      "ordId", "localId", "level", "title", "version", "visibility", "partOfPackage", "releaseStatus"
+    };
+
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
@@ -1050,13 +580,16 @@ public interface Ord {
     /** Generic Links with arbitrary meaning and content. */
     Link[] links() default {};
 
+    /**  */
     Extensible extensible() default @Extensible;
 
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] tags() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
 
     /** The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with. Depending on the chosen policy level, additional expectations and validations rules will be applied.  The policy level can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  */
@@ -1074,10 +607,24 @@ public interface Ord {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface DataProduct {
+  @interface DataProduct {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "ordId", "type", "category", "title", "shortDescription", "description", "version", "releaseStatus", "visibility", "partOfPackage", "responsible", "outputPorts" };
+    String[] requiredFields() default {
+      "ordId",
+      "type",
+      "category",
+      "title",
+      "shortDescription",
+      "description",
+      "version",
+      "releaseStatus",
+      "visibility",
+      "partOfPackage",
+      "responsible",
+      "outputPorts"
+    };
+
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
@@ -1177,8 +724,10 @@ public interface Ord {
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] tags() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
 
     /** The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with. Depending on the chosen policy level, additional expectations and validations rules will be applied.  The policy level can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  */
@@ -1196,10 +745,81 @@ public interface Ord {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface Agent {
+  @interface DataProductInputPort {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface DataProductOutputPort {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface ApiResourceDefinition {
+
+    String[] requiredFields() default {"type", "mediaType", "url"};
+
+    /** Type of the API Resource Definition If "custom" is chosen, a customType MUST be provided */
+    String type() default "";
+
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    String customType() default "";
+
+    /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use. For example, for OpenAPI 3, it's valid to express the same definition in both YAML and JSON.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
+    String mediaType() default "";
+
+    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.  It is RECOMMENDED to provide a relative URL (to base URL). */
+    String url() default "";
+
+    /** The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.  If not given, the resource definition has the same visibility as the resource it describes. The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes. E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.  This makes it also possible to provide both a public and an internal metadata description of the resource, in case that some metadata must only be made accessible to internal consumers. */
+    String visibility() default "";
+
+    /** List of supported access strategies for retrieving metadata from the ORD provider. An ORD Consumer/ORD Aggregator MAY choose any of the strategies.  The access strategies only apply to the metadata access and not the actual API access. The actual access to the APIs for clients is described via Consumption Bundles.  If this property is not provided, the definition URL will be available through the same access strategy as this ORD document. It is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process. */
+    AccessStrategy[] accessStrategies() default {};
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface EventResourceDefinition {
+
+    String[] requiredFields() default {"type", "mediaType", "url"};
+
+    /** Type of the event resource definition */
+    String type() default "";
+
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    String customType() default "";
+
+    /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use. For example, for OpenAPI 3, it's valid to express the same definition in both YAML and JSON.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
+    String mediaType() default "";
+
+    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.  It is RECOMMENDED to provide a relative URL (to base URL). */
+    String url() default "";
+
+    /** List of supported access strategies for retrieving metadata from the ORD provider. An ORD Consumer/ORD Aggregator MAY choose any of the strategies.  The access strategies only apply to the metadata access and not the actual API access. The actual access to the APIs for clients is described via Consumption Bundles.  If this property is not provided, the definition URL will be available through the same access strategy as this ORD document. It is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process. */
+    AccessStrategy[] accessStrategies() default {};
+
+    /** The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.  If not given, the resource definition has the same visibility as the resource it describes. The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes. E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.  This makes it also possible to provide both a public and an internal metadata description of the resource, in case that some metadata must only be made accessible to internal consumers. */
+    String visibility() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface Agent {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "ordId", "title", "version", "releaseStatus", "visibility", "partOfPackage" };
+    String[] requiredFields() default {"ordId", "title", "version", "releaseStatus", "visibility", "partOfPackage"};
+
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
@@ -1287,17 +907,20 @@ public interface Ord {
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] tags() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
   }
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface Product {
+  @interface Product {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "ordId", "title", "shortDescription", "vendor" };
+    String[] requiredFields() default {"ordId", "title", "shortDescription", "vendor"};
+
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
@@ -1322,17 +945,22 @@ public interface Ord {
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] tags() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
   }
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface Capability {
+  @interface Capability {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "ordId", "type", "title", "version", "releaseStatus", "visibility", "partOfPackage" };
+    String[] requiredFields() default {
+      "ordId", "type", "title", "version", "releaseStatus", "visibility", "partOfPackage"
+    };
+
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
@@ -1402,8 +1030,10 @@ public interface Ord {
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] tags() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
 
     /** Defines whether this ORD resource is **system-instance-aware**. This is the case when the referenced resource definitions are potentially different between **system instances**.  If this behavior applies, `systemInstanceAware` MUST be set to true. An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.  This concept is now **deprecated** in favor of the more explicit `perspective` attribute. All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.  For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives). */
@@ -1412,10 +1042,38 @@ public interface Ord {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface IntegrationDependency {
+  @interface CapabilityDefinition {
+
+    String[] requiredFields() default {"type", "mediaType", "url"};
+
+    /** Type of the capability resource definition */
+    String type() default "";
+
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    String customType() default "";
+
+    /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use. For example, for OpenAPI 3, it's valid to express the same definition in both YAML and JSON.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
+    String mediaType() default "";
+
+    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.  It is RECOMMENDED to provide a relative URL (to base URL). */
+    String url() default "";
+
+    /** List of supported access strategies for retrieving metadata from the ORD provider. An ORD Consumer/ORD Aggregator MAY choose any of the strategies.  The access strategies only apply to the metadata access and not the actual API access. The actual access to the APIs for clients is described via Consumption Bundles.  If this property is not provided, the definition URL will be available through the same access strategy as this ORD document. It is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process. */
+    AccessStrategy[] accessStrategies() default {};
+
+    /** The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.  If not given, the resource definition has the same visibility as the resource it describes. The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes. E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.  This makes it also possible to provide both a public and an internal metadata description of the resource, in case that some metadata must only be made accessible to internal consumers. */
+    String visibility() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface IntegrationDependency {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "ordId", "title", "version", "releaseStatus", "visibility", "partOfPackage", "mandatory" };
+    String[] requiredFields() default {
+      "ordId", "title", "version", "releaseStatus", "visibility", "partOfPackage", "mandatory"
+    };
+
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
@@ -1473,17 +1131,116 @@ public interface Ord {
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] tags() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
   }
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface Vendor {
+  @interface IntegrationAspect {
+
+    String[] requiredFields() default {"title", "mandatory"};
+
+    /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
+    String title() default "";
+
+    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
+    String description() default "";
+
+    /** If true, the aspect is mandatory to realize the Integration Dependency it contains. */
+    boolean mandatory() default false;
+
+    /** If true, the references resources can be provided by multiple system instances. If not, only one integration target is supported. */
+    boolean supportMultipleProviders() default false;
+
+    /** List of API Resource Dependencies. */
+    ApiResourceIntegrationAspect[] apiResources() default {};
+
+    /** List of Event Resource Dependencies. */
+    EventResourceIntegrationAspect[] eventResources() default {};
+
+    /** List of Capability Dependencies. */
+    CapabilityIntegrationAspect[] capabilities() default {};
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface ApiResourceIntegrationAspect {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Minimum version of the references resource that the integration requires.  */
+    String minVersion() default "";
+
+    /** List of individual API operations that are sufficient to achieve the aspect. */
+    ApiResourceIntegrationAspectSubset[] subset() default {};
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface EventResourceIntegrationAspect {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Minimum version of the references resource that the integration requires.  */
+    String minVersion() default "";
+
+    /** List of individual events or messages that are sufficient to achieve the aspect. */
+    EventResourceIntegrationAspectSubset[] subset() default {};
+
+    /** In case that the event subscriptions are limited to known [system types](../index.md#system-type), they can be listed here as [system namespaces](../index.md#system-namespace).  If given, only system types of the defined namespaces are supported as integration partners. If not given, there is no restriction which system type provides the events. */
+    String[] systemTypeRestriction() default {};
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface EventResourceIntegrationAspectSubset {
+
+    String[] requiredFields() default {"eventType"};
+
+    /** The type ID of the individual event or message.  This MUST be an ID that is understood by the used protocol and resource definition format. E.g. for CloudEvents, the [type](https://github.com/cloudevents/spec/blob/v1.0.2/cloudevents/spec.md#type) can be used. */
+    String eventType() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface ApiResourceIntegrationAspectSubset {
+
+    String[] requiredFields() default {"operationId"};
+
+    /** The ID of the individual API operation or tool.  This MUST be an ID that is understood by the used protocol and resource definition format. E.g. for OpenAPI this is the `operationId`, for MCP this is the tool `name`. */
+    String operationId() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface CapabilityIntegrationAspect {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Minimum version of the references resource that the integration requires.  */
+    String minVersion() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface Vendor {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "ordId", "title" };
+    String[] requiredFields() default {"ordId", "title"};
+
     /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
@@ -1496,17 +1253,125 @@ public interface Ord {
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] tags() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
   }
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface SystemInstance {
+  @interface ChangelogEntry {
+
+    String[] requiredFields() default {"version", "releaseStatus", "date"};
+
+    /** Full version number that corresponds to the `version` that is described by the changelog entry.  Ideally it follows the [Semantic Versioning 2.0.0](https://semver.org/) standard, but since it should reflect the actual version string / scheme used, this is not a mandatory requirement. */
+    String version() default "";
+
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
+    String releaseStatus() default "";
+
+    /** Date of change, without time or timezone information.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). */
+    String date() default "";
+
+    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
+    String description() default "";
+
+    /** Optional [URL](https://tools.ietf.org/html/rfc3986) that links to a more detailed changelog entry.  The link target MUST be absolute and SHOULD be openly accessible. */
+    String url() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface Link {
+
+    String[] requiredFields() default {"title", "url"};
+
+    /** Human readable title of the link.  MUST be unique within the collection of links provided. */
+    String title() default "";
+
+    /** [URL](https://tools.ietf.org/html/rfc3986) of the link.  The link target MUST be absolute and SHOULD be openly accessible. */
+    String url() default "";
+
+    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown). */
+    String description() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface File {
+
+    String[] requiredFields() default {"title", "url", "mediaType"};
+
+    /** Human readable title of the file.  MUST be unique within the collection of files provided. */
+    String title() default "";
+
+    /** [URL](https://tools.ietf.org/html/rfc3986) of the link.  The file target MAY be relative or absolute. If a relative URL is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl). If an absolute URL is given, then it MUST be openly accessible. */
+    String url() default "";
+
+    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
+    String description() default "";
+
+    /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
+    String mediaType() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface PackageLink {
+
+    String[] requiredFields() default {"type", "url"};
+
+    /**  */
+    String type() default "";
+
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    String customType() default "";
+
+    /** [URL](https://tools.ietf.org/html/rfc3986) to the PackageLink.  The link target MUST be absolute and SHOULD be openly accessible. */
+    String url() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface APIEventResourceLink {
+
+    String[] requiredFields() default {"url", "type"};
+
+    /** See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions) */
+    String type() default "";
+
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    String customType() default "";
+
+    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the API or Event Resource Link.  The link target SHOULD be absolute and SHOULD be openly accessible. If a relative link is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl). */
+    String url() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface DataProductLink {
+
+    String[] requiredFields() default {"url", "type"};
+
+    /**  */
+    String type() default "";
+
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    String customType() default "";
+
+    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the Data Product Link.  The link target SHOULD be absolute and SHOULD be openly accessible. If a relative link is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl). */
+    String url() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface SystemInstance {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default {};
+
     /** Optional [base URL](../index.md#base-url) of the **system instance**. By providing the base URL, relative URLs in the document are resolved relative to it.  The `baseUrl` MUST not contain a leading slash.  MUST be provided if the base URL is not known to the ORD aggregators. MUST be provided when the document needs to be fully self contained, e.g. when used for manual imports. */
     String baseUrl() default "";
 
@@ -1516,8 +1381,10 @@ public interface Ord {
     /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
     String[] correlationIds() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
 
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
@@ -1526,18 +1393,21 @@ public interface Ord {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface SystemType {
+  @interface SystemType {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default {};
+
     /** The [system namespace](../index.md#system-namespace) is a unique identifier for the system type. It is used to reference the system type in the ORD. */
     String systemNamespace() default "";
 
     /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
     String[] correlationIds() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
 
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
@@ -1546,10 +1416,11 @@ public interface Ord {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface SystemVersion {
+  @interface SystemVersion {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
     String[] requiredFields() default {};
+
     /** The version of the system instance (run-time) or the version of the described system-version perspective.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.  MUST be provided if the ORD document is `perspective`: `system-version`.  For continuous-delivery systems, the version MAY be fixed to the same value, e.g. `1.0.0`, but be aware that phased rollouts may benefit from a more precise versioning like adding a build number. */
     String version() default "";
 
@@ -1559,8 +1430,10 @@ public interface Ord {
     /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
     String[] correlationIds() default {};
 
+    /**  */
     Labels labels() default @Labels;
 
+    /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
 
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
@@ -1569,10 +1442,63 @@ public interface Ord {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface GroupType {
+  @interface AccessStrategy {
+
+    String[] requiredFields() default {"type"};
+
+    /** Defines the authentication/authorization strategy through which the referenced `resourceDefinitions` are accessible. */
+    String type() default "";
+
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    String customType() default "";
+
+    /** Human-readable description about how the access is set up, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  MUST only be provided if `type` is set to `custom`. */
+    String customDescription() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface CredentialExchangeStrategy {
+
+    String[] requiredFields() default {"type"};
+
+    /** The type of credential exchange strategy. */
+    String type() default "";
+
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    String customType() default "";
+
+    /** Human-readable description about how the credential exchange is achieved, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  MUST only be provided if `type` is set to `custom`. */
+    String customDescription() default "";
+
+    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the credential exchange callback endpoint.  This allows requesting a set of credentials that can be used for consuming all the APIs and Events that are part of the bundle.  The interface contract/protocol is dependent and defined by the chosen `type`.  Whenever a client wants to consume a resource within a particular bundle, this endpoint can be called to obtain the credentials that this client can use.  The returned credentials MUST be valid for all resources that are part of the respective bundle. The endpoint SHOULD return a different set of credentials on each invocation. */
+    String callbackUrl() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface Labels {
+
+    String[] requiredFields() default {};
+
+    LabelsEntry[] value() default {};
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface LabelsEntry {
+    String key();
+
+    String[] values();
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface GroupType {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "groupTypeId", "title" };
+    String[] requiredFields() default {"groupTypeId", "title"};
+
     /** GroupType ID, which MUST be a valid [Concept ID](../../spec-v1/#concept-id). */
     String groupTypeId() default "";
 
@@ -1582,6 +1508,7 @@ public interface Ord {
     /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
     String description() default "";
 
+    /**  */
     Labels labels() default @Labels;
 
     /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
@@ -1593,10 +1520,11 @@ public interface Ord {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface Group {
+  @interface Group {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "groupId", "groupTypeId", "title" };
+    String[] requiredFields() default {"groupId", "groupTypeId", "title"};
+
     /** The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.  The first two fragments MUST be equal to the used Group Type ID (`groupTypeId`). The last two fragments MUST be a valid [Concept ID](../../spec-v1/#concept-id), indicating the group instance assignment.  The ID concept is a bit unusual, but it ensures globally unique and conflict-free group assignments. */
     String groupId() default "";
 
@@ -1609,6 +1537,7 @@ public interface Ord {
     /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
     String description() default "";
 
+    /**  */
     Labels labels() default @Labels;
 
     /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
@@ -1620,10 +1549,198 @@ public interface Ord {
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
-  public @interface Tombstone {
+  @interface DocumentationLabels {
+
+    String[] requiredFields() default {};
+
+    DocumentationLabelsEntry[] value() default {};
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface DocumentationLabelsEntry {
+    String key();
+
+    String[] values();
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface Extensible {
+
+    String[] requiredFields() default {"supported"};
+
+    /** This property defines whether the resource is extensible.  **Not extensible** means that the data model of the resource (i.e. API or event) cannot be extended with custom fields. **Manually extensible** means that in addition to defining a custom field, manual activities to include the field in the data model of the resource (i.e. API or event) are required. E.g. using a specific mapping tool or by selecting the resource in the data model extension tool. **Automatically extensible** means that after defining a custom field in the local domain model, the resource (i.e. API or event) is automatically extended as part of the default extension field definition. */
+    String supported() default "";
+
+    /** A description about the extensibility capabilities of this API, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  This description may contain detailed steps on how to extend the API. Links to external resources can be provided within the description as markdown links.  This description MUST be provided if `supported` is set to `manual` or `automatic`. */
+    String description() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface EntityTypeMapping {
+
+    String[] requiredFields() default {"entityTypeTargets"};
+
+    /** List of selectors for API models within an API Resource. If multiple selectors are given, every selected API model maps to the entity type target(s). If omitted, the complete API resource will be mapped to the `entityTypeTargets` (less specific).  Multiple selectors can be useful, e.g. with a CRUD REST API, to combine the similar API models.  Depending on the chosen API protocol and the available resource definition formats, different kind of selectors need to be used. */
+    ApiModelSelectorOData[] apiModelSelectors() default {};
+
+    /** List of entity types the ORD resource maps to. If `apiModelSelectors` are given, the mapping is more precise by also pointing to the specific model in the API.  If multiple entity types are defined as the mapping target, all of them can be at least partially mapped to the source API model(s).  Entity types can be referenced using either using an [ORD ID](../index.md#ord-id) or a [Correlation ID](../index.md#correlation-id). */
+    EntityTypeOrdIdTarget[] entityTypeTargets() default {};
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface ApiCompatibility {
+
+    String[] requiredFields() default {"ordId", "maxVersion"};
+
+    /** ORD ID of the APIResource that serves as contract that this resource is compatible with.  MUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID. */
+    String ordId() default "";
+
+    /** Specifies the maximum version of the interface contract that this resource is compatible with. This is the version, that the resource fully implements and supports.  Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one. It is important to consider, given the example of an API version 1.0, that has the fields A and B. Being compatible with version 1.0 means to have exactly the fields A and B and potential tenant specific extensions in a dedicated namespace. If an API contract changes to version 1.1 compatible by adding field C, the API declaring compatibility towards 1.0, will miss field C. Only if adopting the contract of 1.1 with having fields A, B, and C, such an API is also compatible with version 1.1 of the contract. However, a client relying on version 1.0 of the contract, can still work with the API being compatible with version 1.1 of the contract.  Following the [Semantic Versioning 2.0.0](https://semver.org/) standard, patch versions (x.y.Z) must not have impact on the schema/contract. Therefore, the maxVersion are only the major.minor parts of a semantic version. */
+    String maxVersion() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface EventCompatibility {
+
+    String[] requiredFields() default {"ordId", "maxVersion"};
+
+    /** ORD ID of the EventResource that serves as contract that this resource is compatible with.  MUST be a valid reference to an (usually external) [Event Resource](#event-resource) ORD ID. */
+    String ordId() default "";
+
+    /** Specifies the maximum version of the interface contract that this resource is compatible with. This is the version, that the resource fully implements and supports.  Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one. It is important to consider, given the example of an event version 1.0, that has the fields A and B. Being compatible with version 1.0 means to have exactly the fields A and B and potential tenant specific extensions in a dedicated namespace. If an event contract changes to version 1.1 compatible by adding field C, the event declaring compatibility towards 1.0, will miss field C. Only if adopting the contract of 1.1 with having fields A, B, and C, such an event is also compatible with version 1.1 of the contract. However, a client relying on version 1.0 of the contract, can still work with the event being compatible with version 1.1 of the contract.  Following the [Semantic Versioning 2.0.0](https://semver.org/) standard, patch versions (x.y.Z) must not have impact on the schema/contract. Therefore, the maxVersion are only the major.minor parts of a semantic version. */
+    String maxVersion() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface ApiModelSelectorOData {
+
+    String[] requiredFields() default {"type", "entitySetName"};
+
+    /** The type for OData selectors is fixed to `odata`. */
+    String type() default "";
+
+    /** OData entity set name.  As defined in the EDMX, e.g. `<EntitySet Name="AttachmentContent">`. */
+    String entitySetName() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface ApiModelSelectorJsonPointer {
+
+    String[] requiredFields() default {"type", "jsonPointer"};
+
+    /** The type for generic JSON Pointer selectors is fixed to `json-pointer`. */
+    String type() default "";
+
+    /** JSON Pointer to the entity type schema / description within the resource definition format.  MUST be a valid JSON Pointer according to [RFC6901](https://datatracker.ietf.org/doc/html/rfc6901).  The JSON pointers MUST point to each instance of the mapped entity type in the resource definition file, BEFORE `$ref` JSON Schema References are resolved (dereferenced). */
+    String jsonPointer() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface ExposedApiResourcesTarget {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The API Resource ORD ID that this reference points to.  MUST be a valid reference to an [API Resource](#api-resource) ORD ID. */
+    String ordId() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface EntityTypeOrdIdTarget {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface EntityTypeCorrelationIdTarget {
+
+    String[] requiredFields() default {"correlationId"};
+
+    /**  */
+    String correlationId() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface RelatedEntityType {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Optional type of the relationship, which defines a stricter semantic what the relationship implies.  If not provided, the relationship type has no semantics, it's "related somehow".  MUST be a valid [Concept ID](../index.md#concept-id). */
+    String relationType() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface RelatedApiResource {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Optional type of the relationship as a [Concept ID](../index.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
+    String relationType() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface RelatedEventResource {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Optional type of the relationship as a [Concept ID](../index.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
+    String relationType() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface RelatedCapability {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Optional type of the relationship as a [Concept ID](../index.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
+    String relationType() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface ExposedEntityType {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface Tombstone {
     DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
 
-    String[] requiredFields() default { "removalDate" };
+    String[] requiredFields() default {"removalDate"};
+
     /** [ORD ID](../index.md#ord-id) of the ORD resource/taxonomy that has been removed. */
     String ordId() default "";
 
@@ -1640,4 +1757,60 @@ public interface Ord {
     String description() default "";
   }
 
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface OrdResource {
+
+    String[] requiredFields() default {
+      "ordId", "title", "description", "version", "visibility", "releaseStatus", "partOfPackage"
+    };
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
+    String localId() default "";
+
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    String[] correlationIds() default {};
+
+    /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
+    String title() default "";
+
+    /** Plain text short description.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
+    String shortDescription() default "";
+
+    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
+    String description() default "";
+
+    /** Defines which Package the resource is part of.  MUST be a valid reference to a [Package](#package) ORD ID.  Every resource MUST be part of one package. */
+    String partOfPackage() default "";
+
+    /** Defines which groups the resource is assigned to.  The property is optional, but if given the value MUST be an array of valid Group IDs.  Groups are a lightweight custom taxonomy concept. They express a "part of" relationship to the chosen group concept. If an "identity / equals" relationship needs to be expressed, use the `correlationIds` instead.  All resources that share the same group ID assignment are effectively grouped together. */
+    String[] partOfGroups() default {};
+
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    String version() default "";
+
+    /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
+    String lastUpdate() default "";
+
+    /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
+    String visibility() default "";
+
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
+    String releaseStatus() default "";
+
+    /** Generic links with arbitrary meaning and content.  `packageLinks` MUST be preferred if applicable. */
+    Link[] links() default {};
+
+    /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
+    String[] tags() default {};
+
+    /**  */
+    Labels labels() default @Labels;
+
+    /**  */
+    DocumentationLabels documentationLabels() default @DocumentationLabels;
+  }
 }

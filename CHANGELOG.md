@@ -7,6 +7,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+Refactor tools/annotation-gen. Introduce formatting for generated Java code.
+
 ## [[0.8.0](https://github.com/open-resource-discovery/ord-maven/releases/tag/v0.8.0)] - 2026-04-04
 
 Update generated annotations and models
