@@ -1,10 +1,5 @@
-
 package org.openresourcediscovery.model;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,446 +7,467 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.processing.Generated;
 
 /**
  * Group
  * <p>
  * Group (instance) that resources can be assigned to.
- * 
+ *
  * Groups are a lightweight custom taxonomy concept.
  * They express a "part of" relationship to the chosen group concept.
  * If an "identity / equals" relationship needs to be expressed, use the `correlationIds` instead.
- * 
+ *
  * To learn more about the concept, see [Group Concept Documentation](../concepts/grouping-and-bundling#groups).
- * 
+ *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "groupId",
-    "groupTypeId",
-    "title",
-    "description",
-    "labels",
-    "correlationIds",
-    "partOfGroups"
-})
+@JsonPropertyOrder({"groupId", "groupTypeId", "title", "description", "labels", "correlationIds", "partOfGroups"})
 @Generated("jsonschema2pojo")
 public class Group {
 
-    /**
-     * The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.
-     * 
-     * The first two fragments MUST be equal to the used Group Type ID (`groupTypeId`).
-     * The last two fragments MUST be a valid [Concept ID](../../spec-v1/#concept-id), indicating the group instance assignment.
-     * 
-     * The ID concept is a bit unusual, but it ensures globally unique and conflict-free group assignments.
-     * (Required)
-     * 
-     */
-    @JsonProperty("groupId")
-    @JsonPropertyDescription("The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.\n\nThe first two fragments MUST be equal to the used Group Type ID (`groupTypeId`).\nThe last two fragments MUST be a valid [Concept ID](../../spec-v1/#concept-id), indicating the group instance assignment.\n\nThe ID concept is a bit unusual, but it ensures globally unique and conflict-free group assignments.")
-    private String groupId;
-    /**
-     * Group Type ID.
-     * 
-     * MUST match with the first two fragments of the own `groupId`.
-     * (Required)
-     * 
-     */
-    @JsonProperty("groupTypeId")
-    @JsonPropertyDescription("Group Type ID.\n\nMUST match with the first two fragments of the own `groupId`.")
-    private String groupTypeId;
-    /**
-     * Human readable title of the group assignment (for UI).
-     * (Required)
-     * 
-     */
-    @JsonProperty("title")
-    @JsonPropertyDescription("Human readable title of the group assignment (for UI).")
-    private String title;
-    /**
-     * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     * 
-     * The description SHOULD not be excessive in length and is not meant to provide full documentation.
-     * Detailed documentation SHOULD be attached as (typed) links.
-     * 
-     */
-    @JsonProperty("description")
-    @JsonPropertyDescription("Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.")
-    private String description;
-    /**
-     * Labels
-     * <p>
-     * Generic key-value labels that can be applied to most ORD information.
-     * They are defined as an object that may have arbitrary keys.
-     * The value of a key is an array of strings.
-     * 
-     * Labels can be used to attach technical information that cannot be expressed natively in ORD.
-     * An ORD aggregator should allow to categorize and query information based on the labels provided.
-     * 
-     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
-     * 
-     * If multiple parties rely on the existence of certain label information,
-     * standardization through ORD SHOULD be preferred.
-     * 
-     * All labels attached to a `Package` will be inherited to the resources they contain.
-     * Duplicate labels will be merged by the ORD aggregator according to the following rules:
-     * * Values of the same label key will be merged.
-     * * Duplicate values of the same label key will be removed.
-     * 
-     */
-    @JsonProperty("labels")
-    @JsonPropertyDescription("Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
-    private Labels labels;
-    /**
-     * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
-     * 
-     * They express an "identity" / "equals" / "mappable" relationship to the target ID.
-     * 
-     * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
-     * 
-     * MUST be a valid [Correlation ID](../index.md#correlation-id).
-     * 
-     */
-    @JsonProperty("correlationIds")
-    @JsonPropertyDescription("Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
-    private List<String> correlationIds;
-    /**
-     * A group (instance) can logically be part of another group, for example in hierarchical taxonomies or graph relationships.
-     * Assigning a group to be part of another group is a lightweight and flexible approach to express such relationships.
-     * 
-     * This relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.
-     * 
-     */
-    @JsonProperty("partOfGroups")
-    @JsonPropertyDescription("A group (instance) can logically be part of another group, for example in hierarchical taxonomies or graph relationships.\nAssigning a group to be part of another group is a lightweight and flexible approach to express such relationships.\n\nThis relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.")
-    private List<String> partOfGroups;
-    @JsonIgnore
-    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+  /**
+   * The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.
+   *
+   * The first two fragments MUST be equal to the used Group Type ID (`groupTypeId`).
+   * The last two fragments MUST be a valid [Concept ID](../../spec-v1/#concept-id), indicating the group instance assignment.
+   *
+   * The ID concept is a bit unusual, but it ensures globally unique and conflict-free group assignments.
+   * (Required)
+   *
+   */
+  @JsonProperty("groupId")
+  @JsonPropertyDescription(
+      "The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.\n\nThe first two fragments MUST be equal to the used Group Type ID (`groupTypeId`).\nThe last two fragments MUST be a valid [Concept ID](../../spec-v1/#concept-id), indicating the group instance assignment.\n\nThe ID concept is a bit unusual, but it ensures globally unique and conflict-free group assignments.")
+  private String groupId;
+  /**
+   * Group Type ID.
+   *
+   * MUST match with the first two fragments of the own `groupId`.
+   * (Required)
+   *
+   */
+  @JsonProperty("groupTypeId")
+  @JsonPropertyDescription("Group Type ID.\n\nMUST match with the first two fragments of the own `groupId`.")
+  private String groupTypeId;
+  /**
+   * Human readable title of the group assignment (for UI).
+   * (Required)
+   *
+   */
+  @JsonProperty("title")
+  @JsonPropertyDescription("Human readable title of the group assignment (for UI).")
+  private String title;
+  /**
+   * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
+   *
+   * The description SHOULD not be excessive in length and is not meant to provide full documentation.
+   * Detailed documentation SHOULD be attached as (typed) links.
+   *
+   */
+  @JsonProperty("description")
+  @JsonPropertyDescription(
+      "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.")
+  private String description;
+  /**
+   * Labels
+   * <p>
+   * Generic key-value labels that can be applied to most ORD information.
+   * They are defined as an object that may have arbitrary keys.
+   * The value of a key is an array of strings.
+   *
+   * Labels can be used to attach technical information that cannot be expressed natively in ORD.
+   * An ORD aggregator should allow to categorize and query information based on the labels provided.
+   *
+   * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
+   *
+   * If multiple parties rely on the existence of certain label information,
+   * standardization through ORD SHOULD be preferred.
+   *
+   * All labels attached to a `Package` will be inherited to the resources they contain.
+   * Duplicate labels will be merged by the ORD aggregator according to the following rules:
+   * * Values of the same label key will be merged.
+   * * Duplicate values of the same label key will be removed.
+   *
+   */
+  @JsonProperty("labels")
+  @JsonPropertyDescription(
+      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
+  private Labels labels;
+  /**
+   * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
+   *
+   * They express an "identity" / "equals" / "mappable" relationship to the target ID.
+   *
+   * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
+   *
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
+   *
+   */
+  @JsonProperty("correlationIds")
+  @JsonPropertyDescription(
+      "Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
+  private List<String> correlationIds;
+  /**
+   * A group (instance) can logically be part of another group, for example in hierarchical taxonomies or graph relationships.
+   * Assigning a group to be part of another group is a lightweight and flexible approach to express such relationships.
+   *
+   * This relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.
+   *
+   */
+  @JsonProperty("partOfGroups")
+  @JsonPropertyDescription(
+      "A group (instance) can logically be part of another group, for example in hierarchical taxonomies or graph relationships.\nAssigning a group to be part of another group is a lightweight and flexible approach to express such relationships.\n\nThis relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.")
+  private List<String> partOfGroups;
 
-    /**
-     * The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.
-     * 
-     * The first two fragments MUST be equal to the used Group Type ID (`groupTypeId`).
-     * The last two fragments MUST be a valid [Concept ID](../../spec-v1/#concept-id), indicating the group instance assignment.
-     * 
-     * The ID concept is a bit unusual, but it ensures globally unique and conflict-free group assignments.
-     * (Required)
-     * 
-     */
-    @JsonProperty("groupId")
-    public String getGroupId() {
-        return groupId;
+  @JsonIgnore
+  private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+
+  /**
+   * The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.
+   *
+   * The first two fragments MUST be equal to the used Group Type ID (`groupTypeId`).
+   * The last two fragments MUST be a valid [Concept ID](../../spec-v1/#concept-id), indicating the group instance assignment.
+   *
+   * The ID concept is a bit unusual, but it ensures globally unique and conflict-free group assignments.
+   * (Required)
+   *
+   */
+  @JsonProperty("groupId")
+  public String getGroupId() {
+    return groupId;
+  }
+
+  /**
+   * The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.
+   *
+   * The first two fragments MUST be equal to the used Group Type ID (`groupTypeId`).
+   * The last two fragments MUST be a valid [Concept ID](../../spec-v1/#concept-id), indicating the group instance assignment.
+   *
+   * The ID concept is a bit unusual, but it ensures globally unique and conflict-free group assignments.
+   * (Required)
+   *
+   */
+  @JsonProperty("groupId")
+  public void setGroupId(String groupId) {
+    this.groupId = groupId;
+  }
+
+  public Group withGroupId(String groupId) {
+    this.groupId = groupId;
+    return this;
+  }
+
+  /**
+   * Group Type ID.
+   *
+   * MUST match with the first two fragments of the own `groupId`.
+   * (Required)
+   *
+   */
+  @JsonProperty("groupTypeId")
+  public String getGroupTypeId() {
+    return groupTypeId;
+  }
+
+  /**
+   * Group Type ID.
+   *
+   * MUST match with the first two fragments of the own `groupId`.
+   * (Required)
+   *
+   */
+  @JsonProperty("groupTypeId")
+  public void setGroupTypeId(String groupTypeId) {
+    this.groupTypeId = groupTypeId;
+  }
+
+  public Group withGroupTypeId(String groupTypeId) {
+    this.groupTypeId = groupTypeId;
+    return this;
+  }
+
+  /**
+   * Human readable title of the group assignment (for UI).
+   * (Required)
+   *
+   */
+  @JsonProperty("title")
+  public String getTitle() {
+    return title;
+  }
+
+  /**
+   * Human readable title of the group assignment (for UI).
+   * (Required)
+   *
+   */
+  @JsonProperty("title")
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public Group withTitle(String title) {
+    this.title = title;
+    return this;
+  }
+
+  /**
+   * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
+   *
+   * The description SHOULD not be excessive in length and is not meant to provide full documentation.
+   * Detailed documentation SHOULD be attached as (typed) links.
+   *
+   */
+  @JsonProperty("description")
+  public String getDescription() {
+    return description;
+  }
+
+  /**
+   * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
+   *
+   * The description SHOULD not be excessive in length and is not meant to provide full documentation.
+   * Detailed documentation SHOULD be attached as (typed) links.
+   *
+   */
+  @JsonProperty("description")
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Group withDescription(String description) {
+    this.description = description;
+    return this;
+  }
+
+  /**
+   * Labels
+   * <p>
+   * Generic key-value labels that can be applied to most ORD information.
+   * They are defined as an object that may have arbitrary keys.
+   * The value of a key is an array of strings.
+   *
+   * Labels can be used to attach technical information that cannot be expressed natively in ORD.
+   * An ORD aggregator should allow to categorize and query information based on the labels provided.
+   *
+   * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
+   *
+   * If multiple parties rely on the existence of certain label information,
+   * standardization through ORD SHOULD be preferred.
+   *
+   * All labels attached to a `Package` will be inherited to the resources they contain.
+   * Duplicate labels will be merged by the ORD aggregator according to the following rules:
+   * * Values of the same label key will be merged.
+   * * Duplicate values of the same label key will be removed.
+   *
+   */
+  @JsonProperty("labels")
+  public Labels getLabels() {
+    return labels;
+  }
+
+  /**
+   * Labels
+   * <p>
+   * Generic key-value labels that can be applied to most ORD information.
+   * They are defined as an object that may have arbitrary keys.
+   * The value of a key is an array of strings.
+   *
+   * Labels can be used to attach technical information that cannot be expressed natively in ORD.
+   * An ORD aggregator should allow to categorize and query information based on the labels provided.
+   *
+   * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
+   *
+   * If multiple parties rely on the existence of certain label information,
+   * standardization through ORD SHOULD be preferred.
+   *
+   * All labels attached to a `Package` will be inherited to the resources they contain.
+   * Duplicate labels will be merged by the ORD aggregator according to the following rules:
+   * * Values of the same label key will be merged.
+   * * Duplicate values of the same label key will be removed.
+   *
+   */
+  @JsonProperty("labels")
+  public void setLabels(Labels labels) {
+    this.labels = labels;
+  }
+
+  public Group withLabels(Labels labels) {
+    this.labels = labels;
+    return this;
+  }
+
+  /**
+   * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
+   *
+   * They express an "identity" / "equals" / "mappable" relationship to the target ID.
+   *
+   * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
+   *
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
+   *
+   */
+  @JsonProperty("correlationIds")
+  public List<String> getCorrelationIds() {
+    return correlationIds;
+  }
+
+  /**
+   * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
+   *
+   * They express an "identity" / "equals" / "mappable" relationship to the target ID.
+   *
+   * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
+   *
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
+   *
+   */
+  @JsonProperty("correlationIds")
+  public void setCorrelationIds(List<String> correlationIds) {
+    this.correlationIds = correlationIds;
+  }
+
+  public Group withCorrelationIds(List<String> correlationIds) {
+    this.correlationIds = correlationIds;
+    return this;
+  }
+
+  /**
+   * A group (instance) can logically be part of another group, for example in hierarchical taxonomies or graph relationships.
+   * Assigning a group to be part of another group is a lightweight and flexible approach to express such relationships.
+   *
+   * This relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.
+   *
+   */
+  @JsonProperty("partOfGroups")
+  public List<String> getPartOfGroups() {
+    return partOfGroups;
+  }
+
+  /**
+   * A group (instance) can logically be part of another group, for example in hierarchical taxonomies or graph relationships.
+   * Assigning a group to be part of another group is a lightweight and flexible approach to express such relationships.
+   *
+   * This relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.
+   *
+   */
+  @JsonProperty("partOfGroups")
+  public void setPartOfGroups(List<String> partOfGroups) {
+    this.partOfGroups = partOfGroups;
+  }
+
+  public Group withPartOfGroups(List<String> partOfGroups) {
+    this.partOfGroups = partOfGroups;
+    return this;
+  }
+
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
+
+  @JsonAnySetter
+  public void setAdditionalProperty(String name, Object value) {
+    this.additionalProperties.put(name, value);
+  }
+
+  public Group withAdditionalProperty(String name, Object value) {
+    this.additionalProperties.put(name, value);
+    return this;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append(Group.class.getName())
+        .append('@')
+        .append(Integer.toHexString(System.identityHashCode(this)))
+        .append('[');
+    sb.append("groupId");
+    sb.append('=');
+    sb.append(((this.groupId == null) ? "<null>" : this.groupId));
+    sb.append(',');
+    sb.append("groupTypeId");
+    sb.append('=');
+    sb.append(((this.groupTypeId == null) ? "<null>" : this.groupTypeId));
+    sb.append(',');
+    sb.append("title");
+    sb.append('=');
+    sb.append(((this.title == null) ? "<null>" : this.title));
+    sb.append(',');
+    sb.append("description");
+    sb.append('=');
+    sb.append(((this.description == null) ? "<null>" : this.description));
+    sb.append(',');
+    sb.append("labels");
+    sb.append('=');
+    sb.append(((this.labels == null) ? "<null>" : this.labels));
+    sb.append(',');
+    sb.append("correlationIds");
+    sb.append('=');
+    sb.append(((this.correlationIds == null) ? "<null>" : this.correlationIds));
+    sb.append(',');
+    sb.append("partOfGroups");
+    sb.append('=');
+    sb.append(((this.partOfGroups == null) ? "<null>" : this.partOfGroups));
+    sb.append(',');
+    sb.append("additionalProperties");
+    sb.append('=');
+    sb.append(((this.additionalProperties == null) ? "<null>" : this.additionalProperties));
+    sb.append(',');
+    if (sb.charAt((sb.length() - 1)) == ',') {
+      sb.setCharAt((sb.length() - 1), ']');
+    } else {
+      sb.append(']');
     }
+    return sb.toString();
+  }
 
-    /**
-     * The Group ID consists of two [Concept IDs](../../spec-v1/#concept-id) separated by a `:`.
-     * 
-     * The first two fragments MUST be equal to the used Group Type ID (`groupTypeId`).
-     * The last two fragments MUST be a valid [Concept ID](../../spec-v1/#concept-id), indicating the group instance assignment.
-     * 
-     * The ID concept is a bit unusual, but it ensures globally unique and conflict-free group assignments.
-     * (Required)
-     * 
-     */
-    @JsonProperty("groupId")
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
+  @Override
+  public int hashCode() {
+    int result = 1;
+    result = ((result * 31) + ((this.groupId == null) ? 0 : this.groupId.hashCode()));
+    result = ((result * 31) + ((this.correlationIds == null) ? 0 : this.correlationIds.hashCode()));
+    result = ((result * 31) + ((this.groupTypeId == null) ? 0 : this.groupTypeId.hashCode()));
+    result = ((result * 31) + ((this.description == null) ? 0 : this.description.hashCode()));
+    result = ((result * 31) + ((this.additionalProperties == null) ? 0 : this.additionalProperties.hashCode()));
+    result = ((result * 31) + ((this.title == null) ? 0 : this.title.hashCode()));
+    result = ((result * 31) + ((this.labels == null) ? 0 : this.labels.hashCode()));
+    result = ((result * 31) + ((this.partOfGroups == null) ? 0 : this.partOfGroups.hashCode()));
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
     }
-
-    public Group withGroupId(String groupId) {
-        this.groupId = groupId;
-        return this;
+    if ((other instanceof Group) == false) {
+      return false;
     }
-
-    /**
-     * Group Type ID.
-     * 
-     * MUST match with the first two fragments of the own `groupId`.
-     * (Required)
-     * 
-     */
-    @JsonProperty("groupTypeId")
-    public String getGroupTypeId() {
-        return groupTypeId;
-    }
-
-    /**
-     * Group Type ID.
-     * 
-     * MUST match with the first two fragments of the own `groupId`.
-     * (Required)
-     * 
-     */
-    @JsonProperty("groupTypeId")
-    public void setGroupTypeId(String groupTypeId) {
-        this.groupTypeId = groupTypeId;
-    }
-
-    public Group withGroupTypeId(String groupTypeId) {
-        this.groupTypeId = groupTypeId;
-        return this;
-    }
-
-    /**
-     * Human readable title of the group assignment (for UI).
-     * (Required)
-     * 
-     */
-    @JsonProperty("title")
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * Human readable title of the group assignment (for UI).
-     * (Required)
-     * 
-     */
-    @JsonProperty("title")
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Group withTitle(String title) {
-        this.title = title;
-        return this;
-    }
-
-    /**
-     * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     * 
-     * The description SHOULD not be excessive in length and is not meant to provide full documentation.
-     * Detailed documentation SHOULD be attached as (typed) links.
-     * 
-     */
-    @JsonProperty("description")
-    public String getDescription() {
-        return description;
-    }
-
-    /**
-     * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
-     * 
-     * The description SHOULD not be excessive in length and is not meant to provide full documentation.
-     * Detailed documentation SHOULD be attached as (typed) links.
-     * 
-     */
-    @JsonProperty("description")
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Group withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Labels
-     * <p>
-     * Generic key-value labels that can be applied to most ORD information.
-     * They are defined as an object that may have arbitrary keys.
-     * The value of a key is an array of strings.
-     * 
-     * Labels can be used to attach technical information that cannot be expressed natively in ORD.
-     * An ORD aggregator should allow to categorize and query information based on the labels provided.
-     * 
-     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
-     * 
-     * If multiple parties rely on the existence of certain label information,
-     * standardization through ORD SHOULD be preferred.
-     * 
-     * All labels attached to a `Package` will be inherited to the resources they contain.
-     * Duplicate labels will be merged by the ORD aggregator according to the following rules:
-     * * Values of the same label key will be merged.
-     * * Duplicate values of the same label key will be removed.
-     * 
-     */
-    @JsonProperty("labels")
-    public Labels getLabels() {
-        return labels;
-    }
-
-    /**
-     * Labels
-     * <p>
-     * Generic key-value labels that can be applied to most ORD information.
-     * They are defined as an object that may have arbitrary keys.
-     * The value of a key is an array of strings.
-     * 
-     * Labels can be used to attach technical information that cannot be expressed natively in ORD.
-     * An ORD aggregator should allow to categorize and query information based on the labels provided.
-     * 
-     * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
-     * 
-     * If multiple parties rely on the existence of certain label information,
-     * standardization through ORD SHOULD be preferred.
-     * 
-     * All labels attached to a `Package` will be inherited to the resources they contain.
-     * Duplicate labels will be merged by the ORD aggregator according to the following rules:
-     * * Values of the same label key will be merged.
-     * * Duplicate values of the same label key will be removed.
-     * 
-     */
-    @JsonProperty("labels")
-    public void setLabels(Labels labels) {
-        this.labels = labels;
-    }
-
-    public Group withLabels(Labels labels) {
-        this.labels = labels;
-        return this;
-    }
-
-    /**
-     * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
-     * 
-     * They express an "identity" / "equals" / "mappable" relationship to the target ID.
-     * 
-     * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
-     * 
-     * MUST be a valid [Correlation ID](../index.md#correlation-id).
-     * 
-     */
-    @JsonProperty("correlationIds")
-    public List<String> getCorrelationIds() {
-        return correlationIds;
-    }
-
-    /**
-     * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
-     * 
-     * They express an "identity" / "equals" / "mappable" relationship to the target ID.
-     * 
-     * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
-     * 
-     * MUST be a valid [Correlation ID](../index.md#correlation-id).
-     * 
-     */
-    @JsonProperty("correlationIds")
-    public void setCorrelationIds(List<String> correlationIds) {
-        this.correlationIds = correlationIds;
-    }
-
-    public Group withCorrelationIds(List<String> correlationIds) {
-        this.correlationIds = correlationIds;
-        return this;
-    }
-
-    /**
-     * A group (instance) can logically be part of another group, for example in hierarchical taxonomies or graph relationships.
-     * Assigning a group to be part of another group is a lightweight and flexible approach to express such relationships.
-     * 
-     * This relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.
-     * 
-     */
-    @JsonProperty("partOfGroups")
-    public List<String> getPartOfGroups() {
-        return partOfGroups;
-    }
-
-    /**
-     * A group (instance) can logically be part of another group, for example in hierarchical taxonomies or graph relationships.
-     * Assigning a group to be part of another group is a lightweight and flexible approach to express such relationships.
-     * 
-     * This relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.
-     * 
-     */
-    @JsonProperty("partOfGroups")
-    public void setPartOfGroups(List<String> partOfGroups) {
-        this.partOfGroups = partOfGroups;
-    }
-
-    public Group withPartOfGroups(List<String> partOfGroups) {
-        this.partOfGroups = partOfGroups;
-        return this;
-    }
-
-    @JsonAnyGetter
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    @JsonAnySetter
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
-    public Group withAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Group.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("groupId");
-        sb.append('=');
-        sb.append(((this.groupId == null)?"<null>":this.groupId));
-        sb.append(',');
-        sb.append("groupTypeId");
-        sb.append('=');
-        sb.append(((this.groupTypeId == null)?"<null>":this.groupTypeId));
-        sb.append(',');
-        sb.append("title");
-        sb.append('=');
-        sb.append(((this.title == null)?"<null>":this.title));
-        sb.append(',');
-        sb.append("description");
-        sb.append('=');
-        sb.append(((this.description == null)?"<null>":this.description));
-        sb.append(',');
-        sb.append("labels");
-        sb.append('=');
-        sb.append(((this.labels == null)?"<null>":this.labels));
-        sb.append(',');
-        sb.append("correlationIds");
-        sb.append('=');
-        sb.append(((this.correlationIds == null)?"<null>":this.correlationIds));
-        sb.append(',');
-        sb.append("partOfGroups");
-        sb.append('=');
-        sb.append(((this.partOfGroups == null)?"<null>":this.partOfGroups));
-        sb.append(',');
-        sb.append("additionalProperties");
-        sb.append('=');
-        sb.append(((this.additionalProperties == null)?"<null>":this.additionalProperties));
-        sb.append(',');
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
-        }
-        return sb.toString();
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 1;
-        result = ((result* 31)+((this.groupId == null)? 0 :this.groupId.hashCode()));
-        result = ((result* 31)+((this.correlationIds == null)? 0 :this.correlationIds.hashCode()));
-        result = ((result* 31)+((this.groupTypeId == null)? 0 :this.groupTypeId.hashCode()));
-        result = ((result* 31)+((this.description == null)? 0 :this.description.hashCode()));
-        result = ((result* 31)+((this.additionalProperties == null)? 0 :this.additionalProperties.hashCode()));
-        result = ((result* 31)+((this.title == null)? 0 :this.title.hashCode()));
-        result = ((result* 31)+((this.labels == null)? 0 :this.labels.hashCode()));
-        result = ((result* 31)+((this.partOfGroups == null)? 0 :this.partOfGroups.hashCode()));
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if ((other instanceof Group) == false) {
-            return false;
-        }
-        Group rhs = ((Group) other);
-        return (((((((((this.groupId == rhs.groupId)||((this.groupId!= null)&&this.groupId.equals(rhs.groupId)))&&((this.correlationIds == rhs.correlationIds)||((this.correlationIds!= null)&&this.correlationIds.equals(rhs.correlationIds))))&&((this.groupTypeId == rhs.groupTypeId)||((this.groupTypeId!= null)&&this.groupTypeId.equals(rhs.groupTypeId))))&&((this.description == rhs.description)||((this.description!= null)&&this.description.equals(rhs.description))))&&((this.additionalProperties == rhs.additionalProperties)||((this.additionalProperties!= null)&&this.additionalProperties.equals(rhs.additionalProperties))))&&((this.title == rhs.title)||((this.title!= null)&&this.title.equals(rhs.title))))&&((this.labels == rhs.labels)||((this.labels!= null)&&this.labels.equals(rhs.labels))))&&((this.partOfGroups == rhs.partOfGroups)||((this.partOfGroups!= null)&&this.partOfGroups.equals(rhs.partOfGroups))));
-    }
-
+    Group rhs = ((Group) other);
+    return (((((((((this.groupId == rhs.groupId) || ((this.groupId != null) && this.groupId.equals(rhs.groupId)))
+                                && ((this.correlationIds == rhs.correlationIds)
+                                    || ((this.correlationIds != null)
+                                        && this.correlationIds.equals(
+                                            rhs.correlationIds))))
+                            && ((this.groupTypeId == rhs.groupTypeId)
+                                || ((this.groupTypeId != null)
+                                    && this.groupTypeId.equals(rhs.groupTypeId))))
+                        && ((this.description == rhs.description)
+                            || ((this.description != null)
+                                && this.description.equals(rhs.description))))
+                    && ((this.additionalProperties == rhs.additionalProperties)
+                        || ((this.additionalProperties != null)
+                            && this.additionalProperties.equals(rhs.additionalProperties))))
+                && ((this.title == rhs.title)
+                    || ((this.title != null) && this.title.equals(rhs.title))))
+            && ((this.labels == rhs.labels) || ((this.labels != null) && this.labels.equals(rhs.labels))))
+        && ((this.partOfGroups == rhs.partOfGroups)
+            || ((this.partOfGroups != null) && this.partOfGroups.equals(rhs.partOfGroups))));
+  }
 }
