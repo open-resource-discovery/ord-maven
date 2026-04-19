@@ -12,13 +12,13 @@ jobs:
     steps:
 
       - name: Checkout ord-maven repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.1
         with:
           fetch-depth: 0
           persist-credentials: true
 
       - name: Set up Node.js 24
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v6.3.0
         with:
           cache: npm
           node-version: 24.14.1
