@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           cache: npm
-          node-version: 24.14.1
+          node-version: 24.15.0
           cache-dependency-path: tools/annotation-gen/package-lock.json
 
       - name: Setup Maven Action
@@ -39,9 +39,10 @@ jobs:
       - name: Update CHANGELOG.md
         if: env.CHANGED_FILES != '0'
         run: |
+          SCHEMA_VERSION="$(cat annotations/src/main/resources/META-INF/ord-spec.properties | awk -F '=' '{print $2}')"
           TARGET_RELEASE_VERSION="$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout 2> /dev/null | sed 's/-SNAPSHOT$//')"
-
-          awk '/^## \[\[[0-9].[0-9].[0-9]\]/{++i == 1 && gsub(/^/,"Update generated annotations and models\n\n")}1' CHANGELOG.md > tmp && mv tmp CHANGELOG.md
+          
+          awk '/^## \[\[[0-9].[0-9].[0-9]\]/{++i == 1 && gsub(/^/,"Update generated annotations and models to ORD spec version '"${SCHEMA_VERSION}"'\n\n")}1' CHANGELOG.md > tmp && mv tmp CHANGELOG.md
           awk "/^## \[unreleased\]/{gsub(/$/,\"\n\n## [[${TARGET_RELEASE_VERSION}](https://github.com/open-resource-discovery/ord-maven/releases/tag/v${TARGET_RELEASE_VERSION})] - $(date +%Y-%m-%d)\")}1" CHANGELOG.md > tmp && mv tmp CHANGELOG.md
 
       - name: Update generated sources
