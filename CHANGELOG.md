@@ -7,6 +7,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+Add missing default for property perspective in @Ord.Document 
+
 ## [[0.9.0](https://github.com/open-resource-discovery/ord-maven/releases/tag/v0.9.0)] - 2026-04-29
 
 Refactor tools/annotation-gen. Introduce formatting for generated Java code.

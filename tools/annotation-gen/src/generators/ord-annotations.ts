@@ -127,7 +127,7 @@ public interface Ord {
 
     String description() default "";
 
-    String perspective() default "";
+    String perspective() default "system-instance";
 
     String[] policyLevels() default {};
 
