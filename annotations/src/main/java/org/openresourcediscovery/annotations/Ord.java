@@ -20,7 +20,13 @@ public interface Ord {
   @Repeatable(Documents.class)
   @Retention(RetentionPolicy.RUNTIME)
   @interface Document {
-    String id() default "ord-document";
+    String name() default "ord-document";
+
+    String description() default "";
+
+    String perspective() default "";
+
+    String[] policyLevels() default {};
 
     AccessStrategy[] accessStrategies() default {@AccessStrategy(type = "open")};
 
@@ -48,13 +54,13 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface DocumentReference {
-    String id() default "ord-document";
+    String name();
   }
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface Package {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {"ordId", "title", "shortDescription", "description", "version", "vendor"};
 
@@ -131,7 +137,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface ConsumptionBundle {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {"ordId", "title"};
 
@@ -194,7 +200,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface ApiResource {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {
       "ordId",
@@ -362,7 +368,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface EventResource {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {
       "ordId",
@@ -514,7 +520,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface EntityType {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {
       "ordId", "localId", "level", "title", "version", "visibility", "partOfPackage", "releaseStatus"
@@ -608,7 +614,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface DataProduct {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {
       "ordId",
@@ -816,7 +822,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface Agent {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {"ordId", "title", "version", "releaseStatus", "visibility", "partOfPackage"};
 
@@ -917,7 +923,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface Product {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {"ordId", "title", "shortDescription", "vendor"};
 
@@ -955,7 +961,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface Capability {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {
       "ordId", "type", "title", "version", "releaseStatus", "visibility", "partOfPackage"
@@ -1068,7 +1074,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface IntegrationDependency {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {
       "ordId", "title", "version", "releaseStatus", "visibility", "partOfPackage", "mandatory"
@@ -1237,7 +1243,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface Vendor {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {"ordId", "title"};
 
@@ -1368,7 +1374,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface SystemInstance {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {};
 
@@ -1394,7 +1400,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface SystemType {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {};
 
@@ -1417,7 +1423,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface SystemVersion {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {};
 
@@ -1495,7 +1501,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface GroupType {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {"groupTypeId", "title"};
 
@@ -1521,7 +1527,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface Group {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {"groupId", "groupTypeId", "title"};
 
@@ -1737,7 +1743,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface Tombstone {
-    DocumentReference partOfDocument() default @DocumentReference(id = "ord-document");
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {"removalDate"};
 
