@@ -29,6 +29,9 @@ import javax.annotation.processing.Generated;
  * * Values of the same label key will be merged.
  * * Duplicate values of the same label key will be removed.
  *
+ * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+ * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
+ *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({})

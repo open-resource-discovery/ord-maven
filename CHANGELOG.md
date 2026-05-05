@@ -7,7 +7,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+## [[0.10.0](https://github.com/open-resource-discovery/ord-maven/releases/tag/v0.10.0)] - 2026-05-05
+
 Add missing default for property perspective in @Ord.Document 
+
+Update generated annotations and models to ORD spec version 1.14.5
 
 ## [[0.9.0](https://github.com/open-resource-discovery/ord-maven/releases/tag/v0.9.0)] - 2026-04-29
 

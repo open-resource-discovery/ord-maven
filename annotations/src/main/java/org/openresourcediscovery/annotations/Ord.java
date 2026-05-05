@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 public interface Ord {
 
-  String VERSION = "1.14.3";
+  String VERSION = "1.14.5";
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
@@ -69,6 +69,9 @@ public interface Ord {
 
     /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
     String localId() default "";
+
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    String[] correlationIds() default {};
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
     String title() default "";
@@ -253,7 +256,7 @@ public interface Ord {
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
     String lastUpdate() default "";
 
-    /** Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.  Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.  More details can be found on the [Compatibility](../concepts/compatibility) concept page. */
+    /** Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.  Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property. Abstract resources can be system-owned, authority-owned or system-independent, depending on who governs the interface contract.  More details can be found on the [Compatibility](../concepts/compatibility) concept page. See also [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources#abstract-resources-and-compatiblewith) for how abstract contracts relate to shared ORD IDs. */
     boolean _abstract() default false;
 
     /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
@@ -420,7 +423,7 @@ public interface Ord {
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
     String lastUpdate() default "";
 
-    /** Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.  Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.  More details can be found on the [Compatibility](../concepts/compatibility) concept page. */
+    /** Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.  Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property. Abstract resources can be system-owned, authority-owned or system-independent, depending on who governs the interface contract.  More details can be found on the [Compatibility](../concepts/compatibility) concept page. See also [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources#abstract-resources-and-compatiblewith) for how abstract contracts relate to shared ORD IDs. */
     boolean _abstract() default false;
 
     /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */

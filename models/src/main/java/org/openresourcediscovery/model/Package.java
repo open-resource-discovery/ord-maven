@@ -14,7 +14,6 @@ import javax.annotation.processing.Generated;
  *
  * The Package can also be used to indicate which products or vendors provided the packaged resources.
  * For partner or customer content, the Package can indicate this via the `vendor` and `partOfProducts` assignments.
- * In any case, the Package `ordID` namespace MUST reflect the namespace of the providing application (which hosts the resource), not the resource definition owner, which could be a customer or partner.
  *
  * A Package SHOULD contain at least one resource. Avoid empty Packages.
  *
@@ -30,6 +29,7 @@ import javax.annotation.processing.Generated;
 @JsonPropertyOrder({
   "ordId",
   "localId",
+  "correlationIds",
   "title",
   "shortDescription",
   "description",
@@ -78,6 +78,20 @@ public class Package {
   @JsonPropertyDescription(
       "The locally unique ID under which this resource can be looked up / resolved in the described system itself.\nUnlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.\n\nIt MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID.\nBut since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID.")
   private String localId;
+  /**
+   * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
+   *
+   * They express an "identity" / "equals" / "mappable" relationship to the target ID.
+   *
+   * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
+   *
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
+   *
+   */
+  @JsonProperty("correlationIds")
+  @JsonPropertyDescription(
+      "Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
+  private List<String> correlationIds;
   /**
    * Human-readable title.
    *
@@ -324,10 +338,13 @@ public class Package {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
+   *
    */
   @JsonProperty("labels")
   @JsonPropertyDescription(
-      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.")
+      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
   private Labels labels;
   /**
    * Documentation Labels
@@ -409,6 +426,41 @@ public class Package {
 
   public Package withLocalId(String localId) {
     this.localId = localId;
+    return this;
+  }
+
+  /**
+   * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
+   *
+   * They express an "identity" / "equals" / "mappable" relationship to the target ID.
+   *
+   * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
+   *
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
+   *
+   */
+  @JsonProperty("correlationIds")
+  public List<String> getCorrelationIds() {
+    return correlationIds;
+  }
+
+  /**
+   * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
+   *
+   * They express an "identity" / "equals" / "mappable" relationship to the target ID.
+   *
+   * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
+   *
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
+   *
+   */
+  @JsonProperty("correlationIds")
+  public void setCorrelationIds(List<String> correlationIds) {
+    this.correlationIds = correlationIds;
+  }
+
+  public Package withCorrelationIds(List<String> correlationIds) {
+    this.correlationIds = correlationIds;
     return this;
   }
 
@@ -1021,6 +1073,9 @@ public class Package {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
+   *
    */
   @JsonProperty("labels")
   public Labels getLabels() {
@@ -1046,6 +1101,9 @@ public class Package {
    * Duplicate labels will be merged by the ORD aggregator according to the following rules:
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
+   *
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
   @JsonProperty("labels")
@@ -1123,6 +1181,10 @@ public class Package {
     sb.append("localId");
     sb.append('=');
     sb.append(((this.localId == null) ? "<null>" : this.localId));
+    sb.append(',');
+    sb.append("correlationIds");
+    sb.append('=');
+    sb.append(((this.correlationIds == null) ? "<null>" : this.correlationIds));
     sb.append(',');
     sb.append("title");
     sb.append('=');
@@ -1222,25 +1284,26 @@ public class Package {
     result = ((result * 31) + ((this.lineOfBusiness == null) ? 0 : this.lineOfBusiness.hashCode()));
     result = ((result * 31) + ((this.description == null) ? 0 : this.description.hashCode()));
     result = ((result * 31) + ((this.industry == null) ? 0 : this.industry.hashCode()));
-    result = ((result * 31) + ((this.shortDescription == null) ? 0 : this.shortDescription.hashCode()));
     result = ((result * 31) + ((this.customPolicyLevel == null) ? 0 : this.customPolicyLevel.hashCode()));
-    result = ((result * 31) + ((this.countries == null) ? 0 : this.countries.hashCode()));
     result = ((result * 31) + ((this.title == null) ? 0 : this.title.hashCode()));
     result = ((result * 31) + ((this.ordId == null) ? 0 : this.ordId.hashCode()));
     result = ((result * 31) + ((this.localId == null) ? 0 : this.localId.hashCode()));
-    result = ((result * 31) + ((this.version == null) ? 0 : this.version.hashCode()));
     result = ((result * 31) + ((this.policyLevels == null) ? 0 : this.policyLevels.hashCode()));
+    result = ((result * 31) + ((this.licenseType == null) ? 0 : this.licenseType.hashCode()));
+    result = ((result * 31) + ((this.vendor == null) ? 0 : this.vendor.hashCode()));
+    result = ((result * 31) + ((this.correlationIds == null) ? 0 : this.correlationIds.hashCode()));
+    result = ((result * 31) + ((this.links == null) ? 0 : this.links.hashCode()));
+    result = ((result * 31) + ((this.packageLinks == null) ? 0 : this.packageLinks.hashCode()));
+    result = ((result * 31) + ((this.shortDescription == null) ? 0 : this.shortDescription.hashCode()));
+    result = ((result * 31) + ((this.countries == null) ? 0 : this.countries.hashCode()));
+    result = ((result * 31) + ((this.version == null) ? 0 : this.version.hashCode()));
     result = ((result * 31) + ((this.tags == null) ? 0 : this.tags.hashCode()));
     result = ((result * 31) + ((this.labels == null) ? 0 : this.labels.hashCode()));
     result = ((result * 31) + ((this.policyLevel == null) ? 0 : this.policyLevel.hashCode()));
     result = ((result * 31) + ((this.partOfProducts == null) ? 0 : this.partOfProducts.hashCode()));
-    result = ((result * 31) + ((this.licenseType == null) ? 0 : this.licenseType.hashCode()));
     result = ((result * 31) + ((this.documentationLabels == null) ? 0 : this.documentationLabels.hashCode()));
-    result = ((result * 31) + ((this.vendor == null) ? 0 : this.vendor.hashCode()));
     result = ((result * 31) + ((this.files == null) ? 0 : this.files.hashCode()));
-    result = ((result * 31) + ((this.links == null) ? 0 : this.links.hashCode()));
     result = ((result * 31) + ((this.runtimeRestriction == null) ? 0 : this.runtimeRestriction.hashCode()));
-    result = ((result * 31) + ((this.packageLinks == null) ? 0 : this.packageLinks.hashCode()));
     result = ((result * 31) + ((this.supportInfo == null) ? 0 : this.supportInfo.hashCode()));
     return result;
   }
@@ -1254,167 +1317,176 @@ public class Package {
       return false;
     }
     Package rhs = ((Package) other);
-    return ((((((((((((((((((((((((this.lineOfBusiness == rhs.lineOfBusiness)
-                                                                                                || ((this
+    return (((((((((((((((((((((((((this.lineOfBusiness == rhs.lineOfBusiness)
+                                                                                                    || ((this
+                                                                                                                .lineOfBusiness
+                                                                                                            != null)
+                                                                                                        && this
                                                                                                             .lineOfBusiness
-                                                                                                        != null)
-                                                                                                    && this
-                                                                                                        .lineOfBusiness
-                                                                                                        .equals(
-                                                                                                            rhs.lineOfBusiness)))
-                                                                                            && ((this
-                                                                                                        .description
-                                                                                                    == rhs.description)
-                                                                                                || ((this
+                                                                                                            .equals(
+                                                                                                                rhs.lineOfBusiness)))
+                                                                                                && ((this
                                                                                                             .description
+                                                                                                        == rhs.description)
+                                                                                                    || ((this
+                                                                                                                .description
+                                                                                                            != null)
+                                                                                                        && this
+                                                                                                            .description
+                                                                                                            .equals(
+                                                                                                                rhs.description))))
+                                                                                            && ((this
+                                                                                                        .industry
+                                                                                                    == rhs.industry)
+                                                                                                || ((this
+                                                                                                            .industry
                                                                                                         != null)
                                                                                                     && this
-                                                                                                        .description
-                                                                                                        .equals(
-                                                                                                            rhs.description))))
-                                                                                        && ((this
-                                                                                                    .industry
-                                                                                                == rhs.industry)
-                                                                                            || ((this
                                                                                                         .industry
+                                                                                                        .equals(
+                                                                                                            rhs.industry))))
+                                                                                        && ((this
+                                                                                                    .customPolicyLevel
+                                                                                                == rhs.customPolicyLevel)
+                                                                                            || ((this
+                                                                                                        .customPolicyLevel
                                                                                                     != null)
                                                                                                 && this
-                                                                                                    .industry
+                                                                                                    .customPolicyLevel
                                                                                                     .equals(
-                                                                                                        rhs.industry))))
+                                                                                                        rhs.customPolicyLevel))))
                                                                                     && ((this
-                                                                                                .shortDescription
-                                                                                            == rhs.shortDescription)
+                                                                                                .title
+                                                                                            == rhs.title)
                                                                                         || ((this
-                                                                                                    .shortDescription
+                                                                                                    .title
                                                                                                 != null)
                                                                                             && this
-                                                                                                .shortDescription
+                                                                                                .title
                                                                                                 .equals(
-                                                                                                    rhs.shortDescription))))
+                                                                                                    rhs.title))))
                                                                                 && ((this
-                                                                                            .customPolicyLevel
-                                                                                        == rhs.customPolicyLevel)
+                                                                                            .ordId
+                                                                                        == rhs.ordId)
                                                                                     || ((this
-                                                                                                .customPolicyLevel
+                                                                                                .ordId
                                                                                             != null)
                                                                                         && this
-                                                                                            .customPolicyLevel
+                                                                                            .ordId
                                                                                             .equals(
-                                                                                                rhs.customPolicyLevel))))
+                                                                                                rhs.ordId))))
                                                                             && ((this
-                                                                                        .countries
-                                                                                    == rhs.countries)
+                                                                                        .localId
+                                                                                    == rhs.localId)
                                                                                 || ((this
-                                                                                            .countries
+                                                                                            .localId
                                                                                         != null)
                                                                                     && this
-                                                                                        .countries
+                                                                                        .localId
                                                                                         .equals(
-                                                                                            rhs.countries))))
+                                                                                            rhs.localId))))
                                                                         && ((this
-                                                                                    .title
-                                                                                == rhs.title)
+                                                                                    .policyLevels
+                                                                                == rhs.policyLevels)
                                                                             || ((this
-                                                                                        .title
+                                                                                        .policyLevels
                                                                                     != null)
                                                                                 && this
-                                                                                    .title
+                                                                                    .policyLevels
                                                                                     .equals(
-                                                                                        rhs.title))))
+                                                                                        rhs.policyLevels))))
                                                                     && ((this
-                                                                                .ordId
-                                                                            == rhs.ordId)
+                                                                                .licenseType
+                                                                            == rhs.licenseType)
                                                                         || ((this
-                                                                                    .ordId
+                                                                                    .licenseType
                                                                                 != null)
                                                                             && this
-                                                                                .ordId
+                                                                                .licenseType
                                                                                 .equals(
-                                                                                    rhs.ordId))))
+                                                                                    rhs.licenseType))))
                                                                 && ((this
-                                                                            .localId
-                                                                        == rhs.localId)
+                                                                            .vendor
+                                                                        == rhs.vendor)
                                                                     || ((this
-                                                                                .localId
+                                                                                .vendor
                                                                             != null)
                                                                         && this
-                                                                            .localId
+                                                                            .vendor
                                                                             .equals(
-                                                                                rhs.localId))))
+                                                                                rhs.vendor))))
                                                             && ((this
-                                                                        .version
-                                                                    == rhs.version)
+                                                                        .correlationIds
+                                                                    == rhs.correlationIds)
                                                                 || ((this
-                                                                            .version
+                                                                            .correlationIds
                                                                         != null)
                                                                     && this
-                                                                        .version
+                                                                        .correlationIds
                                                                         .equals(
-                                                                            rhs.version))))
+                                                                            rhs.correlationIds))))
                                                         && ((this
-                                                                    .policyLevels
-                                                                == rhs.policyLevels)
+                                                                    .links
+                                                                == rhs.links)
                                                             || ((this
-                                                                        .policyLevels
+                                                                        .links
                                                                     != null)
                                                                 && this
-                                                                    .policyLevels
+                                                                    .links
                                                                     .equals(
-                                                                        rhs.policyLevels))))
-                                                    && ((this.tags
-                                                            == rhs.tags)
+                                                                        rhs.links))))
+                                                    && ((this
+                                                                .packageLinks
+                                                            == rhs.packageLinks)
                                                         || ((this
-                                                                    .tags
+                                                                    .packageLinks
                                                                 != null)
                                                             && this
-                                                                .tags
+                                                                .packageLinks
                                                                 .equals(
-                                                                    rhs.tags))))
-                                                && ((this.labels
-                                                        == rhs.labels)
-                                                    || ((this.labels
+                                                                    rhs.packageLinks))))
+                                                && ((this
+                                                            .shortDescription
+                                                        == rhs.shortDescription)
+                                                    || ((this
+                                                                .shortDescription
                                                             != null)
                                                         && this
-                                                            .labels
+                                                            .shortDescription
                                                             .equals(
-                                                                rhs.labels))))
-                                            && ((this.policyLevel
-                                                    == rhs.policyLevel)
-                                                || ((this.policyLevel
+                                                                rhs.shortDescription))))
+                                            && ((this.countries
+                                                    == rhs.countries)
+                                                || ((this.countries
                                                         != null)
                                                     && this
-                                                        .policyLevel
+                                                        .countries
                                                         .equals(
-                                                            rhs.policyLevel))))
-                                        && ((this.partOfProducts
-                                                == rhs.partOfProducts)
-                                            || ((this.partOfProducts
-                                                    != null)
-                                                && this.partOfProducts
-                                                    .equals(
-                                                        rhs.partOfProducts))))
-                                    && ((this.licenseType == rhs.licenseType)
-                                        || ((this.licenseType != null)
-                                            && this.licenseType.equals(
-                                                rhs.licenseType))))
-                                && ((this.documentationLabels
-                                        == rhs.documentationLabels)
-                                    || ((this.documentationLabels != null)
-                                        && this.documentationLabels.equals(
-                                            rhs.documentationLabels))))
-                            && ((this.vendor == rhs.vendor)
-                                || ((this.vendor != null)
-                                    && this.vendor.equals(rhs.vendor))))
-                        && ((this.files == rhs.files)
-                            || ((this.files != null) && this.files.equals(rhs.files))))
-                    && ((this.links == rhs.links)
-                        || ((this.links != null) && this.links.equals(rhs.links))))
-                && ((this.runtimeRestriction == rhs.runtimeRestriction)
-                    || ((this.runtimeRestriction != null)
-                        && this.runtimeRestriction.equals(rhs.runtimeRestriction))))
-            && ((this.packageLinks == rhs.packageLinks)
-                || ((this.packageLinks != null) && this.packageLinks.equals(rhs.packageLinks))))
+                                                            rhs.countries))))
+                                        && ((this.version == rhs.version)
+                                            || ((this.version != null)
+                                                && this.version.equals(
+                                                    rhs.version))))
+                                    && ((this.tags == rhs.tags)
+                                        || ((this.tags != null)
+                                            && this.tags.equals(rhs.tags))))
+                                && ((this.labels == rhs.labels)
+                                    || ((this.labels != null)
+                                        && this.labels.equals(rhs.labels))))
+                            && ((this.policyLevel == rhs.policyLevel)
+                                || ((this.policyLevel != null)
+                                    && this.policyLevel.equals(rhs.policyLevel))))
+                        && ((this.partOfProducts == rhs.partOfProducts)
+                            || ((this.partOfProducts != null)
+                                && this.partOfProducts.equals(rhs.partOfProducts))))
+                    && ((this.documentationLabels == rhs.documentationLabels)
+                        || ((this.documentationLabels != null)
+                            && this.documentationLabels.equals(rhs.documentationLabels))))
+                && ((this.files == rhs.files)
+                    || ((this.files != null) && this.files.equals(rhs.files))))
+            && ((this.runtimeRestriction == rhs.runtimeRestriction)
+                || ((this.runtimeRestriction != null)
+                    && this.runtimeRestriction.equals(rhs.runtimeRestriction))))
         && ((this.supportInfo == rhs.supportInfo)
             || ((this.supportInfo != null) && this.supportInfo.equals(rhs.supportInfo))));
   }

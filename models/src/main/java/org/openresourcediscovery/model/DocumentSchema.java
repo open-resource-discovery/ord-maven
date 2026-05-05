@@ -102,12 +102,12 @@ public class DocumentSchema {
    * <p>
    * A [system instance](../index.md#system-instance) is a concrete, running instance of a system type.
    * In a multi-tenant system, it corresponds to a tenant.
-   * In a single-tenant system, it corresponds to the [system installation](../index.md#system-deployment) itself.
+   * In a single-tenant system, it corresponds to the [system deployment](../index.md#system-deployment) itself.
    *
    */
   @JsonProperty("describedSystemInstance")
   @JsonPropertyDescription(
-      "A [system instance](../index.md#system-instance) is a concrete, running instance of a system type.\nIn a multi-tenant system, it corresponds to a tenant.\nIn a single-tenant system, it corresponds to the [system installation](../index.md#system-deployment) itself.")
+      "A [system instance](../index.md#system-instance) is a concrete, running instance of a system type.\nIn a multi-tenant system, it corresponds to a tenant.\nIn a single-tenant system, it corresponds to the [system deployment](../index.md#system-deployment) itself.")
   private SystemInstance describedSystemInstance;
   /**
    * System Type
@@ -393,7 +393,7 @@ public class DocumentSchema {
    * <p>
    * A [system instance](../index.md#system-instance) is a concrete, running instance of a system type.
    * In a multi-tenant system, it corresponds to a tenant.
-   * In a single-tenant system, it corresponds to the [system installation](../index.md#system-deployment) itself.
+   * In a single-tenant system, it corresponds to the [system deployment](../index.md#system-deployment) itself.
    *
    */
   @JsonProperty("describedSystemInstance")
@@ -406,7 +406,7 @@ public class DocumentSchema {
    * <p>
    * A [system instance](../index.md#system-instance) is a concrete, running instance of a system type.
    * In a multi-tenant system, it corresponds to a tenant.
-   * In a single-tenant system, it corresponds to the [system installation](../index.md#system-deployment) itself.
+   * In a single-tenant system, it corresponds to the [system deployment](../index.md#system-deployment) itself.
    *
    */
   @JsonProperty("describedSystemInstance")
