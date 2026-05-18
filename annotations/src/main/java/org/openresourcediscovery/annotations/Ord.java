@@ -932,6 +932,7 @@ public interface Ord {
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
   @interface Overlay {
+    DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");
 
     String[] requiredFields() default {"ordId", "version", "releaseStatus", "visibility"};
 

@@ -23,6 +23,7 @@ const TOP_LEVEL_FIELDS = Object.freeze(
     "Group",
     "GroupType",
     "Tombstone",
+    "Overlay",
   ]),
 );
 
