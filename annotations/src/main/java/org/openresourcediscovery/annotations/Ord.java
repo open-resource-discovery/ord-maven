@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 public interface Ord {
 
-  String VERSION = "1.14.5";
+  String VERSION = "1.15.0";
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
@@ -298,7 +298,7 @@ public interface Ord {
     /** API Protocol including the protocol version if applicable */
     String apiProtocol() default "";
 
-    /** List of available machine-readable definitions, which describe the resource or capability in detail. See also [Resource Definitions](../index.md#resource-definitions) for more context.  Each definition is to be understood as an alternative description format, describing the same resource / capability. As a consequence the same definition type MUST NOT be provided more than once. The exception is when the same definition type is provided more than once, but with a different `visibility`.  It is RECOMMENDED to provide the definitions as they enable machine-readable use cases. If the definitions are added or changed, the `version` MUST be incremented. An ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented. */
+    /** List of available machine-readable definitions, which describe the resource or capability in detail. See also [Resource Definitions](../index.md#resource-definitions) for more context.  Each definition is to be understood as an alternative description format, describing the same resource / capability. The combination of `type`, `purpose`, and `visibility` MUST be unique within the list.  A definition without a `purpose` is considered the primary/default definition for its type. Additional definitions of the same type MAY be provided if they have a distinct `purpose` (e.g., `ord:ai-enrichment` for AI-optimized definitions).  It is RECOMMENDED to provide the definitions as they enable machine-readable use cases. If the definitions are added or changed, the `version` MUST be incremented. An ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented. */
     ApiResourceDefinition[] resourceDefinitions() default {};
 
     /** Declares this API to be a valid implementation of an externally standardized API contract, sub-protocol or protocol variant.  All APIs that share the same implementation standard MAY be treated the same or similar by a consumer client. */
@@ -456,7 +456,7 @@ public interface Ord {
     /** Contains changelog entries that summarize changes with special regards to version and releaseStatus */
     ChangelogEntry[] changelogEntries() default {};
 
-    /** List of available machine-readable definitions, which describe the resource or capability in detail. See also [Resource Definitions](../index.md#resource-definitions) for more context.  Each definition is to be understood as an alternative description format, describing the same resource / capability. As a consequence the same definition type MUST NOT be provided more than once. The exception is when the same definition type is provided more than once, but with a different `visibility`.  It is RECOMMENDED to provide the definitions as they enable machine-readable use cases. If the definitions are added or changed, the `version` MUST be incremented. An ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented. */
+    /** List of available machine-readable definitions, which describe the resource or capability in detail. See also [Resource Definitions](../index.md#resource-definitions) for more context.  Each definition is to be understood as an alternative description format, describing the same resource / capability. The combination of `type`, `purpose`, and `visibility` MUST be unique within the list.  A definition without a `purpose` is considered the primary/default definition for its type. Additional definitions of the same type MAY be provided if they have a distinct `purpose` (e.g., `ord:ai-enrichment` for AI-optimized definitions).  It is RECOMMENDED to provide the definitions as they enable machine-readable use cases. If the definitions are added or changed, the `version` MUST be incremented. An ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented. */
     EventResourceDefinition[] resourceDefinitions() default {};
 
     /** Declares this EventResource to be a valid implementation of a standardized or shared contract.  All implementations of the same implementation standard MAY be treated the same by a consumer. However, there MAY be differences in the access strategy, and compatible customizations by the implementer. The implementation standard MAY define the role of the implementor (producer, consumer, both) and how it is determined.  As of now, only custom implementation standards are supported. */
@@ -795,6 +795,9 @@ public interface Ord {
 
     /** List of supported access strategies for retrieving metadata from the ORD provider. An ORD Consumer/ORD Aggregator MAY choose any of the strategies.  The access strategies only apply to the metadata access and not the actual API access. The actual access to the APIs for clients is described via Consumption Bundles.  If this property is not provided, the definition URL will be available through the same access strategy as this ORD document. It is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process. */
     AccessStrategy[] accessStrategies() default {};
+
+    /** Describes the intended purpose or role of this resource definition.  While `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for. This allows multiple definitions of the same type to coexist when they serve different purposes.  For example, an API Resource might have multiple OpenAPI definitions: one for standard API documentation and another specifically enriched for AI/agent consumption.  MUST be a valid [Concept ID](../index.md#concept-id). */
+    String purpose() default "";
   }
 
   @Target(ElementType.TYPE)
@@ -820,6 +823,9 @@ public interface Ord {
 
     /** The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.  If not given, the resource definition has the same visibility as the resource it describes. The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes. E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.  This makes it also possible to provide both a public and an internal metadata description of the resource, in case that some metadata must only be made accessible to internal consumers. */
     String visibility() default "";
+
+    /** Describes the intended purpose or role of this resource definition.  While `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for. This allows multiple definitions of the same type to coexist when they serve different purposes.  For example, an API Resource might have multiple OpenAPI definitions: one for standard API documentation and another specifically enriched for AI/agent consumption.  MUST be a valid [Concept ID](../index.md#concept-id). */
+    String purpose() default "";
   }
 
   @Target(ElementType.TYPE)
@@ -921,6 +927,74 @@ public interface Ord {
 
     /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface Overlay {
+
+    String[] requiredFields() default {"ordId", "version", "releaseStatus", "visibility"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
+    String title() default "";
+
+    /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
+    String description() default "";
+
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    String version() default "";
+
+    /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
+    String lastUpdate() default "";
+
+    /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
+    String visibility() default "";
+
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
+    String releaseStatus() default "";
+
+    /** Optional list of API Resources whose definition files this overlay patches.  SHOULD be provided when the target resource is described in an ORD document accessible to the same aggregator, as it enables efficient indexing without requiring the aggregator to parse each overlay file. Use `relationType: ord:patches` to express the patching relationship.  May be omitted when the target resource is not described in an accessible ORD document, or when the overlay is cross-cutting and patches resources from multiple providers. */
+    RelatedApiResource[] relatedApiResources() default {};
+
+    /** Optional list of Event Resources whose definition files this overlay patches.  SHOULD be provided when the target resource is described in an ORD document accessible to the same aggregator, as it enables efficient indexing without requiring the aggregator to parse each overlay file. Use `relationType: ord:patches` to express the patching relationship.  May be omitted when the target resource is not described in an accessible ORD document, or when the overlay is cross-cutting and patches resources from multiple providers. */
+    RelatedEventResource[] relatedEventResources() default {};
+
+    /** List of overlay definition files referenced by this ORD Overlay Resource. Each entry points to an ORD Overlay document (`type: ord:overlay:v1`) that contains the actual patches. */
+    OverlayDefinition[] definitions() default {};
+
+    /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
+    String[] tags() default {};
+
+    /**  */
+    Labels labels() default @Labels;
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface OverlayDefinition {
+
+    String[] requiredFields() default {"type", "mediaType", "url"};
+
+    /** Type of the overlay definition */
+    String type() default "";
+
+    /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use. For example, for OpenAPI 3, it's valid to express the same definition in both YAML and JSON.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
+    String mediaType() default "";
+
+    /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.  It is RECOMMENDED to provide a relative URL (to base URL). */
+    String url() default "";
+
+    /** List of supported access strategies for retrieving metadata from the ORD provider. An ORD Consumer/ORD Aggregator MAY choose any of the strategies.  The access strategies only apply to the metadata access and not the actual API access. The actual access to the APIs for clients is described via Consumption Bundles.  If this property is not provided, the definition URL will be available through the same access strategy as this ORD document. It is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process. */
+    AccessStrategy[] accessStrategies() default {};
+
+    /** The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.  If not given, the resource definition has the same visibility as the resource it describes. The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes. E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.  This makes it also possible to provide both a public and an internal metadata description of the resource, in case that some metadata must only be made accessible to internal consumers. */
+    String visibility() default "";
+
+    /** Describes the intended purpose or role of this resource definition.  While `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for. This allows multiple definitions of the same type to coexist when they serve different purposes.  For example, an API Resource might have multiple OpenAPI definitions: one for standard API documentation and another specifically enriched for AI/agent consumption.  MUST be a valid [Concept ID](../index.md#concept-id). */
+    String purpose() default "";
   }
 
   @Target(ElementType.TYPE)
@@ -1030,7 +1104,7 @@ public interface Ord {
     /** Optional list of related Capabilities.  Use this to indicate dependencies, extensions, or other relationships between capabilities. */
     RelatedCapability[] relatedCapabilities() default {};
 
-    /** List of available machine-readable definitions, which describe the resource or capability in detail. See also [Resource Definitions](../index.md#resource-definitions) for more context.  Each definition is to be understood as an alternative description format, describing the same resource / capability. As a consequence the same definition type MUST NOT be provided more than once. The exception is when the same definition type is provided more than once, but with a different `visibility`.  It is RECOMMENDED to provide the definitions as they enable machine-readable use cases. If the definitions are added or changed, the `version` MUST be incremented. An ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented. */
+    /** List of available machine-readable definitions, which describe the resource or capability in detail. See also [Resource Definitions](../index.md#resource-definitions) for more context.  Each definition is to be understood as an alternative description format, describing the same resource / capability. The combination of `type`, `purpose`, and `visibility` MUST be unique within the list.  A definition without a `purpose` is considered the primary/default definition for its type. Additional definitions of the same type MAY be provided if they have a distinct `purpose` (e.g., `ord:ai-enrichment` for AI-optimized definitions).  It is RECOMMENDED to provide the definitions as they enable machine-readable use cases. If the definitions are added or changed, the `version` MUST be incremented. An ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented. */
     CapabilityDefinition[] definitions() default {};
 
     /** Generic Links with arbitrary meaning and content. */
@@ -1072,6 +1146,9 @@ public interface Ord {
 
     /** The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.  If not given, the resource definition has the same visibility as the resource it describes. The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes. E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.  This makes it also possible to provide both a public and an internal metadata description of the resource, in case that some metadata must only be made accessible to internal consumers. */
     String visibility() default "";
+
+    /** Describes the intended purpose or role of this resource definition.  While `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for. This allows multiple definitions of the same type to coexist when they serve different purposes.  For example, an API Resource might have multiple OpenAPI definitions: one for standard API documentation and another specifically enriched for AI/agent consumption.  MUST be a valid [Concept ID](../index.md#concept-id). */
+    String purpose() default "";
   }
 
   @Target(ElementType.TYPE)
@@ -1579,7 +1656,7 @@ public interface Ord {
 
     String[] requiredFields() default {"supported"};
 
-    /** This property defines whether the resource is extensible.  **Not extensible** means that the data model of the resource (i.e. API or event) cannot be extended with custom fields. **Manually extensible** means that in addition to defining a custom field, manual activities to include the field in the data model of the resource (i.e. API or event) are required. E.g. using a specific mapping tool or by selecting the resource in the data model extension tool. **Automatically extensible** means that after defining a custom field in the local domain model, the resource (i.e. API or event) is automatically extended as part of the default extension field definition. */
+    /** Defines whether and how the resource can be extended with custom fields. */
     String supported() default "";
 
     /** A description about the extensibility capabilities of this API, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  This description may contain detailed steps on how to extend the API. Links to external resources can be provided within the description as markdown links.  This description MUST be provided if `supported` is set to `manual` or `automatic`. */

@@ -310,8 +310,10 @@ public class Capability {
    * See also [Resource Definitions](../index.md#resource-definitions) for more context.
    *
    * Each definition is to be understood as an alternative description format, describing the same resource / capability.
-   * As a consequence the same definition type MUST NOT be provided more than once.
-   * The exception is when the same definition type is provided more than once, but with a different `visibility`.
+   * The combination of `type`, `purpose`, and `visibility` MUST be unique within the list.
+   *
+   * A definition without a `purpose` is considered the primary/default definition for its type.
+   * Additional definitions of the same type MAY be provided if they have a distinct `purpose` (e.g., `ord:ai-enrichment` for AI-optimized definitions).
    *
    * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
    * If the definitions are added or changed, the `version` MUST be incremented.
@@ -320,7 +322,7 @@ public class Capability {
    */
   @JsonProperty("definitions")
   @JsonPropertyDescription(
-      "List of available machine-readable definitions, which describe the resource or capability in detail.\nSee also [Resource Definitions](../index.md#resource-definitions) for more context.\n\nEach definition is to be understood as an alternative description format, describing the same resource / capability.\nAs a consequence the same definition type MUST NOT be provided more than once.\nThe exception is when the same definition type is provided more than once, but with a different `visibility`.\n\nIt is RECOMMENDED to provide the definitions as they enable machine-readable use cases.\nIf the definitions are added or changed, the `version` MUST be incremented.\nAn ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.")
+      "List of available machine-readable definitions, which describe the resource or capability in detail.\nSee also [Resource Definitions](../index.md#resource-definitions) for more context.\n\nEach definition is to be understood as an alternative description format, describing the same resource / capability.\nThe combination of `type`, `purpose`, and `visibility` MUST be unique within the list.\n\nA definition without a `purpose` is considered the primary/default definition for its type.\nAdditional definitions of the same type MAY be provided if they have a distinct `purpose` (e.g., `ord:ai-enrichment` for AI-optimized definitions).\n\nIt is RECOMMENDED to provide the definitions as they enable machine-readable use cases.\nIf the definitions are added or changed, the `version` MUST be incremented.\nAn ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.")
   private List<CapabilityDefinition> definitions;
   /**
    * Generic Links with arbitrary meaning and content.
@@ -1071,8 +1073,10 @@ public class Capability {
    * See also [Resource Definitions](../index.md#resource-definitions) for more context.
    *
    * Each definition is to be understood as an alternative description format, describing the same resource / capability.
-   * As a consequence the same definition type MUST NOT be provided more than once.
-   * The exception is when the same definition type is provided more than once, but with a different `visibility`.
+   * The combination of `type`, `purpose`, and `visibility` MUST be unique within the list.
+   *
+   * A definition without a `purpose` is considered the primary/default definition for its type.
+   * Additional definitions of the same type MAY be provided if they have a distinct `purpose` (e.g., `ord:ai-enrichment` for AI-optimized definitions).
    *
    * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
    * If the definitions are added or changed, the `version` MUST be incremented.
@@ -1089,8 +1093,10 @@ public class Capability {
    * See also [Resource Definitions](../index.md#resource-definitions) for more context.
    *
    * Each definition is to be understood as an alternative description format, describing the same resource / capability.
-   * As a consequence the same definition type MUST NOT be provided more than once.
-   * The exception is when the same definition type is provided more than once, but with a different `visibility`.
+   * The combination of `type`, `purpose`, and `visibility` MUST be unique within the list.
+   *
+   * A definition without a `purpose` is considered the primary/default definition for its type.
+   * Additional definitions of the same type MAY be provided if they have a distinct `purpose` (e.g., `ord:ai-enrichment` for AI-optimized definitions).
    *
    * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
    * If the definitions are added or changed, the `version` MUST be incremented.

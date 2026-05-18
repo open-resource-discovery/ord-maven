@@ -7,38 +7,23 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.List;
 
 /**
- * Api Resource Definition
+ * Overlay Definition
  * <p>
- * Link and categorization of a machine-readable API definition.
- * For example, OpenAPI definition, OData Metadata, etc.
+ * Link to a machine-readable [ORD Overlay](../../spec-v1/interfaces/OrdOverlay) document.
  *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"type", "customType", "mediaType", "url", "visibility", "accessStrategies", "purpose"})
-public class ApiResourceDefinition {
+@JsonPropertyOrder({"type", "mediaType", "url", "accessStrategies", "visibility", "purpose"})
+public class OverlayDefinition {
 
   /**
-   * Type of the API Resource Definition
-   * If "custom" is chosen, a customType MUST be provided
+   * Type of the overlay definition
    * (Required)
    *
    */
   @JsonProperty("type")
-  @JsonPropertyDescription(
-      "Type of the API Resource Definition\nIf \"custom\" is chosen, a customType MUST be provided")
+  @JsonPropertyDescription("Type of the overlay definition")
   private String type;
-  /**
-   * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
-   *
-   * MUST be a valid [Specification ID](../index.md#specification-id).
-   *
-   * MUST only be provided if `type` is set to `custom`.
-   *
-   */
-  @JsonProperty("customType")
-  @JsonPropertyDescription(
-      "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.")
-  private String customType;
   /**
    * The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format.
    * A consuming application can use this information to know which file format parser it needs to use.
@@ -66,21 +51,6 @@ public class ApiResourceDefinition {
       "[URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.\n\nIt is RECOMMENDED to provide a relative URL (to base URL).")
   private String url;
   /**
-   * The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.
-   *
-   * If not given, the resource definition has the same visibility as the resource it describes.
-   * The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.
-   * E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.
-   *
-   * This makes it also possible to provide both a public and an internal metadata description of the resource,
-   * in case that some metadata must only be made accessible to internal consumers.
-   *
-   */
-  @JsonProperty("visibility")
-  @JsonPropertyDescription(
-      "The visibility states who is allowed to \"see\" and access the resource definition, in case it differs from the resource visibility.\n\nIf not given, the resource definition has the same visibility as the resource it describes.\nThe visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.\nE.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.\n\nThis makes it also possible to provide both a public and an internal metadata description of the resource,\nin case that some metadata must only be made accessible to internal consumers.")
-  private String visibility;
-  /**
    * List of supported access strategies for retrieving metadata from the ORD provider.
    * An ORD Consumer/ORD Aggregator MAY choose any of the strategies.
    *
@@ -95,6 +65,21 @@ public class ApiResourceDefinition {
   @JsonPropertyDescription(
       "List of supported access strategies for retrieving metadata from the ORD provider.\nAn ORD Consumer/ORD Aggregator MAY choose any of the strategies.\n\nThe access strategies only apply to the metadata access and not the actual API access.\nThe actual access to the APIs for clients is described via Consumption Bundles.\n\nIf this property is not provided, the definition URL will be available through the same access strategy as this ORD document.\nIt is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process.")
   private List<AccessStrategy> accessStrategies;
+  /**
+   * The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.
+   *
+   * If not given, the resource definition has the same visibility as the resource it describes.
+   * The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.
+   * E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.
+   *
+   * This makes it also possible to provide both a public and an internal metadata description of the resource,
+   * in case that some metadata must only be made accessible to internal consumers.
+   *
+   */
+  @JsonProperty("visibility")
+  @JsonPropertyDescription(
+      "The visibility states who is allowed to \"see\" and access the resource definition, in case it differs from the resource visibility.\n\nIf not given, the resource definition has the same visibility as the resource it describes.\nThe visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.\nE.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.\n\nThis makes it also possible to provide both a public and an internal metadata description of the resource,\nin case that some metadata must only be made accessible to internal consumers.")
+  private String visibility;
   /**
    * Describes the intended purpose or role of this resource definition.
    *
@@ -113,8 +98,7 @@ public class ApiResourceDefinition {
   private String purpose;
 
   /**
-   * Type of the API Resource Definition
-   * If "custom" is chosen, a customType MUST be provided
+   * Type of the overlay definition
    * (Required)
    *
    */
@@ -124,8 +108,7 @@ public class ApiResourceDefinition {
   }
 
   /**
-   * Type of the API Resource Definition
-   * If "custom" is chosen, a customType MUST be provided
+   * Type of the overlay definition
    * (Required)
    *
    */
@@ -134,39 +117,8 @@ public class ApiResourceDefinition {
     this.type = type;
   }
 
-  public ApiResourceDefinition withType(String type) {
+  public OverlayDefinition withType(String type) {
     this.type = type;
-    return this;
-  }
-
-  /**
-   * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
-   *
-   * MUST be a valid [Specification ID](../index.md#specification-id).
-   *
-   * MUST only be provided if `type` is set to `custom`.
-   *
-   */
-  @JsonProperty("customType")
-  public String getCustomType() {
-    return customType;
-  }
-
-  /**
-   * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
-   *
-   * MUST be a valid [Specification ID](../index.md#specification-id).
-   *
-   * MUST only be provided if `type` is set to `custom`.
-   *
-   */
-  @JsonProperty("customType")
-  public void setCustomType(String customType) {
-    this.customType = customType;
-  }
-
-  public ApiResourceDefinition withCustomType(String customType) {
-    this.customType = customType;
     return this;
   }
 
@@ -202,7 +154,7 @@ public class ApiResourceDefinition {
     this.mediaType = mediaType;
   }
 
-  public ApiResourceDefinition withMediaType(String mediaType) {
+  public OverlayDefinition withMediaType(String mediaType) {
     this.mediaType = mediaType;
     return this;
   }
@@ -231,45 +183,8 @@ public class ApiResourceDefinition {
     this.url = url;
   }
 
-  public ApiResourceDefinition withUrl(String url) {
+  public OverlayDefinition withUrl(String url) {
     this.url = url;
-    return this;
-  }
-
-  /**
-   * The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.
-   *
-   * If not given, the resource definition has the same visibility as the resource it describes.
-   * The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.
-   * E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.
-   *
-   * This makes it also possible to provide both a public and an internal metadata description of the resource,
-   * in case that some metadata must only be made accessible to internal consumers.
-   *
-   */
-  @JsonProperty("visibility")
-  public String getVisibility() {
-    return visibility;
-  }
-
-  /**
-   * The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.
-   *
-   * If not given, the resource definition has the same visibility as the resource it describes.
-   * The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.
-   * E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.
-   *
-   * This makes it also possible to provide both a public and an internal metadata description of the resource,
-   * in case that some metadata must only be made accessible to internal consumers.
-   *
-   */
-  @JsonProperty("visibility")
-  public void setVisibility(String visibility) {
-    this.visibility = visibility;
-  }
-
-  public ApiResourceDefinition withVisibility(String visibility) {
-    this.visibility = visibility;
     return this;
   }
 
@@ -305,8 +220,45 @@ public class ApiResourceDefinition {
     this.accessStrategies = accessStrategies;
   }
 
-  public ApiResourceDefinition withAccessStrategies(List<AccessStrategy> accessStrategies) {
+  public OverlayDefinition withAccessStrategies(List<AccessStrategy> accessStrategies) {
     this.accessStrategies = accessStrategies;
+    return this;
+  }
+
+  /**
+   * The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.
+   *
+   * If not given, the resource definition has the same visibility as the resource it describes.
+   * The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.
+   * E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.
+   *
+   * This makes it also possible to provide both a public and an internal metadata description of the resource,
+   * in case that some metadata must only be made accessible to internal consumers.
+   *
+   */
+  @JsonProperty("visibility")
+  public String getVisibility() {
+    return visibility;
+  }
+
+  /**
+   * The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.
+   *
+   * If not given, the resource definition has the same visibility as the resource it describes.
+   * The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.
+   * E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.
+   *
+   * This makes it also possible to provide both a public and an internal metadata description of the resource,
+   * in case that some metadata must only be made accessible to internal consumers.
+   *
+   */
+  @JsonProperty("visibility")
+  public void setVisibility(String visibility) {
+    this.visibility = visibility;
+  }
+
+  public OverlayDefinition withVisibility(String visibility) {
+    this.visibility = visibility;
     return this;
   }
 
@@ -344,7 +296,7 @@ public class ApiResourceDefinition {
     this.purpose = purpose;
   }
 
-  public ApiResourceDefinition withPurpose(String purpose) {
+  public OverlayDefinition withPurpose(String purpose) {
     this.purpose = purpose;
     return this;
   }
@@ -352,17 +304,13 @@ public class ApiResourceDefinition {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append(ApiResourceDefinition.class.getName())
+    sb.append(OverlayDefinition.class.getName())
         .append('@')
         .append(Integer.toHexString(System.identityHashCode(this)))
         .append('[');
     sb.append("type");
     sb.append('=');
     sb.append(((this.type == null) ? "<null>" : this.type));
-    sb.append(',');
-    sb.append("customType");
-    sb.append('=');
-    sb.append(((this.customType == null) ? "<null>" : this.customType));
     sb.append(',');
     sb.append("mediaType");
     sb.append('=');
@@ -372,13 +320,13 @@ public class ApiResourceDefinition {
     sb.append('=');
     sb.append(((this.url == null) ? "<null>" : this.url));
     sb.append(',');
-    sb.append("visibility");
-    sb.append('=');
-    sb.append(((this.visibility == null) ? "<null>" : this.visibility));
-    sb.append(',');
     sb.append("accessStrategies");
     sb.append('=');
     sb.append(((this.accessStrategies == null) ? "<null>" : this.accessStrategies));
+    sb.append(',');
+    sb.append("visibility");
+    sb.append('=');
+    sb.append(((this.visibility == null) ? "<null>" : this.visibility));
     sb.append(',');
     sb.append("purpose");
     sb.append('=');
@@ -396,7 +344,6 @@ public class ApiResourceDefinition {
   public int hashCode() {
     int result = 1;
     result = ((result * 31) + ((this.accessStrategies == null) ? 0 : this.accessStrategies.hashCode()));
-    result = ((result * 31) + ((this.customType == null) ? 0 : this.customType.hashCode()));
     result = ((result * 31) + ((this.visibility == null) ? 0 : this.visibility.hashCode()));
     result = ((result * 31) + ((this.purpose == null) ? 0 : this.purpose.hashCode()));
     result = ((result * 31) + ((this.mediaType == null) ? 0 : this.mediaType.hashCode()));
@@ -410,17 +357,13 @@ public class ApiResourceDefinition {
     if (other == this) {
       return true;
     }
-    if ((other instanceof ApiResourceDefinition) == false) {
+    if ((other instanceof OverlayDefinition) == false) {
       return false;
     }
-    ApiResourceDefinition rhs = ((ApiResourceDefinition) other);
-    return ((((((((this.accessStrategies == rhs.accessStrategies)
-                                || ((this.accessStrategies != null)
-                                    && this.accessStrategies.equals(
-                                        rhs.accessStrategies)))
-                            && ((this.customType == rhs.customType)
-                                || ((this.customType != null)
-                                    && this.customType.equals(rhs.customType))))
+    OverlayDefinition rhs = ((OverlayDefinition) other);
+    return (((((((this.accessStrategies == rhs.accessStrategies)
+                            || ((this.accessStrategies != null)
+                                && this.accessStrategies.equals(rhs.accessStrategies)))
                         && ((this.visibility == rhs.visibility)
                             || ((this.visibility != null)
                                 && this.visibility.equals(rhs.visibility))))

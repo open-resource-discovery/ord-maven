@@ -14,7 +14,7 @@ import java.util.List;
  *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"type", "customType", "mediaType", "url", "accessStrategies", "visibility"})
+@JsonPropertyOrder({"type", "customType", "mediaType", "url", "accessStrategies", "visibility", "purpose"})
 public class EventResourceDefinition {
 
   /**
@@ -93,6 +93,22 @@ public class EventResourceDefinition {
   @JsonPropertyDescription(
       "The visibility states who is allowed to \"see\" and access the resource definition, in case it differs from the resource visibility.\n\nIf not given, the resource definition has the same visibility as the resource it describes.\nThe visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes.\nE.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.\n\nThis makes it also possible to provide both a public and an internal metadata description of the resource,\nin case that some metadata must only be made accessible to internal consumers.")
   private String visibility;
+  /**
+   * Describes the intended purpose or role of this resource definition.
+   *
+   * While `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for.
+   * This allows multiple definitions of the same type to coexist when they serve different purposes.
+   *
+   * For example, an API Resource might have multiple OpenAPI definitions:
+   * one for standard API documentation and another specifically enriched for AI/agent consumption.
+   *
+   * MUST be a valid [Concept ID](../index.md#concept-id).
+   *
+   */
+  @JsonProperty("purpose")
+  @JsonPropertyDescription(
+      "Describes the intended purpose or role of this resource definition.\n\nWhile `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for.\nThis allows multiple definitions of the same type to coexist when they serve different purposes.\n\nFor example, an API Resource might have multiple OpenAPI definitions:\none for standard API documentation and another specifically enriched for AI/agent consumption.\n\nMUST be a valid [Concept ID](../index.md#concept-id).")
+  private String purpose;
 
   /**
    * Type of the event resource definition
@@ -290,6 +306,45 @@ public class EventResourceDefinition {
     return this;
   }
 
+  /**
+   * Describes the intended purpose or role of this resource definition.
+   *
+   * While `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for.
+   * This allows multiple definitions of the same type to coexist when they serve different purposes.
+   *
+   * For example, an API Resource might have multiple OpenAPI definitions:
+   * one for standard API documentation and another specifically enriched for AI/agent consumption.
+   *
+   * MUST be a valid [Concept ID](../index.md#concept-id).
+   *
+   */
+  @JsonProperty("purpose")
+  public String getPurpose() {
+    return purpose;
+  }
+
+  /**
+   * Describes the intended purpose or role of this resource definition.
+   *
+   * While `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for.
+   * This allows multiple definitions of the same type to coexist when they serve different purposes.
+   *
+   * For example, an API Resource might have multiple OpenAPI definitions:
+   * one for standard API documentation and another specifically enriched for AI/agent consumption.
+   *
+   * MUST be a valid [Concept ID](../index.md#concept-id).
+   *
+   */
+  @JsonProperty("purpose")
+  public void setPurpose(String purpose) {
+    this.purpose = purpose;
+  }
+
+  public EventResourceDefinition withPurpose(String purpose) {
+    this.purpose = purpose;
+    return this;
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -321,6 +376,10 @@ public class EventResourceDefinition {
     sb.append('=');
     sb.append(((this.visibility == null) ? "<null>" : this.visibility));
     sb.append(',');
+    sb.append("purpose");
+    sb.append('=');
+    sb.append(((this.purpose == null) ? "<null>" : this.purpose));
+    sb.append(',');
     if (sb.charAt((sb.length() - 1)) == ',') {
       sb.setCharAt((sb.length() - 1), ']');
     } else {
@@ -335,6 +394,7 @@ public class EventResourceDefinition {
     result = ((result * 31) + ((this.accessStrategies == null) ? 0 : this.accessStrategies.hashCode()));
     result = ((result * 31) + ((this.customType == null) ? 0 : this.customType.hashCode()));
     result = ((result * 31) + ((this.visibility == null) ? 0 : this.visibility.hashCode()));
+    result = ((result * 31) + ((this.purpose == null) ? 0 : this.purpose.hashCode()));
     result = ((result * 31) + ((this.mediaType == null) ? 0 : this.mediaType.hashCode()));
     result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
     result = ((result * 31) + ((this.url == null) ? 0 : this.url.hashCode()));
@@ -350,15 +410,18 @@ public class EventResourceDefinition {
       return false;
     }
     EventResourceDefinition rhs = ((EventResourceDefinition) other);
-    return (((((((this.accessStrategies == rhs.accessStrategies)
-                            || ((this.accessStrategies != null)
-                                && this.accessStrategies.equals(rhs.accessStrategies)))
-                        && ((this.customType == rhs.customType)
-                            || ((this.customType != null)
-                                && this.customType.equals(rhs.customType))))
-                    && ((this.visibility == rhs.visibility)
-                        || ((this.visibility != null)
-                            && this.visibility.equals(rhs.visibility))))
+    return ((((((((this.accessStrategies == rhs.accessStrategies)
+                                || ((this.accessStrategies != null)
+                                    && this.accessStrategies.equals(
+                                        rhs.accessStrategies)))
+                            && ((this.customType == rhs.customType)
+                                || ((this.customType != null)
+                                    && this.customType.equals(rhs.customType))))
+                        && ((this.visibility == rhs.visibility)
+                            || ((this.visibility != null)
+                                && this.visibility.equals(rhs.visibility))))
+                    && ((this.purpose == rhs.purpose)
+                        || ((this.purpose != null) && this.purpose.equals(rhs.purpose))))
                 && ((this.mediaType == rhs.mediaType)
                     || ((this.mediaType != null) && this.mediaType.equals(rhs.mediaType))))
             && ((this.type == rhs.type) || ((this.type != null) && this.type.equals(rhs.type))))

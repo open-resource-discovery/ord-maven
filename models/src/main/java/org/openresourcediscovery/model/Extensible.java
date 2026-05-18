@@ -1,13 +1,9 @@
 package org.openresourcediscovery.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonValue;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Extensible
@@ -22,18 +18,15 @@ import java.util.Map;
 public class Extensible {
 
   /**
-   * This property defines whether the resource is extensible.
-   *
-   * **Not extensible** means that the data model of the resource (i.e. API or event) cannot be extended with custom fields.
-   * **Manually extensible** means that in addition to defining a custom field, manual activities to include the field in the data model of the resource (i.e. API or event) are required. E.g. using a specific mapping tool or by selecting the resource in the data model extension tool.
-   * **Automatically extensible** means that after defining a custom field in the local domain model, the resource (i.e. API or event) is automatically extended as part of the default extension field definition.
+   * Extensibility Support Level
+   * <p>
+   * Defines whether and how the resource can be extended with custom fields.
    * (Required)
    *
    */
   @JsonProperty("supported")
-  @JsonPropertyDescription(
-      "This property defines whether the resource is extensible.\n\n**Not extensible** means that the data model of the resource (i.e. API or event) cannot be extended with custom fields.\n**Manually extensible** means that in addition to defining a custom field, manual activities to include the field in the data model of the resource (i.e. API or event) are required. E.g. using a specific mapping tool or by selecting the resource in the data model extension tool.\n**Automatically extensible** means that after defining a custom field in the local domain model, the resource (i.e. API or event) is automatically extended as part of the default extension field definition.")
-  private Extensible.Supported supported;
+  @JsonPropertyDescription("Defines whether and how the resource can be extended with custom fields.")
+  private String supported;
   /**
    * A description about the extensibility capabilities of this API, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
    *
@@ -49,34 +42,30 @@ public class Extensible {
   private String description;
 
   /**
-   * This property defines whether the resource is extensible.
-   *
-   * **Not extensible** means that the data model of the resource (i.e. API or event) cannot be extended with custom fields.
-   * **Manually extensible** means that in addition to defining a custom field, manual activities to include the field in the data model of the resource (i.e. API or event) are required. E.g. using a specific mapping tool or by selecting the resource in the data model extension tool.
-   * **Automatically extensible** means that after defining a custom field in the local domain model, the resource (i.e. API or event) is automatically extended as part of the default extension field definition.
+   * Extensibility Support Level
+   * <p>
+   * Defines whether and how the resource can be extended with custom fields.
    * (Required)
    *
    */
   @JsonProperty("supported")
-  public Extensible.Supported getSupported() {
+  public String getSupported() {
     return supported;
   }
 
   /**
-   * This property defines whether the resource is extensible.
-   *
-   * **Not extensible** means that the data model of the resource (i.e. API or event) cannot be extended with custom fields.
-   * **Manually extensible** means that in addition to defining a custom field, manual activities to include the field in the data model of the resource (i.e. API or event) are required. E.g. using a specific mapping tool or by selecting the resource in the data model extension tool.
-   * **Automatically extensible** means that after defining a custom field in the local domain model, the resource (i.e. API or event) is automatically extended as part of the default extension field definition.
+   * Extensibility Support Level
+   * <p>
+   * Defines whether and how the resource can be extended with custom fields.
    * (Required)
    *
    */
   @JsonProperty("supported")
-  public void setSupported(Extensible.Supported supported) {
+  public void setSupported(String supported) {
     this.supported = supported;
   }
 
-  public Extensible withSupported(Extensible.Supported supported) {
+  public Extensible withSupported(String supported) {
     this.supported = supported;
     return this;
   }
@@ -158,51 +147,5 @@ public class Extensible {
             || ((this.description != null) && this.description.equals(rhs.description)))
         && ((this.supported == rhs.supported)
             || ((this.supported != null) && this.supported.equals(rhs.supported))));
-  }
-
-  /**
-   * This property defines whether the resource is extensible.
-   *
-   * **Not extensible** means that the data model of the resource (i.e. API or event) cannot be extended with custom fields.
-   * **Manually extensible** means that in addition to defining a custom field, manual activities to include the field in the data model of the resource (i.e. API or event) are required. E.g. using a specific mapping tool or by selecting the resource in the data model extension tool.
-   * **Automatically extensible** means that after defining a custom field in the local domain model, the resource (i.e. API or event) is automatically extended as part of the default extension field definition.
-   *
-   */
-  public enum Supported {
-    NO("no"),
-    MANUAL("manual"),
-    AUTOMATIC("automatic");
-    private final String value;
-    private static final Map<String, Extensible.Supported> CONSTANTS = new HashMap<String, Extensible.Supported>();
-
-    static {
-      for (Extensible.Supported c : values()) {
-        CONSTANTS.put(c.value, c);
-      }
-    }
-
-    Supported(String value) {
-      this.value = value;
-    }
-
-    @Override
-    public String toString() {
-      return this.value;
-    }
-
-    @JsonValue
-    public String value() {
-      return this.value;
-    }
-
-    @JsonCreator
-    public static Extensible.Supported fromValue(String value) {
-      Extensible.Supported constant = CONSTANTS.get(value);
-      if (constant == null) {
-        throw new IllegalArgumentException(value);
-      } else {
-        return constant;
-      }
-    }
   }
 }
