@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.annotation.processing.Generated;
 
 /**
  * File
@@ -20,7 +19,6 @@ import javax.annotation.processing.Generated;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"title", "url", "description", "mediaType"})
-@Generated("jsonschema2pojo")
 public class File {
 
   /**
