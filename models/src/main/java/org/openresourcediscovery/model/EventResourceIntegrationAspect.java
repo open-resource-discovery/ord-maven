@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.List;
-import javax.annotation.processing.Generated;
 
 /**
  * Event Resource Integration Aspect
@@ -15,7 +14,6 @@ import javax.annotation.processing.Generated;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"ordId", "minVersion", "subset", "systemTypeRestriction"})
-@Generated("jsonschema2pojo")
 public class EventResourceIntegrationAspect {
 
   /**

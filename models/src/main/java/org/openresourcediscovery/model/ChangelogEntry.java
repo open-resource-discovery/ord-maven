@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.net.URI;
-import javax.annotation.processing.Generated;
 
 /**
  * Changelog Entry
@@ -16,7 +15,6 @@ import javax.annotation.processing.Generated;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"version", "releaseStatus", "date", "description", "url"})
-@Generated("jsonschema2pojo")
 public class ChangelogEntry {
 
   /**

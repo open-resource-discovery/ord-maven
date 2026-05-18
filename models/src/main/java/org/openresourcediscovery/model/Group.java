@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.processing.Generated;
 
 /**
  * Group
@@ -26,7 +25,6 @@ import javax.annotation.processing.Generated;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"groupId", "groupTypeId", "title", "description", "labels", "correlationIds", "partOfGroups"})
-@Generated("jsonschema2pojo")
 public class Group {
 
   /**
