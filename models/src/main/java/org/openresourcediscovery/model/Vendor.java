@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.List;
-import javax.annotation.processing.Generated;
 
 /**
  * Vendor
@@ -26,7 +25,6 @@ import javax.annotation.processing.Generated;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"ordId", "title", "partners", "tags", "labels", "documentationLabels"})
-@Generated("jsonschema2pojo")
 public class Vendor {
 
   /**

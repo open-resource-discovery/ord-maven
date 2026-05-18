@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.annotation.processing.Generated;
 
 /**
  * Tombstone
@@ -25,7 +24,6 @@ import javax.annotation.processing.Generated;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"ordId", "groupId", "groupTypeId", "removalDate", "description"})
-@Generated("jsonschema2pojo")
 public class Tombstone {
 
   /**

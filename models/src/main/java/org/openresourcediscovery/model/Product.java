@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.List;
-import javax.annotation.processing.Generated;
 
 /**
  * Product
@@ -36,7 +35,6 @@ import javax.annotation.processing.Generated;
   "labels",
   "documentationLabels"
 })
-@Generated("jsonschema2pojo")
 public class Product {
 
   /**

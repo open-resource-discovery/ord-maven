@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.annotation.processing.Generated;
 
 /**
  * Documentation Labels
@@ -29,7 +28,6 @@ import javax.annotation.processing.Generated;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({})
-@Generated("jsonschema2pojo")
 public class DocumentationLabels {
 
   @JsonIgnore

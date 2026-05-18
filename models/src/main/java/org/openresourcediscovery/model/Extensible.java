@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.processing.Generated;
 
 /**
  * Extensible
@@ -20,7 +19,6 @@ import javax.annotation.processing.Generated;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"supported", "description"})
-@Generated("jsonschema2pojo")
 public class Extensible {
 
   /**
@@ -170,7 +168,6 @@ public class Extensible {
    * **Automatically extensible** means that after defining a custom field in the local domain model, the resource (i.e. API or event) is automatically extended as part of the default extension field definition.
    *
    */
-  @Generated("jsonschema2pojo")
   public enum Supported {
     NO("no"),
     MANUAL("manual"),

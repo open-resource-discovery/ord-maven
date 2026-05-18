@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import javax.annotation.processing.Generated;
 
 /**
  * Package Link
@@ -22,7 +21,6 @@ import javax.annotation.processing.Generated;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"type", "customType", "url"})
-@Generated("jsonschema2pojo")
 public class PackageLink {
 
   /**

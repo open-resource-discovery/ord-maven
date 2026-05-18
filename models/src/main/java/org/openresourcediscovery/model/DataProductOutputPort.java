@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import javax.annotation.processing.Generated;
 
 /**
  * Data Product Output Port
@@ -19,7 +18,6 @@ import javax.annotation.processing.Generated;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"ordId"})
-@Generated("jsonschema2pojo")
 public class DataProductOutputPort {
 
   /**

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.net.URI;
-import javax.annotation.processing.Generated;
 
 /**
  * Credential Exchange Strategy
@@ -22,7 +21,6 @@ import javax.annotation.processing.Generated;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"type", "customType", "customDescription", "callbackUrl"})
-@Generated("jsonschema2pojo")
 public class CredentialExchangeStrategy {
 
   /**

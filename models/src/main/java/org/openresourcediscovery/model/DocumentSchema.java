@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.processing.Generated;
 
 /**
  * Ord Document
@@ -49,7 +48,6 @@ import javax.annotation.processing.Generated;
   "groupTypes",
   "tombstones"
 })
-@Generated("jsonschema2pojo")
 public class DocumentSchema {
 
   /**
@@ -1233,7 +1231,6 @@ public class DocumentSchema {
    * Version of the Open Resource Discovery specification that is used to describe this document.
    *
    */
-  @Generated("jsonschema2pojo")
   public enum OpenResourceDiscovery {
     _1_0("1.0"),
     _1_1("1.1"),

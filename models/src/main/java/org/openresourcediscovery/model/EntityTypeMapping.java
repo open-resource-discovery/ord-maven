@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import java.util.List;
-import javax.annotation.processing.Generated;
 
 /**
  * Entity Type Mapping
@@ -39,7 +38,6 @@ import javax.annotation.processing.Generated;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({"apiModelSelectors", "entityTypeTargets"})
-@Generated("jsonschema2pojo")
 public class EntityTypeMapping {
 
   /**
