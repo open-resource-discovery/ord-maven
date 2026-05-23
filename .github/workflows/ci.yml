@@ -47,7 +47,7 @@ jobs:
 
       - name: Update generated sources
         if: env.CHANGED_FILES != '0'
-        uses: devops-infra/action-commit-push@v1.1.0
+        uses: devops-infra/action-commit-push@v1.3.1
         with:
           target_branch: main
           commit_prefix: "[AUTO]"
