@@ -34,5 +34,9 @@ jobs:
         run: mvn clean install -B -Dgpg.skip=true
 
       - name: Assert no files changed
-        run: '[[ "$(git status -s | wc -l)" != "0" ]] && echo "Generated sources are not up to date, please commit any changes." && exit 1'
+        run: |
+          if [[ -n "$(git status -s)" ]]; then
+            echo "Generated sources are not up to date, please commit any changes."
+            exit 1
+          fi
         
