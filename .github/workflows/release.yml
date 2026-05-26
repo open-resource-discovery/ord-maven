@@ -1,27 +1,6 @@
 name: "GitHub Release"
 
 on:
-  workflow_call:
-    inputs:
-      models:
-        description: "Publish `ord-models`"
-        required: false
-        type: boolean
-        default: true
-      annotations:
-        description: "Publish `ord-annotations`"
-        required: false
-        type: boolean
-        default: true
-      githubRelease:
-        description: "GitHub Release"
-        required: false
-        type: boolean
-        default: true
-      nextVersion:
-        description: "Next Version"
-        required: false
-        type: string
   workflow_dispatch:
     inputs:
       models:
@@ -43,6 +22,10 @@ on:
         description: "Next Version"
         required: false
         type: string
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
 
