@@ -36,7 +36,7 @@ jobs:
     steps:
 
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.1
         with:
           fetch-depth: 0
 
@@ -61,7 +61,7 @@ jobs:
     steps:
 
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.1
         with:
           fetch-depth: 0
 
@@ -86,7 +86,7 @@ jobs:
     steps:
 
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.1
         with:
           fetch-depth: 0
 
@@ -106,7 +106,7 @@ jobs:
     steps:
 
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.1
         with:
           fetch-depth: 0
 
@@ -143,7 +143,7 @@ jobs:
     steps:
 
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.1
         with:
           fetch-depth: 0
 
@@ -180,7 +180,7 @@ jobs:
     steps:
 
       - name: Check out repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v5.0.1
         with:
           fetch-depth: 0
 
@@ -194,7 +194,7 @@ jobs:
         run: mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${TARGET_SNAPSHOT_VERSION}"
 
       - name: Update project SNAPSHOT version in repository
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@v8.1.1
         with:
           branch: auto/update-snapshot-version-${{ env.TARGET_SNAPSHOT_VERSION }}
           body: Update the project version to ${{ env.TARGET_SNAPSHOT_VERSION }}
