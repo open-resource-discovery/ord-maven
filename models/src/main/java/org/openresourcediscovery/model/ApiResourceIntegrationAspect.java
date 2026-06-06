@@ -36,11 +36,17 @@ public class ApiResourceIntegrationAspect {
   @JsonPropertyDescription("Minimum version of the references resource that the integration requires.\n")
   private String minVersion;
   /**
-   * List of individual API operations that are sufficient to achieve the aspect.
+   * Narrows the dependency to only the listed API operations (or MCP tools) that are required to achieve the aspect.
+   *
+   * If `subset` is not provided, the dependency implies that all operations of the referenced resource may be used.
+   * If `subset` is provided, only the listed operations are required — consumers MUST NOT assume that other operations are available or permitted.
+   *
+   * For more details and examples, see [Integration Dependency](../concepts/integration-dependency).
    *
    */
   @JsonProperty("subset")
-  @JsonPropertyDescription("List of individual API operations that are sufficient to achieve the aspect.")
+  @JsonPropertyDescription(
+      "Narrows the dependency to only the listed API operations (or MCP tools) that are required to achieve the aspect.\n\nIf `subset` is not provided, the dependency implies that all operations of the referenced resource may be used.\nIf `subset` is provided, only the listed operations are required \u2014 consumers MUST NOT assume that other operations are available or permitted.\n\nFor more details and examples, see [Integration Dependency](../concepts/integration-dependency).")
   private List<ApiResourceIntegrationAspectSubset> subset;
 
   /**
@@ -98,7 +104,12 @@ public class ApiResourceIntegrationAspect {
   }
 
   /**
-   * List of individual API operations that are sufficient to achieve the aspect.
+   * Narrows the dependency to only the listed API operations (or MCP tools) that are required to achieve the aspect.
+   *
+   * If `subset` is not provided, the dependency implies that all operations of the referenced resource may be used.
+   * If `subset` is provided, only the listed operations are required — consumers MUST NOT assume that other operations are available or permitted.
+   *
+   * For more details and examples, see [Integration Dependency](../concepts/integration-dependency).
    *
    */
   @JsonProperty("subset")
@@ -107,7 +118,12 @@ public class ApiResourceIntegrationAspect {
   }
 
   /**
-   * List of individual API operations that are sufficient to achieve the aspect.
+   * Narrows the dependency to only the listed API operations (or MCP tools) that are required to achieve the aspect.
+   *
+   * If `subset` is not provided, the dependency implies that all operations of the referenced resource may be used.
+   * If `subset` is provided, only the listed operations are required — consumers MUST NOT assume that other operations are available or permitted.
+   *
+   * For more details and examples, see [Integration Dependency](../concepts/integration-dependency).
    *
    */
   @JsonProperty("subset")
@@ -150,9 +166,9 @@ public class ApiResourceIntegrationAspect {
   @Override
   public int hashCode() {
     int result = 1;
-    result = ((result * 31) + ((this.minVersion == null) ? 0 : this.minVersion.hashCode()));
     result = ((result * 31) + ((this.ordId == null) ? 0 : this.ordId.hashCode()));
     result = ((result * 31) + ((this.subset == null) ? 0 : this.subset.hashCode()));
+    result = ((result * 31) + ((this.minVersion == null) ? 0 : this.minVersion.hashCode()));
     return result;
   }
 
@@ -165,9 +181,9 @@ public class ApiResourceIntegrationAspect {
       return false;
     }
     ApiResourceIntegrationAspect rhs = ((ApiResourceIntegrationAspect) other);
-    return ((((this.minVersion == rhs.minVersion)
-                || ((this.minVersion != null) && this.minVersion.equals(rhs.minVersion)))
-            && ((this.ordId == rhs.ordId) || ((this.ordId != null) && this.ordId.equals(rhs.ordId))))
-        && ((this.subset == rhs.subset) || ((this.subset != null) && this.subset.equals(rhs.subset))));
+    return ((((this.ordId == rhs.ordId) || ((this.ordId != null) && this.ordId.equals(rhs.ordId)))
+            && ((this.subset == rhs.subset) || ((this.subset != null) && this.subset.equals(rhs.subset))))
+        && ((this.minVersion == rhs.minVersion)
+            || ((this.minVersion != null) && this.minVersion.equals(rhs.minVersion))));
   }
 }

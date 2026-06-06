@@ -19,10 +19,16 @@ import java.util.List;
 public class SystemInstance {
 
   /**
-   * Optional [base URL](../index.md#base-url) of the **system instance**.
-   * By providing the base URL, relative URLs in the document are resolved relative to it.
+   * Optional [base URL](../index.md#base-url) of the **described system instance**.
    *
-   * The `baseUrl` MUST not contain a leading slash.
+   * Used to resolve relative [entry point](../index.md#described-system-base-url-entry-points) URLs within this document.
+   * Relative URLs to metadata files (e.g., `resourceDefinitions[].url`) are resolved against
+   * the document root `baseUrl` instead — see [Relative URL Resolution](../index.md#relative-url-resolution).
+   *
+   * ORD aggregators that hold authoritative knowledge of the described system's base URL
+   * (e.g., from landscape configuration or service discovery) MAY prefer that over this value.
+   *
+   * The `baseUrl` MUST NOT contain a trailing slash.
    *
    * MUST be provided if the base URL is not known to the ORD aggregators.
    * MUST be provided when the document needs to be fully self contained, e.g. when used for manual imports.
@@ -30,7 +36,7 @@ public class SystemInstance {
    */
   @JsonProperty("baseUrl")
   @JsonPropertyDescription(
-      "Optional [base URL](../index.md#base-url) of the **system instance**.\nBy providing the base URL, relative URLs in the document are resolved relative to it.\n\nThe `baseUrl` MUST not contain a leading slash.\n\nMUST be provided if the base URL is not known to the ORD aggregators.\nMUST be provided when the document needs to be fully self contained, e.g. when used for manual imports.")
+      "Optional [base URL](../index.md#base-url) of the **described system instance**.\n\nUsed to resolve relative [entry point](../index.md#described-system-base-url-entry-points) URLs within this document.\nRelative URLs to metadata files (e.g., `resourceDefinitions[].url`) are resolved against\nthe document root `baseUrl` instead \u2014 see [Relative URL Resolution](../index.md#relative-url-resolution).\n\nORD aggregators that hold authoritative knowledge of the described system's base URL\n(e.g., from landscape configuration or service discovery) MAY prefer that over this value.\n\nThe `baseUrl` MUST NOT contain a trailing slash.\n\nMUST be provided if the base URL is not known to the ORD aggregators.\nMUST be provided when the document needs to be fully self contained, e.g. when used for manual imports.")
   private String baseUrl;
   /**
    * Optional local ID for the system instance, as known by the described system.
@@ -119,10 +125,16 @@ public class SystemInstance {
   private List<String> tags;
 
   /**
-   * Optional [base URL](../index.md#base-url) of the **system instance**.
-   * By providing the base URL, relative URLs in the document are resolved relative to it.
+   * Optional [base URL](../index.md#base-url) of the **described system instance**.
    *
-   * The `baseUrl` MUST not contain a leading slash.
+   * Used to resolve relative [entry point](../index.md#described-system-base-url-entry-points) URLs within this document.
+   * Relative URLs to metadata files (e.g., `resourceDefinitions[].url`) are resolved against
+   * the document root `baseUrl` instead — see [Relative URL Resolution](../index.md#relative-url-resolution).
+   *
+   * ORD aggregators that hold authoritative knowledge of the described system's base URL
+   * (e.g., from landscape configuration or service discovery) MAY prefer that over this value.
+   *
+   * The `baseUrl` MUST NOT contain a trailing slash.
    *
    * MUST be provided if the base URL is not known to the ORD aggregators.
    * MUST be provided when the document needs to be fully self contained, e.g. when used for manual imports.
@@ -134,10 +146,16 @@ public class SystemInstance {
   }
 
   /**
-   * Optional [base URL](../index.md#base-url) of the **system instance**.
-   * By providing the base URL, relative URLs in the document are resolved relative to it.
+   * Optional [base URL](../index.md#base-url) of the **described system instance**.
    *
-   * The `baseUrl` MUST not contain a leading slash.
+   * Used to resolve relative [entry point](../index.md#described-system-base-url-entry-points) URLs within this document.
+   * Relative URLs to metadata files (e.g., `resourceDefinitions[].url`) are resolved against
+   * the document root `baseUrl` instead — see [Relative URL Resolution](../index.md#relative-url-resolution).
+   *
+   * ORD aggregators that hold authoritative knowledge of the described system's base URL
+   * (e.g., from landscape configuration or service discovery) MAY prefer that over this value.
+   *
+   * The `baseUrl` MUST NOT contain a trailing slash.
    *
    * MUST be provided if the base URL is not known to the ORD aggregators.
    * MUST be provided when the document needs to be fully self contained, e.g. when used for manual imports.
@@ -402,8 +420,8 @@ public class SystemInstance {
     int result = 1;
     result = ((result * 31) + ((this.documentationLabels == null) ? 0 : this.documentationLabels.hashCode()));
     result = ((result * 31) + ((this.baseUrl == null) ? 0 : this.baseUrl.hashCode()));
-    result = ((result * 31) + ((this.correlationIds == null) ? 0 : this.correlationIds.hashCode()));
     result = ((result * 31) + ((this.localId == null) ? 0 : this.localId.hashCode()));
+    result = ((result * 31) + ((this.correlationIds == null) ? 0 : this.correlationIds.hashCode()));
     result = ((result * 31) + ((this.labels == null) ? 0 : this.labels.hashCode()));
     result = ((result * 31) + ((this.tags == null) ? 0 : this.tags.hashCode()));
     return result;
@@ -425,11 +443,11 @@ public class SystemInstance {
                         && ((this.baseUrl == rhs.baseUrl)
                             || ((this.baseUrl != null)
                                 && this.baseUrl.equals(rhs.baseUrl))))
-                    && ((this.correlationIds == rhs.correlationIds)
-                        || ((this.correlationIds != null)
-                            && this.correlationIds.equals(rhs.correlationIds))))
-                && ((this.localId == rhs.localId)
-                    || ((this.localId != null) && this.localId.equals(rhs.localId))))
+                    && ((this.localId == rhs.localId)
+                        || ((this.localId != null) && this.localId.equals(rhs.localId))))
+                && ((this.correlationIds == rhs.correlationIds)
+                    || ((this.correlationIds != null)
+                        && this.correlationIds.equals(rhs.correlationIds))))
             && ((this.labels == rhs.labels) || ((this.labels != null) && this.labels.equals(rhs.labels))))
         && ((this.tags == rhs.tags) || ((this.tags != null) && this.tags.equals(rhs.tags))));
   }

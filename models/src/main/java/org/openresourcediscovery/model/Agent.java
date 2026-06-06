@@ -27,6 +27,7 @@ import java.util.List;
   "title",
   "shortDescription",
   "description",
+  "aiHint",
   "partOfPackage",
   "partOfGroups",
   "version",
@@ -126,6 +127,18 @@ public class Agent {
       "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.")
   private String description;
   /**
+   * Hint for AI consumers (LLMs, agent orchestrators) on how to use or interpret this resource.
+   * Intentionally separate from human-facing `description` so both can evolve independently.
+   * SHOULD be written in [CommonMark](https://spec.commonmark.org/) (Markdown).
+   *
+   * For guidance and best practices, see [AI Agents and Protocols](../concepts/ai-agents-and-protocols#ai-hints-on-ord-resources).
+   *
+   */
+  @JsonProperty("aiHint")
+  @JsonPropertyDescription(
+      "Hint for AI consumers (LLMs, agent orchestrators) on how to use or interpret this resource.\nIntentionally separate from human-facing `description` so both can evolve independently.\nSHOULD be written in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nFor guidance and best practices, see [AI Agents and Protocols](../concepts/ai-agents-and-protocols#ai-hints-on-ord-resources).")
+  private String aiHint;
+  /**
    * Defines which Package the resource is part of.
    *
    * MUST be a valid reference to a [Package](#package) ORD ID.
@@ -149,10 +162,14 @@ public class Agent {
    *
    * All resources that share the same group ID assignment are effectively grouped together.
    *
+   * **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose
+   * group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility.
+   * See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).
+   *
    */
   @JsonProperty("partOfGroups")
   @JsonPropertyDescription(
-      "Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.")
+      "Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.\n\n**Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose\ngroup assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility.\nSee [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).")
   private List<String> partOfGroups;
   /**
    * The complete [SemVer](https://semver.org/) version string.
@@ -161,13 +178,13 @@ public class Agent {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -176,7 +193,7 @@ public class Agent {
    */
   @JsonProperty("version")
   @JsonPropertyDescription(
-      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
+      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
   private String version;
   /**
    * Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.
@@ -217,13 +234,13 @@ public class Agent {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
   @JsonProperty("releaseStatus")
   @JsonPropertyDescription(
-      "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
+      "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
   private String releaseStatus;
   /**
    * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
@@ -254,16 +271,20 @@ public class Agent {
       "The resource has been introduced in the given [system version](../index.md#system-version).\nThis implies that the resource is only available if the system instance is of at least that system version.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.")
   private String minSystemVersion;
   /**
-   * List of products the resources of the Package are a part of.
+   * List of products this package and its resources are a part of.
    *
    * MUST be a valid reference to a [Product](#product) ORD ID.
    *
-   * `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+   * `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains.
+   * Resources that belong to a different product than their package can override this directly.
+   *
+   * Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package.
+   * Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources.
    *
    */
   @JsonProperty("partOfProducts")
   @JsonPropertyDescription(
-      "List of products the resources of the Package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+      "List of products this package and its resources are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains.\nResources that belong to a different product than their package can override this directly.\n\nEvery ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package.\nSetting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources.")
   private List<String> partOfProducts;
   /**
    * Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components.
@@ -649,6 +670,37 @@ public class Agent {
   }
 
   /**
+   * Hint for AI consumers (LLMs, agent orchestrators) on how to use or interpret this resource.
+   * Intentionally separate from human-facing `description` so both can evolve independently.
+   * SHOULD be written in [CommonMark](https://spec.commonmark.org/) (Markdown).
+   *
+   * For guidance and best practices, see [AI Agents and Protocols](../concepts/ai-agents-and-protocols#ai-hints-on-ord-resources).
+   *
+   */
+  @JsonProperty("aiHint")
+  public String getAiHint() {
+    return aiHint;
+  }
+
+  /**
+   * Hint for AI consumers (LLMs, agent orchestrators) on how to use or interpret this resource.
+   * Intentionally separate from human-facing `description` so both can evolve independently.
+   * SHOULD be written in [CommonMark](https://spec.commonmark.org/) (Markdown).
+   *
+   * For guidance and best practices, see [AI Agents and Protocols](../concepts/ai-agents-and-protocols#ai-hints-on-ord-resources).
+   *
+   */
+  @JsonProperty("aiHint")
+  public void setAiHint(String aiHint) {
+    this.aiHint = aiHint;
+  }
+
+  public Agent withAiHint(String aiHint) {
+    this.aiHint = aiHint;
+    return this;
+  }
+
+  /**
    * Defines which Package the resource is part of.
    *
    * MUST be a valid reference to a [Package](#package) ORD ID.
@@ -692,6 +744,10 @@ public class Agent {
    *
    * All resources that share the same group ID assignment are effectively grouped together.
    *
+   * **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose
+   * group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility.
+   * See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).
+   *
    */
   @JsonProperty("partOfGroups")
   public List<String> getPartOfGroups() {
@@ -708,6 +764,10 @@ public class Agent {
    * If an "identity / equals" relationship needs to be expressed, use the `correlationIds` instead.
    *
    * All resources that share the same group ID assignment are effectively grouped together.
+   *
+   * **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose
+   * group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility.
+   * See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).
    *
    */
   @JsonProperty("partOfGroups")
@@ -727,13 +787,13 @@ public class Agent {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -752,13 +812,13 @@ public class Agent {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -859,7 +919,7 @@ public class Agent {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
@@ -876,7 +936,7 @@ public class Agent {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
@@ -961,11 +1021,15 @@ public class Agent {
   }
 
   /**
-   * List of products the resources of the Package are a part of.
+   * List of products this package and its resources are a part of.
    *
    * MUST be a valid reference to a [Product](#product) ORD ID.
    *
-   * `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+   * `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains.
+   * Resources that belong to a different product than their package can override this directly.
+   *
+   * Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package.
+   * Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources.
    *
    */
   @JsonProperty("partOfProducts")
@@ -974,11 +1038,15 @@ public class Agent {
   }
 
   /**
-   * List of products the resources of the Package are a part of.
+   * List of products this package and its resources are a part of.
    *
    * MUST be a valid reference to a [Product](#product) ORD ID.
    *
-   * `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+   * `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains.
+   * Resources that belong to a different product than their package can override this directly.
+   *
+   * Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package.
+   * Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources.
    *
    */
   @JsonProperty("partOfProducts")
@@ -1532,6 +1600,10 @@ public class Agent {
     sb.append('=');
     sb.append(((this.description == null) ? "<null>" : this.description));
     sb.append(',');
+    sb.append("aiHint");
+    sb.append('=');
+    sb.append(((this.aiHint == null) ? "<null>" : this.aiHint));
+    sb.append(',');
     sb.append("partOfPackage");
     sb.append('=');
     sb.append(((this.partOfPackage == null) ? "<null>" : this.partOfPackage));
@@ -1675,6 +1747,7 @@ public class Agent {
     result = ((result * 31) + ((this.partOfProducts == null) ? 0 : this.partOfProducts.hashCode()));
     result = ((result * 31) + ((this.documentationLabels == null) ? 0 : this.documentationLabels.hashCode()));
     result = ((result * 31) + ((this.lastUpdate == null) ? 0 : this.lastUpdate.hashCode()));
+    result = ((result * 31) + ((this.aiHint == null) ? 0 : this.aiHint.hashCode()));
     return result;
   }
 
@@ -1687,249 +1760,257 @@ public class Agent {
       return false;
     }
     Agent rhs = ((Agent) other);
-    return ((((((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)
-                                                                                                                                || ((this
+    return (((((((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)
+                                                                                                                                    || ((this
+                                                                                                                                                .deprecationDate
+                                                                                                                                            != null)
+                                                                                                                                        && this
                                                                                                                                             .deprecationDate
-                                                                                                                                        != null)
-                                                                                                                                    && this
-                                                                                                                                        .deprecationDate
-                                                                                                                                        .equals(
-                                                                                                                                            rhs.deprecationDate)))
-                                                                                                                            && ((this
-                                                                                                                                        .lineOfBusiness
-                                                                                                                                    == rhs.lineOfBusiness)
-                                                                                                                                || ((this
+                                                                                                                                            .equals(
+                                                                                                                                                rhs.deprecationDate)))
+                                                                                                                                && ((this
                                                                                                                                             .lineOfBusiness
+                                                                                                                                        == rhs.lineOfBusiness)
+                                                                                                                                    || ((this
+                                                                                                                                                .lineOfBusiness
+                                                                                                                                            != null)
+                                                                                                                                        && this
+                                                                                                                                            .lineOfBusiness
+                                                                                                                                            .equals(
+                                                                                                                                                rhs.lineOfBusiness))))
+                                                                                                                            && ((this
+                                                                                                                                        .successors
+                                                                                                                                    == rhs.successors)
+                                                                                                                                || ((this
+                                                                                                                                            .successors
                                                                                                                                         != null)
                                                                                                                                     && this
-                                                                                                                                        .lineOfBusiness
-                                                                                                                                        .equals(
-                                                                                                                                            rhs.lineOfBusiness))))
-                                                                                                                        && ((this
-                                                                                                                                    .successors
-                                                                                                                                == rhs.successors)
-                                                                                                                            || ((this
                                                                                                                                         .successors
+                                                                                                                                        .equals(
+                                                                                                                                            rhs.successors))))
+                                                                                                                        && ((this
+                                                                                                                                    .description
+                                                                                                                                == rhs.description)
+                                                                                                                            || ((this
+                                                                                                                                        .description
                                                                                                                                     != null)
                                                                                                                                 && this
-                                                                                                                                    .successors
-                                                                                                                                    .equals(
-                                                                                                                                        rhs.successors))))
-                                                                                                                    && ((this
-                                                                                                                                .description
-                                                                                                                            == rhs.description)
-                                                                                                                        || ((this
                                                                                                                                     .description
+                                                                                                                                    .equals(
+                                                                                                                                        rhs.description))))
+                                                                                                                    && ((this
+                                                                                                                                .partOfPackage
+                                                                                                                            == rhs.partOfPackage)
+                                                                                                                        || ((this
+                                                                                                                                    .partOfPackage
                                                                                                                                 != null)
                                                                                                                             && this
-                                                                                                                                .description
-                                                                                                                                .equals(
-                                                                                                                                    rhs.description))))
-                                                                                                                && ((this
-                                                                                                                            .partOfPackage
-                                                                                                                        == rhs.partOfPackage)
-                                                                                                                    || ((this
                                                                                                                                 .partOfPackage
+                                                                                                                                .equals(
+                                                                                                                                    rhs.partOfPackage))))
+                                                                                                                && ((this
+                                                                                                                            .industry
+                                                                                                                        == rhs.industry)
+                                                                                                                    || ((this
+                                                                                                                                .industry
                                                                                                                             != null)
                                                                                                                         && this
-                                                                                                                            .partOfPackage
-                                                                                                                            .equals(
-                                                                                                                                rhs.partOfPackage))))
-                                                                                                            && ((this
-                                                                                                                        .industry
-                                                                                                                    == rhs.industry)
-                                                                                                                || ((this
                                                                                                                             .industry
+                                                                                                                            .equals(
+                                                                                                                                rhs.industry))))
+                                                                                                            && ((this
+                                                                                                                        .title
+                                                                                                                    == rhs.title)
+                                                                                                                || ((this
+                                                                                                                            .title
                                                                                                                         != null)
                                                                                                                     && this
-                                                                                                                        .industry
-                                                                                                                        .equals(
-                                                                                                                            rhs.industry))))
-                                                                                                        && ((this
-                                                                                                                    .title
-                                                                                                                == rhs.title)
-                                                                                                            || ((this
                                                                                                                         .title
+                                                                                                                        .equals(
+                                                                                                                            rhs.title))))
+                                                                                                        && ((this
+                                                                                                                    .ordId
+                                                                                                                == rhs.ordId)
+                                                                                                            || ((this
+                                                                                                                        .ordId
                                                                                                                     != null)
                                                                                                                 && this
-                                                                                                                    .title
-                                                                                                                    .equals(
-                                                                                                                        rhs.title))))
-                                                                                                    && ((this
-                                                                                                                .ordId
-                                                                                                            == rhs.ordId)
-                                                                                                        || ((this
                                                                                                                     .ordId
+                                                                                                                    .equals(
+                                                                                                                        rhs.ordId))))
+                                                                                                    && ((this
+                                                                                                                .localId
+                                                                                                            == rhs.localId)
+                                                                                                        || ((this
+                                                                                                                    .localId
                                                                                                                 != null)
                                                                                                             && this
-                                                                                                                .ordId
-                                                                                                                .equals(
-                                                                                                                    rhs.ordId))))
-                                                                                                && ((this
-                                                                                                            .localId
-                                                                                                        == rhs.localId)
-                                                                                                    || ((this
                                                                                                                 .localId
+                                                                                                                .equals(
+                                                                                                                    rhs.localId))))
+                                                                                                && ((this
+                                                                                                            .policyLevels
+                                                                                                        == rhs.policyLevels)
+                                                                                                    || ((this
+                                                                                                                .policyLevels
                                                                                                             != null)
                                                                                                         && this
-                                                                                                            .localId
-                                                                                                            .equals(
-                                                                                                                rhs.localId))))
-                                                                                            && ((this
-                                                                                                        .policyLevels
-                                                                                                    == rhs.policyLevels)
-                                                                                                || ((this
                                                                                                             .policyLevels
+                                                                                                            .equals(
+                                                                                                                rhs.policyLevels))))
+                                                                                            && ((this
+                                                                                                        .correlationIds
+                                                                                                    == rhs.correlationIds)
+                                                                                                || ((this
+                                                                                                            .correlationIds
                                                                                                         != null)
                                                                                                     && this
-                                                                                                        .policyLevels
-                                                                                                        .equals(
-                                                                                                            rhs.policyLevels))))
-                                                                                        && ((this
-                                                                                                    .correlationIds
-                                                                                                == rhs.correlationIds)
-                                                                                            || ((this
                                                                                                         .correlationIds
+                                                                                                        .equals(
+                                                                                                            rhs.correlationIds))))
+                                                                                        && ((this
+                                                                                                    .responsible
+                                                                                                == rhs.responsible)
+                                                                                            || ((this
+                                                                                                        .responsible
                                                                                                     != null)
                                                                                                 && this
-                                                                                                    .correlationIds
-                                                                                                    .equals(
-                                                                                                        rhs.correlationIds))))
-                                                                                    && ((this
-                                                                                                .responsible
-                                                                                            == rhs.responsible)
-                                                                                        || ((this
                                                                                                     .responsible
+                                                                                                    .equals(
+                                                                                                        rhs.responsible))))
+                                                                                    && ((this
+                                                                                                .releaseStatus
+                                                                                            == rhs.releaseStatus)
+                                                                                        || ((this
+                                                                                                    .releaseStatus
                                                                                                 != null)
                                                                                             && this
-                                                                                                .responsible
-                                                                                                .equals(
-                                                                                                    rhs.responsible))))
-                                                                                && ((this
-                                                                                            .releaseStatus
-                                                                                        == rhs.releaseStatus)
-                                                                                    || ((this
                                                                                                 .releaseStatus
+                                                                                                .equals(
+                                                                                                    rhs.releaseStatus))))
+                                                                                && ((this
+                                                                                            .relatedEntityTypes
+                                                                                        == rhs.relatedEntityTypes)
+                                                                                    || ((this
+                                                                                                .relatedEntityTypes
                                                                                             != null)
                                                                                         && this
-                                                                                            .releaseStatus
-                                                                                            .equals(
-                                                                                                rhs.releaseStatus))))
-                                                                            && ((this
-                                                                                        .relatedEntityTypes
-                                                                                    == rhs.relatedEntityTypes)
-                                                                                || ((this
                                                                                             .relatedEntityTypes
+                                                                                            .equals(
+                                                                                                rhs.relatedEntityTypes))))
+                                                                            && ((this
+                                                                                        .exposedApiResources
+                                                                                    == rhs.exposedApiResources)
+                                                                                || ((this
+                                                                                            .exposedApiResources
                                                                                         != null)
                                                                                     && this
-                                                                                        .relatedEntityTypes
-                                                                                        .equals(
-                                                                                            rhs.relatedEntityTypes))))
-                                                                        && ((this
-                                                                                    .exposedApiResources
-                                                                                == rhs.exposedApiResources)
-                                                                            || ((this
                                                                                         .exposedApiResources
+                                                                                        .equals(
+                                                                                            rhs.exposedApiResources))))
+                                                                        && ((this
+                                                                                    .disabled
+                                                                                == rhs.disabled)
+                                                                            || ((this
+                                                                                        .disabled
                                                                                     != null)
                                                                                 && this
-                                                                                    .exposedApiResources
-                                                                                    .equals(
-                                                                                        rhs.exposedApiResources))))
-                                                                    && ((this
-                                                                                .disabled
-                                                                            == rhs.disabled)
-                                                                        || ((this
                                                                                     .disabled
+                                                                                    .equals(
+                                                                                        rhs.disabled))))
+                                                                    && ((this
+                                                                                .links
+                                                                            == rhs.links)
+                                                                        || ((this
+                                                                                    .links
                                                                                 != null)
                                                                             && this
-                                                                                .disabled
-                                                                                .equals(
-                                                                                    rhs.disabled))))
-                                                                && ((this
-                                                                            .links
-                                                                        == rhs.links)
-                                                                    || ((this
                                                                                 .links
+                                                                                .equals(
+                                                                                    rhs.links))))
+                                                                && ((this
+                                                                            .minSystemVersion
+                                                                        == rhs.minSystemVersion)
+                                                                    || ((this
+                                                                                .minSystemVersion
                                                                             != null)
                                                                         && this
-                                                                            .links
-                                                                            .equals(
-                                                                                rhs.links))))
-                                                            && ((this
-                                                                        .minSystemVersion
-                                                                    == rhs.minSystemVersion)
-                                                                || ((this
                                                                             .minSystemVersion
+                                                                            .equals(
+                                                                                rhs.minSystemVersion))))
+                                                            && ((this
+                                                                        .visibility
+                                                                    == rhs.visibility)
+                                                                || ((this
+                                                                            .visibility
                                                                         != null)
                                                                     && this
-                                                                        .minSystemVersion
-                                                                        .equals(
-                                                                            rhs.minSystemVersion))))
-                                                        && ((this
-                                                                    .visibility
-                                                                == rhs.visibility)
-                                                            || ((this
                                                                         .visibility
+                                                                        .equals(
+                                                                            rhs.visibility))))
+                                                        && ((this
+                                                                    .integrationDependencies
+                                                                == rhs.integrationDependencies)
+                                                            || ((this
+                                                                        .integrationDependencies
                                                                     != null)
                                                                 && this
-                                                                    .visibility
-                                                                    .equals(
-                                                                        rhs.visibility))))
-                                                    && ((this
-                                                                .integrationDependencies
-                                                            == rhs.integrationDependencies)
-                                                        || ((this
                                                                     .integrationDependencies
+                                                                    .equals(
+                                                                        rhs.integrationDependencies))))
+                                                    && ((this
+                                                                .sunsetDate
+                                                            == rhs.sunsetDate)
+                                                        || ((this
+                                                                    .sunsetDate
                                                                 != null)
                                                             && this
-                                                                .integrationDependencies
-                                                                .equals(
-                                                                    rhs.integrationDependencies))))
-                                                && ((this.sunsetDate
-                                                        == rhs.sunsetDate)
-                                                    || ((this
                                                                 .sunsetDate
+                                                                .equals(
+                                                                    rhs.sunsetDate))))
+                                                && ((this
+                                                            .shortDescription
+                                                        == rhs.shortDescription)
+                                                    || ((this
+                                                                .shortDescription
                                                             != null)
                                                         && this
-                                                            .sunsetDate
-                                                            .equals(
-                                                                rhs.sunsetDate))))
-                                            && ((this.shortDescription
-                                                    == rhs.shortDescription)
-                                                || ((this
                                                             .shortDescription
+                                                            .equals(
+                                                                rhs.shortDescription))))
+                                            && ((this.countries
+                                                    == rhs.countries)
+                                                || ((this.countries
                                                         != null)
                                                     && this
-                                                        .shortDescription
+                                                        .countries
                                                         .equals(
-                                                            rhs.shortDescription))))
-                                        && ((this.countries == rhs.countries)
-                                            || ((this.countries != null)
-                                                && this.countries
-                                                    .equals(
-                                                        rhs.countries))))
-                                    && ((this.version == rhs.version)
-                                        || ((this.version != null)
-                                            && this.version.equals(
-                                                rhs.version))))
-                                && ((this.changelogEntries == rhs.changelogEntries)
-                                    || ((this.changelogEntries != null)
-                                        && this.changelogEntries.equals(
-                                            rhs.changelogEntries))))
-                            && ((this.partOfGroups == rhs.partOfGroups)
-                                || ((this.partOfGroups != null)
-                                    && this.partOfGroups.equals(rhs.partOfGroups))))
-                        && ((this.tags == rhs.tags)
-                            || ((this.tags != null) && this.tags.equals(rhs.tags))))
-                    && ((this.labels == rhs.labels)
-                        || ((this.labels != null) && this.labels.equals(rhs.labels))))
-                && ((this.partOfProducts == rhs.partOfProducts)
-                    || ((this.partOfProducts != null)
-                        && this.partOfProducts.equals(rhs.partOfProducts))))
-            && ((this.documentationLabels == rhs.documentationLabels)
-                || ((this.documentationLabels != null)
-                    && this.documentationLabels.equals(rhs.documentationLabels))))
-        && ((this.lastUpdate == rhs.lastUpdate)
-            || ((this.lastUpdate != null) && this.lastUpdate.equals(rhs.lastUpdate))));
+                                                            rhs.countries))))
+                                        && ((this.version == rhs.version)
+                                            || ((this.version != null)
+                                                && this.version.equals(
+                                                    rhs.version))))
+                                    && ((this.changelogEntries
+                                            == rhs.changelogEntries)
+                                        || ((this.changelogEntries != null)
+                                            && this.changelogEntries.equals(
+                                                rhs.changelogEntries))))
+                                && ((this.partOfGroups == rhs.partOfGroups)
+                                    || ((this.partOfGroups != null)
+                                        && this.partOfGroups.equals(
+                                            rhs.partOfGroups))))
+                            && ((this.tags == rhs.tags)
+                                || ((this.tags != null) && this.tags.equals(rhs.tags))))
+                        && ((this.labels == rhs.labels)
+                            || ((this.labels != null) && this.labels.equals(rhs.labels))))
+                    && ((this.partOfProducts == rhs.partOfProducts)
+                        || ((this.partOfProducts != null)
+                            && this.partOfProducts.equals(rhs.partOfProducts))))
+                && ((this.documentationLabels == rhs.documentationLabels)
+                    || ((this.documentationLabels != null)
+                        && this.documentationLabels.equals(rhs.documentationLabels))))
+            && ((this.lastUpdate == rhs.lastUpdate)
+                || ((this.lastUpdate != null) && this.lastUpdate.equals(rhs.lastUpdate))))
+        && ((this.aiHint == rhs.aiHint) || ((this.aiHint != null) && this.aiHint.equals(rhs.aiHint))));
   }
 }

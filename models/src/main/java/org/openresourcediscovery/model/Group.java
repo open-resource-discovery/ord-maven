@@ -24,7 +24,16 @@ import java.util.Map;
  *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"groupId", "groupTypeId", "title", "description", "labels", "correlationIds", "partOfGroups"})
+@JsonPropertyOrder({
+  "groupId",
+  "groupTypeId",
+  "title",
+  "description",
+  "labels",
+  "correlationIds",
+  "partOfGroups",
+  "visibility"
+})
 public class Group {
 
   /**
@@ -123,6 +132,16 @@ public class Group {
   @JsonPropertyDescription(
       "A group (instance) can logically be part of another group, for example in hierarchical taxonomies or graph relationships.\nAssigning a group to be part of another group is a lightweight and flexible approach to express such relationships.\n\nThis relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios.")
   private List<String> partOfGroups;
+  /**
+   * Defines who is allowed to discover and access this Group and its metadata.
+   * Defaults to `public` if not set.
+   * See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).
+   *
+   */
+  @JsonProperty("visibility")
+  @JsonPropertyDescription(
+      "Defines who is allowed to discover and access this Group and its metadata.\nDefaults to `public` if not set.\nSee [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).")
+  private String visibility = "public";
 
   @JsonIgnore
   private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
@@ -372,6 +391,33 @@ public class Group {
     return this;
   }
 
+  /**
+   * Defines who is allowed to discover and access this Group and its metadata.
+   * Defaults to `public` if not set.
+   * See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).
+   *
+   */
+  @JsonProperty("visibility")
+  public String getVisibility() {
+    return visibility;
+  }
+
+  /**
+   * Defines who is allowed to discover and access this Group and its metadata.
+   * Defaults to `public` if not set.
+   * See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).
+   *
+   */
+  @JsonProperty("visibility")
+  public void setVisibility(String visibility) {
+    this.visibility = visibility;
+  }
+
+  public Group withVisibility(String visibility) {
+    this.visibility = visibility;
+    return this;
+  }
+
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() {
     return this.additionalProperties;
@@ -422,6 +468,10 @@ public class Group {
     sb.append('=');
     sb.append(((this.partOfGroups == null) ? "<null>" : this.partOfGroups));
     sb.append(',');
+    sb.append("visibility");
+    sb.append('=');
+    sb.append(((this.visibility == null) ? "<null>" : this.visibility));
+    sb.append(',');
     sb.append("additionalProperties");
     sb.append('=');
     sb.append(((this.additionalProperties == null) ? "<null>" : this.additionalProperties));
@@ -437,6 +487,7 @@ public class Group {
   @Override
   public int hashCode() {
     int result = 1;
+    result = ((result * 31) + ((this.visibility == null) ? 0 : this.visibility.hashCode()));
     result = ((result * 31) + ((this.groupId == null) ? 0 : this.groupId.hashCode()));
     result = ((result * 31) + ((this.correlationIds == null) ? 0 : this.correlationIds.hashCode()));
     result = ((result * 31) + ((this.groupTypeId == null) ? 0 : this.groupTypeId.hashCode()));
@@ -457,7 +508,14 @@ public class Group {
       return false;
     }
     Group rhs = ((Group) other);
-    return (((((((((this.groupId == rhs.groupId) || ((this.groupId != null) && this.groupId.equals(rhs.groupId)))
+    return ((((((((((this.visibility == rhs.visibility)
+                                        || ((this.visibility != null)
+                                            && this.visibility.equals(
+                                                rhs.visibility)))
+                                    && ((this.groupId == rhs.groupId)
+                                        || ((this.groupId != null)
+                                            && this.groupId.equals(
+                                                rhs.groupId))))
                                 && ((this.correlationIds == rhs.correlationIds)
                                     || ((this.correlationIds != null)
                                         && this.correlationIds.equals(

@@ -8,10 +8,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 /**
  * API Resource Integration Aspect Subset
  * <p>
- * Defines that API Resource Integration Aspect only requires a subset of the referenced contract.
+ * Defines that the API Resource Integration Aspect only requires a subset of the referenced contract.
  *
  * For APIs, this is a list of the operations or tools that need to be available in order to make the integration work.
- * This information helps to narrow down what is really necessary and can help optimize the integration.
+ * Without a `subset`, the dependency implies access to the full resource.
+ * With a `subset`, only the listed operations are required, allowing consumers to understand /load only the minimal surface area needed.
+ *
+ * For more details and examples, see [Integration Dependency](../concepts/integration-dependency).
  *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)

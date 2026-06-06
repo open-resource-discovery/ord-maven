@@ -132,13 +132,13 @@ public class Package {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -147,7 +147,7 @@ public class Package {
    */
   @JsonProperty("version")
   @JsonPropertyDescription(
-      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
+      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
   private String version;
   /**
    * The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with.
@@ -250,16 +250,20 @@ public class Package {
       "Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.\n\nMUST be a valid reference to a [Vendor](#vendor) ORD ID.\n\nMUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.\n\nMUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.")
   private String vendor;
   /**
-   * List of products the resources of the Package are a part of.
+   * List of products this package and its resources are a part of.
    *
    * MUST be a valid reference to a [Product](#product) ORD ID.
    *
-   * `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+   * `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains.
+   * Resources that belong to a different product than their package can override this directly.
+   *
+   * Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package.
+   * Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources.
    *
    */
   @JsonProperty("partOfProducts")
   @JsonPropertyDescription(
-      "List of products the resources of the Package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+      "List of products this package and its resources are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains.\nResources that belong to a different product than their package can override this directly.\n\nEvery ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package.\nSetting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources.")
   private List<String> partOfProducts;
   /**
    * List of countries that the Package resources are applicable to.
@@ -562,13 +566,13 @@ public class Package {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -587,13 +591,13 @@ public class Package {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -876,11 +880,15 @@ public class Package {
   }
 
   /**
-   * List of products the resources of the Package are a part of.
+   * List of products this package and its resources are a part of.
    *
    * MUST be a valid reference to a [Product](#product) ORD ID.
    *
-   * `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+   * `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains.
+   * Resources that belong to a different product than their package can override this directly.
+   *
+   * Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package.
+   * Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources.
    *
    */
   @JsonProperty("partOfProducts")
@@ -889,11 +897,15 @@ public class Package {
   }
 
   /**
-   * List of products the resources of the Package are a part of.
+   * List of products this package and its resources are a part of.
    *
    * MUST be a valid reference to a [Product](#product) ORD ID.
    *
-   * `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+   * `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains.
+   * Resources that belong to a different product than their package can override this directly.
+   *
+   * Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package.
+   * Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources.
    *
    */
   @JsonProperty("partOfProducts")
@@ -1282,26 +1294,26 @@ public class Package {
     result = ((result * 31) + ((this.lineOfBusiness == null) ? 0 : this.lineOfBusiness.hashCode()));
     result = ((result * 31) + ((this.description == null) ? 0 : this.description.hashCode()));
     result = ((result * 31) + ((this.industry == null) ? 0 : this.industry.hashCode()));
+    result = ((result * 31) + ((this.shortDescription == null) ? 0 : this.shortDescription.hashCode()));
     result = ((result * 31) + ((this.customPolicyLevel == null) ? 0 : this.customPolicyLevel.hashCode()));
+    result = ((result * 31) + ((this.countries == null) ? 0 : this.countries.hashCode()));
     result = ((result * 31) + ((this.title == null) ? 0 : this.title.hashCode()));
     result = ((result * 31) + ((this.ordId == null) ? 0 : this.ordId.hashCode()));
     result = ((result * 31) + ((this.localId == null) ? 0 : this.localId.hashCode()));
-    result = ((result * 31) + ((this.policyLevels == null) ? 0 : this.policyLevels.hashCode()));
-    result = ((result * 31) + ((this.licenseType == null) ? 0 : this.licenseType.hashCode()));
-    result = ((result * 31) + ((this.vendor == null) ? 0 : this.vendor.hashCode()));
-    result = ((result * 31) + ((this.correlationIds == null) ? 0 : this.correlationIds.hashCode()));
-    result = ((result * 31) + ((this.links == null) ? 0 : this.links.hashCode()));
-    result = ((result * 31) + ((this.packageLinks == null) ? 0 : this.packageLinks.hashCode()));
-    result = ((result * 31) + ((this.shortDescription == null) ? 0 : this.shortDescription.hashCode()));
-    result = ((result * 31) + ((this.countries == null) ? 0 : this.countries.hashCode()));
     result = ((result * 31) + ((this.version == null) ? 0 : this.version.hashCode()));
+    result = ((result * 31) + ((this.policyLevels == null) ? 0 : this.policyLevels.hashCode()));
     result = ((result * 31) + ((this.tags == null) ? 0 : this.tags.hashCode()));
     result = ((result * 31) + ((this.labels == null) ? 0 : this.labels.hashCode()));
     result = ((result * 31) + ((this.policyLevel == null) ? 0 : this.policyLevel.hashCode()));
     result = ((result * 31) + ((this.partOfProducts == null) ? 0 : this.partOfProducts.hashCode()));
+    result = ((result * 31) + ((this.licenseType == null) ? 0 : this.licenseType.hashCode()));
     result = ((result * 31) + ((this.documentationLabels == null) ? 0 : this.documentationLabels.hashCode()));
+    result = ((result * 31) + ((this.vendor == null) ? 0 : this.vendor.hashCode()));
+    result = ((result * 31) + ((this.correlationIds == null) ? 0 : this.correlationIds.hashCode()));
     result = ((result * 31) + ((this.files == null) ? 0 : this.files.hashCode()));
+    result = ((result * 31) + ((this.links == null) ? 0 : this.links.hashCode()));
     result = ((result * 31) + ((this.runtimeRestriction == null) ? 0 : this.runtimeRestriction.hashCode()));
+    result = ((result * 31) + ((this.packageLinks == null) ? 0 : this.packageLinks.hashCode()));
     result = ((result * 31) + ((this.supportInfo == null) ? 0 : this.supportInfo.hashCode()));
     return result;
   }
@@ -1344,147 +1356,149 @@ public class Package {
                                                                                                         .equals(
                                                                                                             rhs.industry))))
                                                                                         && ((this
-                                                                                                    .customPolicyLevel
-                                                                                                == rhs.customPolicyLevel)
+                                                                                                    .shortDescription
+                                                                                                == rhs.shortDescription)
                                                                                             || ((this
-                                                                                                        .customPolicyLevel
+                                                                                                        .shortDescription
                                                                                                     != null)
                                                                                                 && this
-                                                                                                    .customPolicyLevel
+                                                                                                    .shortDescription
                                                                                                     .equals(
-                                                                                                        rhs.customPolicyLevel))))
+                                                                                                        rhs.shortDescription))))
                                                                                     && ((this
-                                                                                                .title
-                                                                                            == rhs.title)
+                                                                                                .customPolicyLevel
+                                                                                            == rhs.customPolicyLevel)
                                                                                         || ((this
-                                                                                                    .title
+                                                                                                    .customPolicyLevel
                                                                                                 != null)
                                                                                             && this
-                                                                                                .title
+                                                                                                .customPolicyLevel
                                                                                                 .equals(
-                                                                                                    rhs.title))))
+                                                                                                    rhs.customPolicyLevel))))
                                                                                 && ((this
-                                                                                            .ordId
-                                                                                        == rhs.ordId)
+                                                                                            .countries
+                                                                                        == rhs.countries)
                                                                                     || ((this
-                                                                                                .ordId
+                                                                                                .countries
                                                                                             != null)
                                                                                         && this
-                                                                                            .ordId
+                                                                                            .countries
                                                                                             .equals(
-                                                                                                rhs.ordId))))
+                                                                                                rhs.countries))))
                                                                             && ((this
-                                                                                        .localId
-                                                                                    == rhs.localId)
+                                                                                        .title
+                                                                                    == rhs.title)
                                                                                 || ((this
-                                                                                            .localId
+                                                                                            .title
                                                                                         != null)
                                                                                     && this
-                                                                                        .localId
+                                                                                        .title
                                                                                         .equals(
-                                                                                            rhs.localId))))
+                                                                                            rhs.title))))
                                                                         && ((this
-                                                                                    .policyLevels
-                                                                                == rhs.policyLevels)
+                                                                                    .ordId
+                                                                                == rhs.ordId)
                                                                             || ((this
-                                                                                        .policyLevels
+                                                                                        .ordId
                                                                                     != null)
                                                                                 && this
-                                                                                    .policyLevels
+                                                                                    .ordId
                                                                                     .equals(
-                                                                                        rhs.policyLevels))))
+                                                                                        rhs.ordId))))
                                                                     && ((this
-                                                                                .licenseType
-                                                                            == rhs.licenseType)
+                                                                                .localId
+                                                                            == rhs.localId)
                                                                         || ((this
-                                                                                    .licenseType
+                                                                                    .localId
                                                                                 != null)
                                                                             && this
-                                                                                .licenseType
+                                                                                .localId
                                                                                 .equals(
-                                                                                    rhs.licenseType))))
+                                                                                    rhs.localId))))
                                                                 && ((this
-                                                                            .vendor
-                                                                        == rhs.vendor)
+                                                                            .version
+                                                                        == rhs.version)
                                                                     || ((this
-                                                                                .vendor
+                                                                                .version
                                                                             != null)
                                                                         && this
-                                                                            .vendor
+                                                                            .version
                                                                             .equals(
-                                                                                rhs.vendor))))
+                                                                                rhs.version))))
                                                             && ((this
-                                                                        .correlationIds
-                                                                    == rhs.correlationIds)
+                                                                        .policyLevels
+                                                                    == rhs.policyLevels)
                                                                 || ((this
-                                                                            .correlationIds
+                                                                            .policyLevels
                                                                         != null)
                                                                     && this
-                                                                        .correlationIds
+                                                                        .policyLevels
                                                                         .equals(
-                                                                            rhs.correlationIds))))
+                                                                            rhs.policyLevels))))
                                                         && ((this
-                                                                    .links
-                                                                == rhs.links)
+                                                                    .tags
+                                                                == rhs.tags)
                                                             || ((this
-                                                                        .links
+                                                                        .tags
                                                                     != null)
                                                                 && this
-                                                                    .links
+                                                                    .tags
                                                                     .equals(
-                                                                        rhs.links))))
-                                                    && ((this
-                                                                .packageLinks
-                                                            == rhs.packageLinks)
+                                                                        rhs.tags))))
+                                                    && ((this.labels
+                                                            == rhs.labels)
                                                         || ((this
-                                                                    .packageLinks
+                                                                    .labels
                                                                 != null)
                                                             && this
-                                                                .packageLinks
+                                                                .labels
                                                                 .equals(
-                                                                    rhs.packageLinks))))
-                                                && ((this
-                                                            .shortDescription
-                                                        == rhs.shortDescription)
+                                                                    rhs.labels))))
+                                                && ((this.policyLevel
+                                                        == rhs.policyLevel)
                                                     || ((this
-                                                                .shortDescription
+                                                                .policyLevel
                                                             != null)
                                                         && this
-                                                            .shortDescription
+                                                            .policyLevel
                                                             .equals(
-                                                                rhs.shortDescription))))
-                                            && ((this.countries
-                                                    == rhs.countries)
-                                                || ((this.countries
+                                                                rhs.policyLevel))))
+                                            && ((this.partOfProducts
+                                                    == rhs.partOfProducts)
+                                                || ((this.partOfProducts
                                                         != null)
                                                     && this
-                                                        .countries
+                                                        .partOfProducts
                                                         .equals(
-                                                            rhs.countries))))
-                                        && ((this.version == rhs.version)
-                                            || ((this.version != null)
-                                                && this.version.equals(
-                                                    rhs.version))))
-                                    && ((this.tags == rhs.tags)
-                                        || ((this.tags != null)
-                                            && this.tags.equals(rhs.tags))))
-                                && ((this.labels == rhs.labels)
-                                    || ((this.labels != null)
-                                        && this.labels.equals(rhs.labels))))
-                            && ((this.policyLevel == rhs.policyLevel)
-                                || ((this.policyLevel != null)
-                                    && this.policyLevel.equals(rhs.policyLevel))))
-                        && ((this.partOfProducts == rhs.partOfProducts)
-                            || ((this.partOfProducts != null)
-                                && this.partOfProducts.equals(rhs.partOfProducts))))
-                    && ((this.documentationLabels == rhs.documentationLabels)
-                        || ((this.documentationLabels != null)
-                            && this.documentationLabels.equals(rhs.documentationLabels))))
-                && ((this.files == rhs.files)
-                    || ((this.files != null) && this.files.equals(rhs.files))))
-            && ((this.runtimeRestriction == rhs.runtimeRestriction)
-                || ((this.runtimeRestriction != null)
-                    && this.runtimeRestriction.equals(rhs.runtimeRestriction))))
+                                                            rhs.partOfProducts))))
+                                        && ((this.licenseType
+                                                == rhs.licenseType)
+                                            || ((this.licenseType != null)
+                                                && this.licenseType
+                                                    .equals(
+                                                        rhs.licenseType))))
+                                    && ((this.documentationLabels
+                                            == rhs.documentationLabels)
+                                        || ((this.documentationLabels != null)
+                                            && this.documentationLabels
+                                                .equals(
+                                                    rhs.documentationLabels))))
+                                && ((this.vendor == rhs.vendor)
+                                    || ((this.vendor != null)
+                                        && this.vendor.equals(rhs.vendor))))
+                            && ((this.correlationIds == rhs.correlationIds)
+                                || ((this.correlationIds != null)
+                                    && this.correlationIds.equals(
+                                        rhs.correlationIds))))
+                        && ((this.files == rhs.files)
+                            || ((this.files != null) && this.files.equals(rhs.files))))
+                    && ((this.links == rhs.links)
+                        || ((this.links != null) && this.links.equals(rhs.links))))
+                && ((this.runtimeRestriction == rhs.runtimeRestriction)
+                    || ((this.runtimeRestriction != null)
+                        && this.runtimeRestriction.equals(rhs.runtimeRestriction))))
+            && ((this.packageLinks == rhs.packageLinks)
+                || ((this.packageLinks != null) && this.packageLinks.equals(rhs.packageLinks))))
         && ((this.supportInfo == rhs.supportInfo)
             || ((this.supportInfo != null) && this.supportInfo.equals(rhs.supportInfo))));
   }

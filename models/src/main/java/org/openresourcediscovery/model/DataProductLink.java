@@ -39,13 +39,13 @@ public class DataProductLink {
    * [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the Data Product Link.
    *
    * The link target SHOULD be absolute and SHOULD be openly accessible.
-   * If a relative link is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).
+   * If a relative link is given, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL).
    * (Required)
    *
    */
   @JsonProperty("url")
   @JsonPropertyDescription(
-      "[URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the Data Product Link.\n\nThe link target SHOULD be absolute and SHOULD be openly accessible.\nIf a relative link is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).")
+      "[URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the Data Product Link.\n\nThe link target SHOULD be absolute and SHOULD be openly accessible.\nIf a relative link is given, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL).")
   private String url;
 
   /**
@@ -108,7 +108,7 @@ public class DataProductLink {
    * [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the Data Product Link.
    *
    * The link target SHOULD be absolute and SHOULD be openly accessible.
-   * If a relative link is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).
+   * If a relative link is given, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL).
    * (Required)
    *
    */
@@ -121,7 +121,7 @@ public class DataProductLink {
    * [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the Data Product Link.
    *
    * The link target SHOULD be absolute and SHOULD be openly accessible.
-   * If a relative link is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).
+   * If a relative link is given, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL).
    * (Required)
    *
    */
@@ -165,8 +165,8 @@ public class DataProductLink {
   @Override
   public int hashCode() {
     int result = 1;
-    result = ((result * 31) + ((this.customType == null) ? 0 : this.customType.hashCode()));
     result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
+    result = ((result * 31) + ((this.customType == null) ? 0 : this.customType.hashCode()));
     result = ((result * 31) + ((this.url == null) ? 0 : this.url.hashCode()));
     return result;
   }
@@ -180,9 +180,9 @@ public class DataProductLink {
       return false;
     }
     DataProductLink rhs = ((DataProductLink) other);
-    return ((((this.customType == rhs.customType)
-                || ((this.customType != null) && this.customType.equals(rhs.customType)))
-            && ((this.type == rhs.type) || ((this.type != null) && this.type.equals(rhs.type))))
+    return ((((this.type == rhs.type) || ((this.type != null) && this.type.equals(rhs.type)))
+            && ((this.customType == rhs.customType)
+                || ((this.customType != null) && this.customType.equals(rhs.customType))))
         && ((this.url == rhs.url) || ((this.url != null) && this.url.equals(rhs.url))));
   }
 }

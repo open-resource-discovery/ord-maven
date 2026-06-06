@@ -151,10 +151,14 @@ public class IntegrationDependency {
    *
    * All resources that share the same group ID assignment are effectively grouped together.
    *
+   * **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose
+   * group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility.
+   * See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).
+   *
    */
   @JsonProperty("partOfGroups")
   @JsonPropertyDescription(
-      "Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.")
+      "Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.\n\n**Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose\ngroup assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility.\nSee [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).")
   private List<String> partOfGroups;
   /**
    * The complete [SemVer](https://semver.org/) version string.
@@ -163,13 +167,13 @@ public class IntegrationDependency {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -178,7 +182,7 @@ public class IntegrationDependency {
    */
   @JsonProperty("version")
   @JsonPropertyDescription(
-      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
+      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
   private String version;
   /**
    * Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.
@@ -219,13 +223,13 @@ public class IntegrationDependency {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
   @JsonProperty("releaseStatus")
   @JsonPropertyDescription(
-      "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
+      "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
   private String releaseStatus;
   /**
    * The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.
@@ -577,6 +581,10 @@ public class IntegrationDependency {
    *
    * All resources that share the same group ID assignment are effectively grouped together.
    *
+   * **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose
+   * group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility.
+   * See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).
+   *
    */
   @JsonProperty("partOfGroups")
   public List<String> getPartOfGroups() {
@@ -593,6 +601,10 @@ public class IntegrationDependency {
    * If an "identity / equals" relationship needs to be expressed, use the `correlationIds` instead.
    *
    * All resources that share the same group ID assignment are effectively grouped together.
+   *
+   * **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose
+   * group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility.
+   * See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).
    *
    */
   @JsonProperty("partOfGroups")
@@ -612,13 +624,13 @@ public class IntegrationDependency {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -637,13 +649,13 @@ public class IntegrationDependency {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -744,7 +756,7 @@ public class IntegrationDependency {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
@@ -761,7 +773,7 @@ public class IntegrationDependency {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
