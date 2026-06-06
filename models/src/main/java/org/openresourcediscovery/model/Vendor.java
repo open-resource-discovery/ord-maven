@@ -400,9 +400,9 @@ public class Vendor {
   public int hashCode() {
     int result = 1;
     result = ((result * 31) + ((this.documentationLabels == null) ? 0 : this.documentationLabels.hashCode()));
-    result = ((result * 31) + ((this.partners == null) ? 0 : this.partners.hashCode()));
     result = ((result * 31) + ((this.title == null) ? 0 : this.title.hashCode()));
     result = ((result * 31) + ((this.ordId == null) ? 0 : this.ordId.hashCode()));
+    result = ((result * 31) + ((this.partners == null) ? 0 : this.partners.hashCode()));
     result = ((result * 31) + ((this.tags == null) ? 0 : this.tags.hashCode()));
     result = ((result * 31) + ((this.labels == null) ? 0 : this.labels.hashCode()));
     return result;
@@ -421,13 +421,12 @@ public class Vendor {
                             || ((this.documentationLabels != null)
                                 && this.documentationLabels.equals(
                                     rhs.documentationLabels)))
-                        && ((this.partners == rhs.partners)
-                            || ((this.partners != null)
-                                && this.partners.equals(rhs.partners))))
-                    && ((this.title == rhs.title)
-                        || ((this.title != null) && this.title.equals(rhs.title))))
-                && ((this.ordId == rhs.ordId)
-                    || ((this.ordId != null) && this.ordId.equals(rhs.ordId))))
+                        && ((this.title == rhs.title)
+                            || ((this.title != null) && this.title.equals(rhs.title))))
+                    && ((this.ordId == rhs.ordId)
+                        || ((this.ordId != null) && this.ordId.equals(rhs.ordId))))
+                && ((this.partners == rhs.partners)
+                    || ((this.partners != null) && this.partners.equals(rhs.partners))))
             && ((this.tags == rhs.tags) || ((this.tags != null) && this.tags.equals(rhs.tags))))
         && ((this.labels == rhs.labels) || ((this.labels != null) && this.labels.equals(rhs.labels))));
   }

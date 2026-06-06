@@ -42,13 +42,14 @@ public class OverlayDefinition {
   /**
    * [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.
    *
-   * It is RECOMMENDED to provide a relative URL (to base URL).
+   * It is RECOMMENDED to provide a relative URL.
+   * If relative, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL).
    * (Required)
    *
    */
   @JsonProperty("url")
   @JsonPropertyDescription(
-      "[URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.\n\nIt is RECOMMENDED to provide a relative URL (to base URL).")
+      "[URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.\n\nIt is RECOMMENDED to provide a relative URL.\nIf relative, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL).")
   private String url;
   /**
    * List of supported access strategies for retrieving metadata from the ORD provider.
@@ -89,12 +90,16 @@ public class OverlayDefinition {
    * For example, an API Resource might have multiple OpenAPI definitions:
    * one for standard API documentation and another specifically enriched for AI/agent consumption.
    *
+   * Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness
+   * key for entries in the `resourceDefinitions` list — no two entries on the same resource
+   * may share the same combination.
+   *
    * MUST be a valid [Concept ID](../index.md#concept-id).
    *
    */
   @JsonProperty("purpose")
   @JsonPropertyDescription(
-      "Describes the intended purpose or role of this resource definition.\n\nWhile `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for.\nThis allows multiple definitions of the same type to coexist when they serve different purposes.\n\nFor example, an API Resource might have multiple OpenAPI definitions:\none for standard API documentation and another specifically enriched for AI/agent consumption.\n\nMUST be a valid [Concept ID](../index.md#concept-id).")
+      "Describes the intended purpose or role of this resource definition.\n\nWhile `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for.\nThis allows multiple definitions of the same type to coexist when they serve different purposes.\n\nFor example, an API Resource might have multiple OpenAPI definitions:\none for standard API documentation and another specifically enriched for AI/agent consumption.\n\nTogether with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness\nkey for entries in the `resourceDefinitions` list \u2014 no two entries on the same resource\nmay share the same combination.\n\nMUST be a valid [Concept ID](../index.md#concept-id).")
   private String purpose;
 
   /**
@@ -162,7 +167,8 @@ public class OverlayDefinition {
   /**
    * [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.
    *
-   * It is RECOMMENDED to provide a relative URL (to base URL).
+   * It is RECOMMENDED to provide a relative URL.
+   * If relative, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL).
    * (Required)
    *
    */
@@ -174,7 +180,8 @@ public class OverlayDefinition {
   /**
    * [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the resource definition file.
    *
-   * It is RECOMMENDED to provide a relative URL (to base URL).
+   * It is RECOMMENDED to provide a relative URL.
+   * If relative, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL).
    * (Required)
    *
    */
@@ -271,6 +278,10 @@ public class OverlayDefinition {
    * For example, an API Resource might have multiple OpenAPI definitions:
    * one for standard API documentation and another specifically enriched for AI/agent consumption.
    *
+   * Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness
+   * key for entries in the `resourceDefinitions` list — no two entries on the same resource
+   * may share the same combination.
+   *
    * MUST be a valid [Concept ID](../index.md#concept-id).
    *
    */
@@ -287,6 +298,10 @@ public class OverlayDefinition {
    *
    * For example, an API Resource might have multiple OpenAPI definitions:
    * one for standard API documentation and another specifically enriched for AI/agent consumption.
+   *
+   * Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness
+   * key for entries in the `resourceDefinitions` list — no two entries on the same resource
+   * may share the same combination.
    *
    * MUST be a valid [Concept ID](../index.md#concept-id).
    *
@@ -344,10 +359,10 @@ public class OverlayDefinition {
   public int hashCode() {
     int result = 1;
     result = ((result * 31) + ((this.accessStrategies == null) ? 0 : this.accessStrategies.hashCode()));
-    result = ((result * 31) + ((this.visibility == null) ? 0 : this.visibility.hashCode()));
-    result = ((result * 31) + ((this.purpose == null) ? 0 : this.purpose.hashCode()));
     result = ((result * 31) + ((this.mediaType == null) ? 0 : this.mediaType.hashCode()));
     result = ((result * 31) + ((this.type == null) ? 0 : this.type.hashCode()));
+    result = ((result * 31) + ((this.visibility == null) ? 0 : this.visibility.hashCode()));
+    result = ((result * 31) + ((this.purpose == null) ? 0 : this.purpose.hashCode()));
     result = ((result * 31) + ((this.url == null) ? 0 : this.url.hashCode()));
     return result;
   }
@@ -364,14 +379,15 @@ public class OverlayDefinition {
     return (((((((this.accessStrategies == rhs.accessStrategies)
                             || ((this.accessStrategies != null)
                                 && this.accessStrategies.equals(rhs.accessStrategies)))
-                        && ((this.visibility == rhs.visibility)
-                            || ((this.visibility != null)
-                                && this.visibility.equals(rhs.visibility))))
-                    && ((this.purpose == rhs.purpose)
-                        || ((this.purpose != null) && this.purpose.equals(rhs.purpose))))
-                && ((this.mediaType == rhs.mediaType)
-                    || ((this.mediaType != null) && this.mediaType.equals(rhs.mediaType))))
-            && ((this.type == rhs.type) || ((this.type != null) && this.type.equals(rhs.type))))
+                        && ((this.mediaType == rhs.mediaType)
+                            || ((this.mediaType != null)
+                                && this.mediaType.equals(rhs.mediaType))))
+                    && ((this.type == rhs.type)
+                        || ((this.type != null) && this.type.equals(rhs.type))))
+                && ((this.visibility == rhs.visibility)
+                    || ((this.visibility != null) && this.visibility.equals(rhs.visibility))))
+            && ((this.purpose == rhs.purpose)
+                || ((this.purpose != null) && this.purpose.equals(rhs.purpose))))
         && ((this.url == rhs.url) || ((this.url != null) && this.url.equals(rhs.url))));
   }
 }

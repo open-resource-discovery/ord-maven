@@ -73,13 +73,13 @@ public class Overlay {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -88,7 +88,7 @@ public class Overlay {
    */
   @JsonProperty("version")
   @JsonPropertyDescription(
-      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
+      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
   private String version;
   /**
    * Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.
@@ -129,13 +129,13 @@ public class Overlay {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
   @JsonProperty("releaseStatus")
   @JsonPropertyDescription(
-      "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
+      "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
   private String releaseStatus;
   /**
    * Optional list of API Resources whose definition files this overlay patches.
@@ -310,13 +310,13 @@ public class Overlay {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -335,13 +335,13 @@ public class Overlay {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -442,7 +442,7 @@ public class Overlay {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
@@ -459,7 +459,7 @@ public class Overlay {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
@@ -730,18 +730,18 @@ public class Overlay {
   @Override
   public int hashCode() {
     int result = 1;
+    result = ((result * 31) + ((this.relatedEventResources == null) ? 0 : this.relatedEventResources.hashCode()));
     result = ((result * 31) + ((this.visibility == null) ? 0 : this.visibility.hashCode()));
+    result = ((result * 31) + ((this.lastUpdate == null) ? 0 : this.lastUpdate.hashCode()));
+    result = ((result * 31) + ((this.releaseStatus == null) ? 0 : this.releaseStatus.hashCode()));
     result = ((result * 31) + ((this.description == null) ? 0 : this.description.hashCode()));
     result = ((result * 31) + ((this.relatedApiResources == null) ? 0 : this.relatedApiResources.hashCode()));
     result = ((result * 31) + ((this.title == null) ? 0 : this.title.hashCode()));
     result = ((result * 31) + ((this.ordId == null) ? 0 : this.ordId.hashCode()));
     result = ((result * 31) + ((this.version == null) ? 0 : this.version.hashCode()));
+    result = ((result * 31) + ((this.definitions == null) ? 0 : this.definitions.hashCode()));
     result = ((result * 31) + ((this.tags == null) ? 0 : this.tags.hashCode()));
     result = ((result * 31) + ((this.labels == null) ? 0 : this.labels.hashCode()));
-    result = ((result * 31) + ((this.relatedEventResources == null) ? 0 : this.relatedEventResources.hashCode()));
-    result = ((result * 31) + ((this.lastUpdate == null) ? 0 : this.lastUpdate.hashCode()));
-    result = ((result * 31) + ((this.releaseStatus == null) ? 0 : this.releaseStatus.hashCode()));
-    result = ((result * 31) + ((this.definitions == null) ? 0 : this.definitions.hashCode()));
     return result;
   }
 
@@ -754,56 +754,56 @@ public class Overlay {
       return false;
     }
     Overlay rhs = ((Overlay) other);
-    return (((((((((((((this.visibility == rhs.visibility)
+    return (((((((((((((this.relatedEventResources == rhs.relatedEventResources)
+                                                    || ((this
+                                                                .relatedEventResources
+                                                            != null)
+                                                        && this
+                                                            .relatedEventResources
+                                                            .equals(
+                                                                rhs.relatedEventResources)))
+                                                && ((this.visibility
+                                                        == rhs.visibility)
                                                     || ((this
                                                                 .visibility
                                                             != null)
                                                         && this
                                                             .visibility
                                                             .equals(
-                                                                rhs.visibility)))
-                                                && ((this.description
-                                                        == rhs.description)
-                                                    || ((this
-                                                                .description
-                                                            != null)
-                                                        && this
-                                                            .description
-                                                            .equals(
-                                                                rhs.description))))
-                                            && ((this.relatedApiResources
-                                                    == rhs.relatedApiResources)
-                                                || ((this
-                                                            .relatedApiResources
+                                                                rhs.visibility))))
+                                            && ((this.lastUpdate
+                                                    == rhs.lastUpdate)
+                                                || ((this.lastUpdate
                                                         != null)
                                                     && this
-                                                        .relatedApiResources
+                                                        .lastUpdate
                                                         .equals(
-                                                            rhs.relatedApiResources))))
-                                        && ((this.title == rhs.title)
-                                            || ((this.title != null)
-                                                && this.title.equals(
-                                                    rhs.title))))
-                                    && ((this.ordId == rhs.ordId)
-                                        || ((this.ordId != null)
-                                            && this.ordId.equals(
-                                                rhs.ordId))))
-                                && ((this.version == rhs.version)
-                                    || ((this.version != null)
-                                        && this.version.equals(rhs.version))))
-                            && ((this.tags == rhs.tags)
-                                || ((this.tags != null) && this.tags.equals(rhs.tags))))
-                        && ((this.labels == rhs.labels)
-                            || ((this.labels != null) && this.labels.equals(rhs.labels))))
-                    && ((this.relatedEventResources == rhs.relatedEventResources)
-                        || ((this.relatedEventResources != null)
-                            && this.relatedEventResources.equals(
-                                rhs.relatedEventResources))))
-                && ((this.lastUpdate == rhs.lastUpdate)
-                    || ((this.lastUpdate != null) && this.lastUpdate.equals(rhs.lastUpdate))))
-            && ((this.releaseStatus == rhs.releaseStatus)
-                || ((this.releaseStatus != null) && this.releaseStatus.equals(rhs.releaseStatus))))
-        && ((this.definitions == rhs.definitions)
-            || ((this.definitions != null) && this.definitions.equals(rhs.definitions))));
+                                                            rhs.lastUpdate))))
+                                        && ((this.releaseStatus
+                                                == rhs.releaseStatus)
+                                            || ((this.releaseStatus != null)
+                                                && this.releaseStatus
+                                                    .equals(
+                                                        rhs.releaseStatus))))
+                                    && ((this.description == rhs.description)
+                                        || ((this.description != null)
+                                            && this.description.equals(
+                                                rhs.description))))
+                                && ((this.relatedApiResources
+                                        == rhs.relatedApiResources)
+                                    || ((this.relatedApiResources != null)
+                                        && this.relatedApiResources.equals(
+                                            rhs.relatedApiResources))))
+                            && ((this.title == rhs.title)
+                                || ((this.title != null)
+                                    && this.title.equals(rhs.title))))
+                        && ((this.ordId == rhs.ordId)
+                            || ((this.ordId != null) && this.ordId.equals(rhs.ordId))))
+                    && ((this.version == rhs.version)
+                        || ((this.version != null) && this.version.equals(rhs.version))))
+                && ((this.definitions == rhs.definitions)
+                    || ((this.definitions != null) && this.definitions.equals(rhs.definitions))))
+            && ((this.tags == rhs.tags) || ((this.tags != null) && this.tags.equals(rhs.tags))))
+        && ((this.labels == rhs.labels) || ((this.labels != null) && this.labels.equals(rhs.labels))));
   }
 }

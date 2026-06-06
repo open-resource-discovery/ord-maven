@@ -24,6 +24,7 @@ import java.util.List;
   "title",
   "shortDescription",
   "description",
+  "aiHint",
   "partOfPackage",
   "partOfGroups",
   "partOfProducts",
@@ -37,6 +38,7 @@ import java.util.List;
   "changelogEntries",
   "level",
   "relatedEntityTypes",
+  "definitions",
   "links",
   "extensible",
   "tags",
@@ -121,6 +123,18 @@ public class EntityType {
       "Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThe description SHOULD not be excessive in length and is not meant to provide full documentation.\nDetailed documentation SHOULD be attached as (typed) links.")
   private String description;
   /**
+   * Hint for AI consumers (LLMs, agent orchestrators) on how to use or interpret this resource.
+   * Intentionally separate from human-facing `description` so both can evolve independently.
+   * SHOULD be written in [CommonMark](https://spec.commonmark.org/) (Markdown).
+   *
+   * For guidance and best practices, see [AI Agents and Protocols](../concepts/ai-agents-and-protocols#ai-hints-on-ord-resources).
+   *
+   */
+  @JsonProperty("aiHint")
+  @JsonPropertyDescription(
+      "Hint for AI consumers (LLMs, agent orchestrators) on how to use or interpret this resource.\nIntentionally separate from human-facing `description` so both can evolve independently.\nSHOULD be written in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nFor guidance and best practices, see [AI Agents and Protocols](../concepts/ai-agents-and-protocols#ai-hints-on-ord-resources).")
+  private String aiHint;
+  /**
    * Defines which Package the resource is part of.
    *
    * MUST be a valid reference to a [Package](#package) ORD ID.
@@ -144,22 +158,30 @@ public class EntityType {
    *
    * All resources that share the same group ID assignment are effectively grouped together.
    *
+   * **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose
+   * group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility.
+   * See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).
+   *
    */
   @JsonProperty("partOfGroups")
   @JsonPropertyDescription(
-      "Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.")
+      "Defines which groups the resource is assigned to.\n\nThe property is optional, but if given the value MUST be an array of valid Group IDs.\n\nGroups are a lightweight custom taxonomy concept.\nThey express a \"part of\" relationship to the chosen group concept.\nIf an \"identity / equals\" relationship needs to be expressed, use the `correlationIds` instead.\n\nAll resources that share the same group ID assignment are effectively grouped together.\n\n**Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose\ngroup assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility.\nSee [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).")
   private List<String> partOfGroups;
   /**
-   * List of products the resources of the Package are a part of.
+   * List of products this package and its resources are a part of.
    *
    * MUST be a valid reference to a [Product](#product) ORD ID.
    *
-   * `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+   * `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains.
+   * Resources that belong to a different product than their package can override this directly.
+   *
+   * Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package.
+   * Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources.
    *
    */
   @JsonProperty("partOfProducts")
   @JsonPropertyDescription(
-      "List of products the resources of the Package are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.")
+      "List of products this package and its resources are a part of.\n\nMUST be a valid reference to a [Product](#product) ORD ID.\n\n`partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains.\nResources that belong to a different product than their package can override this directly.\n\nEvery ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package.\nSetting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources.")
   private List<String> partOfProducts;
   /**
    * The complete [SemVer](https://semver.org/) version string.
@@ -168,13 +190,13 @@ public class EntityType {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -183,7 +205,7 @@ public class EntityType {
    */
   @JsonProperty("version")
   @JsonPropertyDescription(
-      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
+      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
   private String version;
   /**
    * Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.
@@ -224,13 +246,13 @@ public class EntityType {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
   @JsonProperty("releaseStatus")
   @JsonPropertyDescription(
-      "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
+      "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
   private String releaseStatus;
   /**
    * The deprecation date defines when the resource has been set as deprecated.
@@ -280,7 +302,7 @@ public class EntityType {
   /**
    * Defining the abstraction level of the entity type using the DDD terminology.
    *
-   * In Domain-Driven Design, there is a concept of entities and aggregates.
+   * In Domain-Driven Design, there is a concept of domain entities and aggregates.
    * There are root entities which may contain further sub entities by composition.
    * The complete "package" is then called an aggregate, which gets its name and identity from the root entity.
    * An aggregate is a cluster of domain objects that can be treated as a single unit.
@@ -293,7 +315,7 @@ public class EntityType {
    */
   @JsonProperty("level")
   @JsonPropertyDescription(
-      "Defining the abstraction level of the entity type using the DDD terminology.\n\nIn Domain-Driven Design, there is a concept of entities and aggregates.\nThere are root entities which may contain further sub entities by composition.\nThe complete \"package\" is then called an aggregate, which gets its name and identity from the root entity.\nAn aggregate is a cluster of domain objects that can be treated as a single unit.\nThe root is the entity that is referenced from outside the aggregate. There must be only one root per aggregate.\nThe root ensures the integrity of the aggregate. A sub entity is any other non-root entity in the aggregate.\n\nSource, see [Martin Fowler on DDD Aggregate](https://martinfowler.com/bliki/DDD_Aggregate.html)")
+      "Defining the abstraction level of the entity type using the DDD terminology.\n\nIn Domain-Driven Design, there is a concept of domain entities and aggregates.\nThere are root entities which may contain further sub entities by composition.\nThe complete \"package\" is then called an aggregate, which gets its name and identity from the root entity.\nAn aggregate is a cluster of domain objects that can be treated as a single unit.\nThe root is the entity that is referenced from outside the aggregate. There must be only one root per aggregate.\nThe root ensures the integrity of the aggregate. A sub entity is any other non-root entity in the aggregate.\n\nSource, see [Martin Fowler on DDD Aggregate](https://martinfowler.com/bliki/DDD_Aggregate.html)")
   private String level;
   /**
    * States that this Entity Type is related to another Entity Type.
@@ -305,6 +327,14 @@ public class EntityType {
   @JsonPropertyDescription(
       "States that this Entity Type is related to another Entity Type.\n\nUsually this happens if there are similar conceptual entity types across different namespaces.")
   private List<RelatedEntityType> relatedEntityTypes;
+  /**
+   * List of available machine-readable definitions that describe the entity type's internal model in detail.
+   *
+   */
+  @JsonProperty("definitions")
+  @JsonPropertyDescription(
+      "List of available machine-readable definitions that describe the entity type's internal model in detail.")
+  private List<EntityTypeDefinition> definitions;
   /**
    * Generic Links with arbitrary meaning and content.
    *
@@ -627,6 +657,37 @@ public class EntityType {
   }
 
   /**
+   * Hint for AI consumers (LLMs, agent orchestrators) on how to use or interpret this resource.
+   * Intentionally separate from human-facing `description` so both can evolve independently.
+   * SHOULD be written in [CommonMark](https://spec.commonmark.org/) (Markdown).
+   *
+   * For guidance and best practices, see [AI Agents and Protocols](../concepts/ai-agents-and-protocols#ai-hints-on-ord-resources).
+   *
+   */
+  @JsonProperty("aiHint")
+  public String getAiHint() {
+    return aiHint;
+  }
+
+  /**
+   * Hint for AI consumers (LLMs, agent orchestrators) on how to use or interpret this resource.
+   * Intentionally separate from human-facing `description` so both can evolve independently.
+   * SHOULD be written in [CommonMark](https://spec.commonmark.org/) (Markdown).
+   *
+   * For guidance and best practices, see [AI Agents and Protocols](../concepts/ai-agents-and-protocols#ai-hints-on-ord-resources).
+   *
+   */
+  @JsonProperty("aiHint")
+  public void setAiHint(String aiHint) {
+    this.aiHint = aiHint;
+  }
+
+  public EntityType withAiHint(String aiHint) {
+    this.aiHint = aiHint;
+    return this;
+  }
+
+  /**
    * Defines which Package the resource is part of.
    *
    * MUST be a valid reference to a [Package](#package) ORD ID.
@@ -670,6 +731,10 @@ public class EntityType {
    *
    * All resources that share the same group ID assignment are effectively grouped together.
    *
+   * **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose
+   * group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility.
+   * See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).
+   *
    */
   @JsonProperty("partOfGroups")
   public List<String> getPartOfGroups() {
@@ -687,6 +752,10 @@ public class EntityType {
    *
    * All resources that share the same group ID assignment are effectively grouped together.
    *
+   * **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose
+   * group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility.
+   * See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types).
+   *
    */
   @JsonProperty("partOfGroups")
   public void setPartOfGroups(List<String> partOfGroups) {
@@ -699,11 +768,15 @@ public class EntityType {
   }
 
   /**
-   * List of products the resources of the Package are a part of.
+   * List of products this package and its resources are a part of.
    *
    * MUST be a valid reference to a [Product](#product) ORD ID.
    *
-   * `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+   * `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains.
+   * Resources that belong to a different product than their package can override this directly.
+   *
+   * Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package.
+   * Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources.
    *
    */
   @JsonProperty("partOfProducts")
@@ -712,11 +785,15 @@ public class EntityType {
   }
 
   /**
-   * List of products the resources of the Package are a part of.
+   * List of products this package and its resources are a part of.
    *
    * MUST be a valid reference to a [Product](#product) ORD ID.
    *
-   * `partOfProducts` that are assigned to a `Package` are inherited to all of the ORD resources it contains.
+   * `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains.
+   * Resources that belong to a different product than their package can override this directly.
+   *
+   * Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package.
+   * Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources.
    *
    */
   @JsonProperty("partOfProducts")
@@ -736,13 +813,13 @@ public class EntityType {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -761,13 +838,13 @@ public class EntityType {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment MUST be updated to be identical.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
    * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
    *
-   * The general [Version and Lifecycle](../index.md#version-and-lifecycle) flow MUST be followed.
+   * The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.
    *
    * Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.
    * For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.
@@ -868,7 +945,7 @@ public class EntityType {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
@@ -885,7 +962,7 @@ public class EntityType {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../index.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
@@ -1020,7 +1097,7 @@ public class EntityType {
   /**
    * Defining the abstraction level of the entity type using the DDD terminology.
    *
-   * In Domain-Driven Design, there is a concept of entities and aggregates.
+   * In Domain-Driven Design, there is a concept of domain entities and aggregates.
    * There are root entities which may contain further sub entities by composition.
    * The complete "package" is then called an aggregate, which gets its name and identity from the root entity.
    * An aggregate is a cluster of domain objects that can be treated as a single unit.
@@ -1039,7 +1116,7 @@ public class EntityType {
   /**
    * Defining the abstraction level of the entity type using the DDD terminology.
    *
-   * In Domain-Driven Design, there is a concept of entities and aggregates.
+   * In Domain-Driven Design, there is a concept of domain entities and aggregates.
    * There are root entities which may contain further sub entities by composition.
    * The complete "package" is then called an aggregate, which gets its name and identity from the root entity.
    * An aggregate is a cluster of domain objects that can be treated as a single unit.
@@ -1084,6 +1161,29 @@ public class EntityType {
 
   public EntityType withRelatedEntityTypes(List<RelatedEntityType> relatedEntityTypes) {
     this.relatedEntityTypes = relatedEntityTypes;
+    return this;
+  }
+
+  /**
+   * List of available machine-readable definitions that describe the entity type's internal model in detail.
+   *
+   */
+  @JsonProperty("definitions")
+  public List<EntityTypeDefinition> getDefinitions() {
+    return definitions;
+  }
+
+  /**
+   * List of available machine-readable definitions that describe the entity type's internal model in detail.
+   *
+   */
+  @JsonProperty("definitions")
+  public void setDefinitions(List<EntityTypeDefinition> definitions) {
+    this.definitions = definitions;
+  }
+
+  public EntityType withDefinitions(List<EntityTypeDefinition> definitions) {
+    this.definitions = definitions;
     return this;
   }
 
@@ -1451,6 +1551,10 @@ public class EntityType {
     sb.append('=');
     sb.append(((this.description == null) ? "<null>" : this.description));
     sb.append(',');
+    sb.append("aiHint");
+    sb.append('=');
+    sb.append(((this.aiHint == null) ? "<null>" : this.aiHint));
+    sb.append(',');
     sb.append("partOfPackage");
     sb.append('=');
     sb.append(((this.partOfPackage == null) ? "<null>" : this.partOfPackage));
@@ -1502,6 +1606,10 @@ public class EntityType {
     sb.append("relatedEntityTypes");
     sb.append('=');
     sb.append(((this.relatedEntityTypes == null) ? "<null>" : this.relatedEntityTypes));
+    sb.append(',');
+    sb.append("definitions");
+    sb.append('=');
+    sb.append(((this.definitions == null) ? "<null>" : this.definitions));
     sb.append(',');
     sb.append("links");
     sb.append('=');
@@ -1563,6 +1671,7 @@ public class EntityType {
     result = ((result * 31) + ((this.releaseStatus == null) ? 0 : this.releaseStatus.hashCode()));
     result = ((result * 31) + ((this.relatedEntityTypes == null) ? 0 : this.relatedEntityTypes.hashCode()));
     result = ((result * 31) + ((this.links == null) ? 0 : this.links.hashCode()));
+    result = ((result * 31) + ((this.definitions == null) ? 0 : this.definitions.hashCode()));
     result = ((result * 31) + ((this.extensible == null) ? 0 : this.extensible.hashCode()));
     result = ((result * 31) + ((this.visibility == null) ? 0 : this.visibility.hashCode()));
     result = ((result * 31) + ((this.level == null) ? 0 : this.level.hashCode()));
@@ -1578,6 +1687,7 @@ public class EntityType {
     result = ((result * 31) + ((this.policyLevel == null) ? 0 : this.policyLevel.hashCode()));
     result = ((result * 31) + ((this.documentationLabels == null) ? 0 : this.documentationLabels.hashCode()));
     result = ((result * 31) + ((this.lastUpdate == null) ? 0 : this.lastUpdate.hashCode()));
+    result = ((result * 31) + ((this.aiHint == null) ? 0 : this.aiHint.hashCode()));
     return result;
   }
 
@@ -1590,221 +1700,240 @@ public class EntityType {
       return false;
     }
     EntityType rhs = ((EntityType) other);
-    return (((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)
-                                                                                                                    || ((this
-                                                                                                                                .deprecationDate
-                                                                                                                            != null)
-                                                                                                                        && this
-                                                                                                                            .deprecationDate
-                                                                                                                            .equals(
-                                                                                                                                rhs.deprecationDate)))
+    return (((((((((((((((((((((((((((((((this.deprecationDate == rhs.deprecationDate)
+                                                                                                                            || ((this
+                                                                                                                                        .deprecationDate
+                                                                                                                                    != null)
+                                                                                                                                && this
+                                                                                                                                    .deprecationDate
+                                                                                                                                    .equals(
+                                                                                                                                        rhs.deprecationDate)))
+                                                                                                                        && ((this
+                                                                                                                                    .successors
+                                                                                                                                == rhs.successors)
+                                                                                                                            || ((this
+                                                                                                                                        .successors
+                                                                                                                                    != null)
+                                                                                                                                && this
+                                                                                                                                    .successors
+                                                                                                                                    .equals(
+                                                                                                                                        rhs.successors))))
+                                                                                                                    && ((this
+                                                                                                                                .description
+                                                                                                                            == rhs.description)
+                                                                                                                        || ((this
+                                                                                                                                    .description
+                                                                                                                                != null)
+                                                                                                                            && this
+                                                                                                                                .description
+                                                                                                                                .equals(
+                                                                                                                                    rhs.description))))
                                                                                                                 && ((this
-                                                                                                                            .successors
-                                                                                                                        == rhs.successors)
+                                                                                                                            .partOfPackage
+                                                                                                                        == rhs.partOfPackage)
                                                                                                                     || ((this
-                                                                                                                                .successors
+                                                                                                                                .partOfPackage
                                                                                                                             != null)
                                                                                                                         && this
-                                                                                                                            .successors
+                                                                                                                            .partOfPackage
                                                                                                                             .equals(
-                                                                                                                                rhs.successors))))
+                                                                                                                                rhs.partOfPackage))))
                                                                                                             && ((this
-                                                                                                                        .description
-                                                                                                                    == rhs.description)
+                                                                                                                        .customPolicyLevel
+                                                                                                                    == rhs.customPolicyLevel)
                                                                                                                 || ((this
-                                                                                                                            .description
+                                                                                                                            .customPolicyLevel
                                                                                                                         != null)
                                                                                                                     && this
-                                                                                                                        .description
+                                                                                                                        .customPolicyLevel
                                                                                                                         .equals(
-                                                                                                                            rhs.description))))
+                                                                                                                            rhs.customPolicyLevel))))
                                                                                                         && ((this
-                                                                                                                    .partOfPackage
-                                                                                                                == rhs.partOfPackage)
+                                                                                                                    .title
+                                                                                                                == rhs.title)
                                                                                                             || ((this
-                                                                                                                        .partOfPackage
+                                                                                                                        .title
                                                                                                                     != null)
                                                                                                                 && this
-                                                                                                                    .partOfPackage
+                                                                                                                    .title
                                                                                                                     .equals(
-                                                                                                                        rhs.partOfPackage))))
+                                                                                                                        rhs.title))))
                                                                                                     && ((this
-                                                                                                                .customPolicyLevel
-                                                                                                            == rhs.customPolicyLevel)
+                                                                                                                .ordId
+                                                                                                            == rhs.ordId)
                                                                                                         || ((this
-                                                                                                                    .customPolicyLevel
+                                                                                                                    .ordId
                                                                                                                 != null)
                                                                                                             && this
-                                                                                                                .customPolicyLevel
+                                                                                                                .ordId
                                                                                                                 .equals(
-                                                                                                                    rhs.customPolicyLevel))))
+                                                                                                                    rhs.ordId))))
                                                                                                 && ((this
-                                                                                                            .title
-                                                                                                        == rhs.title)
+                                                                                                            .localId
+                                                                                                        == rhs.localId)
                                                                                                     || ((this
-                                                                                                                .title
+                                                                                                                .localId
                                                                                                             != null)
                                                                                                         && this
-                                                                                                            .title
+                                                                                                            .localId
                                                                                                             .equals(
-                                                                                                                rhs.title))))
+                                                                                                                rhs.localId))))
                                                                                             && ((this
-                                                                                                        .ordId
-                                                                                                    == rhs.ordId)
+                                                                                                        .policyLevels
+                                                                                                    == rhs.policyLevels)
                                                                                                 || ((this
-                                                                                                            .ordId
+                                                                                                            .policyLevels
                                                                                                         != null)
                                                                                                     && this
-                                                                                                        .ordId
+                                                                                                        .policyLevels
                                                                                                         .equals(
-                                                                                                            rhs.ordId))))
+                                                                                                            rhs.policyLevels))))
                                                                                         && ((this
-                                                                                                    .localId
-                                                                                                == rhs.localId)
+                                                                                                    .correlationIds
+                                                                                                == rhs.correlationIds)
                                                                                             || ((this
-                                                                                                        .localId
+                                                                                                        .correlationIds
                                                                                                     != null)
                                                                                                 && this
-                                                                                                    .localId
+                                                                                                    .correlationIds
                                                                                                     .equals(
-                                                                                                        rhs.localId))))
+                                                                                                        rhs.correlationIds))))
                                                                                     && ((this
-                                                                                                .policyLevels
-                                                                                            == rhs.policyLevels)
+                                                                                                .releaseStatus
+                                                                                            == rhs.releaseStatus)
                                                                                         || ((this
-                                                                                                    .policyLevels
+                                                                                                    .releaseStatus
                                                                                                 != null)
                                                                                             && this
-                                                                                                .policyLevels
+                                                                                                .releaseStatus
                                                                                                 .equals(
-                                                                                                    rhs.policyLevels))))
+                                                                                                    rhs.releaseStatus))))
                                                                                 && ((this
-                                                                                            .correlationIds
-                                                                                        == rhs.correlationIds)
+                                                                                            .relatedEntityTypes
+                                                                                        == rhs.relatedEntityTypes)
                                                                                     || ((this
-                                                                                                .correlationIds
+                                                                                                .relatedEntityTypes
                                                                                             != null)
                                                                                         && this
-                                                                                            .correlationIds
+                                                                                            .relatedEntityTypes
                                                                                             .equals(
-                                                                                                rhs.correlationIds))))
+                                                                                                rhs.relatedEntityTypes))))
                                                                             && ((this
-                                                                                        .releaseStatus
-                                                                                    == rhs.releaseStatus)
+                                                                                        .links
+                                                                                    == rhs.links)
                                                                                 || ((this
-                                                                                            .releaseStatus
+                                                                                            .links
                                                                                         != null)
                                                                                     && this
-                                                                                        .releaseStatus
+                                                                                        .links
                                                                                         .equals(
-                                                                                            rhs.releaseStatus))))
+                                                                                            rhs.links))))
                                                                         && ((this
-                                                                                    .relatedEntityTypes
-                                                                                == rhs.relatedEntityTypes)
+                                                                                    .definitions
+                                                                                == rhs.definitions)
                                                                             || ((this
-                                                                                        .relatedEntityTypes
+                                                                                        .definitions
                                                                                     != null)
                                                                                 && this
-                                                                                    .relatedEntityTypes
+                                                                                    .definitions
                                                                                     .equals(
-                                                                                        rhs.relatedEntityTypes))))
+                                                                                        rhs.definitions))))
                                                                     && ((this
-                                                                                .links
-                                                                            == rhs.links)
+                                                                                .extensible
+                                                                            == rhs.extensible)
                                                                         || ((this
-                                                                                    .links
+                                                                                    .extensible
                                                                                 != null)
                                                                             && this
-                                                                                .links
-                                                                                .equals(
-                                                                                    rhs.links))))
-                                                                && ((this
-                                                                            .extensible
-                                                                        == rhs.extensible)
-                                                                    || ((this
                                                                                 .extensible
+                                                                                .equals(
+                                                                                    rhs.extensible))))
+                                                                && ((this
+                                                                            .visibility
+                                                                        == rhs.visibility)
+                                                                    || ((this
+                                                                                .visibility
                                                                             != null)
                                                                         && this
-                                                                            .extensible
-                                                                            .equals(
-                                                                                rhs.extensible))))
-                                                            && ((this
-                                                                        .visibility
-                                                                    == rhs.visibility)
-                                                                || ((this
                                                                             .visibility
+                                                                            .equals(
+                                                                                rhs.visibility))))
+                                                            && ((this
+                                                                        .level
+                                                                    == rhs.level)
+                                                                || ((this
+                                                                            .level
                                                                         != null)
                                                                     && this
-                                                                        .visibility
-                                                                        .equals(
-                                                                            rhs.visibility))))
-                                                        && ((this
-                                                                    .level
-                                                                == rhs.level)
-                                                            || ((this
                                                                         .level
+                                                                        .equals(
+                                                                            rhs.level))))
+                                                        && ((this
+                                                                    .sunsetDate
+                                                                == rhs.sunsetDate)
+                                                            || ((this
+                                                                        .sunsetDate
                                                                     != null)
                                                                 && this
-                                                                    .level
-                                                                    .equals(
-                                                                        rhs.level))))
-                                                    && ((this
-                                                                .sunsetDate
-                                                            == rhs.sunsetDate)
-                                                        || ((this
                                                                     .sunsetDate
+                                                                    .equals(
+                                                                        rhs.sunsetDate))))
+                                                    && ((this
+                                                                .shortDescription
+                                                            == rhs.shortDescription)
+                                                        || ((this
+                                                                    .shortDescription
                                                                 != null)
                                                             && this
-                                                                .sunsetDate
-                                                                .equals(
-                                                                    rhs.sunsetDate))))
-                                                && ((this
-                                                            .shortDescription
-                                                        == rhs.shortDescription)
-                                                    || ((this
                                                                 .shortDescription
+                                                                .equals(
+                                                                    rhs.shortDescription))))
+                                                && ((this.version
+                                                        == rhs.version)
+                                                    || ((this
+                                                                .version
                                                             != null)
                                                         && this
-                                                            .shortDescription
+                                                            .version
                                                             .equals(
-                                                                rhs.shortDescription))))
-                                            && ((this.version
-                                                    == rhs.version)
-                                                || ((this.version
+                                                                rhs.version))))
+                                            && ((this.systemInstanceAware
+                                                    == rhs.systemInstanceAware)
+                                                || ((this
+                                                            .systemInstanceAware
                                                         != null)
-                                                    && this.version
+                                                    && this
+                                                        .systemInstanceAware
                                                         .equals(
-                                                            rhs.version))))
-                                        && ((this.systemInstanceAware
-                                                == rhs.systemInstanceAware)
-                                            || ((this.systemInstanceAware
+                                                            rhs.systemInstanceAware))))
+                                        && ((this.changelogEntries
+                                                == rhs.changelogEntries)
+                                            || ((this.changelogEntries
                                                     != null)
-                                                && this
-                                                    .systemInstanceAware
+                                                && this.changelogEntries
                                                     .equals(
-                                                        rhs.systemInstanceAware))))
-                                    && ((this.changelogEntries
-                                            == rhs.changelogEntries)
-                                        || ((this.changelogEntries != null)
-                                            && this.changelogEntries.equals(
-                                                rhs.changelogEntries))))
-                                && ((this.partOfGroups == rhs.partOfGroups)
-                                    || ((this.partOfGroups != null)
-                                        && this.partOfGroups.equals(
-                                            rhs.partOfGroups))))
-                            && ((this.tags == rhs.tags)
-                                || ((this.tags != null) && this.tags.equals(rhs.tags))))
-                        && ((this.labels == rhs.labels)
-                            || ((this.labels != null) && this.labels.equals(rhs.labels))))
-                    && ((this.partOfProducts == rhs.partOfProducts)
-                        || ((this.partOfProducts != null)
-                            && this.partOfProducts.equals(rhs.partOfProducts))))
-                && ((this.policyLevel == rhs.policyLevel)
-                    || ((this.policyLevel != null) && this.policyLevel.equals(rhs.policyLevel))))
-            && ((this.documentationLabels == rhs.documentationLabels)
-                || ((this.documentationLabels != null)
-                    && this.documentationLabels.equals(rhs.documentationLabels))))
-        && ((this.lastUpdate == rhs.lastUpdate)
-            || ((this.lastUpdate != null) && this.lastUpdate.equals(rhs.lastUpdate))));
+                                                        rhs.changelogEntries))))
+                                    && ((this.partOfGroups == rhs.partOfGroups)
+                                        || ((this.partOfGroups != null)
+                                            && this.partOfGroups.equals(
+                                                rhs.partOfGroups))))
+                                && ((this.tags == rhs.tags)
+                                    || ((this.tags != null)
+                                        && this.tags.equals(rhs.tags))))
+                            && ((this.labels == rhs.labels)
+                                || ((this.labels != null)
+                                    && this.labels.equals(rhs.labels))))
+                        && ((this.partOfProducts == rhs.partOfProducts)
+                            || ((this.partOfProducts != null)
+                                && this.partOfProducts.equals(rhs.partOfProducts))))
+                    && ((this.policyLevel == rhs.policyLevel)
+                        || ((this.policyLevel != null)
+                            && this.policyLevel.equals(rhs.policyLevel))))
+                && ((this.documentationLabels == rhs.documentationLabels)
+                    || ((this.documentationLabels != null)
+                        && this.documentationLabels.equals(rhs.documentationLabels))))
+            && ((this.lastUpdate == rhs.lastUpdate)
+                || ((this.lastUpdate != null) && this.lastUpdate.equals(rhs.lastUpdate))))
+        && ((this.aiHint == rhs.aiHint) || ((this.aiHint != null) && this.aiHint.equals(rhs.aiHint))));
   }
 }

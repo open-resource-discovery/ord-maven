@@ -36,14 +36,14 @@ public class File {
    * [URL](https://tools.ietf.org/html/rfc3986) of the link.
    *
    * The file target MAY be relative or absolute.
-   * If a relative URL is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).
+   * If a relative URL is given, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL).
    * If an absolute URL is given, then it MUST be openly accessible.
    * (Required)
    *
    */
   @JsonProperty("url")
   @JsonPropertyDescription(
-      "[URL](https://tools.ietf.org/html/rfc3986) of the link.\n\nThe file target MAY be relative or absolute.\nIf a relative URL is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).\nIf an absolute URL is given, then it MUST be openly accessible.")
+      "[URL](https://tools.ietf.org/html/rfc3986) of the link.\n\nThe file target MAY be relative or absolute.\nIf a relative URL is given, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL).\nIf an absolute URL is given, then it MUST be openly accessible.")
   private String url;
   /**
    * Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
@@ -106,7 +106,7 @@ public class File {
    * [URL](https://tools.ietf.org/html/rfc3986) of the link.
    *
    * The file target MAY be relative or absolute.
-   * If a relative URL is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).
+   * If a relative URL is given, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL).
    * If an absolute URL is given, then it MUST be openly accessible.
    * (Required)
    *
@@ -120,7 +120,7 @@ public class File {
    * [URL](https://tools.ietf.org/html/rfc3986) of the link.
    *
    * The file target MAY be relative or absolute.
-   * If a relative URL is given, it is relative to the [`describedSystemInstance.baseUrl`](#system-instance_baseurl).
+   * If a relative URL is given, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL).
    * If an absolute URL is given, then it MUST be openly accessible.
    * (Required)
    *
