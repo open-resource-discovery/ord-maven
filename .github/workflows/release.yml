@@ -194,7 +194,7 @@ jobs:
         run: mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${TARGET_SNAPSHOT_VERSION}"
 
       - name: Update project SNAPSHOT version in repository
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@v8.1.1
         with:
           branch: auto/update-snapshot-version-${{ env.TARGET_SNAPSHOT_VERSION }}
           body: "Update the project version to ${{ env.TARGET_SNAPSHOT_VERSION }}"
