@@ -118,7 +118,7 @@ jobs:
           settings-servers: '[{"id": "central", "username": "${{ secrets.MAVEN_CENTRAL_USER }}", "password": "${{ secrets.MAVEN_CENTRAL_PASSWORD }}"}]'
 
       - name: Configure GPG key
-        uses: crazy-max/ghaction-import-gpg@v7
+        uses: crazy-max/ghaction-import-gpg@v7.0.0
         with:
           passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           gpg_private_key: ${{ secrets.MAVEN_GPG_SECRET_KEY }}
@@ -158,7 +158,7 @@ jobs:
         run: mvn versions:set -DgenerateBackupPoms=false -DnewVersion="${TARGET_RELEASE_VERSION}"
 
       - name: Configure GPG key
-        uses: crazy-max/ghaction-import-gpg@v7
+        uses: crazy-max/ghaction-import-gpg@v7.0.0
         with:
           passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           gpg_private_key: ${{ secrets.MAVEN_GPG_SECRET_KEY }}
