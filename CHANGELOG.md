@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+## [[0.12.0](https://github.com/open-resource-discovery/ord-maven/releases/tag/v0.12.0)] - 2026-06-06
+
+
 ## [[0.11.1](https://github.com/open-resource-discovery/ord-maven/releases/tag/v0.11.1)] - 2026-05-18
 
 Add missing 'partOfDocument' for @Ord.Overlay
