@@ -20,7 +20,10 @@ public interface Ord {
   @Repeatable(Documents.class)
   @Retention(RetentionPolicy.RUNTIME)
   @interface Document {
+
     String name() default "ord-document";
+
+    String baseUrl() default "";
 
     String description() default "";
 
