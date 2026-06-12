@@ -26,7 +26,8 @@ import java.util.List;
   "supportMultipleProviders",
   "apiResources",
   "eventResources",
-  "capabilities"
+  "capabilities",
+  "labels"
 })
 public class IntegrationAspect {
 
@@ -90,6 +91,34 @@ public class IntegrationAspect {
   @JsonProperty("capabilities")
   @JsonPropertyDescription("List of Capability Dependencies.")
   private List<CapabilityIntegrationAspect> capabilities;
+  /**
+   * Labels
+   * <p>
+   * Generic key-value labels that can be applied to most ORD information.
+   * They are defined as an object that may have arbitrary keys.
+   * The value of a key is an array of strings.
+   *
+   * Labels can be used to attach technical information that cannot be expressed natively in ORD.
+   * An ORD aggregator should allow to categorize and query information based on the labels provided.
+   *
+   * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
+   *
+   * If multiple parties rely on the existence of certain label information,
+   * standardization through ORD SHOULD be preferred.
+   *
+   * All labels attached to a `Package` will be inherited to the resources they contain.
+   * Duplicate labels will be merged by the ORD aggregator according to the following rules:
+   * * Values of the same label key will be merged.
+   * * Duplicate values of the same label key will be removed.
+   *
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
+   *
+   */
+  @JsonProperty("labels")
+  @JsonPropertyDescription(
+      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
+  private Labels labels;
 
   /**
    * Human-readable title.
@@ -270,6 +299,69 @@ public class IntegrationAspect {
     return this;
   }
 
+  /**
+   * Labels
+   * <p>
+   * Generic key-value labels that can be applied to most ORD information.
+   * They are defined as an object that may have arbitrary keys.
+   * The value of a key is an array of strings.
+   *
+   * Labels can be used to attach technical information that cannot be expressed natively in ORD.
+   * An ORD aggregator should allow to categorize and query information based on the labels provided.
+   *
+   * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
+   *
+   * If multiple parties rely on the existence of certain label information,
+   * standardization through ORD SHOULD be preferred.
+   *
+   * All labels attached to a `Package` will be inherited to the resources they contain.
+   * Duplicate labels will be merged by the ORD aggregator according to the following rules:
+   * * Values of the same label key will be merged.
+   * * Duplicate values of the same label key will be removed.
+   *
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
+   *
+   */
+  @JsonProperty("labels")
+  public Labels getLabels() {
+    return labels;
+  }
+
+  /**
+   * Labels
+   * <p>
+   * Generic key-value labels that can be applied to most ORD information.
+   * They are defined as an object that may have arbitrary keys.
+   * The value of a key is an array of strings.
+   *
+   * Labels can be used to attach technical information that cannot be expressed natively in ORD.
+   * An ORD aggregator should allow to categorize and query information based on the labels provided.
+   *
+   * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
+   *
+   * If multiple parties rely on the existence of certain label information,
+   * standardization through ORD SHOULD be preferred.
+   *
+   * All labels attached to a `Package` will be inherited to the resources they contain.
+   * Duplicate labels will be merged by the ORD aggregator according to the following rules:
+   * * Values of the same label key will be merged.
+   * * Duplicate values of the same label key will be removed.
+   *
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
+   *
+   */
+  @JsonProperty("labels")
+  public void setLabels(Labels labels) {
+    this.labels = labels;
+  }
+
+  public IntegrationAspect withLabels(Labels labels) {
+    this.labels = labels;
+    return this;
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -305,6 +397,10 @@ public class IntegrationAspect {
     sb.append('=');
     sb.append(((this.capabilities == null) ? "<null>" : this.capabilities));
     sb.append(',');
+    sb.append("labels");
+    sb.append('=');
+    sb.append(((this.labels == null) ? "<null>" : this.labels));
+    sb.append(',');
     if (sb.charAt((sb.length() - 1)) == ',') {
       sb.setCharAt((sb.length() - 1), ']');
     } else {
@@ -324,6 +420,7 @@ public class IntegrationAspect {
     result = ((result * 31) + ((this.eventResources == null) ? 0 : this.eventResources.hashCode()));
     result = ((result * 31)
         + ((this.supportMultipleProviders == null) ? 0 : this.supportMultipleProviders.hashCode()));
+    result = ((result * 31) + ((this.labels == null) ? 0 : this.labels.hashCode()));
     return result;
   }
 
@@ -336,23 +433,27 @@ public class IntegrationAspect {
       return false;
     }
     IntegrationAspect rhs = ((IntegrationAspect) other);
-    return ((((((((this.capabilities == rhs.capabilities)
-                                || ((this.capabilities != null)
-                                    && this.capabilities.equals(rhs.capabilities)))
-                            && ((this.apiResources == rhs.apiResources)
-                                || ((this.apiResources != null)
-                                    && this.apiResources.equals(rhs.apiResources))))
-                        && ((this.description == rhs.description)
-                            || ((this.description != null)
-                                && this.description.equals(rhs.description))))
-                    && ((this.title == rhs.title)
-                        || ((this.title != null) && this.title.equals(rhs.title))))
-                && ((this.mandatory == rhs.mandatory)
-                    || ((this.mandatory != null) && this.mandatory.equals(rhs.mandatory))))
-            && ((this.eventResources == rhs.eventResources)
-                || ((this.eventResources != null) && this.eventResources.equals(rhs.eventResources))))
-        && ((this.supportMultipleProviders == rhs.supportMultipleProviders)
-            || ((this.supportMultipleProviders != null)
-                && this.supportMultipleProviders.equals(rhs.supportMultipleProviders))));
+    return (((((((((this.capabilities == rhs.capabilities)
+                                    || ((this.capabilities != null)
+                                        && this.capabilities.equals(
+                                            rhs.capabilities)))
+                                && ((this.apiResources == rhs.apiResources)
+                                    || ((this.apiResources != null)
+                                        && this.apiResources.equals(
+                                            rhs.apiResources))))
+                            && ((this.description == rhs.description)
+                                || ((this.description != null)
+                                    && this.description.equals(rhs.description))))
+                        && ((this.title == rhs.title)
+                            || ((this.title != null) && this.title.equals(rhs.title))))
+                    && ((this.mandatory == rhs.mandatory)
+                        || ((this.mandatory != null) && this.mandatory.equals(rhs.mandatory))))
+                && ((this.eventResources == rhs.eventResources)
+                    || ((this.eventResources != null)
+                        && this.eventResources.equals(rhs.eventResources))))
+            && ((this.supportMultipleProviders == rhs.supportMultipleProviders)
+                || ((this.supportMultipleProviders != null)
+                    && this.supportMultipleProviders.equals(rhs.supportMultipleProviders))))
+        && ((this.labels == rhs.labels) || ((this.labels != null) && this.labels.equals(rhs.labels))));
   }
 }

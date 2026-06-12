@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 public interface Ord {
 
-  String VERSION = "1.16.0";
+  String VERSION = "1.16.1";
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
@@ -1297,6 +1297,9 @@ public interface Ord {
 
     /** List of Capability Dependencies. */
     CapabilityIntegrationAspect[] capabilities() default {};
+
+    /**  */
+    Labels labels() default @Labels;
   }
 
   @Target(ElementType.TYPE)
@@ -1313,6 +1316,9 @@ public interface Ord {
 
     /** Narrows the dependency to only the listed API operations (or MCP tools) that are required to achieve the aspect.  If `subset` is not provided, the dependency implies that all operations of the referenced resource may be used. If `subset` is provided, only the listed operations are required — consumers MUST NOT assume that other operations are available or permitted.  For more details and examples, see [Integration Dependency](../concepts/integration-dependency). */
     ApiResourceIntegrationAspectSubset[] subset() default {};
+
+    /**  */
+    Labels labels() default @Labels;
   }
 
   @Target(ElementType.TYPE)
@@ -1332,6 +1338,9 @@ public interface Ord {
 
     /** In case that the event subscriptions are limited to known [system types](../index.md#system-type), they can be listed here as [system namespaces](../index.md#system-namespace).  If given, only system types of the defined namespaces are supported as integration partners. If not given, there is no restriction which system type provides the events. */
     String[] systemTypeRestriction() default {};
+
+    /**  */
+    Labels labels() default @Labels;
   }
 
   @Target(ElementType.TYPE)
@@ -1365,6 +1374,9 @@ public interface Ord {
 
     /** Minimum version of the references resource that the integration requires.  */
     String minVersion() default "";
+
+    /**  */
+    Labels labels() default @Labels;
   }
 
   @Target(ElementType.TYPE)

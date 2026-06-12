@@ -13,7 +13,7 @@ import java.util.List;
  *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"ordId", "minVersion", "subset"})
+@JsonPropertyOrder({"ordId", "minVersion", "subset", "labels"})
 public class ApiResourceIntegrationAspect {
 
   /**
@@ -48,6 +48,34 @@ public class ApiResourceIntegrationAspect {
   @JsonPropertyDescription(
       "Narrows the dependency to only the listed API operations (or MCP tools) that are required to achieve the aspect.\n\nIf `subset` is not provided, the dependency implies that all operations of the referenced resource may be used.\nIf `subset` is provided, only the listed operations are required \u2014 consumers MUST NOT assume that other operations are available or permitted.\n\nFor more details and examples, see [Integration Dependency](../concepts/integration-dependency).")
   private List<ApiResourceIntegrationAspectSubset> subset;
+  /**
+   * Labels
+   * <p>
+   * Generic key-value labels that can be applied to most ORD information.
+   * They are defined as an object that may have arbitrary keys.
+   * The value of a key is an array of strings.
+   *
+   * Labels can be used to attach technical information that cannot be expressed natively in ORD.
+   * An ORD aggregator should allow to categorize and query information based on the labels provided.
+   *
+   * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
+   *
+   * If multiple parties rely on the existence of certain label information,
+   * standardization through ORD SHOULD be preferred.
+   *
+   * All labels attached to a `Package` will be inherited to the resources they contain.
+   * Duplicate labels will be merged by the ORD aggregator according to the following rules:
+   * * Values of the same label key will be merged.
+   * * Duplicate values of the same label key will be removed.
+   *
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
+   *
+   */
+  @JsonProperty("labels")
+  @JsonPropertyDescription(
+      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
+  private Labels labels;
 
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
@@ -136,6 +164,69 @@ public class ApiResourceIntegrationAspect {
     return this;
   }
 
+  /**
+   * Labels
+   * <p>
+   * Generic key-value labels that can be applied to most ORD information.
+   * They are defined as an object that may have arbitrary keys.
+   * The value of a key is an array of strings.
+   *
+   * Labels can be used to attach technical information that cannot be expressed natively in ORD.
+   * An ORD aggregator should allow to categorize and query information based on the labels provided.
+   *
+   * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
+   *
+   * If multiple parties rely on the existence of certain label information,
+   * standardization through ORD SHOULD be preferred.
+   *
+   * All labels attached to a `Package` will be inherited to the resources they contain.
+   * Duplicate labels will be merged by the ORD aggregator according to the following rules:
+   * * Values of the same label key will be merged.
+   * * Duplicate values of the same label key will be removed.
+   *
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
+   *
+   */
+  @JsonProperty("labels")
+  public Labels getLabels() {
+    return labels;
+  }
+
+  /**
+   * Labels
+   * <p>
+   * Generic key-value labels that can be applied to most ORD information.
+   * They are defined as an object that may have arbitrary keys.
+   * The value of a key is an array of strings.
+   *
+   * Labels can be used to attach technical information that cannot be expressed natively in ORD.
+   * An ORD aggregator should allow to categorize and query information based on the labels provided.
+   *
+   * To learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).
+   *
+   * If multiple parties rely on the existence of certain label information,
+   * standardization through ORD SHOULD be preferred.
+   *
+   * All labels attached to a `Package` will be inherited to the resources they contain.
+   * Duplicate labels will be merged by the ORD aggregator according to the following rules:
+   * * Values of the same label key will be merged.
+   * * Duplicate values of the same label key will be removed.
+   *
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
+   *
+   */
+  @JsonProperty("labels")
+  public void setLabels(Labels labels) {
+    this.labels = labels;
+  }
+
+  public ApiResourceIntegrationAspect withLabels(Labels labels) {
+    this.labels = labels;
+    return this;
+  }
+
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
@@ -155,6 +246,10 @@ public class ApiResourceIntegrationAspect {
     sb.append('=');
     sb.append(((this.subset == null) ? "<null>" : this.subset));
     sb.append(',');
+    sb.append("labels");
+    sb.append('=');
+    sb.append(((this.labels == null) ? "<null>" : this.labels));
+    sb.append(',');
     if (sb.charAt((sb.length() - 1)) == ',') {
       sb.setCharAt((sb.length() - 1), ']');
     } else {
@@ -166,9 +261,10 @@ public class ApiResourceIntegrationAspect {
   @Override
   public int hashCode() {
     int result = 1;
+    result = ((result * 31) + ((this.minVersion == null) ? 0 : this.minVersion.hashCode()));
     result = ((result * 31) + ((this.ordId == null) ? 0 : this.ordId.hashCode()));
     result = ((result * 31) + ((this.subset == null) ? 0 : this.subset.hashCode()));
-    result = ((result * 31) + ((this.minVersion == null) ? 0 : this.minVersion.hashCode()));
+    result = ((result * 31) + ((this.labels == null) ? 0 : this.labels.hashCode()));
     return result;
   }
 
@@ -181,9 +277,11 @@ public class ApiResourceIntegrationAspect {
       return false;
     }
     ApiResourceIntegrationAspect rhs = ((ApiResourceIntegrationAspect) other);
-    return ((((this.ordId == rhs.ordId) || ((this.ordId != null) && this.ordId.equals(rhs.ordId)))
+    return (((((this.minVersion == rhs.minVersion)
+                    || ((this.minVersion != null) && this.minVersion.equals(rhs.minVersion)))
+                && ((this.ordId == rhs.ordId)
+                    || ((this.ordId != null) && this.ordId.equals(rhs.ordId))))
             && ((this.subset == rhs.subset) || ((this.subset != null) && this.subset.equals(rhs.subset))))
-        && ((this.minVersion == rhs.minVersion)
-            || ((this.minVersion != null) && this.minVersion.equals(rhs.minVersion))));
+        && ((this.labels == rhs.labels) || ((this.labels != null) && this.labels.equals(rhs.labels))));
   }
 }
