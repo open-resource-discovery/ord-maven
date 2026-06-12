@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+## [[0.12.1](https://github.com/open-resource-discovery/ord-maven/releases/tag/v0.12.1)] - 2026-06-06
+
+Update generated annotations and models to ORD spec version 1.16.1
+
 ## [[0.12.0](https://github.com/open-resource-discovery/ord-maven/releases/tag/v0.12.0)] - 2026-06-06
 
 Update generated annotations and models to ORD spec version 1.16.0
