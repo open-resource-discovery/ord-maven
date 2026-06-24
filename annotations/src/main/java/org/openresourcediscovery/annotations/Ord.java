@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 public interface Ord {
 
-  String VERSION = "1.16.1";
+  String VERSION = "1.16.2";
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
