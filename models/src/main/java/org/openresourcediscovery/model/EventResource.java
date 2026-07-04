@@ -412,14 +412,21 @@ public class EventResource {
       "Contains changelog entries that summarize changes with special regards to version and releaseStatus")
   private List<ChangelogEntry> changelogEntries;
   /**
-   * List of available machine-readable definitions, which describe the resource or capability in detail.
+   * List of available machine-readable definitions, which describe the resource in detail.
    * See also [Resource Definitions](../index.md#resource-definitions) for more context.
    *
-   * Each definition is to be understood as an alternative description format, describing the same resource / capability.
-   * The combination of `type` (or `customType` for `type: "custom"`), `purpose`, and `visibility` MUST be unique within the list.
+   * Every entry MUST describe the *same* underlying resource. Allowed variations are alternative
+   * representations (different formats) and complementary artifacts distinguished by `purpose`
+   * (e.g. overlays, AI-enriched variants, agent-security-permissions views).
+   * This list MUST NOT be used to bundle multiple distinct resources under a single ORD resource.
+   * Model those as separate ORD resources instead.
    *
-   * A definition without a `purpose` is considered the primary/default definition for its type.
-   * Additional definitions of the same type MAY be provided if they have a distinct `purpose` (e.g., `ord:ai-enrichment` for AI-optimized definitions).
+   * The entry without a `purpose` value is the primary/default definition for its `(type, visibility)`;
+   * consumers that don't filter by `purpose` MUST fall back to it. There SHOULD be exactly one such
+   * default per `(type, visibility)` combination.
+   *
+   * The combination of `type` (or `customType` for `type: "custom"`), `purpose`, and `visibility` MUST
+   * be unique within the list.
    *
    * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
    * If the definitions are added or changed, the `version` MUST be incremented.
@@ -428,7 +435,7 @@ public class EventResource {
    */
   @JsonProperty("resourceDefinitions")
   @JsonPropertyDescription(
-      "List of available machine-readable definitions, which describe the resource or capability in detail.\nSee also [Resource Definitions](../index.md#resource-definitions) for more context.\n\nEach definition is to be understood as an alternative description format, describing the same resource / capability.\nThe combination of `type` (or `customType` for `type: \"custom\"`), `purpose`, and `visibility` MUST be unique within the list.\n\nA definition without a `purpose` is considered the primary/default definition for its type.\nAdditional definitions of the same type MAY be provided if they have a distinct `purpose` (e.g., `ord:ai-enrichment` for AI-optimized definitions).\n\nIt is RECOMMENDED to provide the definitions as they enable machine-readable use cases.\nIf the definitions are added or changed, the `version` MUST be incremented.\nAn ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.")
+      "List of available machine-readable definitions, which describe the resource in detail.\nSee also [Resource Definitions](../index.md#resource-definitions) for more context.\n\nEvery entry MUST describe the *same* underlying resource. Allowed variations are alternative\nrepresentations (different formats) and complementary artifacts distinguished by `purpose`\n(e.g. overlays, AI-enriched variants, agent-security-permissions views).\nThis list MUST NOT be used to bundle multiple distinct resources under a single ORD resource.\nModel those as separate ORD resources instead.\n\nThe entry without a `purpose` value is the primary/default definition for its `(type, visibility)`;\nconsumers that don't filter by `purpose` MUST fall back to it. There SHOULD be exactly one such\ndefault per `(type, visibility)` combination.\n\nThe combination of `type` (or `customType` for `type: \"custom\"`), `purpose`, and `visibility` MUST\nbe unique within the list.\n\nIt is RECOMMENDED to provide the definitions as they enable machine-readable use cases.\nIf the definitions are added or changed, the `version` MUST be incremented.\nAn ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented.")
   private List<EventResourceDefinition> resourceDefinitions;
   /**
    * Declares this EventResource to be a valid implementation of a standardized or shared contract.
@@ -1556,14 +1563,21 @@ public class EventResource {
   }
 
   /**
-   * List of available machine-readable definitions, which describe the resource or capability in detail.
+   * List of available machine-readable definitions, which describe the resource in detail.
    * See also [Resource Definitions](../index.md#resource-definitions) for more context.
    *
-   * Each definition is to be understood as an alternative description format, describing the same resource / capability.
-   * The combination of `type` (or `customType` for `type: "custom"`), `purpose`, and `visibility` MUST be unique within the list.
+   * Every entry MUST describe the *same* underlying resource. Allowed variations are alternative
+   * representations (different formats) and complementary artifacts distinguished by `purpose`
+   * (e.g. overlays, AI-enriched variants, agent-security-permissions views).
+   * This list MUST NOT be used to bundle multiple distinct resources under a single ORD resource.
+   * Model those as separate ORD resources instead.
    *
-   * A definition without a `purpose` is considered the primary/default definition for its type.
-   * Additional definitions of the same type MAY be provided if they have a distinct `purpose` (e.g., `ord:ai-enrichment` for AI-optimized definitions).
+   * The entry without a `purpose` value is the primary/default definition for its `(type, visibility)`;
+   * consumers that don't filter by `purpose` MUST fall back to it. There SHOULD be exactly one such
+   * default per `(type, visibility)` combination.
+   *
+   * The combination of `type` (or `customType` for `type: "custom"`), `purpose`, and `visibility` MUST
+   * be unique within the list.
    *
    * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
    * If the definitions are added or changed, the `version` MUST be incremented.
@@ -1576,14 +1590,21 @@ public class EventResource {
   }
 
   /**
-   * List of available machine-readable definitions, which describe the resource or capability in detail.
+   * List of available machine-readable definitions, which describe the resource in detail.
    * See also [Resource Definitions](../index.md#resource-definitions) for more context.
    *
-   * Each definition is to be understood as an alternative description format, describing the same resource / capability.
-   * The combination of `type` (or `customType` for `type: "custom"`), `purpose`, and `visibility` MUST be unique within the list.
+   * Every entry MUST describe the *same* underlying resource. Allowed variations are alternative
+   * representations (different formats) and complementary artifacts distinguished by `purpose`
+   * (e.g. overlays, AI-enriched variants, agent-security-permissions views).
+   * This list MUST NOT be used to bundle multiple distinct resources under a single ORD resource.
+   * Model those as separate ORD resources instead.
    *
-   * A definition without a `purpose` is considered the primary/default definition for its type.
-   * Additional definitions of the same type MAY be provided if they have a distinct `purpose` (e.g., `ord:ai-enrichment` for AI-optimized definitions).
+   * The entry without a `purpose` value is the primary/default definition for its `(type, visibility)`;
+   * consumers that don't filter by `purpose` MUST fall back to it. There SHOULD be exactly one such
+   * default per `(type, visibility)` combination.
+   *
+   * The combination of `type` (or `customType` for `type: "custom"`), `purpose`, and `visibility` MUST
+   * be unique within the list.
    *
    * It is RECOMMENDED to provide the definitions as they enable machine-readable use cases.
    * If the definitions are added or changed, the `version` MUST be incremented.
