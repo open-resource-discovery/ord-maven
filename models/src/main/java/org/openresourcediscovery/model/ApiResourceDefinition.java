@@ -97,24 +97,22 @@ public class ApiResourceDefinition {
       "List of supported access strategies for retrieving metadata from the ORD provider.\nAn ORD Consumer/ORD Aggregator MAY choose any of the strategies.\n\nThe access strategies only apply to the metadata access and not the actual API access.\nThe actual access to the APIs for clients is described via Consumption Bundles.\n\nIf this property is not provided, the definition URL will be available through the same access strategy as this ORD document.\nIt is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process.")
   private List<AccessStrategy> accessStrategies;
   /**
-   * Describes the intended purpose or role of this resource definition.
-   *
-   * While `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for.
-   * This allows multiple definitions of the same type to coexist when they serve different purposes.
-   *
-   * For example, an API Resource might have multiple OpenAPI definitions:
-   * one for standard API documentation and another specifically enriched for AI/agent consumption.
+   * Marks a resource definition as a *complementary* variant of the resource's default definition,
+   * for example an overlay, an AI-enriched variant, or an agent-security-permissions view.
+   * All entries in the definitions list, with or without `purpose`, MUST describe the same
+   * underlying resource; see the list property for the full modelling rules.
    *
    * Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness
-   * key for entries in the `resourceDefinitions` list — no two entries on the same resource
-   * may share the same combination.
+   * key for entries in the definitions list.
    *
-   * MUST be a valid [Concept ID](../index.md#concept-id).
+   * MUST be a valid [Concept ID](../index.md#concept-id). The `ord:` namespace is reserved for
+   * values standardized by the ORD specification itself; custom values MUST use a vendor- or
+   * product-specific namespace prefix (e.g. `foo.bar:my-purpose`).
    *
    */
   @JsonProperty("purpose")
   @JsonPropertyDescription(
-      "Describes the intended purpose or role of this resource definition.\n\nWhile `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for.\nThis allows multiple definitions of the same type to coexist when they serve different purposes.\n\nFor example, an API Resource might have multiple OpenAPI definitions:\none for standard API documentation and another specifically enriched for AI/agent consumption.\n\nTogether with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness\nkey for entries in the `resourceDefinitions` list \u2014 no two entries on the same resource\nmay share the same combination.\n\nMUST be a valid [Concept ID](../index.md#concept-id).")
+      "Marks a resource definition as a *complementary* variant of the resource's default definition,\nfor example an overlay, an AI-enriched variant, or an agent-security-permissions view.\nAll entries in the definitions list, with or without `purpose`, MUST describe the same\nunderlying resource; see the list property for the full modelling rules.\n\nTogether with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness\nkey for entries in the definitions list.\n\nMUST be a valid [Concept ID](../index.md#concept-id). The `ord:` namespace is reserved for\nvalues standardized by the ORD specification itself; custom values MUST use a vendor- or\nproduct-specific namespace prefix (e.g. `foo.bar:my-purpose`).")
   private String purpose;
 
   /**
@@ -318,19 +316,17 @@ public class ApiResourceDefinition {
   }
 
   /**
-   * Describes the intended purpose or role of this resource definition.
-   *
-   * While `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for.
-   * This allows multiple definitions of the same type to coexist when they serve different purposes.
-   *
-   * For example, an API Resource might have multiple OpenAPI definitions:
-   * one for standard API documentation and another specifically enriched for AI/agent consumption.
+   * Marks a resource definition as a *complementary* variant of the resource's default definition,
+   * for example an overlay, an AI-enriched variant, or an agent-security-permissions view.
+   * All entries in the definitions list, with or without `purpose`, MUST describe the same
+   * underlying resource; see the list property for the full modelling rules.
    *
    * Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness
-   * key for entries in the `resourceDefinitions` list — no two entries on the same resource
-   * may share the same combination.
+   * key for entries in the definitions list.
    *
-   * MUST be a valid [Concept ID](../index.md#concept-id).
+   * MUST be a valid [Concept ID](../index.md#concept-id). The `ord:` namespace is reserved for
+   * values standardized by the ORD specification itself; custom values MUST use a vendor- or
+   * product-specific namespace prefix (e.g. `foo.bar:my-purpose`).
    *
    */
   @JsonProperty("purpose")
@@ -339,19 +335,17 @@ public class ApiResourceDefinition {
   }
 
   /**
-   * Describes the intended purpose or role of this resource definition.
-   *
-   * While `type` specifies the format (e.g., OpenAPI, AsyncAPI), `purpose` indicates what the definition is used for.
-   * This allows multiple definitions of the same type to coexist when they serve different purposes.
-   *
-   * For example, an API Resource might have multiple OpenAPI definitions:
-   * one for standard API documentation and another specifically enriched for AI/agent consumption.
+   * Marks a resource definition as a *complementary* variant of the resource's default definition,
+   * for example an overlay, an AI-enriched variant, or an agent-security-permissions view.
+   * All entries in the definitions list, with or without `purpose`, MUST describe the same
+   * underlying resource; see the list property for the full modelling rules.
    *
    * Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness
-   * key for entries in the `resourceDefinitions` list — no two entries on the same resource
-   * may share the same combination.
+   * key for entries in the definitions list.
    *
-   * MUST be a valid [Concept ID](../index.md#concept-id).
+   * MUST be a valid [Concept ID](../index.md#concept-id). The `ord:` namespace is reserved for
+   * values standardized by the ORD specification itself; custom values MUST use a vendor- or
+   * product-specific namespace prefix (e.g. `foo.bar:my-purpose`).
    *
    */
   @JsonProperty("purpose")
