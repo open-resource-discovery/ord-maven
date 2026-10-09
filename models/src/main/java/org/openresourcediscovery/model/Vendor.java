@@ -11,10 +11,11 @@ import java.util.List;
  * <p>
  * The vendor of a product or a package, usually a corporation or a customer / user.
  *
- * The vendor of a `Package` is the owner or creator of the content of the package.
+ * The vendor of a `Package` is the authoritative statement of the current ownership attribution for the content of the Package.
+ * It is independent of the namespaces of the resource ORD IDs and MUST NOT be derived from them.
  * The vendor of a `Product` is the owner of the product.
  *
- * If the resources are created by the customer / user of the described system, `customer:vendor:Customer:` MUST be used as vendor.
+ * If ownership of the Package contents is attributed to the customer / user of the described system, `customer:vendor:Customer:` MUST be used as vendor.
  *
  * Both have already a [vendor namespace](../index.md#vendor-namespace) within their ORD ID.
  * The `Vendor` entity is giving more details on the vendor namespace.

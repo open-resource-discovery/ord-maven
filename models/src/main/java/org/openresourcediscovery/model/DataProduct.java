@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Data Product
  * <p>
- * A [Data Product](../concepts/data-product) is a data set exposed for consumption outside the boundaries of the producing application via APIs and described by high quality metadata that can be accessed through the [ORD Aggregator](../../spec-v1/#ord-aggregator).
+ * A [Data Product](../concepts/data-product) is a data set exposed for consumption outside the boundaries of the producing application via APIs and described by high quality metadata that can be accessed through the [ORD Aggregator](../../spec-v1/index.md#ord-aggregator).
  *
  * Please note that this concept is in beta, see [Data Product - Current Status](../concepts/data-product#current-status).
  *

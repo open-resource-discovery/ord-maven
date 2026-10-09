@@ -70,23 +70,23 @@
             "type": "string",
             "x-introduced-in-version": "1.12.0",
             "x-feature-status": "beta",
-            "description": "With ORD it's possible to describe a system from a static or a dynamic [perspective](../index.md#perspectives) (for more details, follow the link).\n\nIt is strongly RECOMMENDED to mark all static ORD documents with perspective `system-version`.\n\nIt is RECOMMENDED to describe dynamic metadata in both static system-version perspective and additionally describe the system-instance perspective where it diverges from the static metadata.\n\nIf not provided, this defaults to `system-instance`, which is the most precise description but also the most costly to replicate.\n\nPlease read the [article on perspectives](../concepts/perspectives) for more explanations.",
+            "description": "With ORD it's possible to describe a system from a static or a dynamic [perspective](../index.md#perspectives) (for more details, follow the link).\n\nAn ORD provider that describes a system SHOULD publish static metadata using `system-type`, `system-version`, or both.\nStatic ORD documents MUST NOT contain tenant context or tenant-specific customizations.\nProviders SHOULD publish version-independent metadata through `system-type` and metadata that differs between versions through `system-version`.\nDistinct `system-version` values MUST be used when multiple versions of the same application are deployed at the same time in one environment tier, such as production.\nA continuously delivered system MAY instead publish all static metadata through `system-type` or through `system-version` with a fixed `describedSystemVersion.version`.\nWhen using the fixed-version approach, the version MUST remain unchanged so each release replaces the previously published `system-version` perspective.\nEach ORD ID published in a static perspective MUST have a complete representation.\nThe effective static view looks up an ORD ID in the applicable `system-version` layer first and then in `system-type`.\nIf both contain the ORD ID, the complete `system-version` representation takes precedence and properties MUST NOT be merged across the layers.\n\nSystems with dynamic metadata MUST be described in a complete system-instance perspective and SHOULD additionally be described in at least one static perspective.\n\nIf not provided, this defaults to `system-instance`, which is the most precise description but also the most costly to replicate.\n\nPlease read the [article on perspectives](../concepts/perspectives) for more explanations.",
             "oneOf": [
                 {
                     "const": "system-type",
-                    "description": "Describes a static [system-type](../index.md#system-type) perspective, which is version independent.\n\nIf a system is not versioned (continuous delivery) or resources are not tied to a system, the system-type perspective\nimplies that the information apply, no matter which system version or instance."
+                    "description": "Describes a static [system-type](../index.md#system-type) perspective, which is version independent.\n\nIf a system is not versioned (continuous delivery) or resources are not tied to a system version, the system-type perspective\nimplies that the information applies, no matter which system version or instance."
                 },
                 {
                     "const": "system-version",
-                    "description": "Describes the static [system-version](../index.md#system-version) perspective, usually known at deploy-time.\n\nIf chosen, `describedSystemVersion`.`version` MUST be provided, too.\n\nThis perspective describes how a system of a particular type and version generally look like.\nIf no explicit `system-type` perspective is available, the latest system-version SHOULD be interpreted as the [system-type](../index.md#system-type) perspective (see [static perspective resolution](../concepts/perspectives#static-perspective-resolution))."
+                    "description": "Describes the static [system-version](../index.md#system-version) perspective, usually known at deploy-time.\n\nIf chosen, `describedSystemVersion`.`version` MUST be provided, too.\n\nThis perspective describes how a system of a particular type and version generally look like.\nWhen no specific version is requested, the greatest published stable system-version MUST be selected (see [static perspective resolution](../concepts/perspectives#static-perspective-resolution)).\nThe selected system-version is the first lookup layer.\nIf it omits an ORD ID, the version-independent `system-type` layer MUST be looked up next.\nIf both contain the ORD ID, the complete system-version representation takes precedence without property merging.\nAutomatic latest selection MUST exclude Semantic Versioning prereleases, which may still be selected for an exact-version lookup, including when it is the known version of a tenant.\nProviders MUST NOT publish multiple system-version perspectives whose versions have equal Semantic Versioning precedence and differ only in build metadata."
                 },
                 {
                     "const": "system-instance",
-                    "description": "Describes the complete dynamic [system-instance](../index.md#system-instance) (tenant) perspective as known at run-time.\nThis allows to also reflect tenant specific extensions, customizations and runtime configuration.\n\nIf provided, it will completely override the static system-version perspective when metadata about system instances is requested."
+                    "description": "Describes the complete dynamic [system-instance](../index.md#system-instance) (tenant) perspective as known at run-time.\nThis allows to also reflect tenant specific extensions, customizations and runtime configuration.\n\nAll documents published for one tenant MUST collectively form that tenant's complete `system-instance` perspective.\nIf published for a tenant, it completely replaces the effective static view when metadata about that system instance is requested.\nWhether a complete valid perspective is published MUST be determined independently for each tenant.\nA resource omitted from the complete `system-instance` perspective MUST NOT be inherited from a static perspective."
                 },
                 {
                     "const": "system-independent",
-                    "description": "Describes content that is independent of [system-versions](../index.md#system-version) or [system-instances](../index.md#system-instance).\nThis content is always static and has independent visibility and lifecycle from the systems in a particular landscape.\nThe \"system-independent\" content MUST NOT be overridden via system-version or system-instance perspective metadata.\n\nExamples are: Vendors, products, globally aligned entity types, groups and group types (taxonomy), which are usually shared by multiple systems.\nFor the distinction between system-independent content and system-scoped shared publications, see [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources)."
+                    "description": "Describes content that is independent of [system-versions](../index.md#system-version) or [system-instances](../index.md#system-instance).\nThis content is always static and has independent visibility and lifecycle from the systems in a particular landscape.\nIt MUST NOT contain system or tenant context or system-specific or tenant-specific customizations.\nThe \"system-independent\" content MUST NOT be overridden via system-version or system-instance perspective metadata.\n\nExamples are: Vendors, products, globally aligned entity types, groups and group types (taxonomy), which are usually shared by multiple systems.\nFor the distinction between system-independent content and system-scoped shared publications, see [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources)."
                 }
             ],
             "default": "system-instance",
@@ -443,7 +443,7 @@
                 },
                 "vendor": {
                     "type": "string",
-                    "description": "Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.\n\nMUST be a valid reference to a [Vendor](#vendor) ORD ID.\n\nMUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.\n\nMUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.",
+                    "description": "Vendor / organization to which ownership of the resources in the `Package` is currently attributed.\nThis value is authoritative for current ownership attribution and is independent of the namespaces of the resource ORD IDs.\nIt MUST NOT be derived from those namespaces.\n\nMUST be a valid reference to a [Vendor](#vendor) ORD ID.\n\nMUST be set to `customer:vendor:Customer:` if ownership of the Package contents is attributed to the customer / user.\n\nMUST be set to a registered partner vendor if ownership of the Package contents is attributed to a partner / third party.",
                     "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):(vendor):([a-zA-Z0-9._\\-]+):()$",
                     "maxLength": 256,
                     "x-association-target": [
@@ -3005,7 +3005,7 @@
             "title": "Data Product",
             "x-ums-type": "root",
             "x-introduced-in-version": "1.8.0",
-            "description": "A [Data Product](../concepts/data-product) is a data set exposed for consumption outside the boundaries of the producing application via APIs and described by high quality metadata that can be accessed through the [ORD Aggregator](../../spec-v1/#ord-aggregator).\n\nPlease note that this concept is in beta, see [Data Product - Current Status](../concepts/data-product#current-status).",
+            "description": "A [Data Product](../concepts/data-product) is a data set exposed for consumption outside the boundaries of the producing application via APIs and described by high quality metadata that can be accessed through the [ORD Aggregator](../../spec-v1/index.md#ord-aggregator).\n\nPlease note that this concept is in beta, see [Data Product - Current Status](../concepts/data-product#current-status).",
             "properties": {
                 "ordId": {
                     "type": "string",
@@ -3820,7 +3820,7 @@
                         },
                         {
                             "const": "edmx",
-                            "description": "[OData](https://www.odata.org/documentation/) APIs can be described via edmx XML files.\nFor OData V2 APIs, this is standardized through the [Common Schema Definition Language (CSDL) V2](https://www.odata.org/documentation/odata-version-2-0/overview/#ServiceMetadataDocument).\nFor OData V4 APIs, this is standardized through the [CSDL XML Representation](https://docs.oasis-open.org/odata/odata-csdl-xml/v4.01/odata-csdl-xml-v4.01.html)\nThe `mediaType` MUST be be set to `application/xml`.\nThe `apiProtocol` MUST be set to `odata-v2` or `odata-v4`."
+                            "description": "[OData](https://www.odata.org/documentation/) APIs can be described via edmx XML files.\nFor OData V2 APIs, this is standardized through the [Common Schema Definition Language (CSDL) V2](https://www.odata.org/documentation/odata-version-2-0/overview/).\nFor OData V4 APIs, this is standardized through the [CSDL XML Representation](https://docs.oasis-open.org/odata/odata-csdl-xml/v4.01/odata-csdl-xml-v4.01.html)\nThe `mediaType` MUST be be set to `application/xml`.\nThe `apiProtocol` MUST be set to `odata-v2` or `odata-v4`."
                         },
                         {
                             "const": "csdl-json",
@@ -3840,7 +3840,7 @@
                         },
                         {
                             "const": "a2a-agent-card",
-                            "description": "[A2A Agent Card](https://a2a-protocol.org/topics/agent-discovery/) is a machine-readable description of an A2A Agent.\nThe `mediaType` MUST be be set to `application/json`.\nThe `apiProtocol` MUST be set to `a2a`.",
+                            "description": "[A2A Agent Card](https://a2a-protocol.org/latest/specification/#8-agent-discovery-the-agent-card) is a machine-readable description of an A2A Agent.\nThe `mediaType` MUST be be set to `application/json`.\nThe `apiProtocol` MUST be set to `a2a`.",
                             "x-introduced-in-version": "1.12.2"
                         },
                         {
@@ -3984,7 +3984,7 @@
                         },
                         {
                             "const": "asyncapi-v2",
-                            "description": "[AsyncAPI 2](https://www.asyncapi.com/docs/specifications/2.0.0) API definition for events.\nThe SAP Event Catalog Specification also falls under this category, as it is a valid AsyncAPI definition."
+                            "description": "[AsyncAPI 2](https://www.asyncapi.com/docs/reference/specification/v2.0.0) API definition for events.\nThe SAP Event Catalog Specification also falls under this category, as it is a valid AsyncAPI definition."
                         },
                         {
                             "const": "sap-csn-interop-effective-v1",
@@ -5965,7 +5965,7 @@
             "type": "object",
             "title": "Vendor",
             "x-ums-type": "root",
-            "description": "The vendor of a product or a package, usually a corporation or a customer / user.\n\nThe vendor of a `Package` is the owner or creator of the content of the package.\nThe vendor of a `Product` is the owner of the product.\n\nIf the resources are created by the customer / user of the described system, `customer:vendor:Customer:` MUST be used as vendor.\n\nBoth have already a [vendor namespace](../index.md#vendor-namespace) within their ORD ID.\nThe `Vendor` entity is giving more details on the vendor namespace.\nFor one vendor namespace there MUST only be exactly one `Vendor` ORD entity describing it.\n\nFor example: The only correct value for a SAP vendor reference is `sap:vendor:SAP:`.",
+            "description": "The vendor of a product or a package, usually a corporation or a customer / user.\n\nThe vendor of a `Package` is the authoritative statement of the current ownership attribution for the content of the Package.\nIt is independent of the namespaces of the resource ORD IDs and MUST NOT be derived from them.\nThe vendor of a `Product` is the owner of the product.\n\nIf ownership of the Package contents is attributed to the customer / user of the described system, `customer:vendor:Customer:` MUST be used as vendor.\n\nBoth have already a [vendor namespace](../index.md#vendor-namespace) within their ORD ID.\nThe `Vendor` entity is giving more details on the vendor namespace.\nFor one vendor namespace there MUST only be exactly one `Vendor` ORD entity describing it.\n\nFor example: The only correct value for a SAP vendor reference is `sap:vendor:SAP:`.",
             "properties": {
                 "ordId": {
                     "type": "string",
@@ -6291,7 +6291,7 @@
             "properties": {
                 "type": {
                     "type": "string",
-                    "description": "See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions)",
+                    "description": "See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html)",
                     "anyOf": [
                         {
                             "type": "string",

@@ -18,13 +18,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class APIEventResourceLink {
 
   /**
-   * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions)
+   * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html)
    * (Required)
    *
    */
   @JsonProperty("type")
   @JsonPropertyDescription(
-      "See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions)")
+      "See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html)")
   private String type;
   /**
    * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
@@ -52,7 +52,7 @@ public class APIEventResourceLink {
   private String url;
 
   /**
-   * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions)
+   * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html)
    * (Required)
    *
    */
@@ -62,7 +62,7 @@ public class APIEventResourceLink {
   }
 
   /**
-   * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions)
+   * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html)
    * (Required)
    *
    */

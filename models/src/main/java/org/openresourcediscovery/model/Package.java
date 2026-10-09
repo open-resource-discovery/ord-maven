@@ -235,19 +235,21 @@ public class Package {
       "Optional information that should be provided when creating a support ticket for the resources bundled in this Package.\nThis can for example be a \"component\" name that needs to be chosen in the support portal.\n\nNotated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nPlease also note that if you want to provide link(s) where you can find support information,\nyou can use `packageLinks` with a link of type `support`.")
   private String supportInfo;
   /**
-   * Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.
+   * Vendor / organization to which ownership of the resources in the `Package` is currently attributed.
+   * This value is authoritative for current ownership attribution and is independent of the namespaces of the resource ORD IDs.
+   * It MUST NOT be derived from those namespaces.
    *
    * MUST be a valid reference to a [Vendor](#vendor) ORD ID.
    *
-   * MUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.
+   * MUST be set to `customer:vendor:Customer:` if ownership of the Package contents is attributed to the customer / user.
    *
-   * MUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.
+   * MUST be set to a registered partner vendor if ownership of the Package contents is attributed to a partner / third party.
    * (Required)
    *
    */
   @JsonProperty("vendor")
   @JsonPropertyDescription(
-      "Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.\n\nMUST be a valid reference to a [Vendor](#vendor) ORD ID.\n\nMUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.\n\nMUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.")
+      "Vendor / organization to which ownership of the resources in the `Package` is currently attributed.\nThis value is authoritative for current ownership attribution and is independent of the namespaces of the resource ORD IDs.\nIt MUST NOT be derived from those namespaces.\n\nMUST be a valid reference to a [Vendor](#vendor) ORD ID.\n\nMUST be set to `customer:vendor:Customer:` if ownership of the Package contents is attributed to the customer / user.\n\nMUST be set to a registered partner vendor if ownership of the Package contents is attributed to a partner / third party.")
   private String vendor;
   /**
    * List of products this package and its resources are a part of.
@@ -843,13 +845,15 @@ public class Package {
   }
 
   /**
-   * Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.
+   * Vendor / organization to which ownership of the resources in the `Package` is currently attributed.
+   * This value is authoritative for current ownership attribution and is independent of the namespaces of the resource ORD IDs.
+   * It MUST NOT be derived from those namespaces.
    *
    * MUST be a valid reference to a [Vendor](#vendor) ORD ID.
    *
-   * MUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.
+   * MUST be set to `customer:vendor:Customer:` if ownership of the Package contents is attributed to the customer / user.
    *
-   * MUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.
+   * MUST be set to a registered partner vendor if ownership of the Package contents is attributed to a partner / third party.
    * (Required)
    *
    */
@@ -859,13 +863,15 @@ public class Package {
   }
 
   /**
-   * Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.
+   * Vendor / organization to which ownership of the resources in the `Package` is currently attributed.
+   * This value is authoritative for current ownership attribution and is independent of the namespaces of the resource ORD IDs.
+   * It MUST NOT be derived from those namespaces.
    *
    * MUST be a valid reference to a [Vendor](#vendor) ORD ID.
    *
-   * MUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.
+   * MUST be set to `customer:vendor:Customer:` if ownership of the Package contents is attributed to the customer / user.
    *
-   * MUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.
+   * MUST be set to a registered partner vendor if ownership of the Package contents is attributed to a partner / third party.
    * (Required)
    *
    */

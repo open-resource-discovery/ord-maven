@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 public interface Ord {
 
-  String VERSION = "1.16.3";
+  String VERSION = "1.16.4";
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
@@ -112,7 +112,7 @@ public interface Ord {
     /** Optional information that should be provided when creating a support ticket for the resources bundled in this Package. This can for example be a "component" name that needs to be chosen in the support portal.  Notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  Please also note that if you want to provide link(s) where you can find support information, you can use `packageLinks` with a link of type `support`. */
     String supportInfo() default "";
 
-    /** Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.  MUST be a valid reference to a [Vendor](#vendor) ORD ID.  MUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.  MUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party. */
+    /** Vendor / organization to which ownership of the resources in the `Package` is currently attributed. This value is authoritative for current ownership attribution and is independent of the namespaces of the resource ORD IDs. It MUST NOT be derived from those namespaces.  MUST be a valid reference to a [Vendor](#vendor) ORD ID.  MUST be set to `customer:vendor:Customer:` if ownership of the Package contents is attributed to the customer / user.  MUST be set to a registered partner vendor if ownership of the Package contents is attributed to a partner / third party. */
     String vendor() default "";
 
     /** List of products this package and its resources are a part of.  MUST be a valid reference to a [Product](#product) ORD ID.  `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains. Resources that belong to a different product than their package can override this directly.  Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package. Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources. */
@@ -1484,7 +1484,7 @@ public interface Ord {
 
     String[] requiredFields() default {"url", "type"};
 
-    /** See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions) */
+    /** See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html) */
     String type() default "";
 
     /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
