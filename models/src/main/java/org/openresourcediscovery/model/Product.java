@@ -40,13 +40,13 @@ public class Product {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
   @JsonProperty("ordId")
   @JsonPropertyDescription(
-      "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.")
+      "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.")
   private String ordId;
   /**
    * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
@@ -55,12 +55,12 @@ public class Product {
    *
    * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
    *
-   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
    *
    */
   @JsonProperty("correlationIds")
   @JsonPropertyDescription(
-      "Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).")
+      "Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
   private List<String> correlationIds;
   /**
    * Human-readable title.
@@ -148,13 +148,13 @@ public class Product {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
   @JsonProperty("labels")
   @JsonPropertyDescription(
-      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
+      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
   private Labels labels;
   /**
    * Documentation Labels
@@ -182,7 +182,7 @@ public class Product {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
@@ -194,7 +194,7 @@ public class Product {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
@@ -215,7 +215,7 @@ public class Product {
    *
    * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
    *
-   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
    *
    */
   @JsonProperty("correlationIds")
@@ -230,7 +230,7 @@ public class Product {
    *
    * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
    *
-   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
    *
    */
   @JsonProperty("correlationIds")
@@ -439,7 +439,7 @@ public class Product {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
@@ -468,7 +468,7 @@ public class Product {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */

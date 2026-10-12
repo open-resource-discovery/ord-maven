@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Aspect
@@ -16,7 +14,7 @@ import java.util.Set;
  * Each aspect can list references to resources, which could be owned and defined by the integration target or by the described system itself.
  * In case the reference links to own resources, it is implied that they are to be used by the integration target to fulfill the Integration Dependency.
  *
- * If multiple dependencies are given within an aspect, including across `systemTypes`, `apiResources`, `eventResources` and `capabilities`, they are considered alternatives to each other (OR condition).
+ * If multiple resources are given within an aspect, they are considered alternatives to each other (OR condition).
  * In case an AND condition is needed, multiple aspects need to be added to the Integration Dependency.
  *
  */
@@ -29,7 +27,6 @@ import java.util.Set;
   "apiResources",
   "eventResources",
   "capabilities",
-  "systemTypes",
   "labels"
 })
 public class IntegrationAspect {
@@ -39,6 +36,7 @@ public class IntegrationAspect {
    *
    * MUST NOT exceed 255 chars.
    * MUST NOT contain line breaks.
+   * (Required)
    *
    */
   @JsonProperty("title")
@@ -94,19 +92,6 @@ public class IntegrationAspect {
   @JsonPropertyDescription("List of Capability Dependencies.")
   private List<CapabilityIntegrationAspect> capabilities;
   /**
-   * List of alternative system types that can fulfill this aspect without requiring a specific API resource, event resource or capability (OR condition).
-   *
-   * Each entry identifies a [system type](../index.md#system-type) by its system namespace and can optionally require a minimum system version.
-   * Use separate aspects when multiple system types are required (AND condition).
-   * System-type aspects can be combined with more detailed resource or capability aspects in the same Integration Dependency.
-   *
-   */
-  @JsonProperty("systemTypes")
-  @JsonDeserialize(as = java.util.LinkedHashSet.class)
-  @JsonPropertyDescription(
-      "List of alternative system types that can fulfill this aspect without requiring a specific API resource, event resource or capability (OR condition).\n\nEach entry identifies a [system type](../index.md#system-type) by its system namespace and can optionally require a minimum system version.\nUse separate aspects when multiple system types are required (AND condition).\nSystem-type aspects can be combined with more detailed resource or capability aspects in the same Integration Dependency.")
-  private Set<SystemTypeIntegrationAspect> systemTypes;
-  /**
    * Labels
    * <p>
    * Generic key-value labels that can be applied to most ORD information.
@@ -126,13 +111,13 @@ public class IntegrationAspect {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
   @JsonProperty("labels")
   @JsonPropertyDescription(
-      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
+      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
   private Labels labels;
 
   /**
@@ -140,6 +125,7 @@ public class IntegrationAspect {
    *
    * MUST NOT exceed 255 chars.
    * MUST NOT contain line breaks.
+   * (Required)
    *
    */
   @JsonProperty("title")
@@ -152,6 +138,7 @@ public class IntegrationAspect {
    *
    * MUST NOT exceed 255 chars.
    * MUST NOT contain line breaks.
+   * (Required)
    *
    */
   @JsonProperty("title")
@@ -313,37 +300,6 @@ public class IntegrationAspect {
   }
 
   /**
-   * List of alternative system types that can fulfill this aspect without requiring a specific API resource, event resource or capability (OR condition).
-   *
-   * Each entry identifies a [system type](../index.md#system-type) by its system namespace and can optionally require a minimum system version.
-   * Use separate aspects when multiple system types are required (AND condition).
-   * System-type aspects can be combined with more detailed resource or capability aspects in the same Integration Dependency.
-   *
-   */
-  @JsonProperty("systemTypes")
-  public Set<SystemTypeIntegrationAspect> getSystemTypes() {
-    return systemTypes;
-  }
-
-  /**
-   * List of alternative system types that can fulfill this aspect without requiring a specific API resource, event resource or capability (OR condition).
-   *
-   * Each entry identifies a [system type](../index.md#system-type) by its system namespace and can optionally require a minimum system version.
-   * Use separate aspects when multiple system types are required (AND condition).
-   * System-type aspects can be combined with more detailed resource or capability aspects in the same Integration Dependency.
-   *
-   */
-  @JsonProperty("systemTypes")
-  public void setSystemTypes(Set<SystemTypeIntegrationAspect> systemTypes) {
-    this.systemTypes = systemTypes;
-  }
-
-  public IntegrationAspect withSystemTypes(Set<SystemTypeIntegrationAspect> systemTypes) {
-    this.systemTypes = systemTypes;
-    return this;
-  }
-
-  /**
    * Labels
    * <p>
    * Generic key-value labels that can be applied to most ORD information.
@@ -363,7 +319,7 @@ public class IntegrationAspect {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
@@ -392,7 +348,7 @@ public class IntegrationAspect {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
@@ -441,10 +397,6 @@ public class IntegrationAspect {
     sb.append('=');
     sb.append(((this.capabilities == null) ? "<null>" : this.capabilities));
     sb.append(',');
-    sb.append("systemTypes");
-    sb.append('=');
-    sb.append(((this.systemTypes == null) ? "<null>" : this.systemTypes));
-    sb.append(',');
     sb.append("labels");
     sb.append('=');
     sb.append(((this.labels == null) ? "<null>" : this.labels));
@@ -464,7 +416,6 @@ public class IntegrationAspect {
     result = ((result * 31) + ((this.apiResources == null) ? 0 : this.apiResources.hashCode()));
     result = ((result * 31) + ((this.description == null) ? 0 : this.description.hashCode()));
     result = ((result * 31) + ((this.title == null) ? 0 : this.title.hashCode()));
-    result = ((result * 31) + ((this.systemTypes == null) ? 0 : this.systemTypes.hashCode()));
     result = ((result * 31) + ((this.mandatory == null) ? 0 : this.mandatory.hashCode()));
     result = ((result * 31) + ((this.eventResources == null) ? 0 : this.eventResources.hashCode()));
     result = ((result * 31)
@@ -482,24 +433,19 @@ public class IntegrationAspect {
       return false;
     }
     IntegrationAspect rhs = ((IntegrationAspect) other);
-    return ((((((((((this.capabilities == rhs.capabilities)
-                                        || ((this.capabilities != null)
-                                            && this.capabilities.equals(
-                                                rhs.capabilities)))
-                                    && ((this.apiResources == rhs.apiResources)
-                                        || ((this.apiResources != null)
-                                            && this.apiResources.equals(
-                                                rhs.apiResources))))
-                                && ((this.description == rhs.description)
-                                    || ((this.description != null)
-                                        && this.description.equals(
-                                            rhs.description))))
-                            && ((this.title == rhs.title)
-                                || ((this.title != null)
-                                    && this.title.equals(rhs.title))))
-                        && ((this.systemTypes == rhs.systemTypes)
-                            || ((this.systemTypes != null)
-                                && this.systemTypes.equals(rhs.systemTypes))))
+    return (((((((((this.capabilities == rhs.capabilities)
+                                    || ((this.capabilities != null)
+                                        && this.capabilities.equals(
+                                            rhs.capabilities)))
+                                && ((this.apiResources == rhs.apiResources)
+                                    || ((this.apiResources != null)
+                                        && this.apiResources.equals(
+                                            rhs.apiResources))))
+                            && ((this.description == rhs.description)
+                                || ((this.description != null)
+                                    && this.description.equals(rhs.description))))
+                        && ((this.title == rhs.title)
+                            || ((this.title != null) && this.title.equals(rhs.title))))
                     && ((this.mandatory == rhs.mandatory)
                         || ((this.mandatory != null) && this.mandatory.equals(rhs.mandatory))))
                 && ((this.eventResources == rhs.eventResources)

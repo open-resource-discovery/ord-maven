@@ -27,14 +27,14 @@ public class AccessStrategy {
   /**
    * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
    *
-   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
+   * MUST be a valid [Specification ID](../index.md#specification-id).
    *
    * MUST only be provided if `type` is set to `custom`.
    *
    */
   @JsonProperty("customType")
   @JsonPropertyDescription(
-      "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.")
+      "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.")
   private String customType;
   /**
    * Human-readable description about how the access is set up, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
@@ -75,7 +75,7 @@ public class AccessStrategy {
   /**
    * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
    *
-   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
+   * MUST be a valid [Specification ID](../index.md#specification-id).
    *
    * MUST only be provided if `type` is set to `custom`.
    *
@@ -88,7 +88,7 @@ public class AccessStrategy {
   /**
    * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
    *
-   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
+   * MUST be a valid [Specification ID](../index.md#specification-id).
    *
    * MUST only be provided if `type` is set to `custom`.
    *

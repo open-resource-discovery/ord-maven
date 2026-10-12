@@ -13,7 +13,7 @@ import java.util.List;
  * The event resource provides a high-level description of a collection of related Events. More detailed information, such as the event resource definitions, are provided in links in the table below.
  * Which events are considered "related" is up to the implementer. A common practice is to bundle events that are based on the same resource/Business Object. It is also an option to bundle all available events into a single event resource/event catalog.
  * Please note that event resources can be described, but still be [`disabled`](#event-resource_disabled).
- * If the event resource is created or owned by the user or customer of the system or by partners or third parties, it MUST be assigned to dedicated [Packages](#package) that state this ownership via the `vendor` property.
+ * If the event resource is not created or owned by the user / customer of the system or by partners / third parties, it MUST be assigned to dedicated [Packages](#package) that state this the ownership via the `vendor` property.
  *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -70,13 +70,13 @@ public class EventResource {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
   @JsonProperty("ordId")
   @JsonPropertyDescription(
-      "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.")
+      "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.")
   private String ordId;
   /**
    * The locally unique ID under which this resource can be looked up / resolved in the described system itself.
@@ -97,12 +97,12 @@ public class EventResource {
    *
    * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
    *
-   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
    *
    */
   @JsonProperty("correlationIds")
   @JsonPropertyDescription(
-      "Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).")
+      "Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
   private List<String> correlationIds;
   /**
    * Human-readable title.
@@ -240,9 +240,8 @@ public class EventResource {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
-   * If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible.
-   * If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
+   * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
@@ -256,7 +255,7 @@ public class EventResource {
    */
   @JsonProperty("version")
   @JsonPropertyDescription(
-      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.\nIf a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible.\nIf the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
+      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
   private String version;
   /**
    * Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.
@@ -281,13 +280,13 @@ public class EventResource {
    * Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.
    * Abstract resources can be system-owned, authority-owned or system-independent, depending on who governs the interface contract.
    *
-   * More details can be found in [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility).
+   * More details can be found on the [Compatibility](../concepts/compatibility) concept page.
    * See also [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources#abstract-resources-and-compatiblewith) for how abstract contracts relate to shared ORD IDs.
    *
    */
   @JsonProperty("abstract")
   @JsonPropertyDescription(
-      "Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.\n\nAbstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.\nAbstract resources can be system-owned, authority-owned or system-independent, depending on who governs the interface contract.\n\nMore details can be found in [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility).\nSee also [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources#abstract-resources-and-compatiblewith) for how abstract contracts relate to shared ORD IDs.")
+      "Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.\n\nAbstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.\nAbstract resources can be system-owned, authority-owned or system-independent, depending on who governs the interface contract.\n\nMore details can be found on the [Compatibility](../concepts/compatibility) concept page.\nSee also [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources#abstract-resources-and-compatiblewith) for how abstract contracts relate to shared ORD IDs.")
   private Boolean _abstract = false;
   /**
    * Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.
@@ -311,13 +310,13 @@ public class EventResource {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
   @JsonProperty("releaseStatus")
   @JsonPropertyDescription(
-      "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details.")
+      "Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).\n\nThis indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk\nof depending on the resource and whether it's suitable for production use.\n\nNote: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.\n\nSee [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.")
   private String releaseStatus;
   /**
    * Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so.
@@ -455,14 +454,14 @@ public class EventResource {
   /**
    * If the fixed `implementationStandard` values need to be extended, an arbitrary `customImplementationStandard` can be provided.
    *
-   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
+   * MUST be a valid [Specification ID](../index.md#specification-id).
    *
    * MUST only be provided if `implementationStandard` is set to `custom`.
    *
    */
   @JsonProperty("customImplementationStandard")
   @JsonPropertyDescription(
-      "If the fixed `implementationStandard` values need to be extended, an arbitrary `customImplementationStandard` can be provided.\n\nMUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).\n\nMUST only be provided if `implementationStandard` is set to `custom`.")
+      "If the fixed `implementationStandard` values need to be extended, an arbitrary `customImplementationStandard` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `implementationStandard` is set to `custom`.")
   private String customImplementationStandard;
   /**
    * Full description of the custom implementation standard, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
@@ -484,12 +483,12 @@ public class EventResource {
    *
    * All events that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.
    *
-   * More details can be found in [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility).
+   * More details can be found on the [Compatibility](../concepts/compatibility) concept page.
    *
    */
   @JsonProperty("compatibleWith")
   @JsonPropertyDescription(
-      "A reference to the interface (event contract) and its maximum version that this event implements. Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one.\n\nServes as a declaration of compatible implementation of event contract, effectively functioning as an \"implementationOf\" relationship. The data that compatible events return follow the same schema, but itself can be different.\nThis means that if one event is returning 1 record for a dedicated request, a compatible event could return multiple and different records, as long as they adhere to the same schema.\n\nAll events that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.\n\nMore details can be found in [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility).")
+      "A reference to the interface (event contract) and its maximum version that this event implements. Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one.\n\nServes as a declaration of compatible implementation of event contract, effectively functioning as an \"implementationOf\" relationship. The data that compatible events return follow the same schema, but itself can be different.\nThis means that if one event is returning 1 record for a dedicated request, a compatible event could return multiple and different records, as long as they adhere to the same schema.\n\nAll events that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.\n\nMore details can be found on the [Compatibility](../concepts/compatibility) concept page.")
   private List<EventCompatibility> compatibleWith;
   /**
    * Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components.
@@ -613,13 +612,13 @@ public class EventResource {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
   @JsonProperty("labels")
   @JsonPropertyDescription(
-      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
+      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
   private Labels labels;
   /**
    * Documentation Labels
@@ -660,12 +659,12 @@ public class EventResource {
    * The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
    *
    * MUST only be provided if `policyLevel` is set to `custom`.
-   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
+   * MUST be a valid [Specification ID](../index.md#specification-id).
    *
    */
   @JsonProperty("customPolicyLevel")
   @JsonPropertyDescription(
-      "If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided.\nThe policy level is inherited from packages to resources they contain, but can be overwritten at resource level.\n\nMUST only be provided if `policyLevel` is set to `custom`.\nMUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).")
+      "If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided.\nThe policy level is inherited from packages to resources they contain, but can be overwritten at resource level.\n\nMUST only be provided if `policyLevel` is set to `custom`.\nMUST be a valid [Specification ID](../index.md#specification-id).")
   private String customPolicyLevel;
   /**
    * A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.
@@ -673,12 +672,12 @@ public class EventResource {
    *
    * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
    *
-   * A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
+   * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
    *
    */
   @JsonProperty("policyLevels")
   @JsonPropertyDescription(
-      "A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).")
+      "A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
   private List<String> policyLevels;
   /**
    * Defines whether this ORD resource is **system-instance-aware**.
@@ -701,7 +700,7 @@ public class EventResource {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
@@ -713,7 +712,7 @@ public class EventResource {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
@@ -765,7 +764,7 @@ public class EventResource {
    *
    * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
    *
-   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
    *
    */
   @JsonProperty("correlationIds")
@@ -780,7 +779,7 @@ public class EventResource {
    *
    * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
    *
-   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
    *
    */
   @JsonProperty("correlationIds")
@@ -1123,9 +1122,8 @@ public class EventResource {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
-   * If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible.
-   * If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
+   * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
@@ -1149,9 +1147,8 @@ public class EventResource {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
-   * If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible.
-   * If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.
+   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
+   * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
@@ -1220,7 +1217,7 @@ public class EventResource {
    * Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.
    * Abstract resources can be system-owned, authority-owned or system-independent, depending on who governs the interface contract.
    *
-   * More details can be found in [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility).
+   * More details can be found on the [Compatibility](../concepts/compatibility) concept page.
    * See also [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources#abstract-resources-and-compatiblewith) for how abstract contracts relate to shared ORD IDs.
    *
    */
@@ -1235,7 +1232,7 @@ public class EventResource {
    * Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property.
    * Abstract resources can be system-owned, authority-owned or system-independent, depending on who governs the interface contract.
    *
-   * More details can be found in [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility).
+   * More details can be found on the [Compatibility](../concepts/compatibility) concept page.
    * See also [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources#abstract-resources-and-compatiblewith) for how abstract contracts relate to shared ORD IDs.
    *
    */
@@ -1292,7 +1289,7 @@ public class EventResource {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
@@ -1309,7 +1306,7 @@ public class EventResource {
    *
    * Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.
    *
-   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details.
+   * See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details.
    * (Required)
    *
    */
@@ -1662,7 +1659,7 @@ public class EventResource {
   /**
    * If the fixed `implementationStandard` values need to be extended, an arbitrary `customImplementationStandard` can be provided.
    *
-   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
+   * MUST be a valid [Specification ID](../index.md#specification-id).
    *
    * MUST only be provided if `implementationStandard` is set to `custom`.
    *
@@ -1675,7 +1672,7 @@ public class EventResource {
   /**
    * If the fixed `implementationStandard` values need to be extended, an arbitrary `customImplementationStandard` can be provided.
    *
-   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
+   * MUST be a valid [Specification ID](../index.md#specification-id).
    *
    * MUST only be provided if `implementationStandard` is set to `custom`.
    *
@@ -1729,7 +1726,7 @@ public class EventResource {
    *
    * All events that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.
    *
-   * More details can be found in [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility).
+   * More details can be found on the [Compatibility](../concepts/compatibility) concept page.
    *
    */
   @JsonProperty("compatibleWith")
@@ -1745,7 +1742,7 @@ public class EventResource {
    *
    * All events that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.
    *
-   * More details can be found in [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility).
+   * More details can be found on the [Compatibility](../concepts/compatibility) concept page.
    *
    */
   @JsonProperty("compatibleWith")
@@ -2054,7 +2051,7 @@ public class EventResource {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
@@ -2083,7 +2080,7 @@ public class EventResource {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
@@ -2184,7 +2181,7 @@ public class EventResource {
    * The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
    *
    * MUST only be provided if `policyLevel` is set to `custom`.
-   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
+   * MUST be a valid [Specification ID](../index.md#specification-id).
    *
    */
   @JsonProperty("customPolicyLevel")
@@ -2197,7 +2194,7 @@ public class EventResource {
    * The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
    *
    * MUST only be provided if `policyLevel` is set to `custom`.
-   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
+   * MUST be a valid [Specification ID](../index.md#specification-id).
    *
    */
   @JsonProperty("customPolicyLevel")
@@ -2216,7 +2213,7 @@ public class EventResource {
    *
    * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
    *
-   * A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
+   * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
    *
    */
   @JsonProperty("policyLevels")
@@ -2230,7 +2227,7 @@ public class EventResource {
    *
    * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
    *
-   * A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
+   * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
    *
    */
   @JsonProperty("policyLevels")

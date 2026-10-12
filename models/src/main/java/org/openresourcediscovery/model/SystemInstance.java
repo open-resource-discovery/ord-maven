@@ -15,7 +15,7 @@ import java.util.List;
  *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"baseUrl", "localId", "globalId", "correlationIds", "labels", "documentationLabels", "tags"})
+@JsonPropertyOrder({"baseUrl", "localId", "correlationIds", "labels", "documentationLabels", "tags"})
 public class SystemInstance {
 
   /**
@@ -42,33 +42,12 @@ public class SystemInstance {
    * Optional local ID for the system instance, as known by the described system.
    *
    * In case of multi-tenant systems, it is equivalent to the local tenant id.
-   * This is the same identity that can be passed as the `Local-Tenant-Id` header in the
-   * [`open`](../../spec-extensions/access-strategies/open.md#local-tenant-id) and
-   * [`basic-auth`](../../spec-extensions/access-strategies/basic-auth.md#local-tenant-id) access strategies.
    *
    */
   @JsonProperty("localId")
   @JsonPropertyDescription(
-      "Optional local ID for the system instance, as known by the described system.\n\nIn case of multi-tenant systems, it is equivalent to the local tenant id.\nThis is the same identity that can be passed as the `Local-Tenant-Id` header in the\n[`open`](../../spec-extensions/access-strategies/open.md#local-tenant-id) and\n[`basic-auth`](../../spec-extensions/access-strategies/basic-auth.md#local-tenant-id) access strategies.")
+      "Optional local ID for the system instance, as known by the described system.\n\nIn case of multi-tenant systems, it is equivalent to the local tenant id.")
   private String localId;
-  /**
-   * Optional globally unique and stable ID of the system instance (tenant), assigned by the authority responsible
-   * for that tenant identity.
-   *
-   * Unlike `localId`, which is only unique within the described system, `globalId` is intended for correlation
-   * across participating systems. It is the same identity that can be passed as the `Global-Tenant-Id`
-   * header in the [`open`](../../spec-extensions/access-strategies/open.md#global-tenant-id) and
-   * [`basic-auth`](../../spec-extensions/access-strategies/basic-auth.md#global-tenant-id) access strategies.
-   *
-   * The provider MUST NOT invent this value. It MAY receive the value from an authoritative tenant or landscape
-   * service, including through aggregator onboarding, and include it when it can reliably correlate the described
-   * system instance with that authority's record.
-   *
-   */
-  @JsonProperty("globalId")
-  @JsonPropertyDescription(
-      "Optional globally unique and stable ID of the system instance (tenant), assigned by the authority responsible\nfor that tenant identity.\n\nUnlike `localId`, which is only unique within the described system, `globalId` is intended for correlation\nacross participating systems. It is the same identity that can be passed as the `Global-Tenant-Id`\nheader in the [`open`](../../spec-extensions/access-strategies/open.md#global-tenant-id) and\n[`basic-auth`](../../spec-extensions/access-strategies/basic-auth.md#global-tenant-id) access strategies.\n\nThe provider MUST NOT invent this value. It MAY receive the value from an authoritative tenant or landscape\nservice, including through aggregator onboarding, and include it when it can reliably correlate the described\nsystem instance with that authority's record.")
-  private String globalId;
   /**
    * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
    *
@@ -76,12 +55,12 @@ public class SystemInstance {
    *
    * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
    *
-   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
    *
    */
   @JsonProperty("correlationIds")
   @JsonPropertyDescription(
-      "Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).")
+      "Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
   private List<String> correlationIds;
   /**
    * Labels
@@ -103,13 +82,13 @@ public class SystemInstance {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
   @JsonProperty("labels")
   @JsonPropertyDescription(
-      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
+      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
   private Labels labels;
   /**
    * Documentation Labels
@@ -196,9 +175,6 @@ public class SystemInstance {
    * Optional local ID for the system instance, as known by the described system.
    *
    * In case of multi-tenant systems, it is equivalent to the local tenant id.
-   * This is the same identity that can be passed as the `Local-Tenant-Id` header in the
-   * [`open`](../../spec-extensions/access-strategies/open.md#local-tenant-id) and
-   * [`basic-auth`](../../spec-extensions/access-strategies/basic-auth.md#local-tenant-id) access strategies.
    *
    */
   @JsonProperty("localId")
@@ -210,9 +186,6 @@ public class SystemInstance {
    * Optional local ID for the system instance, as known by the described system.
    *
    * In case of multi-tenant systems, it is equivalent to the local tenant id.
-   * This is the same identity that can be passed as the `Local-Tenant-Id` header in the
-   * [`open`](../../spec-extensions/access-strategies/open.md#local-tenant-id) and
-   * [`basic-auth`](../../spec-extensions/access-strategies/basic-auth.md#local-tenant-id) access strategies.
    *
    */
   @JsonProperty("localId")
@@ -226,56 +199,13 @@ public class SystemInstance {
   }
 
   /**
-   * Optional globally unique and stable ID of the system instance (tenant), assigned by the authority responsible
-   * for that tenant identity.
-   *
-   * Unlike `localId`, which is only unique within the described system, `globalId` is intended for correlation
-   * across participating systems. It is the same identity that can be passed as the `Global-Tenant-Id`
-   * header in the [`open`](../../spec-extensions/access-strategies/open.md#global-tenant-id) and
-   * [`basic-auth`](../../spec-extensions/access-strategies/basic-auth.md#global-tenant-id) access strategies.
-   *
-   * The provider MUST NOT invent this value. It MAY receive the value from an authoritative tenant or landscape
-   * service, including through aggregator onboarding, and include it when it can reliably correlate the described
-   * system instance with that authority's record.
-   *
-   */
-  @JsonProperty("globalId")
-  public String getGlobalId() {
-    return globalId;
-  }
-
-  /**
-   * Optional globally unique and stable ID of the system instance (tenant), assigned by the authority responsible
-   * for that tenant identity.
-   *
-   * Unlike `localId`, which is only unique within the described system, `globalId` is intended for correlation
-   * across participating systems. It is the same identity that can be passed as the `Global-Tenant-Id`
-   * header in the [`open`](../../spec-extensions/access-strategies/open.md#global-tenant-id) and
-   * [`basic-auth`](../../spec-extensions/access-strategies/basic-auth.md#global-tenant-id) access strategies.
-   *
-   * The provider MUST NOT invent this value. It MAY receive the value from an authoritative tenant or landscape
-   * service, including through aggregator onboarding, and include it when it can reliably correlate the described
-   * system instance with that authority's record.
-   *
-   */
-  @JsonProperty("globalId")
-  public void setGlobalId(String globalId) {
-    this.globalId = globalId;
-  }
-
-  public SystemInstance withGlobalId(String globalId) {
-    this.globalId = globalId;
-    return this;
-  }
-
-  /**
    * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
    *
    * They express an "identity" / "equals" / "mappable" relationship to the target ID.
    *
    * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
    *
-   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
    *
    */
   @JsonProperty("correlationIds")
@@ -290,7 +220,7 @@ public class SystemInstance {
    *
    * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
    *
-   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
+   * MUST be a valid [Correlation ID](../index.md#correlation-id).
    *
    */
   @JsonProperty("correlationIds")
@@ -323,7 +253,7 @@ public class SystemInstance {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
@@ -352,7 +282,7 @@ public class SystemInstance {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
@@ -461,10 +391,6 @@ public class SystemInstance {
     sb.append('=');
     sb.append(((this.localId == null) ? "<null>" : this.localId));
     sb.append(',');
-    sb.append("globalId");
-    sb.append('=');
-    sb.append(((this.globalId == null) ? "<null>" : this.globalId));
-    sb.append(',');
     sb.append("correlationIds");
     sb.append('=');
     sb.append(((this.correlationIds == null) ? "<null>" : this.correlationIds));
@@ -494,9 +420,8 @@ public class SystemInstance {
     int result = 1;
     result = ((result * 31) + ((this.documentationLabels == null) ? 0 : this.documentationLabels.hashCode()));
     result = ((result * 31) + ((this.baseUrl == null) ? 0 : this.baseUrl.hashCode()));
-    result = ((result * 31) + ((this.correlationIds == null) ? 0 : this.correlationIds.hashCode()));
-    result = ((result * 31) + ((this.globalId == null) ? 0 : this.globalId.hashCode()));
     result = ((result * 31) + ((this.localId == null) ? 0 : this.localId.hashCode()));
+    result = ((result * 31) + ((this.correlationIds == null) ? 0 : this.correlationIds.hashCode()));
     result = ((result * 31) + ((this.labels == null) ? 0 : this.labels.hashCode()));
     result = ((result * 31) + ((this.tags == null) ? 0 : this.tags.hashCode()));
     return result;
@@ -511,20 +436,18 @@ public class SystemInstance {
       return false;
     }
     SystemInstance rhs = ((SystemInstance) other);
-    return ((((((((this.documentationLabels == rhs.documentationLabels)
-                                || ((this.documentationLabels != null)
-                                    && this.documentationLabels.equals(
-                                        rhs.documentationLabels)))
-                            && ((this.baseUrl == rhs.baseUrl)
-                                || ((this.baseUrl != null)
-                                    && this.baseUrl.equals(rhs.baseUrl))))
-                        && ((this.correlationIds == rhs.correlationIds)
-                            || ((this.correlationIds != null)
-                                && this.correlationIds.equals(rhs.correlationIds))))
-                    && ((this.globalId == rhs.globalId)
-                        || ((this.globalId != null) && this.globalId.equals(rhs.globalId))))
-                && ((this.localId == rhs.localId)
-                    || ((this.localId != null) && this.localId.equals(rhs.localId))))
+    return (((((((this.documentationLabels == rhs.documentationLabels)
+                            || ((this.documentationLabels != null)
+                                && this.documentationLabels.equals(
+                                    rhs.documentationLabels)))
+                        && ((this.baseUrl == rhs.baseUrl)
+                            || ((this.baseUrl != null)
+                                && this.baseUrl.equals(rhs.baseUrl))))
+                    && ((this.localId == rhs.localId)
+                        || ((this.localId != null) && this.localId.equals(rhs.localId))))
+                && ((this.correlationIds == rhs.correlationIds)
+                    || ((this.correlationIds != null)
+                        && this.correlationIds.equals(rhs.correlationIds))))
             && ((this.labels == rhs.labels) || ((this.labels != null) && this.labels.equals(rhs.labels))))
         && ((this.tags == rhs.tags) || ((this.tags != null) && this.tags.equals(rhs.tags))));
   }

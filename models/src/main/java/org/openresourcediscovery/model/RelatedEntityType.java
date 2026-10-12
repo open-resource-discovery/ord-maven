@@ -18,31 +18,31 @@ public class RelatedEntityType {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
   @JsonProperty("ordId")
   @JsonPropertyDescription(
-      "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.")
+      "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.")
   private String ordId;
   /**
    * Optional type of the relationship, which defines a stricter semantic what the relationship implies.
    *
    * If not provided, the relationship type has no semantics, it's "related somehow".
    *
-   * MUST be a valid [Concept ID](../concepts/identifiers.md#concept-id).
+   * MUST be a valid [Concept ID](../index.md#concept-id).
    *
    */
   @JsonProperty("relationType")
   @JsonPropertyDescription(
-      "Optional type of the relationship, which defines a stricter semantic what the relationship implies.\n\nIf not provided, the relationship type has no semantics, it's \"related somehow\".\n\nMUST be a valid [Concept ID](../concepts/identifiers.md#concept-id).")
+      "Optional type of the relationship, which defines a stricter semantic what the relationship implies.\n\nIf not provided, the relationship type has no semantics, it's \"related somehow\".\n\nMUST be a valid [Concept ID](../index.md#concept-id).")
   private String relationType;
 
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
@@ -54,7 +54,7 @@ public class RelatedEntityType {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
@@ -73,7 +73,7 @@ public class RelatedEntityType {
    *
    * If not provided, the relationship type has no semantics, it's "related somehow".
    *
-   * MUST be a valid [Concept ID](../concepts/identifiers.md#concept-id).
+   * MUST be a valid [Concept ID](../index.md#concept-id).
    *
    */
   @JsonProperty("relationType")
@@ -86,7 +86,7 @@ public class RelatedEntityType {
    *
    * If not provided, the relationship type has no semantics, it's "related somehow".
    *
-   * MUST be a valid [Concept ID](../concepts/identifiers.md#concept-id).
+   * MUST be a valid [Concept ID](../index.md#concept-id).
    *
    */
   @JsonProperty("relationType")

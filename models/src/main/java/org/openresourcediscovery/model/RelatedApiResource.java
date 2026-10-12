@@ -18,16 +18,16 @@ public class RelatedApiResource {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
   @JsonProperty("ordId")
   @JsonPropertyDescription(
-      "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.")
+      "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.")
   private String ordId;
   /**
-   * Optional type of the relationship as a [Concept ID](../concepts/identifiers.md#concept-id).
+   * Optional type of the relationship as a [Concept ID](../index.md#concept-id).
    *
    * Defines the semantic meaning of the relationship.
    * If not provided, the relationship has no specific semantics ("related somehow").
@@ -35,13 +35,13 @@ public class RelatedApiResource {
    */
   @JsonProperty("relationType")
   @JsonPropertyDescription(
-      "Optional type of the relationship as a [Concept ID](../concepts/identifiers.md#concept-id).\n\nDefines the semantic meaning of the relationship.\nIf not provided, the relationship has no specific semantics (\"related somehow\").")
+      "Optional type of the relationship as a [Concept ID](../index.md#concept-id).\n\nDefines the semantic meaning of the relationship.\nIf not provided, the relationship has no specific semantics (\"related somehow\").")
   private String relationType;
 
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
@@ -53,7 +53,7 @@ public class RelatedApiResource {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
@@ -68,7 +68,7 @@ public class RelatedApiResource {
   }
 
   /**
-   * Optional type of the relationship as a [Concept ID](../concepts/identifiers.md#concept-id).
+   * Optional type of the relationship as a [Concept ID](../index.md#concept-id).
    *
    * Defines the semantic meaning of the relationship.
    * If not provided, the relationship has no specific semantics ("related somehow").
@@ -80,7 +80,7 @@ public class RelatedApiResource {
   }
 
   /**
-   * Optional type of the relationship as a [Concept ID](../concepts/identifiers.md#concept-id).
+   * Optional type of the relationship as a [Concept ID](../index.md#concept-id).
    *
    * Defines the semantic meaning of the relationship.
    * If not provided, the relationship has no specific semantics ("related somehow").
