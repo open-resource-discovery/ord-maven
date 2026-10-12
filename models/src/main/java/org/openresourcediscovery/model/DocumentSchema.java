@@ -178,12 +178,12 @@ public class DocumentSchema {
    * The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
    *
    * MUST only be provided if `policyLevel` is set to `custom`.
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("customPolicyLevel")
   @JsonPropertyDescription(
-      "If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided.\nThe policy level is inherited from packages to resources they contain, but can be overwritten at resource level.\n\nMUST only be provided if `policyLevel` is set to `custom`.\nMUST be a valid [Specification ID](../index.md#specification-id).")
+      "If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided.\nThe policy level is inherited from packages to resources they contain, but can be overwritten at resource level.\n\nMUST only be provided if `policyLevel` is set to `custom`.\nMUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).")
   private String customPolicyLevel;
   /**
    * A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.
@@ -191,12 +191,12 @@ public class DocumentSchema {
    *
    * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
    *
-   * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
+   * A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("policyLevels")
   @JsonPropertyDescription(
-      "A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
+      "A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).")
   private List<String> policyLevels;
   /**
    * Array of all API Resources that are described in this ORD document.
@@ -623,7 +623,7 @@ public class DocumentSchema {
    * The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
    *
    * MUST only be provided if `policyLevel` is set to `custom`.
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("customPolicyLevel")
@@ -636,7 +636,7 @@ public class DocumentSchema {
    * The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
    *
    * MUST only be provided if `policyLevel` is set to `custom`.
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("customPolicyLevel")
@@ -655,7 +655,7 @@ public class DocumentSchema {
    *
    * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
    *
-   * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
+   * A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("policyLevels")
@@ -669,7 +669,7 @@ public class DocumentSchema {
    *
    * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
    *
-   * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
+   * A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("policyLevels")
@@ -1424,7 +1424,8 @@ public class DocumentSchema {
     _1_13("1.13"),
     _1_14("1.14"),
     _1_15("1.15"),
-    _1_16("1.16");
+    _1_16("1.16"),
+    _1_17("1.17");
     private final String value;
     private static final Map<String, DocumentSchema.OpenResourceDiscovery> CONSTANTS =
         new HashMap<String, DocumentSchema.OpenResourceDiscovery>();

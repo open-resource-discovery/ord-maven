@@ -28,14 +28,14 @@ public class EventResourceDefinition {
   /**
    * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
    *
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    * MUST only be provided if `type` is set to `custom`.
    *
    */
   @JsonProperty("customType")
   @JsonPropertyDescription(
-      "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.")
+      "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.")
   private String customType;
   /**
    * The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format.
@@ -103,14 +103,14 @@ public class EventResourceDefinition {
    * Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness
    * key for entries in the definitions list.
    *
-   * MUST be a valid [Concept ID](../index.md#concept-id). The `ord:` namespace is reserved for
+   * MUST be a valid [Concept ID](../concepts/identifiers.md#concept-id). The `ord:` namespace is reserved for
    * values standardized by the ORD specification itself; custom values MUST use a vendor- or
    * product-specific namespace prefix (e.g. `foo.bar:my-purpose`).
    *
    */
   @JsonProperty("purpose")
   @JsonPropertyDescription(
-      "Marks a resource definition as a *complementary* variant of the resource's default definition,\nfor example an overlay, an AI-enriched variant, or an agent-security-permissions view.\nAll entries in the definitions list, with or without `purpose`, MUST describe the same\nunderlying resource; see the list property for the full modelling rules.\n\nTogether with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness\nkey for entries in the definitions list.\n\nMUST be a valid [Concept ID](../index.md#concept-id). The `ord:` namespace is reserved for\nvalues standardized by the ORD specification itself; custom values MUST use a vendor- or\nproduct-specific namespace prefix (e.g. `foo.bar:my-purpose`).")
+      "Marks a resource definition as a *complementary* variant of the resource's default definition,\nfor example an overlay, an AI-enriched variant, or an agent-security-permissions view.\nAll entries in the definitions list, with or without `purpose`, MUST describe the same\nunderlying resource; see the list property for the full modelling rules.\n\nTogether with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness\nkey for entries in the definitions list.\n\nMUST be a valid [Concept ID](../concepts/identifiers.md#concept-id). The `ord:` namespace is reserved for\nvalues standardized by the ORD specification itself; custom values MUST use a vendor- or\nproduct-specific namespace prefix (e.g. `foo.bar:my-purpose`).")
   private String purpose;
 
   /**
@@ -141,7 +141,7 @@ public class EventResourceDefinition {
   /**
    * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
    *
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    * MUST only be provided if `type` is set to `custom`.
    *
@@ -154,7 +154,7 @@ public class EventResourceDefinition {
   /**
    * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
    *
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    * MUST only be provided if `type` is set to `custom`.
    *
@@ -320,7 +320,7 @@ public class EventResourceDefinition {
    * Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness
    * key for entries in the definitions list.
    *
-   * MUST be a valid [Concept ID](../index.md#concept-id). The `ord:` namespace is reserved for
+   * MUST be a valid [Concept ID](../concepts/identifiers.md#concept-id). The `ord:` namespace is reserved for
    * values standardized by the ORD specification itself; custom values MUST use a vendor- or
    * product-specific namespace prefix (e.g. `foo.bar:my-purpose`).
    *
@@ -339,7 +339,7 @@ public class EventResourceDefinition {
    * Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness
    * key for entries in the definitions list.
    *
-   * MUST be a valid [Concept ID](../index.md#concept-id). The `ord:` namespace is reserved for
+   * MUST be a valid [Concept ID](../concepts/identifiers.md#concept-id). The `ord:` namespace is reserved for
    * values standardized by the ORD specification itself; custom values MUST use a vendor- or
    * product-specific namespace prefix (e.g. `foo.bar:my-purpose`).
    *

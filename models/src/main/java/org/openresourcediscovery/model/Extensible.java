@@ -20,17 +20,17 @@ public class Extensible {
   /**
    * Extensibility Support Level
    * <p>
-   * Defines whether and how the resource can be extended with custom fields.
+   * Defines whether and how the resource can be extended.
    * (Required)
    *
    */
   @JsonProperty("supported")
-  @JsonPropertyDescription("Defines whether and how the resource can be extended with custom fields.")
+  @JsonPropertyDescription("Defines whether and how the resource can be extended.")
   private String supported;
   /**
-   * A description about the extensibility capabilities of this API, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
+   * A description about the extensibility capabilities of this resource, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
    *
-   * This description may contain detailed steps on how to extend the API.
+   * This description may contain detailed steps on how to extend the resource.
    * Links to external resources can be provided within the description as markdown links.
    *
    * This description MUST be provided if `supported` is set to `manual` or `automatic`.
@@ -38,13 +38,13 @@ public class Extensible {
    */
   @JsonProperty("description")
   @JsonPropertyDescription(
-      "A description about the extensibility capabilities of this API, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThis description may contain detailed steps on how to extend the API.\nLinks to external resources can be provided within the description as markdown links.\n\nThis description MUST be provided if `supported` is set to `manual` or `automatic`.")
+      "A description about the extensibility capabilities of this resource, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nThis description may contain detailed steps on how to extend the resource.\nLinks to external resources can be provided within the description as markdown links.\n\nThis description MUST be provided if `supported` is set to `manual` or `automatic`.")
   private String description;
 
   /**
    * Extensibility Support Level
    * <p>
-   * Defines whether and how the resource can be extended with custom fields.
+   * Defines whether and how the resource can be extended.
    * (Required)
    *
    */
@@ -56,7 +56,7 @@ public class Extensible {
   /**
    * Extensibility Support Level
    * <p>
-   * Defines whether and how the resource can be extended with custom fields.
+   * Defines whether and how the resource can be extended.
    * (Required)
    *
    */
@@ -71,9 +71,9 @@ public class Extensible {
   }
 
   /**
-   * A description about the extensibility capabilities of this API, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
+   * A description about the extensibility capabilities of this resource, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
    *
-   * This description may contain detailed steps on how to extend the API.
+   * This description may contain detailed steps on how to extend the resource.
    * Links to external resources can be provided within the description as markdown links.
    *
    * This description MUST be provided if `supported` is set to `manual` or `automatic`.
@@ -85,9 +85,9 @@ public class Extensible {
   }
 
   /**
-   * A description about the extensibility capabilities of this API, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
+   * A description about the extensibility capabilities of this resource, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).
    *
-   * This description may contain detailed steps on how to extend the API.
+   * This description may contain detailed steps on how to extend the resource.
    * Links to external resources can be provided within the description as markdown links.
    *
    * This description MUST be provided if `supported` is set to `manual` or `automatic`.

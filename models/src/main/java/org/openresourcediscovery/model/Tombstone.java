@@ -27,11 +27,12 @@ import java.util.Map;
 public class Tombstone {
 
   /**
-   * [ORD ID](../index.md#ord-id) of the ORD resource/taxonomy that has been removed.
+   * [ORD ID](../concepts/identifiers.md#ord-id) of the ORD resource/taxonomy that has been removed.
    *
    */
   @JsonProperty("ordId")
-  @JsonPropertyDescription("[ORD ID](../index.md#ord-id) of the ORD resource/taxonomy that has been removed.")
+  @JsonPropertyDescription(
+      "[ORD ID](../concepts/identifiers.md#ord-id) of the ORD resource/taxonomy that has been removed.")
   private String ordId;
   /**
    * Group ID of the group that has been removed.
@@ -74,7 +75,7 @@ public class Tombstone {
   private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
   /**
-   * [ORD ID](../index.md#ord-id) of the ORD resource/taxonomy that has been removed.
+   * [ORD ID](../concepts/identifiers.md#ord-id) of the ORD resource/taxonomy that has been removed.
    *
    */
   @JsonProperty("ordId")
@@ -83,7 +84,7 @@ public class Tombstone {
   }
 
   /**
-   * [ORD ID](../index.md#ord-id) of the ORD resource/taxonomy that has been removed.
+   * [ORD ID](../concepts/identifiers.md#ord-id) of the ORD resource/taxonomy that has been removed.
    *
    */
   @JsonProperty("ordId")
