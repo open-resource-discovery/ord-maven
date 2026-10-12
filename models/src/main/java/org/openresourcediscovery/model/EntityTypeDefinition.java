@@ -31,14 +31,14 @@ public class EntityTypeDefinition {
    * Type of the entity type resource definition.
    *
    * MUST be either:
-   * - any valid [Specification ID](../index.md#specification-id), or
+   * - any valid [Specification ID](../concepts/identifiers.md#specification-id), or
    * - one of the pre-defined values listed below.
    * (Required)
    *
    */
   @JsonProperty("type")
   @JsonPropertyDescription(
-      "Type of the entity type resource definition.\n\nMUST be either:\n- any valid [Specification ID](../index.md#specification-id), or\n- one of the pre-defined values listed below.")
+      "Type of the entity type resource definition.\n\nMUST be either:\n- any valid [Specification ID](../concepts/identifiers.md#specification-id), or\n- one of the pre-defined values listed below.")
   private String type;
   /**
    * [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) that describes the format of the definition.
@@ -100,7 +100,7 @@ public class EntityTypeDefinition {
    * Type of the entity type resource definition.
    *
    * MUST be either:
-   * - any valid [Specification ID](../index.md#specification-id), or
+   * - any valid [Specification ID](../concepts/identifiers.md#specification-id), or
    * - one of the pre-defined values listed below.
    * (Required)
    *
@@ -114,7 +114,7 @@ public class EntityTypeDefinition {
    * Type of the entity type resource definition.
    *
    * MUST be either:
-   * - any valid [Specification ID](../index.md#specification-id), or
+   * - any valid [Specification ID](../concepts/identifiers.md#specification-id), or
    * - one of the pre-defined values listed below.
    * (Required)
    *

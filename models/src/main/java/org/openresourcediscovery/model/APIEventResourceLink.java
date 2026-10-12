@@ -18,25 +18,25 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class APIEventResourceLink {
 
   /**
-   * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions)
+   * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html)
    * (Required)
    *
    */
   @JsonProperty("type")
   @JsonPropertyDescription(
-      "See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions)")
+      "See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html)")
   private String type;
   /**
    * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
    *
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    * MUST only be provided if `type` is set to `custom`.
    *
    */
   @JsonProperty("customType")
   @JsonPropertyDescription(
-      "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../index.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.")
+      "If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.\n\nMUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).\n\nMUST only be provided if `type` is set to `custom`.")
   private String customType;
   /**
    * [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the API or Event Resource Link.
@@ -52,7 +52,7 @@ public class APIEventResourceLink {
   private String url;
 
   /**
-   * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions)
+   * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html)
    * (Required)
    *
    */
@@ -62,7 +62,7 @@ public class APIEventResourceLink {
   }
 
   /**
-   * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions)
+   * See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html)
    * (Required)
    *
    */
@@ -79,7 +79,7 @@ public class APIEventResourceLink {
   /**
    * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
    *
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    * MUST only be provided if `type` is set to `custom`.
    *
@@ -92,7 +92,7 @@ public class APIEventResourceLink {
   /**
    * If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.
    *
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    * MUST only be provided if `type` is set to `custom`.
    *

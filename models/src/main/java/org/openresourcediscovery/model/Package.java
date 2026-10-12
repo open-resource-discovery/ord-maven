@@ -11,8 +11,9 @@ import java.util.List;
  * <p>
  * A [**Package**](../concepts/grouping-and-bundling#package) organizes a set of related resources together, by publishing and catalog presentation concerns.
  *
- * The Package can also be used to indicate which products or vendors provided the packaged resources.
- * For partner or customer content, the Package can indicate this via the `vendor` and `partOfProducts` assignments.
+ * The Package can also indicate which vendor owns the packaged resources and which products they are part of.
+ * For partner or customer content, the Package indicates current ownership attribution through `vendor`.
+ * The independent `partOfProducts` assignment indicates the associated product offerings.
  *
  * A Package SHOULD contain at least one resource. Avoid empty Packages.
  *
@@ -56,13 +57,13 @@ public class Package {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
   @JsonProperty("ordId")
   @JsonPropertyDescription(
-      "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.")
+      "The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.\n\nIt MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.")
   private String ordId;
   /**
    * The locally unique ID under which this resource can be looked up / resolved in the described system itself.
@@ -83,12 +84,12 @@ public class Package {
    *
    * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
    *
-   * MUST be a valid [Correlation ID](../index.md#correlation-id).
+   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
    *
    */
   @JsonProperty("correlationIds")
   @JsonPropertyDescription(
-      "Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../index.md#correlation-id).")
+      "Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).")
   private List<String> correlationIds;
   /**
    * Human-readable title.
@@ -132,8 +133,9 @@ public class Package {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
-   * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
+   * When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
+   * If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible.
+   * If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
@@ -147,7 +149,7 @@ public class Package {
    */
   @JsonProperty("version")
   @JsonPropertyDescription(
-      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.\nIn case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
+      "The complete [SemVer](https://semver.org/) version string.\n\nIt MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard.\nIt SHOULD be changed if the ORD information or referenced resource definitions changed.\nIt SHOULD express minor and patch changes that don't lead to incompatible changes.\n\nWhen the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.\nIf a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible.\nIf the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.\n\nIf the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.\nThe `version` MUST not be bumped for changes in extensions.\n\nThe general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.\n\nNote: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly.\nFor example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented.")
   private String version;
   /**
    * The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with.
@@ -166,12 +168,12 @@ public class Package {
    * The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
    *
    * MUST only be provided if `policyLevel` is set to `custom`.
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("customPolicyLevel")
   @JsonPropertyDescription(
-      "If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided.\nThe policy level is inherited from packages to resources they contain, but can be overwritten at resource level.\n\nMUST only be provided if `policyLevel` is set to `custom`.\nMUST be a valid [Specification ID](../index.md#specification-id).")
+      "If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided.\nThe policy level is inherited from packages to resources they contain, but can be overwritten at resource level.\n\nMUST only be provided if `policyLevel` is set to `custom`.\nMUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).")
   private String customPolicyLevel;
   /**
    * A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.
@@ -179,12 +181,12 @@ public class Package {
    *
    * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
    *
-   * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
+   * A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("policyLevels")
   @JsonPropertyDescription(
-      "A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
+      "A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).")
   private List<String> policyLevels;
   /**
    * Links with semantic meaning that are specific to Packages.
@@ -235,19 +237,21 @@ public class Package {
       "Optional information that should be provided when creating a support ticket for the resources bundled in this Package.\nThis can for example be a \"component\" name that needs to be chosen in the support portal.\n\nNotated in [CommonMark](https://spec.commonmark.org/) (Markdown).\n\nPlease also note that if you want to provide link(s) where you can find support information,\nyou can use `packageLinks` with a link of type `support`.")
   private String supportInfo;
   /**
-   * Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.
+   * Vendor / organization to which ownership of the resources in the `Package` is currently attributed.
+   * This value is authoritative for current ownership attribution and is independent of the namespaces of the resource ORD IDs.
+   * It MUST NOT be derived from those namespaces.
    *
    * MUST be a valid reference to a [Vendor](#vendor) ORD ID.
    *
-   * MUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.
+   * MUST be set to `customer:vendor:Customer:` if ownership of the Package contents is attributed to the customer / user.
    *
-   * MUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.
+   * MUST be set to a registered partner vendor if ownership of the Package contents is attributed to a partner / third party.
    * (Required)
    *
    */
   @JsonProperty("vendor")
   @JsonPropertyDescription(
-      "Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.\n\nMUST be a valid reference to a [Vendor](#vendor) ORD ID.\n\nMUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.\n\nMUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.")
+      "Vendor / organization to which ownership of the resources in the `Package` is currently attributed.\nThis value is authoritative for current ownership attribution and is independent of the namespaces of the resource ORD IDs.\nIt MUST NOT be derived from those namespaces.\n\nMUST be a valid reference to a [Vendor](#vendor) ORD ID.\n\nMUST be set to `customer:vendor:Customer:` if ownership of the Package contents is attributed to the customer / user.\n\nMUST be set to a registered partner vendor if ownership of the Package contents is attributed to a partner / third party.")
   private String vendor;
   /**
    * List of products this package and its resources are a part of.
@@ -302,12 +306,12 @@ public class Package {
   /**
    * If provided, all resources that are part of this Package can only run on the listed runtime.
    *
-   * MUST be a valid [system namespace](../index.md#system-namespace).
+   * MUST be a valid [system namespace](../concepts/identifiers.md#system-namespace).
    *
    */
   @JsonProperty("runtimeRestriction")
   @JsonPropertyDescription(
-      "If provided, all resources that are part of this Package can only run on the listed runtime.\n\nMUST be a valid [system namespace](../index.md#system-namespace).")
+      "If provided, all resources that are part of this Package can only run on the listed runtime.\n\nMUST be a valid [system namespace](../concepts/identifiers.md#system-namespace).")
   private String runtimeRestriction;
   /**
    * List of free text style tags.
@@ -340,13 +344,13 @@ public class Package {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
   @JsonProperty("labels")
   @JsonPropertyDescription(
-      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
+      "Generic key-value labels that can be applied to most ORD information.\nThey are defined as an object that may have arbitrary keys.\nThe value of a key is an array of strings.\n\nLabels can be used to attach technical information that cannot be expressed natively in ORD.\nAn ORD aggregator should allow to categorize and query information based on the labels provided.\n\nTo learn more about the concept, see [Labels](../concepts/grouping-and-bundling#labels).\n\nIf multiple parties rely on the existence of certain label information,\nstandardization through ORD SHOULD be preferred.\n\nAll labels attached to a `Package` will be inherited to the resources they contain.\nDuplicate labels will be merged by the ORD aggregator according to the following rules:\n* Values of the same label key will be merged.\n* Duplicate values of the same label key will be removed.\n\n**RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.\nThe namespace in the Concept ID clearly identifies who owns and defines the label's semantics.")
   private Labels labels;
   /**
    * Documentation Labels
@@ -374,7 +378,7 @@ public class Package {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
@@ -386,7 +390,7 @@ public class Package {
   /**
    * The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.
    *
-   * It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type.
+   * It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type.
    * (Required)
    *
    */
@@ -438,7 +442,7 @@ public class Package {
    *
    * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
    *
-   * MUST be a valid [Correlation ID](../index.md#correlation-id).
+   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
    *
    */
   @JsonProperty("correlationIds")
@@ -453,7 +457,7 @@ public class Package {
    *
    * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
    *
-   * MUST be a valid [Correlation ID](../index.md#correlation-id).
+   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
    *
    */
   @JsonProperty("correlationIds")
@@ -566,8 +570,9 @@ public class Package {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
-   * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
+   * When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
+   * If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible.
+   * If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
@@ -591,8 +596,9 @@ public class Package {
    * It SHOULD be changed if the ORD information or referenced resource definitions changed.
    * It SHOULD express minor and patch changes that don't lead to incompatible changes.
    *
-   * When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
-   * In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.
+   * When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical.
+   * If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible.
+   * If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.
    *
    * If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`.
    * The `version` MUST not be bumped for changes in extensions.
@@ -650,7 +656,7 @@ public class Package {
    * The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
    *
    * MUST only be provided if `policyLevel` is set to `custom`.
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("customPolicyLevel")
@@ -663,7 +669,7 @@ public class Package {
    * The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
    *
    * MUST only be provided if `policyLevel` is set to `custom`.
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("customPolicyLevel")
@@ -682,7 +688,7 @@ public class Package {
    *
    * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
    *
-   * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
+   * A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("policyLevels")
@@ -696,7 +702,7 @@ public class Package {
    *
    * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
    *
-   * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
+   * A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("policyLevels")
@@ -843,13 +849,15 @@ public class Package {
   }
 
   /**
-   * Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.
+   * Vendor / organization to which ownership of the resources in the `Package` is currently attributed.
+   * This value is authoritative for current ownership attribution and is independent of the namespaces of the resource ORD IDs.
+   * It MUST NOT be derived from those namespaces.
    *
    * MUST be a valid reference to a [Vendor](#vendor) ORD ID.
    *
-   * MUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.
+   * MUST be set to `customer:vendor:Customer:` if ownership of the Package contents is attributed to the customer / user.
    *
-   * MUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.
+   * MUST be set to a registered partner vendor if ownership of the Package contents is attributed to a partner / third party.
    * (Required)
    *
    */
@@ -859,13 +867,15 @@ public class Package {
   }
 
   /**
-   * Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.
+   * Vendor / organization to which ownership of the resources in the `Package` is currently attributed.
+   * This value is authoritative for current ownership attribution and is independent of the namespaces of the resource ORD IDs.
+   * It MUST NOT be derived from those namespaces.
    *
    * MUST be a valid reference to a [Vendor](#vendor) ORD ID.
    *
-   * MUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.
+   * MUST be set to `customer:vendor:Customer:` if ownership of the Package contents is attributed to the customer / user.
    *
-   * MUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party.
+   * MUST be set to a registered partner vendor if ownership of the Package contents is attributed to a partner / third party.
    * (Required)
    *
    */
@@ -1010,7 +1020,7 @@ public class Package {
   /**
    * If provided, all resources that are part of this Package can only run on the listed runtime.
    *
-   * MUST be a valid [system namespace](../index.md#system-namespace).
+   * MUST be a valid [system namespace](../concepts/identifiers.md#system-namespace).
    *
    */
   @JsonProperty("runtimeRestriction")
@@ -1021,7 +1031,7 @@ public class Package {
   /**
    * If provided, all resources that are part of this Package can only run on the listed runtime.
    *
-   * MUST be a valid [system namespace](../index.md#system-namespace).
+   * MUST be a valid [system namespace](../concepts/identifiers.md#system-namespace).
    *
    */
   @JsonProperty("runtimeRestriction")
@@ -1083,7 +1093,7 @@ public class Package {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */
@@ -1112,7 +1122,7 @@ public class Package {
    * * Values of the same label key will be merged.
    * * Duplicate values of the same label key will be removed.
    *
-   * **RECOMMENDATION**: Use a [Concept ID](../index.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
+   * **RECOMMENDATION**: Use a [Concept ID](../concepts/identifiers.md#concept-id) as the label key to indicate ownership and avoid naming conflicts.
    * The namespace in the Concept ID clearly identifies who owns and defines the label's semantics.
    *
    */

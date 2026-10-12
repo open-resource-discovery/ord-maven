@@ -107,9 +107,17 @@ public class DocumentSchema {
   /**
    * With ORD it's possible to describe a system from a static or a dynamic [perspective](../index.md#perspectives) (for more details, follow the link).
    *
-   * It is strongly RECOMMENDED to mark all static ORD documents with perspective `system-version`.
+   * An ORD provider that describes a system SHOULD publish static metadata using `system-type`, `system-version`, or both.
+   * Static ORD documents MUST NOT contain tenant context or tenant-specific customizations.
+   * Providers SHOULD publish version-independent metadata through `system-type` and metadata that differs between versions through `system-version`.
+   * Distinct `system-version` values MUST be used when multiple versions of the same application are deployed at the same time in one environment tier, such as production.
+   * A continuously delivered system MAY instead publish all static metadata through `system-type` or through `system-version` with a fixed `describedSystemVersion.version`.
+   * When using the fixed-version approach, the version MUST remain unchanged so each release replaces the previously published `system-version` perspective.
+   * Each ORD ID published in a static perspective MUST have a complete representation.
+   * The effective static view looks up an ORD ID in the applicable `system-version` layer first and then in `system-type`.
+   * If both contain the ORD ID, the complete `system-version` representation takes precedence and properties MUST NOT be merged across the layers.
    *
-   * It is RECOMMENDED to describe dynamic metadata in both static system-version perspective and additionally describe the system-instance perspective where it diverges from the static metadata.
+   * Systems with dynamic metadata MUST be described in a complete system-instance perspective and SHOULD additionally be described in at least one static perspective.
    *
    * If not provided, this defaults to `system-instance`, which is the most precise description but also the most costly to replicate.
    *
@@ -118,7 +126,7 @@ public class DocumentSchema {
    */
   @JsonProperty("perspective")
   @JsonPropertyDescription(
-      "With ORD it's possible to describe a system from a static or a dynamic [perspective](../index.md#perspectives) (for more details, follow the link).\n\nIt is strongly RECOMMENDED to mark all static ORD documents with perspective `system-version`.\n\nIt is RECOMMENDED to describe dynamic metadata in both static system-version perspective and additionally describe the system-instance perspective where it diverges from the static metadata.\n\nIf not provided, this defaults to `system-instance`, which is the most precise description but also the most costly to replicate.\n\nPlease read the [article on perspectives](../concepts/perspectives) for more explanations.")
+      "With ORD it's possible to describe a system from a static or a dynamic [perspective](../index.md#perspectives) (for more details, follow the link).\n\nAn ORD provider that describes a system SHOULD publish static metadata using `system-type`, `system-version`, or both.\nStatic ORD documents MUST NOT contain tenant context or tenant-specific customizations.\nProviders SHOULD publish version-independent metadata through `system-type` and metadata that differs between versions through `system-version`.\nDistinct `system-version` values MUST be used when multiple versions of the same application are deployed at the same time in one environment tier, such as production.\nA continuously delivered system MAY instead publish all static metadata through `system-type` or through `system-version` with a fixed `describedSystemVersion.version`.\nWhen using the fixed-version approach, the version MUST remain unchanged so each release replaces the previously published `system-version` perspective.\nEach ORD ID published in a static perspective MUST have a complete representation.\nThe effective static view looks up an ORD ID in the applicable `system-version` layer first and then in `system-type`.\nIf both contain the ORD ID, the complete `system-version` representation takes precedence and properties MUST NOT be merged across the layers.\n\nSystems with dynamic metadata MUST be described in a complete system-instance perspective and SHOULD additionally be described in at least one static perspective.\n\nIf not provided, this defaults to `system-instance`, which is the most precise description but also the most costly to replicate.\n\nPlease read the [article on perspectives](../concepts/perspectives) for more explanations.")
   private String perspective = "system-instance";
   /**
    * System Type
@@ -170,12 +178,12 @@ public class DocumentSchema {
    * The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
    *
    * MUST only be provided if `policyLevel` is set to `custom`.
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("customPolicyLevel")
   @JsonPropertyDescription(
-      "If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided.\nThe policy level is inherited from packages to resources they contain, but can be overwritten at resource level.\n\nMUST only be provided if `policyLevel` is set to `custom`.\nMUST be a valid [Specification ID](../index.md#specification-id).")
+      "If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided.\nThe policy level is inherited from packages to resources they contain, but can be overwritten at resource level.\n\nMUST only be provided if `policyLevel` is set to `custom`.\nMUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).")
   private String customPolicyLevel;
   /**
    * A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.
@@ -183,12 +191,12 @@ public class DocumentSchema {
    *
    * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
    *
-   * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
+   * A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("policyLevels")
   @JsonPropertyDescription(
-      "A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../index.md#specification-id).")
+      "A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with.\nFor each chosen policy level, additional expectations and validations rules will be applied.\n\nPolicy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.\n\nA policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).")
   private List<String> policyLevels;
   /**
    * Array of all API Resources that are described in this ORD document.
@@ -440,9 +448,17 @@ public class DocumentSchema {
   /**
    * With ORD it's possible to describe a system from a static or a dynamic [perspective](../index.md#perspectives) (for more details, follow the link).
    *
-   * It is strongly RECOMMENDED to mark all static ORD documents with perspective `system-version`.
+   * An ORD provider that describes a system SHOULD publish static metadata using `system-type`, `system-version`, or both.
+   * Static ORD documents MUST NOT contain tenant context or tenant-specific customizations.
+   * Providers SHOULD publish version-independent metadata through `system-type` and metadata that differs between versions through `system-version`.
+   * Distinct `system-version` values MUST be used when multiple versions of the same application are deployed at the same time in one environment tier, such as production.
+   * A continuously delivered system MAY instead publish all static metadata through `system-type` or through `system-version` with a fixed `describedSystemVersion.version`.
+   * When using the fixed-version approach, the version MUST remain unchanged so each release replaces the previously published `system-version` perspective.
+   * Each ORD ID published in a static perspective MUST have a complete representation.
+   * The effective static view looks up an ORD ID in the applicable `system-version` layer first and then in `system-type`.
+   * If both contain the ORD ID, the complete `system-version` representation takes precedence and properties MUST NOT be merged across the layers.
    *
-   * It is RECOMMENDED to describe dynamic metadata in both static system-version perspective and additionally describe the system-instance perspective where it diverges from the static metadata.
+   * Systems with dynamic metadata MUST be described in a complete system-instance perspective and SHOULD additionally be described in at least one static perspective.
    *
    * If not provided, this defaults to `system-instance`, which is the most precise description but also the most costly to replicate.
    *
@@ -457,9 +473,17 @@ public class DocumentSchema {
   /**
    * With ORD it's possible to describe a system from a static or a dynamic [perspective](../index.md#perspectives) (for more details, follow the link).
    *
-   * It is strongly RECOMMENDED to mark all static ORD documents with perspective `system-version`.
+   * An ORD provider that describes a system SHOULD publish static metadata using `system-type`, `system-version`, or both.
+   * Static ORD documents MUST NOT contain tenant context or tenant-specific customizations.
+   * Providers SHOULD publish version-independent metadata through `system-type` and metadata that differs between versions through `system-version`.
+   * Distinct `system-version` values MUST be used when multiple versions of the same application are deployed at the same time in one environment tier, such as production.
+   * A continuously delivered system MAY instead publish all static metadata through `system-type` or through `system-version` with a fixed `describedSystemVersion.version`.
+   * When using the fixed-version approach, the version MUST remain unchanged so each release replaces the previously published `system-version` perspective.
+   * Each ORD ID published in a static perspective MUST have a complete representation.
+   * The effective static view looks up an ORD ID in the applicable `system-version` layer first and then in `system-type`.
+   * If both contain the ORD ID, the complete `system-version` representation takes precedence and properties MUST NOT be merged across the layers.
    *
-   * It is RECOMMENDED to describe dynamic metadata in both static system-version perspective and additionally describe the system-instance perspective where it diverges from the static metadata.
+   * Systems with dynamic metadata MUST be described in a complete system-instance perspective and SHOULD additionally be described in at least one static perspective.
    *
    * If not provided, this defaults to `system-instance`, which is the most precise description but also the most costly to replicate.
    *
@@ -599,7 +623,7 @@ public class DocumentSchema {
    * The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
    *
    * MUST only be provided if `policyLevel` is set to `custom`.
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("customPolicyLevel")
@@ -612,7 +636,7 @@ public class DocumentSchema {
    * The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.
    *
    * MUST only be provided if `policyLevel` is set to `custom`.
-   * MUST be a valid [Specification ID](../index.md#specification-id).
+   * MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("customPolicyLevel")
@@ -631,7 +655,7 @@ public class DocumentSchema {
    *
    * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
    *
-   * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
+   * A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("policyLevels")
@@ -645,7 +669,7 @@ public class DocumentSchema {
    *
    * Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.
    *
-   * A policy level MUST be a valid [Specification ID](../index.md#specification-id).
+   * A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).
    *
    */
   @JsonProperty("policyLevels")
@@ -1400,7 +1424,8 @@ public class DocumentSchema {
     _1_13("1.13"),
     _1_14("1.14"),
     _1_15("1.15"),
-    _1_16("1.16");
+    _1_16("1.16"),
+    _1_17("1.17");
     private final String value;
     private static final Map<String, DocumentSchema.OpenResourceDiscovery> CONSTANTS =
         new HashMap<String, DocumentSchema.OpenResourceDiscovery>();

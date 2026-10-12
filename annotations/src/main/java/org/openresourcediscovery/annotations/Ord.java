@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 public interface Ord {
 
-  String VERSION = "1.16.3";
+  String VERSION = "1.17.0";
 
   @Target(ElementType.TYPE)
   @Retention(RetentionPolicy.RUNTIME)
@@ -67,13 +67,13 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId", "title", "shortDescription", "description", "version", "vendor"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
     String localId() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -85,16 +85,16 @@ public interface Ord {
     /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
     String description() default "";
 
-    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible. If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
     String version() default "";
 
     /** The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with. Depending on the chosen policy level, additional expectations and validations rules will be applied.  The policy level can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  */
     String policyLevel() default "none";
 
-    /** If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided. The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.  MUST only be provided if `policyLevel` is set to `custom`. MUST be a valid [Specification ID](../index.md#specification-id). */
+    /** If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided. The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.  MUST only be provided if `policyLevel` is set to `custom`. MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id). */
     String customPolicyLevel() default "";
 
-    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../index.md#specification-id). */
+    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id). */
     String[] policyLevels() default {};
 
     /** Links with semantic meaning that are specific to Packages. */
@@ -112,7 +112,7 @@ public interface Ord {
     /** Optional information that should be provided when creating a support ticket for the resources bundled in this Package. This can for example be a "component" name that needs to be chosen in the support portal.  Notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  Please also note that if you want to provide link(s) where you can find support information, you can use `packageLinks` with a link of type `support`. */
     String supportInfo() default "";
 
-    /** Vendor / organization that is the creator (or responsible party) of the resources that are part of the `Package`.  MUST be a valid reference to a [Vendor](#vendor) ORD ID.  MUST be set to `customer:vendor:Customer:` if the contents of the Package are created by the customer / user.  MUST be set to a registered partner vendor, if the contents of the Package are created by a partner / third party. */
+    /** Vendor / organization to which ownership of the resources in the `Package` is currently attributed. This value is authoritative for current ownership attribution and is independent of the namespaces of the resource ORD IDs. It MUST NOT be derived from those namespaces.  MUST be a valid reference to a [Vendor](#vendor) ORD ID.  MUST be set to `customer:vendor:Customer:` if ownership of the Package contents is attributed to the customer / user.  MUST be set to a registered partner vendor if ownership of the Package contents is attributed to a partner / third party. */
     String vendor() default "";
 
     /** List of products this package and its resources are a part of.  MUST be a valid reference to a [Product](#product) ORD ID.  `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains. Resources that belong to a different product than their package can override this directly.  Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package. Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources. */
@@ -127,7 +127,7 @@ public interface Ord {
     /** List of industry tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  `industry` that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] industry() default {};
 
-    /** If provided, all resources that are part of this Package can only run on the listed runtime.  MUST be a valid [system namespace](../index.md#system-namespace). */
+    /** If provided, all resources that are part of this Package can only run on the listed runtime.  MUST be a valid [system namespace](../concepts/identifiers.md#system-namespace). */
     String runtimeRestriction() default "";
 
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
@@ -147,13 +147,13 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId", "title"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
     String localId() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -165,7 +165,7 @@ public interface Ord {
     /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
     String description() default "";
 
-    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible. If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
     String version() default "";
 
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
@@ -220,13 +220,13 @@ public interface Ord {
       "partOfPackage"
     };
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
     String localId() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -256,19 +256,19 @@ public interface Ord {
     /** List of products this package and its resources are a part of.  MUST be a valid reference to a [Product](#product) ORD ID.  `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains. Resources that belong to a different product than their package can override this directly.  Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package. Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources. */
     String[] partOfProducts() default {};
 
-    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible. If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
     String version() default "";
 
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
     String lastUpdate() default "";
 
-    /** Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.  Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property. Abstract resources can be system-owned, authority-owned or system-independent, depending on who governs the interface contract.  More details can be found on the [Compatibility](../concepts/compatibility) concept page. See also [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources#abstract-resources-and-compatiblewith) for how abstract contracts relate to shared ORD IDs. */
+    /** Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.  Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property. Abstract resources can be system-owned, authority-owned or system-independent, depending on who governs the interface contract.  More details can be found in [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility). See also [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources#abstract-resources-and-compatiblewith) for how abstract contracts relate to shared ORD IDs. */
     boolean _abstract() default false;
 
     /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details. */
     String releaseStatus() default "";
 
     /** Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so. This can happen either because it has not been setup for use or disabled by an admin / user.  If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.  This property can only reflect the knowledge of the described system instance itself. Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).  A disabled resource MAY skip describing its resource definitions.  */
@@ -310,13 +310,13 @@ public interface Ord {
     /** Declares this API to be a valid implementation of an externally standardized API contract, sub-protocol or protocol variant.  All APIs that share the same implementation standard MAY be treated the same or similar by a consumer client. */
     String implementationStandard() default "";
 
-    /** If the fixed `implementationStandard` values need to be extended, an arbitrary `customImplementationStandard` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `implementationStandard` is set to `custom`. */
+    /** If the fixed `implementationStandard` values need to be extended, an arbitrary `customImplementationStandard` can be provided.  MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).  MUST only be provided if `implementationStandard` is set to `custom`. */
     String customImplementationStandard() default "";
 
     /** Full description of the custom implementation standard, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  MUST only be provided if `implementationStandard` is set to `custom`.  SHOULD contain documentation and links that describe the used standard. */
     String customImplementationStandardDescription() default "";
 
-    /** A reference to the interface (API contract) and its maximum version that this API implements. Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one. It does not imply the same endpoints, security or tenant specific configuration is used.  Serves as a declaration of compatible implementation of API contract, effectively functioning as an "implementationOf" relationship. The data that compatible APIs return follow the same schema, but itself can be different. This means that if one API is returning 1 record for a dedicated request, a compatible API could return multiple and different records, as long as they adhere to the same schema.  MUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID.  All APIs that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.  More details can be found on the [Compatibility](../concepts/compatibility) concept page. */
+    /** A reference to the interface (API contract) and its maximum version that this API implements. Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one. It does not imply the same endpoints, security or tenant specific configuration is used.  Serves as a declaration of compatible implementation of API contract, effectively functioning as an "implementationOf" relationship. The data that compatible APIs return follow the same schema, but itself can be different. This means that if one API is returning 1 record for a dedicated request, a compatible API could return multiple and different records, as long as they adhere to the same schema.  MUST be a valid reference to an (usually external) [API Resource](#api-resource) ORD ID.  All APIs that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.  More details can be found in [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility). */
     ApiCompatibility[] compatibleWith() default {};
 
     /** Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components. */
@@ -364,10 +364,10 @@ public interface Ord {
     /** The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with. Depending on the chosen policy level, additional expectations and validations rules will be applied.  The policy level can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  */
     String policyLevel() default "none";
 
-    /** If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided. The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.  MUST only be provided if `policyLevel` is set to `custom`. MUST be a valid [Specification ID](../index.md#specification-id). */
+    /** If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided. The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.  MUST only be provided if `policyLevel` is set to `custom`. MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id). */
     String customPolicyLevel() default "";
 
-    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../index.md#specification-id). */
+    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id). */
     String[] policyLevels() default {};
 
     /** Defines whether this ORD resource is **system-instance-aware**. This is the case when the referenced resource definitions are potentially different between **system instances**.  If this behavior applies, `systemInstanceAware` MUST be set to true. An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.  This concept is now **deprecated** in favor of the more explicit `perspective` attribute. All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.  For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives). */
@@ -390,13 +390,13 @@ public interface Ord {
       "releaseStatus"
     };
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
     String localId() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -426,19 +426,19 @@ public interface Ord {
     /** List of products this package and its resources are a part of.  MUST be a valid reference to a [Product](#product) ORD ID.  `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains. Resources that belong to a different product than their package can override this directly.  Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package. Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources. */
     String[] partOfProducts() default {};
 
-    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible. If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
     String version() default "";
 
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
     String lastUpdate() default "";
 
-    /** Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.  Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property. Abstract resources can be system-owned, authority-owned or system-independent, depending on who governs the interface contract.  More details can be found on the [Compatibility](../concepts/compatibility) concept page. See also [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources#abstract-resources-and-compatiblewith) for how abstract contracts relate to shared ORD IDs. */
+    /** Indicates that the resource serves as interface only and cannot be called directly, similar to the abstract keyword in programming languages like Java.  Abstract resources define contracts that other resources can declare compatibility with through the `compatibleWith` property. Abstract resources can be system-owned, authority-owned or system-independent, depending on who governs the interface contract.  More details can be found in [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility). See also [Shared Taxonomy, Resources and Contracts](../concepts/shared-resources#abstract-resources-and-compatiblewith) for how abstract contracts relate to shared ORD IDs. */
     boolean _abstract() default false;
 
     /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details. */
     String releaseStatus() default "";
 
     /** Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so. This can happen either because it has not been setup for use or disabled by an admin / user.  If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.  This property can only reflect the knowledge of the described system instance itself. Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).  A disabled resource MAY skip describing its resource definitions.  */
@@ -471,13 +471,13 @@ public interface Ord {
     /** Declares this EventResource to be a valid implementation of a standardized or shared contract.  All implementations of the same implementation standard MAY be treated the same by a consumer. However, there MAY be differences in the access strategy, and compatible customizations by the implementer. The implementation standard MAY define the role of the implementor (producer, consumer, both) and how it is determined.  As of now, only custom implementation standards are supported. */
     String implementationStandard() default "";
 
-    /** If the fixed `implementationStandard` values need to be extended, an arbitrary `customImplementationStandard` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `implementationStandard` is set to `custom`. */
+    /** If the fixed `implementationStandard` values need to be extended, an arbitrary `customImplementationStandard` can be provided.  MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).  MUST only be provided if `implementationStandard` is set to `custom`. */
     String customImplementationStandard() default "";
 
     /** Full description of the custom implementation standard, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  MUST only be provided if `implementationStandard` is set to `custom`.  SHOULD contain documentation and links that describe the used standard. */
     String customImplementationStandardDescription() default "";
 
-    /** A reference to the interface (event contract) and its maximum version that this event implements. Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one.  Serves as a declaration of compatible implementation of event contract, effectively functioning as an "implementationOf" relationship. The data that compatible events return follow the same schema, but itself can be different. This means that if one event is returning 1 record for a dedicated request, a compatible event could return multiple and different records, as long as they adhere to the same schema.  All events that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.  More details can be found on the [Compatibility](../concepts/compatibility) concept page. */
+    /** A reference to the interface (event contract) and its maximum version that this event implements. Even if the interface contract evolves compatible, this resource will not be compatible with versions beyond the specified one.  Serves as a declaration of compatible implementation of event contract, effectively functioning as an "implementationOf" relationship. The data that compatible events return follow the same schema, but itself can be different. This means that if one event is returning 1 record for a dedicated request, a compatible event could return multiple and different records, as long as they adhere to the same schema.  All events that share the same `compatibleWith` value MAY be treated the same or similar by a consumer client.  More details can be found in [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility). */
     EventCompatibility[] compatibleWith() default {};
 
     /** Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components. */
@@ -519,10 +519,10 @@ public interface Ord {
     /** The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with. Depending on the chosen policy level, additional expectations and validations rules will be applied.  The policy level can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  */
     String policyLevel() default "none";
 
-    /** If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided. The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.  MUST only be provided if `policyLevel` is set to `custom`. MUST be a valid [Specification ID](../index.md#specification-id). */
+    /** If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided. The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.  MUST only be provided if `policyLevel` is set to `custom`. MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id). */
     String customPolicyLevel() default "";
 
-    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../index.md#specification-id). */
+    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id). */
     String[] policyLevels() default {};
 
     /** Defines whether this ORD resource is **system-instance-aware**. This is the case when the referenced resource definitions are potentially different between **system instances**.  If this behavior applies, `systemInstanceAware` MUST be set to true. An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.  This concept is now **deprecated** in favor of the more explicit `perspective` attribute. All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.  For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives). */
@@ -538,13 +538,13 @@ public interface Ord {
       "ordId", "localId", "level", "title", "version", "visibility", "partOfPackage", "releaseStatus"
     };
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
     String localId() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -568,7 +568,7 @@ public interface Ord {
     /** List of products this package and its resources are a part of.  MUST be a valid reference to a [Product](#product) ORD ID.  `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains. Resources that belong to a different product than their package can override this directly.  Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package. Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources. */
     String[] partOfProducts() default {};
 
-    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible. If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
     String version() default "";
 
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
@@ -577,7 +577,7 @@ public interface Ord {
     /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details. */
     String releaseStatus() default "";
 
     /** The deprecation date defines when the resource has been set as deprecated. This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). */
@@ -619,10 +619,10 @@ public interface Ord {
     /** The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with. Depending on the chosen policy level, additional expectations and validations rules will be applied.  The policy level can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  */
     String policyLevel() default "none";
 
-    /** If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided. The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.  MUST only be provided if `policyLevel` is set to `custom`. MUST be a valid [Specification ID](../index.md#specification-id). */
+    /** If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided. The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.  MUST only be provided if `policyLevel` is set to `custom`. MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id). */
     String customPolicyLevel() default "";
 
-    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../index.md#specification-id). */
+    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id). */
     String[] policyLevels() default {};
 
     /** Defines whether this ORD resource is **system-instance-aware**. This is the case when the referenced resource definitions are potentially different between **system instances**.  If this behavior applies, `systemInstanceAware` MUST be set to true. An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.  This concept is now **deprecated** in favor of the more explicit `perspective` attribute. All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.  For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives). */
@@ -635,7 +635,7 @@ public interface Ord {
 
     String[] requiredFields() default {"type", "mediaType", "url", "visibility"};
 
-    /** Type of the entity type resource definition.  MUST be either: - any valid [Specification ID](../index.md#specification-id), or - one of the pre-defined values listed below. */
+    /** Type of the entity type resource definition.  MUST be either: - any valid [Specification ID](../concepts/identifiers.md#specification-id), or - one of the pre-defined values listed below. */
     String type() default "";
 
     /** [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) that describes the format of the definition.  Media Types under `application/*` and `text/*` are allowed. If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data. */
@@ -671,13 +671,13 @@ public interface Ord {
       "outputPorts"
     };
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
     String localId() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -701,7 +701,7 @@ public interface Ord {
     /** List of products this Data Product is a part of or is related to, its e.g. data source systems.  MUST be a valid reference to a [Product](#product) ORD ID.  `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains. Resources that belong to a different product than their package can override this directly.  Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package. Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources. */
     String[] partOfProducts() default {};
 
-    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible. If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
     String version() default "";
 
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
@@ -746,6 +746,9 @@ public interface Ord {
     /** Aggregated list of entity types that are at least partially exposed by the data product. Detailed mapping can be found on the output port schema level. */
     String[] entityTypes() default {};
 
+    /** Optional list of related Data Products.  Use this to indicate which other Data Products are associated with this Data Product. The optional `relationType` on each reference can express the semantics of the relationship. */
+    RelatedDataProduct[] relatedDataProducts() default {};
+
     /** The input ports of a data product indicate the data inputs for lineage purposes.  It is a list of Integration Dependencies, whose aspects will form the actual input ports.  Input ports can also be understood as the public interface to ingest data into the data product. Data products of type `derived` consume data through the input ports. Different input ports allowing ingestion of different sub-sets building up the data-set for the data product. Data products of type `base` might not have any input ports. Their data sets are typically based directly on the applications / services own data. */
     DataProductInputPort[] inputPorts() default {};
 
@@ -782,10 +785,10 @@ public interface Ord {
     /** The [policy level](../../spec-extensions/policy-levels/) (aka. compliance level) that the described resources need to be compliant with. Depending on the chosen policy level, additional expectations and validations rules will be applied.  The policy level can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  */
     String policyLevel() default "none";
 
-    /** If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided. The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.  MUST only be provided if `policyLevel` is set to `custom`. MUST be a valid [Specification ID](../index.md#specification-id). */
+    /** If the fixed `policyLevel` values need to be extended, an arbitrary `customPolicyLevel` can be provided. The policy level is inherited from packages to resources they contain, but can be overwritten at resource level.  MUST only be provided if `policyLevel` is set to `custom`. MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id). */
     String customPolicyLevel() default "";
 
-    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../index.md#specification-id). */
+    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id). */
     String[] policyLevels() default {};
 
     /** Defines whether this ORD resource is **system-instance-aware**. This is the case when the referenced resource definitions are potentially different between **system instances**.  If this behavior applies, `systemInstanceAware` MUST be set to true. An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.  This concept is now **deprecated** in favor of the more explicit `perspective` attribute. All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.  For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives). */
@@ -798,7 +801,7 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
   }
 
@@ -808,7 +811,7 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
   }
 
@@ -821,7 +824,7 @@ public interface Ord {
     /** Type of the API Resource Definition If "custom" is chosen, a customType MUST be provided */
     String type() default "";
 
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
     String customType() default "";
 
     /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use. For example, for OpenAPI 3, it's valid to express the same definition in both YAML and JSON.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
@@ -836,7 +839,7 @@ public interface Ord {
     /** List of supported access strategies for retrieving metadata from the ORD provider. An ORD Consumer/ORD Aggregator MAY choose any of the strategies.  The access strategies only apply to the metadata access and not the actual API access. The actual access to the APIs for clients is described via Consumption Bundles.  If this property is not provided, the definition URL will be available through the same access strategy as this ORD document. It is RECOMMENDED anyway that the attached metadata definitions are available with the same access strategies, to simplify the aggregator crawling process. */
     AccessStrategy[] accessStrategies() default {};
 
-    /** Marks a resource definition as a *complementary* variant of the resource's default definition, for example an overlay, an AI-enriched variant, or an agent-security-permissions view. All entries in the definitions list, with or without `purpose`, MUST describe the same underlying resource; see the list property for the full modelling rules.  Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness key for entries in the definitions list.  MUST be a valid [Concept ID](../index.md#concept-id). The `ord:` namespace is reserved for values standardized by the ORD specification itself; custom values MUST use a vendor- or product-specific namespace prefix (e.g. `foo.bar:my-purpose`). */
+    /** Marks a resource definition as a *complementary* variant of the resource's default definition, for example an overlay, an AI-enriched variant, or an agent-security-permissions view. All entries in the definitions list, with or without `purpose`, MUST describe the same underlying resource; see the list property for the full modelling rules.  Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness key for entries in the definitions list.  MUST be a valid [Concept ID](../concepts/identifiers.md#concept-id). The `ord:` namespace is reserved for values standardized by the ORD specification itself; custom values MUST use a vendor- or product-specific namespace prefix (e.g. `foo.bar:my-purpose`). */
     String purpose() default "";
   }
 
@@ -849,7 +852,7 @@ public interface Ord {
     /** Type of the event resource definition */
     String type() default "";
 
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
     String customType() default "";
 
     /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use. For example, for OpenAPI 3, it's valid to express the same definition in both YAML and JSON.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
@@ -864,7 +867,7 @@ public interface Ord {
     /** The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.  If not given, the resource definition has the same visibility as the resource it describes. The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes. E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.  This makes it also possible to provide both a public and an internal metadata description of the resource, in case that some metadata must only be made accessible to internal consumers. */
     String visibility() default "";
 
-    /** Marks a resource definition as a *complementary* variant of the resource's default definition, for example an overlay, an AI-enriched variant, or an agent-security-permissions view. All entries in the definitions list, with or without `purpose`, MUST describe the same underlying resource; see the list property for the full modelling rules.  Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness key for entries in the definitions list.  MUST be a valid [Concept ID](../index.md#concept-id). The `ord:` namespace is reserved for values standardized by the ORD specification itself; custom values MUST use a vendor- or product-specific namespace prefix (e.g. `foo.bar:my-purpose`). */
+    /** Marks a resource definition as a *complementary* variant of the resource's default definition, for example an overlay, an AI-enriched variant, or an agent-security-permissions view. All entries in the definitions list, with or without `purpose`, MUST describe the same underlying resource; see the list property for the full modelling rules.  Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness key for entries in the definitions list.  MUST be a valid [Concept ID](../concepts/identifiers.md#concept-id). The `ord:` namespace is reserved for values standardized by the ORD specification itself; custom values MUST use a vendor- or product-specific namespace prefix (e.g. `foo.bar:my-purpose`). */
     String purpose() default "";
   }
 
@@ -875,13 +878,13 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId", "title", "version", "releaseStatus", "visibility", "partOfPackage"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
     String localId() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -902,7 +905,7 @@ public interface Ord {
     /** Defines which groups the resource is assigned to.  The property is optional, but if given the value MUST be an array of valid Group IDs.  Groups are a lightweight custom taxonomy concept. They express a "part of" relationship to the chosen group concept. If an "identity / equals" relationship needs to be expressed, use the `correlationIds` instead.  All resources that share the same group ID assignment are effectively grouped together.  **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility. See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types). */
     String[] partOfGroups() default {};
 
-    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible. If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
     String version() default "";
 
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
@@ -911,7 +914,7 @@ public interface Ord {
     /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details. */
     String releaseStatus() default "";
 
     /** Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so. This can happen either because it has not been setup for use or disabled by an admin / user.  If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.  This property can only reflect the knowledge of the described system instance itself. Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).  A disabled resource MAY skip describing its resource definitions.  */
@@ -938,7 +941,7 @@ public interface Ord {
     /** Contains changelog entries that summarize changes with special regards to version and releaseStatus */
     ChangelogEntry[] changelogEntries() default {};
 
-    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../index.md#specification-id). */
+    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id). */
     String[] policyLevels() default {};
 
     /** List of countries that the Package resources are applicable to.  MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).  `countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
@@ -979,7 +982,7 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId", "version", "releaseStatus", "visibility"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -988,7 +991,7 @@ public interface Ord {
     /** Full description, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  The description SHOULD not be excessive in length and is not meant to provide full documentation. Detailed documentation SHOULD be attached as (typed) links. */
     String description() default "";
 
-    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible. If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
     String version() default "";
 
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
@@ -997,7 +1000,7 @@ public interface Ord {
     /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details. */
     String releaseStatus() default "";
 
     /** Optional list of API Resources whose definition files this overlay patches.  SHOULD be provided when the target resource is described in an ORD document accessible to the same aggregator, as it enables efficient indexing without requiring the aggregator to parse each overlay file. Use `relationType: ord:patches` to express the patching relationship.  May be omitted when the target resource is not described in an accessible ORD document, or when the overlay is cross-cutting and patches resources from multiple providers. */
@@ -1006,7 +1009,7 @@ public interface Ord {
     /** Optional list of Event Resources whose definition files this overlay patches.  SHOULD be provided when the target resource is described in an ORD document accessible to the same aggregator, as it enables efficient indexing without requiring the aggregator to parse each overlay file. Use `relationType: ord:patches` to express the patching relationship.  May be omitted when the target resource is not described in an accessible ORD document, or when the overlay is cross-cutting and patches resources from multiple providers. */
     RelatedEventResource[] relatedEventResources() default {};
 
-    /** List of overlay definition files referenced by this ORD Overlay Resource. Each entry points to an ORD Overlay document (`type: ord:overlay:v1`) that contains the actual patches. */
+    /** List of overlay definition files referenced by this ORD Overlay Resource. Each entry points to an overlay document that contains the actual patches. */
     OverlayDefinition[] definitions() default {};
 
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
@@ -1037,7 +1040,7 @@ public interface Ord {
     /** The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.  If not given, the resource definition has the same visibility as the resource it describes. The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes. E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.  This makes it also possible to provide both a public and an internal metadata description of the resource, in case that some metadata must only be made accessible to internal consumers. */
     String visibility() default "";
 
-    /** Marks a resource definition as a *complementary* variant of the resource's default definition, for example an overlay, an AI-enriched variant, or an agent-security-permissions view. All entries in the definitions list, with or without `purpose`, MUST describe the same underlying resource; see the list property for the full modelling rules.  Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness key for entries in the definitions list.  MUST be a valid [Concept ID](../index.md#concept-id). The `ord:` namespace is reserved for values standardized by the ORD specification itself; custom values MUST use a vendor- or product-specific namespace prefix (e.g. `foo.bar:my-purpose`). */
+    /** Marks a resource definition as a *complementary* variant of the resource's default definition, for example an overlay, an AI-enriched variant, or an agent-security-permissions view. All entries in the definitions list, with or without `purpose`, MUST describe the same underlying resource; see the list property for the full modelling rules.  Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness key for entries in the definitions list.  MUST be a valid [Concept ID](../concepts/identifiers.md#concept-id). The `ord:` namespace is reserved for values standardized by the ORD specification itself; custom values MUST use a vendor- or product-specific namespace prefix (e.g. `foo.bar:my-purpose`). */
     String purpose() default "";
   }
 
@@ -1048,10 +1051,10 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId", "title", "shortDescription", "vendor"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -1088,19 +1091,19 @@ public interface Ord {
       "ordId", "type", "title", "version", "releaseStatus", "visibility", "partOfPackage"
     };
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
     String localId() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** Type of the Capability */
     String type() default "";
 
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
     String customType() default "";
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -1121,7 +1124,10 @@ public interface Ord {
     /** Defines which groups the resource is assigned to.  The property is optional, but if given the value MUST be an array of valid Group IDs.  Groups are a lightweight custom taxonomy concept. They express a "part of" relationship to the chosen group concept. If an "identity / equals" relationship needs to be expressed, use the `correlationIds` instead.  All resources that share the same group ID assignment are effectively grouped together.  **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility. See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types). */
     String[] partOfGroups() default {};
 
-    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    /** List of products this package and its resources are a part of.  MUST be a valid reference to a [Product](#product) ORD ID.  `partOfProducts` assigned to a `Package` are inherited by all ORD resources it contains. Resources that belong to a different product than their package can override this directly.  Every ORD resource SHOULD be assigned to at least one product, either directly or inherited from its package. Setting `partOfProducts` on the package is the preferred approach, as it propagates automatically to all contained resources. */
+    String[] partOfProducts() default {};
+
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible. If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
     String version() default "";
 
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
@@ -1130,7 +1136,7 @@ public interface Ord {
     /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details. */
     String releaseStatus() default "";
 
     /** Indicates that this resource is currently not available for consumption at runtime, but could be configured to be so. This can happen either because it has not been setup for use or disabled by an admin / user.  If the resource is not available in principle for a particular system instance, e.g. due to lack of entitlement, it MUST not be described in the system-instance-aware perspective.  This property can only reflect the knowledge of the described system instance itself. Outside factors for availability can't need to be considered (e.g. network connectivity, middlewares).  A disabled resource MAY skip describing its resource definitions.  */
@@ -1138,6 +1144,21 @@ public interface Ord {
 
     /** The resource has been introduced in the given [system version](../index.md#system-version). This implies that the resource is only available if the system instance is of at least that system version.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. */
     String minSystemVersion() default "";
+
+    /** Contains typically the organization that is responsible in the sense of RACI matrix for this ORD resource. This includes support and feature requests. It is maintained as correlation id to for example support components. */
+    String responsible() default "";
+
+    /** The deprecation date defines when the resource has been set as deprecated. This is not to be confused with the `sunsetDate` which defines when the resource will be actually sunset, aka. decommissioned / removed / archived.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). */
+    String deprecationDate() default "";
+
+    /** The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.  If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known). Once the sunset date is known and ready to be communicated externally, it MUST be provided here.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). */
+    String sunsetDate() default "";
+
+    /** The successor resource(s).  MUST be a valid reference to an ORD ID.  If the `releaseStatus` is set to `deprecated`, `successors` MUST be provided if one exists. If `successors` is given, the described resource SHOULD set its `releaseStatus` to `deprecated`. */
+    String[] successors() default {};
+
+    /** Contains changelog entries that summarize changes with special regards to version and releaseStatus */
+    ChangelogEntry[] changelogEntries() default {};
 
     /** Optional list of related EntityType Resources. MUST be a valid reference to an [EntityType Resource](#entity-type) ORD ID. */
     String[] relatedEntityTypes() default {};
@@ -1151,11 +1172,26 @@ public interface Ord {
     /** Optional list of related Capabilities.  Use this to indicate dependencies, extensions, or other relationships between capabilities. */
     RelatedCapability[] relatedCapabilities() default {};
 
+    /** Optional list of integration dependencies that the capability relies on.  This is particularly useful for capabilities of type `agent-skill` or `agent-plugin`, which may require access to API Resources, Event Resources, or other Capabilities to function. The mechanism is the same as for [Agents](#agent), and the direct analogue of `inputPorts` on [Data Products](#data-product): the artifact itself declares what it needs to run. Runtime-specific connector configuration, credentials, guardrails, provisioning, and activation behavior remain outside this definition.  MUST be a valid reference to an [Integration Dependency](#integration-dependency) ORD ID. */
+    String[] integrationDependencies() default {};
+
     /** List of available machine-readable definitions, which describe the resource in detail. See also [Resource Definitions](../index.md#resource-definitions) for more context.  Every entry MUST describe the *same* underlying resource. Allowed variations are alternative representations (different formats) and complementary artifacts distinguished by `purpose` (e.g. overlays, AI-enriched variants, agent-security-permissions views). This list MUST NOT be used to bundle multiple distinct resources under a single ORD resource. Model those as separate ORD resources instead.  The entry without a `purpose` value is the primary/default definition for its `(type, visibility)`; consumers that don't filter by `purpose` MUST fall back to it. There SHOULD be exactly one such default per `(type, visibility)` combination.  The combination of `type` (or `customType` for `type: "custom"`), `purpose`, and `visibility` MUST be unique within the list.  It is RECOMMENDED to provide the definitions as they enable machine-readable use cases. If the definitions are added or changed, the `version` MUST be incremented. An ORD aggregator MAY only (re)fetch the definitions again when the `version` was incremented. */
     CapabilityDefinition[] definitions() default {};
 
     /** Generic Links with arbitrary meaning and content. */
     Link[] links() default {};
+
+    /**  */
+    Extensible extensible() default @Extensible;
+
+    /** List of countries that the Package resources are applicable to.  MUST be expressed as an array of country codes according to [IES ISO-3166 ALPHA-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).  `countries` that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
+    String[] countries() default {};
+
+    /** List of line of business tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  `lineOfBusiness` that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
+    String[] lineOfBusiness() default {};
+
+    /** List of industry tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  `industry` that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
+    String[] industry() default {};
 
     /** List of free text style tags. No special characters are allowed except `-`, `_`, `.`, `/` and ` `.  Tags that are assigned to a `Package` are inherited to all of the ORD resources it contains. */
     String[] tags() default {};
@@ -1165,6 +1201,9 @@ public interface Ord {
 
     /**  */
     DocumentationLabels documentationLabels() default @DocumentationLabels;
+
+    /** A list of [policy levels](../../spec-extensions/policy-levels/) that the described resources need to be compliant with. For each chosen policy level, additional expectations and validations rules will be applied.  Policy levels can be defined on ORD Document level, but also be overwritten on an individual package or resource level.  A policy level MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id). */
+    String[] policyLevels() default {};
 
     /** Defines whether this ORD resource is **system-instance-aware**. This is the case when the referenced resource definitions are potentially different between **system instances**.  If this behavior applies, `systemInstanceAware` MUST be set to true. An ORD aggregator MUST then fetch the referenced resource definitions for _each_ **system instance** individually.  This concept is now **deprecated** in favor of the more explicit `perspective` attribute. All resources that are system-instance-aware should ideally be put into a dedicated ORD document with `perspective`: `system-instance`.  For more details, see [perspectives concept page](../concepts/perspectives.md) or the [specification section](../index.md#perspectives). */
     boolean systemInstanceAware() default false;
@@ -1179,7 +1218,7 @@ public interface Ord {
     /** Type of the capability resource definition */
     String type() default "";
 
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
     String customType() default "";
 
     /** The [Media Type](https://www.iana.org/assignments/media-types/media-types.xhtml) of the definition serialization format. A consuming application can use this information to know which file format parser it needs to use. For example, for OpenAPI 3, it's valid to express the same definition in both YAML and JSON.  If no Media Type is registered for the referenced file, `text/plain` MAY be used for arbitrary plain-text and `application/octet-stream` for arbitrary binary data.  */
@@ -1194,7 +1233,7 @@ public interface Ord {
     /** The visibility states who is allowed to "see" and access the resource definition, in case it differs from the resource visibility.  If not given, the resource definition has the same visibility as the resource it describes. The visibility of a resource definition MUST be lower (more restrictive) than the visibility of the resource it describes. E.g. a public resource can have metadata definitions that are internal only. An internal resource can't declare to have a public metadata definition.  This makes it also possible to provide both a public and an internal metadata description of the resource, in case that some metadata must only be made accessible to internal consumers. */
     String visibility() default "";
 
-    /** Marks a resource definition as a *complementary* variant of the resource's default definition, for example an overlay, an AI-enriched variant, or an agent-security-permissions view. All entries in the definitions list, with or without `purpose`, MUST describe the same underlying resource; see the list property for the full modelling rules.  Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness key for entries in the definitions list.  MUST be a valid [Concept ID](../index.md#concept-id). The `ord:` namespace is reserved for values standardized by the ORD specification itself; custom values MUST use a vendor- or product-specific namespace prefix (e.g. `foo.bar:my-purpose`). */
+    /** Marks a resource definition as a *complementary* variant of the resource's default definition, for example an overlay, an AI-enriched variant, or an agent-security-permissions view. All entries in the definitions list, with or without `purpose`, MUST describe the same underlying resource; see the list property for the full modelling rules.  Together with `type` (or `customType`) and `visibility`, `purpose` forms the uniqueness key for entries in the definitions list.  MUST be a valid [Concept ID](../concepts/identifiers.md#concept-id). The `ord:` namespace is reserved for values standardized by the ORD specification itself; custom values MUST use a vendor- or product-specific namespace prefix (e.g. `foo.bar:my-purpose`). */
     String purpose() default "";
   }
 
@@ -1207,13 +1246,13 @@ public interface Ord {
       "ordId", "title", "version", "releaseStatus", "visibility", "partOfPackage", "mandatory"
     };
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
     String localId() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -1231,7 +1270,7 @@ public interface Ord {
     /** Defines which groups the resource is assigned to.  The property is optional, but if given the value MUST be an array of valid Group IDs.  Groups are a lightweight custom taxonomy concept. They express a "part of" relationship to the chosen group concept. If an "identity / equals" relationship needs to be expressed, use the `correlationIds` instead.  All resources that share the same group ID assignment are effectively grouped together.  **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility. See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types). */
     String[] partOfGroups() default {};
 
-    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible. If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
     String version() default "";
 
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
@@ -1240,7 +1279,7 @@ public interface Ord {
     /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details. */
     String releaseStatus() default "";
 
     /** The sunset date defines when the resource is scheduled to be decommissioned / removed / archived.  If the `releaseStatus` is set to `deprecated`, the `sunsetDate` SHOULD be provided (if already known). Once the sunset date is known and ready to be communicated externally, it MUST be provided here.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). */
@@ -1252,7 +1291,7 @@ public interface Ord {
     /** If true, the Integration Dependency is mandatory for the described system to function. */
     boolean mandatory() default false;
 
-    /** List of integration aspects that make up the Integration Dependency.  Each aspect listed is a dedicated, constituent part (AND condition). */
+    /** List of integration aspects that make up the Integration Dependency.  Each mandatory aspect is a dedicated, constituent part that needs to be fulfilled (AND condition). System-type aspects can be combined with more detailed API-resource, event-resource or capability aspects. */
     IntegrationAspect[] aspects() default {};
 
     /** If an Integration Dependency conceptually belongs or related to another Integration Dependency, this can be indicated here. One situation would be where two systems each have an Integration Dependency to describe a two-sided integration from each side. */
@@ -1275,7 +1314,7 @@ public interface Ord {
   @Retention(RetentionPolicy.RUNTIME)
   @interface IntegrationAspect {
 
-    String[] requiredFields() default {"title", "mandatory"};
+    String[] requiredFields() default {"mandatory"};
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
     String title() default "";
@@ -1298,6 +1337,9 @@ public interface Ord {
     /** List of Capability Dependencies. */
     CapabilityIntegrationAspect[] capabilities() default {};
 
+    /** List of alternative system types that can fulfill this aspect without requiring a specific API resource, event resource or capability (OR condition).  Each entry identifies a [system type](../index.md#system-type) by its system namespace and can optionally require a minimum system version. Use separate aspects when multiple system types are required (AND condition). System-type aspects can be combined with more detailed resource or capability aspects in the same Integration Dependency. */
+    SystemTypeIntegrationAspect[] systemTypes() default {};
+
     /**  */
     Labels labels() default @Labels;
   }
@@ -1308,7 +1350,7 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** Minimum version of the references resource that the integration requires.  */
@@ -1327,7 +1369,7 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** Minimum version of the references resource that the integration requires.  */
@@ -1336,7 +1378,7 @@ public interface Ord {
     /** List of individual events or messages that are sufficient to achieve the aspect. */
     EventResourceIntegrationAspectSubset[] subset() default {};
 
-    /** In case that the event subscriptions are limited to known [system types](../index.md#system-type), they can be listed here as [system namespaces](../index.md#system-namespace).  If given, only system types of the defined namespaces are supported as integration partners. If not given, there is no restriction which system type provides the events. */
+    /** In case that the event subscriptions are limited to known [system types](../index.md#system-type), they can be listed here as [system namespaces](../concepts/identifiers.md#system-namespace).  If given, only system types of the defined namespaces are supported as integration partners. If not given, there is no restriction which system type provides the events. */
     String[] systemTypeRestriction() default {};
 
     /**  */
@@ -1369,14 +1411,40 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** Minimum version of the references resource that the integration requires.  */
     String minVersion() default "";
 
+    /** List of skills within the referenced capability that are required.  This is primarily intended for bundling capabilities such as `agent-plugin`, which package multiple agent skills. If `subset` is not provided, the dependency implies the whole capability (e.g. the consumer installs the entire plugin). If `subset` is provided, only the listed skills are required, letting consumers load only the minimal surface area into the harness / context. */
+    CapabilityIntegrationAspectSubset[] subset() default {};
+
     /**  */
     Labels labels() default @Labels;
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface SystemTypeIntegrationAspect {
+
+    String[] requiredFields() default {"systemNamespace"};
+
+    /** The [system namespace](../concepts/identifiers.md#system-namespace) that identifies the required system type. */
+    String systemNamespace() default "";
+
+    /** Minimum [system version](../index.md#system-version) that the integration requires. The target system version MUST be greater than or equal to this value according to Semantic Versioning precedence. */
+    String minSystemVersion() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface CapabilityIntegrationAspectSubset {
+
+    String[] requiredFields() default {"skillName"};
+
+    /** The name of the individual skill within the referenced capability.  This MUST be a name that is understood within the referenced capability's definition (e.g. the skill `name` inside an `agent-plugin` bundle). Where the referenced capability uses the Agent Skills format, `skillName` MUST match the `name` field in the referenced skill's `SKILL.md` frontmatter. */
+    String skillName() default "";
   }
 
   @Target(ElementType.TYPE)
@@ -1386,7 +1454,7 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId", "title"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -1414,7 +1482,7 @@ public interface Ord {
     /** Full version number that corresponds to the `version` that is described by the changelog entry.  Ideally it follows the [Semantic Versioning 2.0.0](https://semver.org/) standard, but since it should reflect the actual version string / scheme used, this is not a mandatory requirement. */
     String version() default "";
 
-    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details. */
     String releaseStatus() default "";
 
     /** Date of change, without time or timezone information.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6). */
@@ -1471,7 +1539,7 @@ public interface Ord {
     /**  */
     String type() default "";
 
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
     String customType() default "";
 
     /** [URL](https://tools.ietf.org/html/rfc3986) to the PackageLink.  The link target MUST be absolute and SHOULD be openly accessible. */
@@ -1484,10 +1552,10 @@ public interface Ord {
 
     String[] requiredFields() default {"url", "type"};
 
-    /** See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html#webapiactions) */
+    /** See also: [WADG0001 WebAPI type extension](https://webapi-discovery.github.io/rfcs/rfc0001.html) */
     String type() default "";
 
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
     String customType() default "";
 
     /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the API or Event Resource Link.  The link target SHOULD be absolute and SHOULD be openly accessible. If a relative link is given, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL). */
@@ -1503,7 +1571,7 @@ public interface Ord {
     /**  */
     String type() default "";
 
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
     String customType() default "";
 
     /** [URL reference](https://tools.ietf.org/html/rfc3986#section-4.1) (URL or relative reference) to the Data Product Link.  The link target SHOULD be absolute and SHOULD be openly accessible. If a relative link is given, it is resolved against the ORD Document's root [`baseUrl`](#ord-document_baseurl) (the ORD provider base URL). */
@@ -1520,10 +1588,13 @@ public interface Ord {
     /** Optional [base URL](../index.md#base-url) of the **described system instance**.  Used to resolve relative [entry point](../index.md#described-system-base-url-entry-points) URLs within this document. Relative URLs to metadata files (e.g., `resourceDefinitions[].url`) are resolved against the document root `baseUrl` instead — see [Relative URL Resolution](../index.md#relative-url-resolution).  ORD aggregators that hold authoritative knowledge of the described system's base URL (e.g., from landscape configuration or service discovery) MAY prefer that over this value.  The `baseUrl` MUST NOT contain a trailing slash.  MUST be provided if the base URL is not known to the ORD aggregators. MUST be provided when the document needs to be fully self contained, e.g. when used for manual imports. */
     String baseUrl() default "";
 
-    /** Optional local ID for the system instance, as known by the described system.  In case of multi-tenant systems, it is equivalent to the local tenant id. */
+    /** Optional local ID for the system instance, as known by the described system.  In case of multi-tenant systems, it is equivalent to the local tenant id. This is the same identity that can be passed as the `Local-Tenant-Id` header in the [`open`](../../spec-extensions/access-strategies/open.md#local-tenant-id) and [`basic-auth`](../../spec-extensions/access-strategies/basic-auth.md#local-tenant-id) access strategies. */
     String localId() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Optional globally unique and stable ID of the system instance (tenant), assigned by the authority responsible for that tenant identity.  Unlike `localId`, which is only unique within the described system, `globalId` is intended for correlation across participating systems. It is the same identity that can be passed as the `Global-Tenant-Id` header in the [`open`](../../spec-extensions/access-strategies/open.md#global-tenant-id) and [`basic-auth`](../../spec-extensions/access-strategies/basic-auth.md#global-tenant-id) access strategies.  The provider MUST NOT invent this value. It MAY receive the value from an authoritative tenant or landscape service, including through aggregator onboarding, and include it when it can reliably correlate the described system instance with that authority's record. */
+    String globalId() default "";
+
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /**  */
@@ -1543,10 +1614,10 @@ public interface Ord {
 
     String[] requiredFields() default {};
 
-    /** The [system namespace](../index.md#system-namespace) is a unique identifier for the system type. It is used to reference the system type in the ORD. */
+    /** The [system namespace](../concepts/identifiers.md#system-namespace) is a unique identifier for the system type. It is used to reference the system type in the ORD. */
     String systemNamespace() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /**  */
@@ -1572,7 +1643,7 @@ public interface Ord {
     /** Human-readable title of the system version. */
     String title() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /**  */
@@ -1594,7 +1665,7 @@ public interface Ord {
     /** Defines the authentication/authorization strategy through which the referenced `resourceDefinitions` are accessible. */
     String type() default "";
 
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
     String customType() default "";
 
     /** Human-readable description about how the access is set up, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  MUST only be provided if `type` is set to `custom`. */
@@ -1610,7 +1681,7 @@ public interface Ord {
     /** The type of credential exchange strategy. */
     String type() default "";
 
-    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../index.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
+    /** If the fixed `type` enum values need to be extended, an arbitrary `customType` can be provided.  MUST be a valid [Specification ID](../concepts/identifiers.md#specification-id).  MUST only be provided if `type` is set to `custom`. */
     String customType() default "";
 
     /** Human-readable description about how the credential exchange is achieved, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  MUST only be provided if `type` is set to `custom`. */
@@ -1656,7 +1727,7 @@ public interface Ord {
     /**  */
     Labels labels() default @Labels;
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** A group type can logically be part of another group type, for example in hierarchical taxonomies or graph relationships. Assigning a group type to be part of another group type is a lightweight and flexible approach to express such relationships.  This relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios. */
@@ -1688,7 +1759,7 @@ public interface Ord {
     /**  */
     Labels labels() default @Labels;
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** A group (instance) can logically be part of another group, for example in hierarchical taxonomies or graph relationships. Assigning a group to be part of another group is a lightweight and flexible approach to express such relationships.  This relationship does not imply inheritance, but can be interpreted as such for specific group types and scenarios. */
@@ -1721,10 +1792,10 @@ public interface Ord {
 
     String[] requiredFields() default {"supported"};
 
-    /** Defines whether and how the resource can be extended with custom fields. */
+    /** Defines whether and how the resource can be extended. */
     String supported() default "";
 
-    /** A description about the extensibility capabilities of this API, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  This description may contain detailed steps on how to extend the API. Links to external resources can be provided within the description as markdown links.  This description MUST be provided if `supported` is set to `manual` or `automatic`. */
+    /** A description about the extensibility capabilities of this resource, notated in [CommonMark](https://spec.commonmark.org/) (Markdown).  This description may contain detailed steps on how to extend the resource. Links to external resources can be provided within the description as markdown links.  This description MUST be provided if `supported` is set to `manual` or `automatic`. */
     String description() default "";
   }
 
@@ -1737,7 +1808,7 @@ public interface Ord {
     /** List of selectors for API models within an API Resource. If multiple selectors are given, every selected API model maps to the entity type target(s). If omitted, the complete API resource will be mapped to the `entityTypeTargets` (less specific).  Multiple selectors can be useful, e.g. with a CRUD REST API, to combine the similar API models.  Depending on the chosen API protocol and the available resource definition formats, different kind of selectors need to be used. */
     ApiModelSelectorOData[] apiModelSelectors() default {};
 
-    /** List of entity types the ORD resource maps to. If `apiModelSelectors` are given, the mapping is more precise by also pointing to the specific model in the API.  If multiple entity types are defined as the mapping target, all of them can be at least partially mapped to the source API model(s).  Entity types can be referenced using either using an [ORD ID](../index.md#ord-id) or a [Correlation ID](../index.md#correlation-id). */
+    /** List of entity types the ORD resource maps to. If `apiModelSelectors` are given, the mapping is more precise by also pointing to the specific model in the API.  If multiple entity types are defined as the mapping target, all of them can be at least partially mapped to the source API model(s).  Entity types can be referenced using either using an [ORD ID](../concepts/identifiers.md#ord-id) or a [Correlation ID](../concepts/identifiers.md#correlation-id). */
     EntityTypeOrdIdTarget[] entityTypeTargets() default {};
   }
 
@@ -1809,7 +1880,7 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
   }
 
@@ -1829,10 +1900,10 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
-    /** Optional type of the relationship, which defines a stricter semantic what the relationship implies.  If not provided, the relationship type has no semantics, it's "related somehow".  MUST be a valid [Concept ID](../index.md#concept-id). */
+    /** Optional type of the relationship, which defines a stricter semantic what the relationship implies.  If not provided, the relationship type has no semantics, it's "related somehow".  MUST be a valid [Concept ID](../concepts/identifiers.md#concept-id). */
     String relationType() default "";
   }
 
@@ -1842,10 +1913,10 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
-    /** Optional type of the relationship as a [Concept ID](../index.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
+    /** Optional type of the relationship as a [Concept ID](../concepts/identifiers.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
     String relationType() default "";
   }
 
@@ -1855,7 +1926,20 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
+    String ordId() default "";
+
+    /** Optional type of the relationship as a [Concept ID](../concepts/identifiers.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
+    String relationType() default "";
+  }
+
+  @Target(ElementType.TYPE)
+  @Retention(RetentionPolicy.RUNTIME)
+  @interface RelatedDataProduct {
+
+    String[] requiredFields() default {"ordId"};
+
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** Optional type of the relationship as a [Concept ID](../index.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
@@ -1868,10 +1952,10 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
-    /** Optional type of the relationship as a [Concept ID](../index.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
+    /** Optional type of the relationship as a [Concept ID](../concepts/identifiers.md#concept-id).  Defines the semantic meaning of the relationship. If not provided, the relationship has no specific semantics ("related somehow"). */
     String relationType() default "";
   }
 
@@ -1881,7 +1965,7 @@ public interface Ord {
 
     String[] requiredFields() default {"ordId"};
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
   }
 
@@ -1892,7 +1976,7 @@ public interface Ord {
 
     String[] requiredFields() default {"removalDate"};
 
-    /** [ORD ID](../index.md#ord-id) of the ORD resource/taxonomy that has been removed. */
+    /** [ORD ID](../concepts/identifiers.md#ord-id) of the ORD resource/taxonomy that has been removed. */
     String ordId() default "";
 
     /** Group ID of the group that has been removed. */
@@ -1916,13 +2000,13 @@ public interface Ord {
       "ordId", "title", "description", "version", "visibility", "releaseStatus", "partOfPackage"
     };
 
-    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../index.md#ord-id) of the appropriate ORD type. */
+    /** The ORD ID is a stable, globally unique ID for ORD resources or taxonomy.  It MUST be a valid [ORD ID](../concepts/identifiers.md#ord-id) of the appropriate ORD type. */
     String ordId() default "";
 
     /** The locally unique ID under which this resource can be looked up / resolved in the described system itself. Unlike the ORD ID it's not globally unique, but it may be useful to document the original ID / technical name.  It MAY also be used as the `<resourceName>` fragment in the ORD ID, IF it can fulfill the charset and length limitations within the ORD ID. But since this is not always possible, no assumptions MUST be made about the local ID being the same as the `<resourceName>` fragment in the ORD ID. */
     String localId() default "";
 
-    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../index.md#correlation-id). */
+    /** Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).  They express an "identity" / "equals" / "mappable" relationship to the target ID.  If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.  MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id). */
     String[] correlationIds() default {};
 
     /** Human-readable title.  MUST NOT exceed 255 chars. MUST NOT contain line breaks. */
@@ -1940,7 +2024,7 @@ public interface Ord {
     /** Defines which groups the resource is assigned to.  The property is optional, but if given the value MUST be an array of valid Group IDs.  Groups are a lightweight custom taxonomy concept. They express a "part of" relationship to the chosen group concept. If an "identity / equals" relationship needs to be expressed, use the `correlationIds` instead.  All resources that share the same group ID assignment are effectively grouped together.  **Visibility:** Groups and Group Types may carry a `visibility`. Aggregators and consumers MUST NOT expose group assignments to audiences whose access level exceeds the referenced Group's (or Group Type's) visibility. See [Visibility of Groups and Group Types](../concepts/grouping-and-bundling#visibility-of-groups-and-group-types). */
     String[] partOfGroups() default {};
 
-    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../index.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. In case that a resource definition file also contains a version number (e.g. [OpenAPI `info`.`version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it MUST be equal with the resource `version` to avoid inconsistencies.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
+    /** The complete [SemVer](https://semver.org/) version string.  It MUST follow the [Semantic Versioning 2.0.0](https://semver.org/) standard. It SHOULD be changed if the ORD information or referenced resource definitions changed. It SHOULD express minor and patch changes that don't lead to incompatible changes.  When the `version` major version changes, the [ORD ID](../concepts/identifiers.md#ord-id) `<majorVersion>` fragment SHOULD be updated to be identical. If a resource definition file also contains a version number (e.g. [OpenAPI `info.version`](https://spec.openapis.org/oas/v3.1.1.html#info-object)), it SHOULD match the resource `version` whenever possible. If the native version does not follow SemVer, it MUST be converted to valid SemVer for ORD, preserving its ordering and compatibility semantics as closely as possible.  If the resource has been extended by the user, the change MUST be indicated via `lastUpdate`. The `version` MUST not be bumped for changes in extensions.  The general [Version and Lifecycle](../concepts/versioning-and-lifecycle.md) flow MUST be followed.  Note: A change is only relevant for a version increment, if it affects the ORD resource or ORD taxonomy directly. For example: If a resource within a `Package` changes, but the Package itself did not, the Package version does not need to be incremented. */
     String version() default "";
 
     /** Optional, but RECOMMENDED indicator when (date-time) the last change to the resource (including its definitions) happened.  The date format MUST comply with [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).  When retrieved from an ORD aggregator, `lastUpdate` will be reliable there and reflect either the provider based update time or the aggregator processing time. Therefore consumers MAY rely on it to detect changes to the metadata and the attached resource definition files.  If the resource has attached definitions, either the `version` or `lastUpdate` property MUST be defined and updated to let the ORD aggregator know that they need to be fetched again.  Together with `perspectives`, this property SHOULD be used to optimize the metadata crawling process of the ORD aggregators. */
@@ -1949,7 +2033,7 @@ public interface Ord {
     /** Defines metadata access control - which categories of consumers are allowed to discover and access the resource and its metadata.  This controls who can see that the resource exists and retrieve its metadata level information. It does NOT control runtime access to the resource itself - that is managed separately through authentication and authorization mechanisms.  Use this to prevent exposing internal implementation details to inappropriate consumer audiences. */
     String visibility() default "";
 
-    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/compatibility.md) for more details. */
+    /** Defines the maturity level and stability commitment for the resource's API contract (interface, behavior, data models).  This indicates whether the resource may undergo backward-incompatible changes. It helps consumers understand the risk of depending on the resource and whether it's suitable for production use.  Note: This is independent of `visibility` and does not imply availability guarantees or SLAs - it concerns only the API contract stability.  See [Lifecycle](../concepts/versioning-and-lifecycle.md#lifecycle) and [Compatibility](../concepts/versioning-and-lifecycle.md#compatibility) for more details. */
     String releaseStatus() default "";
 
     /** Generic links with arbitrary meaning and content.  `packageLinks` MUST be preferred if applicable. */
