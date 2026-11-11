@@ -25,7 +25,7 @@ import java.util.List;
  *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"ordId", "title", "partners", "tags", "labels", "documentationLabels"})
+@JsonPropertyOrder({"ordId", "title", "correlationIds", "partners", "tags", "labels", "documentationLabels"})
 public class Vendor {
 
   /**
@@ -50,6 +50,20 @@ public class Vendor {
   @JsonProperty("title")
   @JsonPropertyDescription("Human-readable title.\n\nMUST NOT exceed 255 chars.\nMUST NOT contain line breaks.")
   private String title;
+  /**
+   * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
+   *
+   * They express an "identity" / "equals" / "mappable" relationship to the target ID.
+   *
+   * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
+   *
+   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
+   *
+   */
+  @JsonProperty("correlationIds")
+  @JsonPropertyDescription(
+      "Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).")
+  private List<String> correlationIds;
   /**
    * Optional list of partner vendors, referenced through their ORD ID.
    *
@@ -181,6 +195,41 @@ public class Vendor {
 
   public Vendor withTitle(String title) {
     this.title = title;
+    return this;
+  }
+
+  /**
+   * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
+   *
+   * They express an "identity" / "equals" / "mappable" relationship to the target ID.
+   *
+   * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
+   *
+   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
+   *
+   */
+  @JsonProperty("correlationIds")
+  public List<String> getCorrelationIds() {
+    return correlationIds;
+  }
+
+  /**
+   * Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).
+   *
+   * They express an "identity" / "equals" / "mappable" relationship to the target ID.
+   *
+   * If a "part of" relationship needs to be expressed, use the `partOfGroups` assignment instead.
+   *
+   * MUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).
+   *
+   */
+  @JsonProperty("correlationIds")
+  public void setCorrelationIds(List<String> correlationIds) {
+    this.correlationIds = correlationIds;
+  }
+
+  public Vendor withCorrelationIds(List<String> correlationIds) {
+    this.correlationIds = correlationIds;
     return this;
   }
 
@@ -373,6 +422,10 @@ public class Vendor {
     sb.append('=');
     sb.append(((this.title == null) ? "<null>" : this.title));
     sb.append(',');
+    sb.append("correlationIds");
+    sb.append('=');
+    sb.append(((this.correlationIds == null) ? "<null>" : this.correlationIds));
+    sb.append(',');
     sb.append("partners");
     sb.append('=');
     sb.append(((this.partners == null) ? "<null>" : this.partners));
@@ -401,9 +454,10 @@ public class Vendor {
   public int hashCode() {
     int result = 1;
     result = ((result * 31) + ((this.documentationLabels == null) ? 0 : this.documentationLabels.hashCode()));
+    result = ((result * 31) + ((this.partners == null) ? 0 : this.partners.hashCode()));
+    result = ((result * 31) + ((this.correlationIds == null) ? 0 : this.correlationIds.hashCode()));
     result = ((result * 31) + ((this.title == null) ? 0 : this.title.hashCode()));
     result = ((result * 31) + ((this.ordId == null) ? 0 : this.ordId.hashCode()));
-    result = ((result * 31) + ((this.partners == null) ? 0 : this.partners.hashCode()));
     result = ((result * 31) + ((this.tags == null) ? 0 : this.tags.hashCode()));
     result = ((result * 31) + ((this.labels == null) ? 0 : this.labels.hashCode()));
     return result;
@@ -418,16 +472,20 @@ public class Vendor {
       return false;
     }
     Vendor rhs = ((Vendor) other);
-    return (((((((this.documentationLabels == rhs.documentationLabels)
-                            || ((this.documentationLabels != null)
-                                && this.documentationLabels.equals(
-                                    rhs.documentationLabels)))
-                        && ((this.title == rhs.title)
-                            || ((this.title != null) && this.title.equals(rhs.title))))
-                    && ((this.ordId == rhs.ordId)
-                        || ((this.ordId != null) && this.ordId.equals(rhs.ordId))))
-                && ((this.partners == rhs.partners)
-                    || ((this.partners != null) && this.partners.equals(rhs.partners))))
+    return ((((((((this.documentationLabels == rhs.documentationLabels)
+                                || ((this.documentationLabels != null)
+                                    && this.documentationLabels.equals(
+                                        rhs.documentationLabels)))
+                            && ((this.partners == rhs.partners)
+                                || ((this.partners != null)
+                                    && this.partners.equals(rhs.partners))))
+                        && ((this.correlationIds == rhs.correlationIds)
+                            || ((this.correlationIds != null)
+                                && this.correlationIds.equals(rhs.correlationIds))))
+                    && ((this.title == rhs.title)
+                        || ((this.title != null) && this.title.equals(rhs.title))))
+                && ((this.ordId == rhs.ordId)
+                    || ((this.ordId != null) && this.ordId.equals(rhs.ordId))))
             && ((this.tags == rhs.tags) || ((this.tags != null) && this.tags.equals(rhs.tags))))
         && ((this.labels == rhs.labels) || ((this.labels != null) && this.labels.equals(rhs.labels))));
   }

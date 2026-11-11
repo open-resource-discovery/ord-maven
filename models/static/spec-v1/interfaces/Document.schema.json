@@ -581,6 +581,9 @@
                                 "const": "Banking"
                             },
                             {
+                                "const": "Building Materials"
+                            },
+                            {
                                 "const": "Chemicals"
                             },
                             {
@@ -600,6 +603,9 @@
                             },
                             {
                                 "const": "Engineering Construction and Operations"
+                            },
+                            {
+                                "const": "Fashion"
                             },
                             {
                                 "const": "Financial Services"
@@ -645,6 +651,9 @@
                             },
                             {
                                 "const": "Public Services"
+                            },
+                            {
+                                "const": "Real Estate"
                             },
                             {
                                 "const": "Retail"
@@ -1248,15 +1257,15 @@
                         },
                         {
                             "const": "odata-v2",
-                            "description": "[OData Version 2.0](https://www.odata.org/documentation/odata-version-2-0/) API.\nAn API Resource definition of type `edmx` MUST be provided.\nFor each API Resource definition: `type` MUST ONLY be set to `edmx`, `csdl-json`, `openapi-v2`, `openapi-v3`, `openapi-v3.1+`, `sap-csn-interop-effective-v1`, `custom` or any valid [Specification ID](../concepts/identifiers.md#specification-id)."
+                            "description": "[OData Version 2.0](https://www.odata.org/documentation/odata-version-2-0/) API.\nAn API Resource definition of type `edmx` MUST be provided.\nFor each API Resource definition: `type` MUST ONLY be set to `edmx`, `csdl-json`, `openapi-v2`, `openapi-v3`, `openapi-v3.1+`, `oas-overlay-v1`, `sap-csn-interop-effective-v1`, `custom` or any valid [Specification ID](../concepts/identifiers.md#specification-id)."
                         },
                         {
                             "const": "odata-v4",
-                            "description": "[OData Version 4](https://www.odata.org/documentation/) API.\nAn OData V4 API MUST be described via a Common Schema Definition Language (CSDL).\nAn API Resource definition of type `edmx` MUST be provided.\nFor each API Resource definition: `type` MUST ONLY be set to `edmx`, `csdl-json`, `openapi-v2`, `openapi-v3`, `openapi-v3.1+`, `sap-csn-interop-effective-v1`, `custom` or any valid [Specification ID](../concepts/identifiers.md#specification-id)."
+                            "description": "[OData Version 4](https://www.odata.org/documentation/) API.\nAn OData V4 API MUST be described via a Common Schema Definition Language (CSDL).\nAn API Resource definition of type `edmx` MUST be provided.\nFor each API Resource definition: `type` MUST ONLY be set to `edmx`, `csdl-json`, `openapi-v2`, `openapi-v3`, `openapi-v3.1+`, `oas-overlay-v1`, `sap-csn-interop-effective-v1`, `custom` or any valid [Specification ID](../concepts/identifiers.md#specification-id)."
                         },
                         {
                             "const": "rest",
-                            "description": "Generic [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) API.\nPlease not that while OData is also a REST API, the most precise/opinionated `apiProtocol` MUST be chosen.\nAn API Resource definition of type `openapi-v3` (RECOMMENDED) or another appropriate option SHOULD be provided.\nFor each API Resource definition: `type` MUST ONLY be set to `openapi-v2`, `openapi-v3`, `openapi-v3.1+`, `raml-v1`, `sap-csn-interop-effective-v1`, `custom` or any valid [Specification ID](../concepts/identifiers.md#specification-id)."
+                            "description": "Generic [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) API.\nPlease not that while OData is also a REST API, the most precise/opinionated `apiProtocol` MUST be chosen.\nAn API Resource definition of type `openapi-v3` (RECOMMENDED) or another appropriate option SHOULD be provided.\nFor each API Resource definition: `type` MUST ONLY be set to `openapi-v2`, `openapi-v3`, `openapi-v3.1+`, `raml-v1`, `oas-overlay-v1`, `sap-csn-interop-effective-v1`, `custom` or any valid [Specification ID](../concepts/identifiers.md#specification-id)."
                         },
                         {
                             "const": "graphql",
@@ -1592,6 +1601,9 @@
                                 "const": "Banking"
                             },
                             {
+                                "const": "Building Materials"
+                            },
+                            {
                                 "const": "Chemicals"
                             },
                             {
@@ -1611,6 +1623,9 @@
                             },
                             {
                                 "const": "Engineering Construction and Operations"
+                            },
+                            {
+                                "const": "Fashion"
                             },
                             {
                                 "const": "Financial Services"
@@ -1656,6 +1671,9 @@
                             },
                             {
                                 "const": "Public Services"
+                            },
+                            {
+                                "const": "Real Estate"
                             },
                             {
                                 "const": "Retail"
@@ -2322,6 +2340,9 @@
                                 "const": "Banking"
                             },
                             {
+                                "const": "Building Materials"
+                            },
+                            {
                                 "const": "Chemicals"
                             },
                             {
@@ -2341,6 +2362,9 @@
                             },
                             {
                                 "const": "Engineering Construction and Operations"
+                            },
+                            {
+                                "const": "Fashion"
                             },
                             {
                                 "const": "Financial Services"
@@ -2386,6 +2410,9 @@
                             },
                             {
                                 "const": "Public Services"
+                            },
+                            {
+                                "const": "Real Estate"
                             },
                             {
                                 "const": "Retail"
@@ -3460,6 +3487,9 @@
                                 "const": "Banking"
                             },
                             {
+                                "const": "Building Materials"
+                            },
+                            {
                                 "const": "Chemicals"
                             },
                             {
@@ -3479,6 +3509,9 @@
                             },
                             {
                                 "const": "Engineering Construction and Operations"
+                            },
+                            {
+                                "const": "Fashion"
                             },
                             {
                                 "const": "Financial Services"
@@ -3524,6 +3557,9 @@
                             },
                             {
                                 "const": "Public Services"
+                            },
+                            {
+                                "const": "Real Estate"
                             },
                             {
                                 "const": "Retail"
@@ -4481,6 +4517,9 @@
                                 "const": "Banking"
                             },
                             {
+                                "const": "Building Materials"
+                            },
+                            {
                                 "const": "Chemicals"
                             },
                             {
@@ -4500,6 +4539,9 @@
                             },
                             {
                                 "const": "Engineering Construction and Operations"
+                            },
+                            {
+                                "const": "Fashion"
                             },
                             {
                                 "const": "Financial Services"
@@ -4545,6 +4587,9 @@
                             },
                             {
                                 "const": "Public Services"
+                            },
+                            {
+                                "const": "Real Estate"
                             },
                             {
                                 "const": "Retail"
@@ -5561,6 +5606,9 @@
                                 "const": "Banking"
                             },
                             {
+                                "const": "Building Materials"
+                            },
+                            {
                                 "const": "Chemicals"
                             },
                             {
@@ -5580,6 +5628,9 @@
                             },
                             {
                                 "const": "Engineering Construction and Operations"
+                            },
+                            {
+                                "const": "Fashion"
                             },
                             {
                                 "const": "Financial Services"
@@ -5625,6 +5676,9 @@
                             },
                             {
                                 "const": "Public Services"
+                            },
+                            {
+                                "const": "Real Estate"
                             },
                             {
                                 "const": "Retail"
@@ -6437,6 +6491,21 @@
                     "examples": [
                         "SAP"
                     ]
+                },
+                "correlationIds": {
+                    "type": "array",
+                    "description": "Correlation IDs can be used to create a reference to related data in other repositories (especially to the system of record).\n\nThey express an \"identity\" / \"equals\" / \"mappable\" relationship to the target ID.\n\nIf a \"part of\" relationship needs to be expressed, use the `partOfGroups` assignment instead.\n\nMUST be a valid [Correlation ID](../concepts/identifiers.md#correlation-id).",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^([a-z0-9]+(?:[.][a-z0-9]+)*):([a-zA-Z0-9._\\-\\/]+):([a-zA-Z0-9._\\-\\/]+)$",
+                        "maxLength": 255
+                    },
+                    "examples": [
+                        [
+                            "foo.bar:conceptName:localIdentifier"
+                        ]
+                    ],
+                    "x-introduced-in-version": "1.17.1"
                 },
                 "partners": {
                     "type": "array",
