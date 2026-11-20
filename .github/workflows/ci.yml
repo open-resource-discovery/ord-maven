@@ -3,29 +3,31 @@ name: CI – Generate Models & Annotations, Build ORD-Java
 on:
   push:
     branches:
-      - 'main'
+      - "main"
+
+permissions:
+  contents: read
 
 jobs:
   build:
     name: Generate & Build ORD-Java
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout ord-maven repo
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: true
 
       - name: Set up Node.js 24
-        uses: actions/setup-node@v7.1.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           cache: npm
           node-version: 24.22.3
           cache-dependency-path: tools/annotation-gen/package-lock.json
 
       - name: Setup Maven Action
-        uses: s4u/setup-maven-action@v1.22.0
+        uses: s4u/setup-maven-action@5d4481650d2563723ad6c5e8f009ac8fd746e3e8 # v1.22.0
         with:
           java-version: 25
           maven-version: 3.9.14
@@ -39,4 +41,3 @@ jobs:
             echo "Generated sources are not up to date, please commit any changes."
             exit 1
           fi
-        
