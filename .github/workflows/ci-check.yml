@@ -35,5 +35,3 @@ jobs:
             echo "Generated sources are not up to date, please commit any changes."
             exit 1
           fi
-    permissions:
-      contents: read
