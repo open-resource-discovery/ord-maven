@@ -1,11 +1,10 @@
+import assert from "node:assert";
 import * as fs from "fs";
 import * as path from "path";
-import assert from "node:assert";
-
-import { SchemaDefinition } from "./types/schema-definition";
-import { readOrdSpecVersion } from "./utils/read-ord-spec-version";
 import { generateOrdAnnotations } from "./generators/ord-annotations";
 import { generateOrdSpecProperties } from "./generators/ord-spec-properties";
+import type { SchemaDefinition } from "./types/schema-definition";
+import { readOrdSpecVersion } from "./utils/read-ord-spec-version";
 
 /**
  * CLI:

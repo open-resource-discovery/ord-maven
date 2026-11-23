@@ -1,4 +1,4 @@
-import { SchemaProperty } from "./schema-property";
+import type { SchemaProperty } from "./schema-property";
 
 export type SchemaDefinition = {
   properties?: Record<string, SchemaProperty>;

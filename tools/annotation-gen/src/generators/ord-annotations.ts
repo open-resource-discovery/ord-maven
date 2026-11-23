@@ -1,7 +1,7 @@
-import { SchemaDefinition } from "../types/schema-definition";
+import type { SchemaDefinition } from "../types/schema-definition";
+import type { SchemaProperty } from "../types/schema-property";
 import { resolveJavaType } from "../utils/resolve-java-type";
 import { resolveName } from "../utils/resolve-name";
-import { SchemaProperty } from "../types/schema-property";
 
 const PART_OF_DOCUMENT = 'DocumentReference partOfDocument() default @DocumentReference(name = "ord-document");';
 const TOP_LEVEL_FIELDS = Object.freeze(

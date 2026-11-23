@@ -2,21 +2,19 @@
   "name": "ord-annotation-gen",
   "private": true,
   "scripts": {
-    "generate": "ts-node src/generate.ts",
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
-    "format": "prettier --write src",
-    "format:check": "prettier --check src"
+    "generate": "npm run build && node dist/generate.js",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "format": "biome format --write . && oxfmt --no-error-on-unmatched-pattern '**/*.{md,yml,yaml,css,scss,html}'",
+    "format:check": "biome format . && oxfmt --check --no-error-on-unmatched-pattern '**/*.{md,yml,yaml,css,scss,html}'",
+    "check:tooling": "npm run lint && npm run format:check",
+    "build": "tsc"
   },
   "devDependencies": {
-    "@eslint/js": "10.0.1",
     "@open-resource-discovery/specification": "1.17.1",
-    "@sap/eslint-config": "0.5.2",
-    "eslint": "10.15.0",
-    "eslint-config-prettier": "10.1.8",
-    "prettier": "3.10.1",
-    "ts-node": "10.9.2",
     "typescript": "6.0.3",
-    "typescript-eslint": "8.72.2"
+    "@biomejs/biome": "2.6.4",
+    "oxfmt": "0.75.0",
+    "@types/node": "26.6.6"
   }
 }

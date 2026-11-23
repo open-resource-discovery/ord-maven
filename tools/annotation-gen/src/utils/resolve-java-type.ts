@@ -1,4 +1,4 @@
-import { SchemaProperty } from "../types/schema-property";
+import type { SchemaProperty } from "../types/schema-property";
 
 export function resolveJavaType(prop: SchemaProperty = { type: "string" }): string {
   if (prop.$ref) return prop.$ref.split("/").pop()!;
