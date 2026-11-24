@@ -16,5 +16,8 @@
     "@biomejs/biome": "2.6.4",
     "oxfmt": "0.75.0",
     "@types/node": "26.6.6"
+  },
+  "engines": {
+    "node": ">=26"
   }
 }

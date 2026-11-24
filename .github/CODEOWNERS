@@ -1,1 +1,8 @@
-* @Fannon
+# Review owners for CI and build configuration.
+/.github/ @open-resource-discovery/ord-maven-admin
+/renovate.json @open-resource-discovery/ord-maven-admin
+/pom.xml @open-resource-discovery/ord-maven-admin
+/scripts/ @open-resource-discovery/ord-maven-admin
+/tools/ @open-resource-discovery/ord-maven-admin
+/models/pom.xml @open-resource-discovery/ord-maven-admin
+/annotations/pom.xml @open-resource-discovery/ord-maven-admin
