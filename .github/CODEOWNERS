@@ -6,3 +6,7 @@
 /tools/ @open-resource-discovery/ord-maven-admin
 /models/pom.xml @open-resource-discovery/ord-maven-admin
 /annotations/pom.xml @open-resource-discovery/ord-maven-admin
+/tools/annotation-gen/.npmrc @open-resource-discovery/ord-maven-admin
+/tools/annotation-gen/package.json @open-resource-discovery/ord-maven-admin
+/tools/annotation-gen/package-lock.json @open-resource-discovery/ord-maven-admin
+/SECURITY_INSTALL.md @open-resource-discovery/ord-maven-admin
